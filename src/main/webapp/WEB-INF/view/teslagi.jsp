@@ -7,6 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+<<<<<<< HEAD
 kita coba conflik
+=======
+teslagi teslagi, capek test terus....
+>>>>>>> branch 'master' of https://github.com/btcmp/bootcamp137_-2.git
+
+cobsdljadklaginegpuid
 </body>
 </html>
