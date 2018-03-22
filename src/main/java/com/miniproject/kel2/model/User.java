@@ -21,6 +21,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+
 @Entity
 @Table(name="user_mp")
 public class User {
@@ -46,7 +47,50 @@ public class User {
 	private int enabled;
 	//getter and setter
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<Customer> customersCreated;
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<Customer> customersModified;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<Supplier> suppliersCreated;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<Supplier> suppliersModified;
+
+	
+	public List<Supplier> getSuppliersCreated() {
+		return suppliersCreated;
+	}
+
+	public void setSuppliersCreated(List<Supplier> suppliersCreated) {
+		this.suppliersCreated = suppliersCreated;
+	}
+
+	public List<Supplier> getSuppliersModified() {
+		return suppliersModified;
+	}
+
+	public void setSuppliersModified(List<Supplier> suppliersModified) {
+		this.suppliersModified = suppliersModified;
+	}
+	
+	public List<Customer> getCustomersCreated() {
+		return customersCreated;
+	}
+
+	public void setCustomersCreated(List<Customer> customersCreated) {
+		this.customersCreated = customersCreated;
+	}
+
+	public List<Customer> getCustomersModified() {
+		return customersModified;
+	}
+
+	public void setCustomersModified(List<Customer> customersModified) {
+		this.customersModified = customersModified;
+	}
 
 	public long getId() {
 		return id;

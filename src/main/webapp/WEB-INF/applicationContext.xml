@@ -28,6 +28,11 @@
 				<value>com.miniproject.kel2.model.Employee</value>
 				<value>com.miniproject.kel2.model.Role</value>
 				<value>com.miniproject.kel2.model.User</value>
+				<value>com.miniproject.kel2.model.District</value>
+				<value>com.miniproject.kel2.model.Region</value>
+				<value>com.miniproject.kel2.model.Province</value>
+				<value>com.miniproject.kel2.model.Supplier</value>
+				<value>com.miniproject.kel2.model.Customer</value>
 				
 			</list>
 		</property>
