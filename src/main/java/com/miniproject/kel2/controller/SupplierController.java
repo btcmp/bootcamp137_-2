@@ -14,7 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.miniproject.kel2.model.District;
+import com.miniproject.kel2.model.Province;
+import com.miniproject.kel2.model.Region;
 import com.miniproject.kel2.model.Supplier;
+import com.miniproject.kel2.service.DistrictService;
+import com.miniproject.kel2.service.ProvinceService;
+import com.miniproject.kel2.service.RegionService;
 import com.miniproject.kel2.service.SupplierService;
 
 
@@ -24,11 +30,27 @@ public class SupplierController {
 	
 	@Autowired
 	SupplierService supplierService;
+	
+	@Autowired
+	ProvinceService provinceService;
+	
+/*	@Autowired
+	RegionService regionService;
+	
+	@Autowired
+	DistrictService districtService;*/
 
 	@RequestMapping
 	public String index(Model model) {
 		List<Supplier> suppliers = supplierService.selectAll();
+		List<Province> provinces = provinceService.selectAll();
+		/*List<Region> regions = regionService.selectAll();
+		List<District> districts = districtService.selectAll(); */
+		
 		model.addAttribute("listSupplier", suppliers);
+		model.addAttribute("listProvince", provinces);
+		/*model.addAttribute("listRegion", regions);
+		model.addAttribute("listDistrict", districts);*/
 		return "supplier";
 	}
 	

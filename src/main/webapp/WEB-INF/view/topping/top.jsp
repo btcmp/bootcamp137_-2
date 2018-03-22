@@ -87,6 +87,7 @@
     <script src="resources/js/sparklines.js"></script>    
     <script src="resources/js/charts.js"></script>
     <script src="resources/js/jquery.slimscroll.min.js"></script>
+    <script src="resources/js/jquery.chained.min.js"></script>
   <script>
 
       //knob
