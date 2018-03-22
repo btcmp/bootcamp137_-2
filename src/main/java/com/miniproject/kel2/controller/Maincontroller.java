@@ -7,11 +7,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping("/login")
+@RequestMapping("/index")
 public class Maincontroller {
 	
+	@RequestMapping 
+	public String index() {
+		return "index";
+	}
 	
-	@RequestMapping
+	@RequestMapping ("/login")
 	public String doLogin(Model model, @RequestParam(value="error", required=false) String error, @RequestParam(value="logout", required=false) String logout){
 		if(error != null){
 			model.addAttribute("error", "user or password invalid..!!");
@@ -23,8 +27,5 @@ public class Maincontroller {
 		return "security/login";
 	} 
 
-	@RequestMapping
-	public String index() {
-		return "index";
-	}
+	
 }
