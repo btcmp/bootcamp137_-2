@@ -21,8 +21,15 @@ public class EmpUserService {
 	@Autowired
 	UserDao userDao;
 	
-	public void empSave(Employee emp) {
-		empDao.save(emp);
+	public void Save(Employee emp) {
+		
+		Employee pegawai = new Employee();
+		pegawai.setFirstName(emp.getFirstName());
+		pegawai.setLastName(emp.getLastName());
+		pegawai.setEmail(emp.getEmail());
+		pegawai.setTitle(emp.getTitle());
+		empDao.save(pegawai);
+		
 	}
 	
 	public void empUpdate(Employee emp) {
