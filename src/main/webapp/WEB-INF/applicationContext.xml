@@ -33,6 +33,7 @@
 				<value>com.miniproject.kel2.model.Province</value>
 				<value>com.miniproject.kel2.model.Supplier</value>
 				<value>com.miniproject.kel2.model.Customer</value>
+				<value>com.miniproject.kel2.model.Category</value>
 				
 			</list>
 		</property>
