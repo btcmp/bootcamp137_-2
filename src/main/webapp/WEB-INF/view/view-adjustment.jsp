@@ -1,6 +1,6 @@
   
 	 <!-- ==================================================================  BATAS BUAT ISIAN ========================================================================= -->
-	 <section aria-hidden="true" id="adjustment" class="">
+	 <section aria-hidden="true" id="adjustment" class="isi-konten">
           <section class="wrapper">
 			<div class="row">
                   <div class="col-lg-12">

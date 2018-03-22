@@ -33,7 +33,7 @@
 		</property>
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">create</prop> 
+				<prop key="hibernate.hbm2ddl.auto">update</prop> 
 				<!-- update>>biar gak buat ulang ketika dijalankan
 					create>>ketika dijalankan ngedrop table dulu
 					validate>> data gak akan berubah, hanya notifikasi jika tidak valid -->

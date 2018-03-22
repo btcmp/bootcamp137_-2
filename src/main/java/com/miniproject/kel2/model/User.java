@@ -30,31 +30,55 @@ public class User {
 	@SequenceGenerator(initialValue=3333, name="idUser", sequenceName="idUser")
 	private long id;
 	 
-	private String login;
+	private String username;
 	 
 	private String password;
 	 
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="user_roles",
-		joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
-		inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")}
-	)
-	private List<Role> role;
+	@ManyToMany
+	@JoinTable(
+			name = "user_roles",
+			joinColumns={@JoinColumn(name="user_id")},
+			inverseJoinColumns={@JoinColumn(name="role_id")}
+			)
+	private List<Role> roles;
+	
+	@Column(name="enabled")
+	private int enabled;
+	//getter and setter
+	
+	
 
 	public long getId() {
 		return id;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public int getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
 	}
 
 	public void setId(long id) {
 		this.id = id;
 	}
 
-	public String getLogin() {
-		return login;
+	
+	public String getUsername() {
+		return username;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -65,14 +89,6 @@ public class User {
 		this.password = password;
 	}
 
-	public List<Role> getRole() {
-		return role;
-	}
-
-	public void setRole(List<Role> role) {
-		this.role = role;
-	}
- 
 	
 	
 }
