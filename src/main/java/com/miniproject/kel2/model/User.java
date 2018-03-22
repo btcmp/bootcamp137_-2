@@ -13,13 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
-import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
@@ -43,8 +42,30 @@ public class User {
 			)
 	private List<Role> roles;
 	
-	@Column(name="enabled")
-	private int enabled;
+	@Column(name="employee_id", nullable=false, length=50)
+	@ManyToMany
+	@JoinTable(
+			name = "user_employee",
+			joinColumns={@JoinColumn(name="user_id")},
+			inverseJoinColumns={@JoinColumn(name="employee_id")}
+			)
+	private List<Employee> employee;
+	
+	@Column(name="created_by", nullable=true)
+	private long createdBy;
+	
+	@Column(name="created_on", nullable=true)
+	private Date createdOn;
+	
+	@Column(name="modified_by", nullable=true)
+	private long modifiedBy;
+	
+	@Column(name="modified_on", nullable=true)
+	private Date modifiedOn;
+	
+	@Column(name="enabled", nullable=false)
+	private boolean active;
+	
 	//getter and setter
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
@@ -104,14 +125,6 @@ public class User {
 		this.roles = roles;
 	}
 
-	public int getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(int enabled) {
-		this.enabled = enabled;
-	}
-
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -131,6 +144,54 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<Employee> getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(List<Employee> employee) {
+		this.employee = employee;
+	}
+
+	public long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	
