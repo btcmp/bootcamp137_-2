@@ -50,8 +50,7 @@
   <body>
   <!-- container section start -->
   <section id="container" class="">
-     
-      
+      <!--header start-->
       <header class="header dark-bg">
             <div class="toggle-nav">
                 <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
@@ -80,13 +79,13 @@
                     <!-- task notificatoin start -->
                     <li id="task_notificatoin_bar" class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="icon-task-l">
-                            <span class="badge bg-important">6</span>
-                        </span></a>
+                            <span class="icon-task-l"></i>
+                            <span class="badge bg-important">5</span>
+                        </a>
                         <ul class="dropdown-menu extended tasks-bar">
                             <div class="notify-arrow notify-arrow-blue"></div>
                             <li>
-                                <p class="blue">You have 6 pending letter</p>
+                                <p class="blue">You have 5 pending tasks</p>
                             </li>
                             <li>
                                 <a href="#">
@@ -149,7 +148,7 @@
                                         <div class="percent">50%</div>
                                     </div>
                                     <div class="progress progress-striped active">
-                                        <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                                        <div class="progress-bar"  role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
                                             <span class="sr-only">50% Complete</span>
                                         </div>
                                     </div>
@@ -175,7 +174,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="./resources/img/avatar-mini.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="./img/avatar-mini.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Greg  Martin</span>
                                     <span class="time">1 min</span>
@@ -187,7 +186,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="./resources/img/avatar-mini2.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="./img/avatar-mini2.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Bob   Mckenzie</span>
                                     <span class="time">5 mins</span>
@@ -199,7 +198,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="./resources/img/avatar-mini3.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="./img/avatar-mini3.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Phillip   Park</span>
                                     <span class="time">2 hrs</span>
@@ -211,7 +210,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="photo"><img alt="avatar" src="./resources/img/avatar-mini4.jpg"></span>
+                                    <span class="photo"><img alt="avatar" src="./img/avatar-mini4.jpg"></span>
                                     <span class="subject">
                                     <span class="from">Ray   Munoz</span>
                                     <span class="time">1 day</span>
@@ -277,9 +276,9 @@
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
-                                <img alt="" src="resources/img/avatar1_small.jpg">
+                                <img alt="" src="img/avatar1_small.jpg">
                             </span>
-                            <span class="username">MiniProjectCeria</span>
+                            <span class="username">Jenifer Smith</span>
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu extended logout">
@@ -314,7 +313,7 @@
       </header>      
       <!--header end-->
 
-      <!--sidebar start-->
+       <!--sidebar start-->
       <aside>
           <div id="sidebar" class="nav-collapse " style="overflow: hidden;" tabindex="5000">
               <!-- sidebar menu start-->
@@ -362,8 +361,8 @@
                           <span class="menu-arrow arrow_carrot-down"></span>
                       </a>
                       <ul class="sub">
-                          <li><a class="" href="#" id="view-adjustment">Adjusment</a></li>
-                          <li><a class="" href="view-detail-adjusment.html">Adjusment Detail</a></li>                          
+                          <li><a class="" href="view-adjustment.html">Adjusment</a></li>
+                          <li><a class="" href="view-detail-adjustment.html">Adjusment Detail</a></li>                          
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -373,8 +372,8 @@
                           <span class="menu-arrow arrow_carrot-down"></span>
                       </a>
                       <ul class="sub">
-                          <li><a class="" href="view-transfer-stok.html">transfer Stok</a></li>
-                          <li><a class="" href="detailview-transfer-.html">transfer Stok Detail</a></li>
+                          <li><a class="" href="view-transfer-stock.html">transfer Stok</a></li>
+                          <li><a class="" href="view-transfer-detail.html">transfer Stok Detail</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -393,132 +392,40 @@
           </div>
       </aside>
       <!--sidebar end-->
-      
-      <!--main content start-->
-      <section id="main-content" class="isi-konten">
-          <section class="wrapper">            
-              <!--overview start-->
-              <div class="row">
-                <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
-                    <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-                        <li><i class="fa fa-laptop"></i>Dashboard</li>                          
-                    </ol>
-                </div>
-            </div>
-         
-              <!-- project team & activity end -->
-
-          </section>
-      </section>
-      <%@ include file = "view-adjustment.jsp" %>
-      <!--main content end-->
-  </section>
-  <!-- container section start -->
-
-    <!-- javascripts -->
-    <script src="resources/js/jquery.js"></script>
-    <script src="resources/js/jquery-ui-1.10.4.min.js"></script>
-    <script src="resources/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="resources/js/jquery-ui-1.9.2.custom.min.js"></script>
-    <!-- bootstrap -->
-    <script src="resources/js/bootstrap.min.js"></script>
-    <!-- nice scroll -->
-    <script src="resources/js/jquery.scrollTo.min.js"></script>
-    <script src="resources/js/jquery.nicescroll.js" type="text/javascript"></script>
-    <!-- charts scripts -->
-    <script src="resources/assets/jquery-knob/js/jquery.knob.js"></script>
-    <script src="resources/js/jquery.sparkline.js" type="text/javascript"></script>
-    <script src="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-    <script src="resources/js/owl.carousel.js"></script>
-    <!-- jQuery full calendar -->
-    &lt;<script src="resources/js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
-    <script src="resources/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
-    <!--script for this page only-->
-    <script src="resources/js/calendar-custom.js"></script>
-    <script src="resources/js/jquery.rateit.min.js"></script>
-    <!-- custom select -->
-    <script src="resources/js/jquery.customSelect.min.js"></script>
-    <script src="resources/assets/chart-master/Chart.js"></script>
-   
+	  
+	 <%@ include file = "view-adjustment.jsp" %>	
+	 	  
+			  <!-- javascripts -->
+    <script src="js/jquery.js"></script>
+	<script src="js/jquery-ui.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- nicescroll -->
+    <script src="js/jquery.scrollTo.min.js"></script>
+    <script src="js/jquery.nicescroll.js" type="text/javascript"></script>
     <!--custome script for all page-->
-    <script src="resources/js/scripts.js"></script>
-    <!-- custom script for this page-->
-    <script src="resources/js/sparkline-chart.js"></script>
-    <script src="resources/js/easy-pie-chart.js"></script>
-    <script src="resources/js/jquery-jvectormap-1.2.2.min.js"></script>
-    <script src="resources/js/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="resources/js/xcharts.min.js"></script>
-    <script src="resources/js/jquery.autosize.min.js"></script>
-    <script src="resources/js/jquery.placeholder.min.js"></script>
-    <script src="resources/js/gdp-data.js"></script>  
-    <script src="resources/js/morris.min.js"></script>
-    <script src="resources/js/sparklines.js"></script>    
-    <script src="resources/js/charts.js"></script>
-    <script src="resources/js/jquery.slimscroll.min.js"></script>
-  <script>
-
-      //knob
-      $(function() {
-        $(".knob").knob({
-          'draw' : function () { 
-            $(this.i).val(this.cv + '%')
-          }
-        })
-      });
-
-      //carousel
-      $(document).ready(function() {
-          $("#owl-slider").owlCarousel({
-              navigation : true,
-              slideSpeed : 300,
-              paginationSpeed : 400,
-              singleItem : true
-
-          });
-      });
-
-      //custom select box
-
-      $(function(){
-          $('select.styled').customSelect();
-      });
-      
-      /* ---------- Map ---------- */
-    $(function(){
-      $('#map').vectorMap({
-        map: 'world_mill_en',
-        series: {
-          regions: [{
-            values: gdpData,
-            scale: ['#000', '#000'],
-            normalizeFunction: 'polynomial'
-          }]
-        },
-        backgroundColor: '#eef3f7',
-        onLabelShow: function(e, el, code){
-          el.html(el.html()+' (GDP - '+gdpData[code]+')');
-        }
-      });
-    });
-      
-    $(function(){
-    	$('#view-adjustment').click(function(){
-    		$('.isi-konten').hidden();
-    		$('#adjustment').show();
-    	});
-    });
-
-
-
-  </script>
-
-  
-
-<div id="ascrail2000" class="nicescroll-rails" style="width: 6px; z-index: 1000; background: rgb(247, 247, 247) none repeat scroll 0% 0%; cursor: default; position: fixed; top: 0px; height: 100%; right: 0px; opacity: 0; display: none;"><div style="position: relative; top: 0px; float: right; width: 6px; height: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2000-hr" class="nicescroll-rails" style="height: 6px; z-index: 1000; background: rgb(247, 247, 247) none repeat scroll 0% 0%; position: fixed; left: 0px; width: 100%; bottom: 0px; cursor: default; display: none; opacity: 0;"><div style="position: relative; top: 0px; height: 6px; width: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px; left: 0px;"></div></div><div id="ascrail2001" class="nicescroll-rails" style="width: 3px; z-index: auto; background: rgb(247, 247, 247) none repeat scroll 0% 0%; cursor: default; position: fixed; top: 0px; left: 177px; height: 304px; display: block; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 3px; height: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2001-hr" class="nicescroll-rails" style="height: 3px; z-index: auto; background: rgb(247, 247, 247) none repeat scroll 0% 0%; top: 301px; left: 0px; position: fixed; cursor: default; display: none; width: 177px; opacity: 0;"><div style="position: relative; top: 0px; height: 3px; width: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px; left: 0px;"></div></div><div class="jvectormap-label" style="display: none; left: 855px; top: 272px;">Russia</div><div id="ascrail2002" class="nicescroll-rails" style="width: 6px; z-index: 1000; background: rgb(247, 247, 247) none repeat scroll 0% 0%; cursor: default; position: fixed; top: 0px; height: 100%; right: 0px; display: none;"><div style="position: relative; top: 0px; float: right; width: 6px; height: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2002-hr" class="nicescroll-rails" style="height: 6px; z-index: 1000; background: rgb(247, 247, 247) none repeat scroll 0% 0%; position: fixed; left: 0px; width: 100%; bottom: 0px; cursor: default; display: none;"><div style="position: relative; top: 0px; height: 6px; width: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2003" class="nicescroll-rails" style="width: 3px; z-index: auto; background: rgb(247, 247, 247) none repeat scroll 0% 0%; cursor: default; position: fixed; top: 0px; left: 177px; height: 304px; display: block; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 3px; height: 220px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2003-hr" class="nicescroll-rails" style="height: 3px; z-index: auto; background: rgb(247, 247, 247) none repeat scroll 0% 0%; top: 301px; left: 0px; position: fixed; cursor: default; display: none; width: 177px; opacity: 0;"><div style="position: relative; top: 0px; height: 3px; width: 180px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div class="jvectormap-label">
-</div>
-
-
+    <script src="js/scripts.js"></script>
+	<script type="text/javascript" src="js/BuroRaDer.DateRangePicker.js"></script>
+	
+	<script type="text/javascript">
+		$(function() {
+			$('#btn-add').click(function(){
+				$('#modal-add-adjustment').modal();
+			});
+			$('#btn-add-item').click(function(){
+				$('#modal-add-item').modal();
+			});
+			$('#btn-edit').click(function(){
+				$('#modal-edit-adjustment').modal();
+			});
+			
+			$("#pickup").datepicker({
+				dateFormat: 'mm-dd-yy',
+				minDate: '-12M',
+				maxDate: '+12M'
+			});
+		});
+	</script>
 </body>
+
 </html>
+  

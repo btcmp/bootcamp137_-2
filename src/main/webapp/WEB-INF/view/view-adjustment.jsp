@@ -3,7 +3,8 @@
 	 <section aria-hidden="true" id="adjustment" class="isi-konten">
           <section class="wrapper">
 			<div class="row">
-                  <div class="col-lg-12">
+				<div class="col-lg-2"></div>
+                  <div class="col-lg-10">
                       <section class="panel">
                           <header class="panel-heading">
                               ADJUSTMENT
