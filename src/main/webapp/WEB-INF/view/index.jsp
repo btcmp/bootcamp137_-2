@@ -362,7 +362,7 @@
                           <span class="menu-arrow arrow_carrot-down"></span>
                       </a>
                       <ul class="sub">
-                          <li><a class="" href="#adjustment">Adjusment</a></li>
+                          <li><a class="" href="#" id="view-adjustment">Adjusment</a></li>
                           <li><a class="" href="view-detail-adjusment.html">Adjusment Detail</a></li>                          
                       </ul>
                   </li>
@@ -395,7 +395,7 @@
       <!--sidebar end-->
       
       <!--main content start-->
-      <section id="main-content">
+      <section id="main-content" class="isi-konten">
           <section class="wrapper">            
               <!--overview start-->
               <div class="row">
@@ -412,6 +412,7 @@
 
           </section>
       </section>
+      <%@ include file = "view-adjustment.jsp" %>
       <!--main content end-->
   </section>
   <!-- container section start -->
@@ -501,6 +502,13 @@
         }
       });
     });
+      
+    $(function(){
+    	$('#view-adjustment').click(function(){
+    		$('.isi-konten').hidden();
+    		$('#adjustment').show();
+    	});
+    });
 
 
 
@@ -511,6 +519,6 @@
 <div id="ascrail2000" class="nicescroll-rails" style="width: 6px; z-index: 1000; background: rgb(247, 247, 247) none repeat scroll 0% 0%; cursor: default; position: fixed; top: 0px; height: 100%; right: 0px; opacity: 0; display: none;"><div style="position: relative; top: 0px; float: right; width: 6px; height: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2000-hr" class="nicescroll-rails" style="height: 6px; z-index: 1000; background: rgb(247, 247, 247) none repeat scroll 0% 0%; position: fixed; left: 0px; width: 100%; bottom: 0px; cursor: default; display: none; opacity: 0;"><div style="position: relative; top: 0px; height: 6px; width: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px; left: 0px;"></div></div><div id="ascrail2001" class="nicescroll-rails" style="width: 3px; z-index: auto; background: rgb(247, 247, 247) none repeat scroll 0% 0%; cursor: default; position: fixed; top: 0px; left: 177px; height: 304px; display: block; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 3px; height: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2001-hr" class="nicescroll-rails" style="height: 3px; z-index: auto; background: rgb(247, 247, 247) none repeat scroll 0% 0%; top: 301px; left: 0px; position: fixed; cursor: default; display: none; width: 177px; opacity: 0;"><div style="position: relative; top: 0px; height: 3px; width: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px; left: 0px;"></div></div><div class="jvectormap-label" style="display: none; left: 855px; top: 272px;">Russia</div><div id="ascrail2002" class="nicescroll-rails" style="width: 6px; z-index: 1000; background: rgb(247, 247, 247) none repeat scroll 0% 0%; cursor: default; position: fixed; top: 0px; height: 100%; right: 0px; display: none;"><div style="position: relative; top: 0px; float: right; width: 6px; height: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2002-hr" class="nicescroll-rails" style="height: 6px; z-index: 1000; background: rgb(247, 247, 247) none repeat scroll 0% 0%; position: fixed; left: 0px; width: 100%; bottom: 0px; cursor: default; display: none;"><div style="position: relative; top: 0px; height: 6px; width: 0px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2003" class="nicescroll-rails" style="width: 3px; z-index: auto; background: rgb(247, 247, 247) none repeat scroll 0% 0%; cursor: default; position: fixed; top: 0px; left: 177px; height: 304px; display: block; opacity: 0;"><div style="position: relative; top: 0px; float: right; width: 3px; height: 220px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2003-hr" class="nicescroll-rails" style="height: 3px; z-index: auto; background: rgb(247, 247, 247) none repeat scroll 0% 0%; top: 301px; left: 0px; position: fixed; cursor: default; display: none; width: 177px; opacity: 0;"><div style="position: relative; top: 0px; height: 3px; width: 180px; background-color: rgb(0, 122, 255); background-clip: padding-box; border-radius: 10px;"></div></div><div class="jvectormap-label">
 </div>
 
-<%@ include file = "view-adjustment.jsp" %>
+
 </body>
 </html>
