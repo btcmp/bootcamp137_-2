@@ -28,7 +28,8 @@ public class Role {
 	@SequenceGenerator(initialValue=3333, name="idRole", sequenceName="idRole")
 	private long id;
 	 
-	private String role;
+	@Column(name="role_name")
+	private String roleName;
 	 
 	@ManyToMany
 	private Set<User> userRoles;
@@ -41,12 +42,14 @@ public class Role {
 		this.id = id;
 	}
 
-	public String getRole() {
-		return role;
+	
+
+	public String getRoleName() {
+		return roleName;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
 	public Set<User> getUserRoles() {
