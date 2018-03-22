@@ -1,12 +1,15 @@
 <%@ include file="topping/top.jsp"%>
-<!-- <script type="text/javascript">
+<script type="text/javascript">
+$(function(){
 	$('#btn-add').click(function() {
 		$('#modal-add-supplier').modal();
 	});
 	$('#btn-edit').click(function() {
 		$('#modal-edit-supplier').modal();
 	});
-</script> -->
+});
+	
+</script>
 <!-- ==================================================================  BATAS BUAT ISIAN ========================================================================= -->
 <section id="main-content">
 	<section class="wrapper">

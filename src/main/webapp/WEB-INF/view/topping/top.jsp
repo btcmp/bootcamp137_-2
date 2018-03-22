@@ -132,15 +132,6 @@
         }
       });
     });
-   $(function(){
-	   $('#btn-add').click(function() {
-			$('#modal-add-supplier').modal();
-		});
-		$('#btn-edit').click(function() {
-			$('#modal-edit-supplier').modal();
-		});
-   });
-    
 
   </script>
 <!--   <script type="text/javascript">
