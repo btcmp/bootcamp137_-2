@@ -10,13 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.validation.annotation.Validated;
+
 
 @Entity
 @Table(name="employee_mp")
-@Validated
 public class Employee {
 	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
