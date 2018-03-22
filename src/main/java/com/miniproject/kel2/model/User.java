@@ -18,7 +18,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
-	private int id;
+	private long id;
 	
 	@Column(name="user_name", nullable=false, length=50)
 	private String userName;
@@ -50,11 +50,11 @@ public class User {
 	@Column(name="active", nullable=false)
 	private boolean active;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
