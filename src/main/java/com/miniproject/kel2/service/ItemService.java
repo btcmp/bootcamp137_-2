@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.kel2.dao.ItemDao;
+import com.miniproject.kel2.model.Category;
 import com.miniproject.kel2.model.Item;
 
 @Service
@@ -41,4 +42,10 @@ public class ItemService {
 	public void saveAtauUpdate(Item item) {
 		itemDao.saveAtauUpdate(item);
 	}
+
+	public List<Category> catSelectAll() {
+		// TODO Auto-generated method stub
+		return itemDao.catSelectAll();
+	}
+
 }

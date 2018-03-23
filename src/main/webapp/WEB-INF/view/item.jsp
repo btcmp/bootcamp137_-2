@@ -60,79 +60,8 @@
 		// menampilkan pop up create
 		$('#btn-create').click(function() {
 			$('#modal-create').modal();
+			
 		});
-		
-		
-		
-		// save1 = pada create
-		$('#btn-save').on('click', function(evt){
-			evt.preventDefault();
-			var form = $('#target');
-			//var valid =form.parsley().validate();
-				var cat = {
-						name : $('#input-categoryName').val()
-				}
-				console.log(cat);
-				//if(valid==true){     
-		
-			 // ajax save
-			 $.ajax({
-					url : '${pageContext.request.contextPath}/category/save',
-					type :'POST',
-					data : JSON.stringify(cat),
-					contentType : 'application/json',
-					success: function(data){
-					window.location='${pageContext.request.contextPath}/category';
-					}, error : function(){
-						alert('saving failed')	
-					}
-			}); 
- 			//}
-		});  
-			
-			
-		// menampilkan pop up view/edit
-		$('.btn-view').click(function() {
-			var id = $(this).attr('id');
-			
-			$.ajax({
-				url : '${pageContext.request.contextPath}/category/get-one/'+id,
-				type :'GET',
-				success: function(cat){
-					setEditCategory(cat);
-					$('#modal-view').modal();
-				},
-				error : function(){
-					alert('failed update')	
-				},
-				dataType :'json'
-			});
-		});
-		function setEditCategory(cat){
-			$('#edit-id').val(cat.id);
-			$('#edit-categoryName').val(cat.name);
-		}
-		// eksekusi edit
-		$('#btn-save2').click(function(){
-			var cat={
-				id : $('#edit-id').val(),
-				name : $('#edit-categoryName').val()
-			}
-			$.ajax({
-				url : '${pageContext.request.contextPath}/category/update',
-				type :'PUT',
-				data : JSON.stringify(cat),
-				contentType :'application/json',
-				success: function(data){
-					window.location='${pageContext.request.contextPath}/category';
-				},
-				error : function(){
-					alert('update failed');	
-				}
-			});
-	});
-		
-		
 		
 		
 	});
@@ -168,17 +97,18 @@
 										</li>
 									</ul>
 								</div>
+								
+								<!-- ======================= Button Export ======================= -->
 								<div class="col-lg-1" style="margin-bottom: 10px;">
 									<button type="button" class="btn btn-primary">Export</button>
 								</div>
+								<!--  ======================= Create ============================= -->
 								<div class="col-lg-1" style="margin-bottom: 10px;">
 									<button type="button" class="btn btn-primary" id="btn-create" >Create</button>
 
 
 									<!-- ================================ Modal CREATE ============================-->
-									<div class="modal fade" id="modal-create" tabindex="-1"
-										role="dialog" aria-labelledby="exampleModalLabel"
-										aria-hidden="true">
+									<div class="modal fade" id="modal-create" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 										<div class="modal-dialog" role="document">
 											<div class="modal-content">
 												<div class="modal-header">
@@ -188,19 +118,20 @@
 													<h5 class="modal-title" id="exampleModalLabel">Items</h5>
 
 												</div>
-												<form>												<div class="modal-body">
+															
+											<form id="target" action="${pageContext.request.contextPath }/item/save" method="POST">									
+												<div class="modal-body">
 													<div id="input">
 														<input class="col-lg-4" type="image" id="myimage"
 															src="gambar-baju.jpg" style="width: 100px; height: 60px;" />
-														<input class="col-lg-8" type="text"
-															style="margin-bottom: 10px;" placeholder="Item Name">
-														<select class="col-lg-8" type="text"
-															style="margin-bottom: 10px;">
-															<option>Category 1</option>
-															<option>Category 2</option>
-															<option>Category 3</option>
+														<input class="col-lg-8" type="text" style="margin-bottom: 10px;" placeholder="Item Name">
+														<select class="col-lg-8" type="text" path="category.id" class="form-control" id="input-category" >
+															<c:forEach var="cat" items="${cats}">
+																<option value="${cat.id}">${cat.name}<option>
+															</c:forEach>
 														</select>
 													</div>
+													<div style = "clear:both;"></div>
 
 													<div class="col-lg-8" style="margin-bottom: 10px;">
 														<h5>Variant</h5>
@@ -249,7 +180,7 @@
 														<button type="button" class="btn btn-primary">Save</button>
 													</div>
 												</div>
-											  </form>
+											 </form>
 											</div>
 										</div>
 									</div>

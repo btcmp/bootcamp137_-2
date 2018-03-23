@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.miniproject.kel2.model.Category;
 import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.service.ItemService;
 
@@ -26,7 +27,9 @@ public class ItemController {
 	@RequestMapping
 	public String index (Model model) {
 		List<Item> items = itemService.selectAll();
+		List<Category> cats = itemService.catSelectAll();
 		model.addAttribute("items", items);
+		model.addAttribute("cats", cats);
 		return "item";
 	}
 	
