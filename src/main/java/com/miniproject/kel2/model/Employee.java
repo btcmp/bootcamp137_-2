@@ -3,12 +3,14 @@ package com.miniproject.kel2.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -55,7 +57,7 @@ public class Employee {
 	@Column(name="active", nullable=false)
 	private boolean active;
 	
-	@ManyToMany
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<User> user;
 	
 	//kurang relasi ke tabel employee outlet

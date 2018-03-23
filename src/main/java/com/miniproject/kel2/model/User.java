@@ -42,14 +42,9 @@ public class User {
 			)
 	private List<Role> roles;
 	
-	@Column(name="employee_id", nullable=false, length=50)
-	@ManyToMany
-	@JoinTable(
-			name = "user_employee",
-			joinColumns={@JoinColumn(name="user_id")},
-			inverseJoinColumns={@JoinColumn(name="employee_id")}
-			)
-	private List<Employee> employee;
+	
+	@ManyToOne
+	private Employee employee;
 	
 	@Column(name="created_by", nullable=true)
 	private long createdBy;
@@ -146,11 +141,13 @@ public class User {
 		this.password = password;
 	}
 
-	public List<Employee> getEmployee() {
+	
+
+	public Employee getEmployee() {
 		return employee;
 	}
 
-	public void setEmployee(List<Employee> employee) {
+	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
 
