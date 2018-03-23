@@ -30,7 +30,7 @@ public class EmpUserService {
 		pegawai.setEmail(emp.getEmail());
 		pegawai.setTitle(emp.getTitle());
 		empDao.save(pegawai);*/
-		
+		 
 		empDao.save(emp);
 		 
 	}
