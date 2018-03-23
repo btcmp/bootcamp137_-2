@@ -190,8 +190,6 @@ $(function(){
 															class="form-control" id="input-district">
 															<option value="" selected="selected">-- Choose--</option>
 															<c:forEach items="${listDistrict }" var="dis">
-															<c:set var="region" value=""></c:set>
-																<c:if test=""></c:if>
 																<option value="${dis.id }">${dis.name }</option>
 															</c:forEach>
 														</select>
