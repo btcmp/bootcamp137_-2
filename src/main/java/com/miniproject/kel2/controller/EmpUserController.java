@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.kel2.model.Employee;
+import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
 import com.miniproject.kel2.service.EmpUserService;
 
@@ -30,6 +31,9 @@ public class EmpUserController {
 		List<User> user = empUserService.userGetAll();
 		model.addAttribute("user", user);
 		
+		List<Role> roles = empUserService.roleGetaAll();
+		model.addAttribute("roles", roles);
+		
 		return "employee";
 	}
 	
@@ -39,7 +43,9 @@ public class EmpUserController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
-	public Employee save(@RequestBody Employee emp) {
+	public Employee save(@RequestBody Employee emp, User user) {
+		empUserService.Save(emp);
+		empUserService.userSave(user);
 		return emp;
 	}
 }

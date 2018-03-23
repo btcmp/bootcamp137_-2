@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
 
 @Repository
@@ -53,6 +54,12 @@ public class UserDaoImpl implements UserDao{
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
 		return session.get(User.class, user.getId());
+	}
+
+	public List<Role> getRoleAll() {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		return session.createCriteria(Role.class).list();
 	}
 
 }

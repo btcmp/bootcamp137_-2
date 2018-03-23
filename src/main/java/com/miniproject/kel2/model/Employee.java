@@ -23,7 +23,6 @@ public class Employee {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
 	private long id;
 	
 	@Column(name="first_name", nullable=false, length=50)
@@ -150,6 +149,7 @@ public class Employee {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
 
 	
 	

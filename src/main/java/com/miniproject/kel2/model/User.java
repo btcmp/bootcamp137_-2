@@ -27,13 +27,17 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="idUser")
-	@SequenceGenerator(initialValue=3333, name="idUser", sequenceName="idUser")
+	@SequenceGenerator(initialValue=1, name="idUser", sequenceName="idUser")
 	private long id;
 	 
 	private String username;
 	 
 	private String password;
 	 
+	
+	@ManyToOne
+	private Employee employee;
+	
 	@ManyToMany
 	@JoinTable(
 			name = "user_roles",
@@ -43,8 +47,7 @@ public class User {
 	private List<Role> roles;
 	
 	
-	@ManyToOne
-	private Employee employee;
+	
 	
 	@Column(name="created_by", nullable=true)
 	private long createdBy;
@@ -141,16 +144,6 @@ public class User {
 		this.password = password;
 	}
 
-	
-
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
-
 	public long getCreatedBy() {
 		return createdBy;
 	}
@@ -189,6 +182,14 @@ public class User {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 
 	
