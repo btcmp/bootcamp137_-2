@@ -244,7 +244,10 @@ $(document).ready(function(){
 				}
 			}
 			
-			
+			var empUser = {
+					employee : employee,
+					user : user
+			}
 			console.log(employee);
 			console.log(user);
 			
@@ -254,7 +257,7 @@ $(document).ready(function(){
 			$.ajax({
 				type : 'POST',
 				url : '${pageContext.request.contextPath}/employee/save',
-				data : JSON.stringify(employee, user),
+				data : JSON.stringify(empUser),
 				contentType : 'application/json',
 				success : function(){
 					alert('suckess');

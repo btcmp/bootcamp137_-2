@@ -14,6 +14,7 @@ import com.miniproject.kel2.model.Employee;
 import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
 import com.miniproject.kel2.service.EmpUserService;
+import com.miniproject.kel2.virtualmodel.EmpUser;
 
 @Controller
 @RequestMapping("/employee")
@@ -43,9 +44,9 @@ public class EmpUserController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
-	public Employee save(@RequestBody Employee emp, User user) {
-		empUserService.Save(emp);
-		empUserService.userSave(user);
-		return emp;
+	public EmpUser save(@RequestBody EmpUser empus) {
+		
+	
+		return null;
 	}
 }
