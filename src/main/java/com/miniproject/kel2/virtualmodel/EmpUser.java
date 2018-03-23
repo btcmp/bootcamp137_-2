@@ -6,6 +6,7 @@ import com.miniproject.kel2.model.User;
 public class EmpUser {
 	
 	private Employee emp;
+	
 	private User user;
 	
 	

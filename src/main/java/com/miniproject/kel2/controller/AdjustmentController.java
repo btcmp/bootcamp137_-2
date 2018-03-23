@@ -9,7 +9,7 @@ public class AdjustmentController {
 
 	@RequestMapping
 	public String index() {
-		return "adjustment";
+		return "adjustment2";
 	}
 	
 	@RequestMapping(value="/detail")

@@ -236,36 +236,52 @@ $(document).ready(function(){
 				var user ={
 						username : $('#username').val(),
 						password : $('#password').val(),
-						roles : {
-							id : $('#role').val()
-						},
 						active : true
 							
 				}
-			}
-			
-			var empUser = {
-					employee : employee,
-					user : user
-			}
-			console.log(employee);
-			console.log(user);
-			
-			//alert('save');
-			
-			//ajax
-			$.ajax({
-				type : 'POST',
-				url : '${pageContext.request.contextPath}/employee/save',
-				data : JSON.stringify(empUser),
-				contentType : 'application/json',
-				success : function(){
-					alert('suckess');
-					window.location = '${pageContext.request.contextPath}/employee'
-				}, error : function(){
-					alert('save failed');
+				
+				var empUser = {
+						employee : employee,
+						user : user
 				}
-			})
+				
+				console.log(empUser);
+				//ajax
+				$.ajax({
+					type : 'POST',
+					url : '${pageContext.request.contextPath}/employee/save',
+					data : JSON.stringify(empUser),
+					contentType : 'application/json',
+					success : function(){
+						alert('suckess');
+						window.location = '${pageContext.request.contextPath}/employee'
+					}, error : function(){
+						alert('save failed');
+					}
+				})
+			}
+			
+
+			
+			else {
+				$.ajax({
+					type : 'POST',
+					url : '${pageContext.request.contextPath}/employee/save',
+					data : JSON.stringify(employee),
+					contentType : 'application/json',
+					success : function(){
+						alert('suckess');
+						window.location = '${pageContext.request.contextPath}/employee'
+					}, error : function(){
+						alert('save failed');
+					}
+				})
+			}
+			
+			console.log(employee);
+			
+			
+			
 			
 		})	
 	});

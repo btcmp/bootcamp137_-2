@@ -51,11 +51,74 @@ $(function(){
 	});
 	
 	//end tambah data supplier
-	$('#btn-edit').click(function() {
-		$('#modal-edit-supplier').modal();
+	$('.update').on('click', function(){
+		var id = $(this).attr('id');
+		//console.log(id);
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/supplier/get-one/'+id,
+			type : 'GET',
+			success : function(supplier){
+				setEditSupplier(supplier);
+				$('#modal-edit-supplier').modal();
+			},
+			error : function(){
+				alert('failed getting data update!!')
+			},
+			dataType : 'json'
+		}); 
 	});
-	$('#input-region').chained('#input-province');
-	$('#input-district').chained('#input-region'); 
+	
+	//setup data update
+	function setEditSupplier(supplier){
+		//console.log(room);
+		$('#input-id').val(supplier.id)
+		$('#edit-supplier-name').val(supplier.name);
+		$('#edit-address').val(supplier.address); 
+		$('#edit-province').val(supplier.provinceId.id);
+		$('#edit-region').val(supplier.regionId.id);
+		$('#edit-district').val(supplier.districtId.id);
+		$('#edit-postal-code').val(supplier.postalCode);
+		$('#edit-phone').val(supplier.phone);
+		$('#edit-email').val(supplier.email);
+	}
+	
+	//execute update
+	$('#btn-update').click(function(){
+		var supplier = {
+				id : $('#input-id').val(),
+				name : $('#edit-supplier-name').val(),
+				address : $('#edit-address').val(),
+				provinceId : {
+					id : $('#edit-province').val()
+				},
+				regionId : {
+					id : $('#edit-region').val()
+				},
+				districtId : {
+					id : $('#edit-district').val()
+				},
+				postalCode : $('#edit-postal-code').val(),
+				phone : $('#edit-phone').val(),
+				email : $('#edit-email').val()
+			}
+		console.log(supplier);
+		$.ajax({
+			url : '${pageContext.request.contextPath}/supplier/update',
+			type : 'PUT',
+			data : JSON.stringify(supplier),
+			contentType : 'application/json',
+			success : function(supplier){
+				//alert('success');
+				window.location = '${pageContext.request.contextPath}/supplier';
+			},
+			error : function(){
+				alert('failed update!!');
+			}
+		});
+	});
+	/* $('#input-region').chained('#input-province');
+	$('#input-district').chained('#input-region');  */
 	/* $('#input-province').change(function(){
 		var id = $('#input-province').val();
 		console.log(id);
@@ -169,7 +232,7 @@ $(function(){
 												<div class="form-group">
 													<div class="col-lg-4">
 														<label for="input-province">Province</label> <select
-															class="form-control" id="input-province">
+															class="form-control" id="input-province" name="province">
 															<option value="" selected="selected">-- Choose--</option>
 															<c:forEach items="${listProvince }" var="prov">
 																<option value="${prov.id }">${prov.name }</option>
@@ -243,22 +306,24 @@ $(function(){
 											<div class="modal-body" style="height: 350px;">
 												<input type="hidden" id="input-id">
 												<div class="form-group">
-													<label for="input-supplier-name">Supplier Name</label> <input
+													<label for="edit-supplier-name">Supplier Name</label> <input
 														type="text" class="form-control" id="edit-supplier-name"
 														aria-describedby="emailHelp" placeholder="Supplier Name">
 												</div>
 												<div class="form-group ">
-													<label for="input-address">Address</label>
+													<label for="edit-address">Address</label>
 													<textarea class="form-control " id="edit-address"
 														name="input-address" required></textarea>
 												</div>
 												<div class="form-group">
 													<div class="col-lg-4">
-														<label for="input-province">Province</label> <select
+														<label for="edit-province">Province</label> <select
 															class="form-control" id="edit-province">
 															<option value="" selected="selected">-- Choose
 																--</option>
-															<option value="">DIISI</option>
+															<c:forEach items="${listProvince }" var="prov">
+																<option value="${prov.id }">${prov.name }</option>
+															</c:forEach>
 														</select>
 													</div>
 													<div class="col-lg-4">
@@ -266,7 +331,9 @@ $(function(){
 															class="form-control" id="edit-region">
 															<option value="" selected="selected">-- Choose
 																--</option>
-															<option value="">DIISI</option>
+															<c:forEach items="${listRegion }" var="reg">
+																<option value="${reg.id }">${reg.name }</option>
+															</c:forEach>
 														</select>
 													</div>
 													<div class="col-lg-4">
@@ -274,7 +341,9 @@ $(function(){
 															class="form-control" id="edit-district">
 															<option value="" selected="selected">-- Choose
 																--</option>
-															<option value="">DIISI</option>
+															<c:forEach items="${listDistrict }" var="dis">
+																<option value="${dis.id }">${dis.name }</option>
+															</c:forEach>
 														</select>
 													</div>
 												</div>
@@ -301,7 +370,7 @@ $(function(){
 											</div>
 											<div class="modal-footer">
 												<button type="reset" class="btn btn-primary">Cancel</button>
-												<button type="button" id="add" class="btn btn-primary">Save</button>
+												<button type="button" id="btn-update" class="btn btn-primary">Save</button>
 											</div>
 										</form>
 									</div>
