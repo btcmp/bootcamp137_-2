@@ -12,13 +12,21 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
+
 @Entity
 @Table(name="SUPPLIER_MP")
 public class Supplier {
+	
+	public Supplier() {
+		this.createdOn = new Date();
+		this.active = false;
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="supp")
 	@SequenceGenerator(initialValue=4444, name="supp", sequenceName="supp")
-	private long id;
+	private Long id;
 	@NotNull
 	@Column(nullable=false, length=50)
 	private String name;
@@ -26,6 +34,8 @@ public class Supplier {
 	private String address;
 	@Column(length=16)
 	private String phone;
+	@Email
+	private String email;
 	@ManyToOne
 	private Province provinceId;
 	@ManyToOne
@@ -42,10 +52,10 @@ public class Supplier {
 	private Date modifiedOn;
 	private Boolean active;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -68,6 +78,19 @@ public class Supplier {
 	}
 	public Province getProvinceId() {
 		return provinceId;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public District getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(District districtId) {
+		this.districtId = districtId;
 	}
 	public void setProvinceId(Province provinceId) {
 		this.provinceId = provinceId;
