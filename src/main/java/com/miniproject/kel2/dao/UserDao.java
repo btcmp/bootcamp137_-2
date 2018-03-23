@@ -2,6 +2,7 @@ package com.miniproject.kel2.dao;
 
 import java.util.List;
 
+import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
 
 public interface UserDao {
@@ -14,4 +15,7 @@ public interface UserDao {
 	public void update(User user);
 		//delete
 	public void delete(User user);
+	
+	//roleall
+	public List<Role> getRoleAll();
 }

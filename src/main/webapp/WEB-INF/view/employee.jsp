@@ -65,9 +65,9 @@
 										<span class="required">*</span>
 									</label>
 									<div class="col-lg-4">
-										<select class="form-control">
-											<option>Mr.</option>
-											<option>Mrs.</option>
+										<select class="form-control" id="title">
+											<option value="Mr.">Mr.</option>
+											<option value="Mrs.">Mrs.</option>
 										</select>
 									</div>
 
@@ -76,7 +76,7 @@
 									</label>
 									<div class="col-lg-2">
 										<input style="padding-left: 0px; width: 20px;"
-											class="checkbox form-control " id="email" name="email"
+											class="checkbox form-control " id="create-account" name="create-account"
 											type="checkbox" data-toggle="collapse"
 											data-target=".multi-collapse" aria-expanded="false"
 											aria-controls="multiCollapseExample1 multiCollapseExample2 multiCollapseExample3" />
@@ -96,11 +96,10 @@
 									<label for="role" class="control-label col-lg-2">Role <span
 										class="required">*</span></label>
 									<div class="col-lg-4">
-										<select class="form-control">
-											<option>Role Administrator</option>
-											<option>Role Back Office</option>
-											<option>Role Cashier</option>
-
+										<select class="form-control" id="role">
+										<c:forEach items="${roles }" var="roles">
+											<option value="${roles.id }">${roles.roleName }</option>
+										</c:forEach>
 										</select>
 									</div>
 								</div>
@@ -134,7 +133,7 @@
 
 								<div class="form-group">
 									<div class="col-lg-offset-2 col-lg-10">
-										<button class="btn btn-primary" type="submit">Save</button>
+										<button class="btn btn-primary" id="btn-save">Save</button>
 										<button class="btn btn-default" type="button">Cancel</button>
 									</div>
 								</div>
@@ -214,5 +213,59 @@
 <!-- End Modal -->
 
 <!-- ===================================================== END CONTENT ============================================================= -->
+<script type="text/javascript">
+
+$(document).ready(function(){
+		
+		//event Listener
+		//on click utk submit via ajax
+		$('#btn-save').click(function(evt){
+			evt.preventDefault();
+			var akun = $("#create-account").is(':checked') ? true : false;
+			
+			var employee = {
+					firstName : $('#first-name').val(),
+					lastName : $('#last-name').val(),
+					email : $('#email').val(),
+					title : $('#title').val(),
+					haveAccount : akun,
+					active : true
+			};
+			
+			if(akun == true){
+				var user ={
+						username : $('#username').val(),
+						password : $('#password').val(),
+						roles : {
+							id : $('#role').val()
+						},
+						active : true
+							
+				}
+			}
+			
+			
+			console.log(employee);
+			console.log(user);
+			
+			//alert('save');
+			
+			//ajax
+			$.ajax({
+				type : 'POST',
+				url : '${pageContext.request.contextPath}/employee/save',
+				data : JSON.stringify(employee, user),
+				contentType : 'application/json',
+				success : function(){
+					alert('suckess');
+					window.location = '${pageContext.request.contextPath}/employee'
+				}, error : function(){
+					alert('save failed');
+				}
+			})
+			
+		})	
+	});
+</script>
 
 <%@ include file="topping/bottom.jsp"%>

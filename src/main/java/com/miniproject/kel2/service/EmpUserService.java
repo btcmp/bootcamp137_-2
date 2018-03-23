@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.miniproject.kel2.dao.EmployeeDao;
 import com.miniproject.kel2.dao.UserDao;
 import com.miniproject.kel2.model.Employee;
+import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
 
 @Service
@@ -23,13 +24,15 @@ public class EmpUserService {
 	
 	public void Save(Employee emp) {
 		
-		Employee pegawai = new Employee();
+		/*Employee pegawai = new Employee();
 		pegawai.setFirstName(emp.getFirstName());
 		pegawai.setLastName(emp.getLastName());
 		pegawai.setEmail(emp.getEmail());
 		pegawai.setTitle(emp.getTitle());
-		empDao.save(pegawai);
+		empDao.save(pegawai);*/
 		
+		empDao.save(emp);
+		 
 	}
 	
 	public void empUpdate(Employee emp) {
@@ -70,5 +73,10 @@ public class EmpUserService {
 	
 	public List<User> userGetAll(){
 		return userDao.getAll();
+	}
+
+	public List<Role> roleGetaAll() {
+		// TODO Auto-generated method stub
+		return userDao.getRoleAll();
 	}
 }
