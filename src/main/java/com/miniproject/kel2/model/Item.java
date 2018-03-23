@@ -40,7 +40,7 @@ public class Item {
 	@Column(nullable=false)
 	private boolean active;
 	
-	/*@ManyToOne
+	@ManyToOne
 	public Category category;
 	
 	public Category getCategory() {
@@ -48,7 +48,7 @@ public class Item {
 	}
 	public void setCategory(Category category) {
 		this.category = category;
-	}*/
+	}
 	
 	
 	

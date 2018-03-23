@@ -43,7 +43,7 @@ public class Category {
 	@Column(nullable=false)
 	private boolean active;
 	
-	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Item> items;
 	
 	public List<Item> getItems() {
@@ -52,7 +52,7 @@ public class Category {
 	public void setItems(List<Item> items) {
 		this.items = items;
 	}
-	*/
+	
 	
 	public long getId() {
 		return id;
