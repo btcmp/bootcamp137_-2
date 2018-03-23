@@ -34,7 +34,7 @@ public class SupplierController {
 	@Autowired
 	ProvinceService provinceService;
 	
-/*	@Autowired
+	/*@Autowired
 	RegionService regionService;
 	
 	@Autowired
@@ -45,7 +45,7 @@ public class SupplierController {
 		List<Supplier> suppliers = supplierService.selectAll();
 		List<Province> provinces = provinceService.selectAll();
 		/*List<Region> regions = regionService.selectAll();
-		List<District> districts = districtService.selectAll(); */
+		List<District> districts = districtService.selectAll();*/
 		
 		model.addAttribute("listSupplier", suppliers);
 		model.addAttribute("listProvince", provinces);

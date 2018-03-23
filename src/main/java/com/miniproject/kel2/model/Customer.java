@@ -19,7 +19,7 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="cust")
 	@SequenceGenerator(initialValue=3333, name="cust", sequenceName="cust")
-	private long id;
+	private Long id;
 	@Column(length=50, nullable=false)
 	private String name;
 	@Email
@@ -45,10 +45,10 @@ public class Customer {
 	@Column(nullable=false)
 	private Boolean active;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {

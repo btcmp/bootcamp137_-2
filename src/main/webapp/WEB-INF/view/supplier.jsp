@@ -1,12 +1,79 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 $(function(){
+	//tambah data supplier
 	$('#btn-add').click(function() {
 		$('#modal-add-supplier').modal();
 	});
+	
+	$('#add').on('click', function(evt){
+		evt.preventDefault(); //ini biar gak ngeload terus setelah di klik
+		//nama var harus dama kayak entity nya yang di java
+		var name = $('#input-supplier-name').val();
+		var address = $('#input-address').val(); 
+		var province = $('#input-province').val();
+		var region = $('#input-region').val();
+		var district = $('#input-district').val();
+		var postal = $('#input-postal-code').val();
+		var phone = $('#input-phone').val();
+		var email = $('#input-email').val();
+		var supplier = {
+			name : name,
+			address : address,
+			provinceId : {
+				id : province
+			},
+			regionId : {
+				id : region
+			},
+			districtId : {
+				id : district
+			},
+			postalCode : postal,
+			phone : phone,
+			email : email
+		}
+		console.log(supplier);
+			$.ajax({
+				url : '${pageContext.request.contextPath}/supplier/save',
+				type : 'POST',
+				data : JSON.stringify(supplier), //-> proses dari java object ke string
+				contentType : 'application/json',
+				success : function(data){
+					window.location = '${pageContext.request.contextPath}/supplier';
+					//alert('save '+name+' berhasil!!');
+				}, 
+				error : function(){
+					alert('save failed!!');
+				}
+			});  
+		
+	});
+	
+	//end tambah data supplier
 	$('#btn-edit').click(function() {
 		$('#modal-edit-supplier').modal();
 	});
+	$('#input-region').chained('#input-province');
+	$('#input-district').chained('#input-region'); 
+	$('#input-province').change(function(){
+		var id = $('#input-province').val();
+		console.log(id);
+		$.ajax({
+			url : '${pageContext.request.contextPath}/province/get-region/'+id,
+			type : 'GET',
+			success : function(region){
+				$('#input-region').html(region);
+			},
+			error : function(){
+				alert('failed getting data region!!')
+			},
+			dataType : 'json'
+		}); 
+	});
+	$('#input-region').change(function(){
+		var id = $('#input-region').val();
+	}); 
 });
 	
 </script>
@@ -51,18 +118,20 @@ $(function(){
 								<th><i class="icon_email_alt"></i> Email</th>
 								<th><i class="icon_cogs"></i>Action</th>
 							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td>
-									<div class="btn-group">
-										<a class="btn btn-primary" id="btn-edit"><i
-											class="icon_pencil-edit"></i></a>
-									</div>
-								</td>
-							</tr>
+							<c:forEach items="${listSupplier }" var="supp">
+								<tr>
+									<td>${supp.name }</td>
+									<td>${supp.address }</td>
+									<td>${supp.phone }</td>
+									<td>${supp.email }</td>
+									<td>
+										<div class="btn-group">
+											<a class="update btn btn-primary" id="${supp.id }"><i
+												class="icon_pencil-edit"></i></a>
+										</div>
+									</td>
+								</tr>
+							</c:forEach>
 							</section>
 							</div>
 							</div>
@@ -101,25 +170,28 @@ $(function(){
 													<div class="col-lg-4">
 														<label for="input-province">Province</label> <select
 															class="form-control" id="input-province">
-															<option value="" selected="selected">-- Choose
-																--</option>
-															<option value="">DIISI</option>
+															<option value="" selected="selected">-- Choose--</option>
+															<c:forEach items="${listProvince }" var="prov">
+																<option value="${prov.id }">${prov.name }</option>
+															</c:forEach>
 														</select>
 													</div>
 													<div class="col-lg-4">
 														<label for="input-region">Region</label> <select
 															class="form-control" id="input-region">
-															<option value="" selected="selected">-- Choose
-																--</option>
-															<option value="">DIISI</option>
+															<option value="" selected="selected">-- Choose--</option>
+															<c:forEach items="${listRegion }" var="reg">
+																<option value="${reg.id }">${reg.name }</option>
+															</c:forEach>
 														</select>
 													</div>
 													<div class="col-lg-4">
 														<label for="input-district">District</label> <select
 															class="form-control" id="input-district">
-															<option value="" selected="selected">-- Choose
-																--</option>
-															<option value="">DIISI</option>
+															<option value="" selected="selected">-- Choose--</option>
+															<c:forEach items="${listDistrict }" var="dis">
+																<option value="${dis.id }">${dis.name }</option>
+															</c:forEach>
 														</select>
 													</div>
 												</div>
@@ -238,4 +310,4 @@ $(function(){
 
 							<!-- ===================================================== MODAL =================================================================== -->
 
-							<%@ include file="topping/bottom.jsp"%>
+<%@ include file="topping/bottom.jsp"%>

@@ -39,6 +39,7 @@
     <link href="resources/css/style-responsive.css" rel="stylesheet">
     <link href="resources/css/xcharts.min.css" rel=" stylesheet"> 
     <link href="resources/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+    <link href="resources/css/BuroRaDer.DateRangePicker.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
@@ -63,7 +64,7 @@
     <script src="resources/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
     <script src="resources/js/owl.carousel.js"></script>
     <!-- jQuery full calendar -->
-    &lt;<script src="resources/js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
+    <script src="resources/js/fullcalendar.min.js"></script> Full Google Calendar - Calendar
     <script src="resources/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
     <!--script for this page only-->
     <script src="resources/js/calendar-custom.js"></script>
@@ -88,6 +89,7 @@
     <script src="resources/js/charts.js"></script>
     <script src="resources/js/jquery.slimscroll.min.js"></script>
     <script src="resources/js/jquery.chained.min.js"></script>
+    <script src="resources/js/BuroRaDer.DateRangePicker.js"></script>
   <script>
 
       //knob
