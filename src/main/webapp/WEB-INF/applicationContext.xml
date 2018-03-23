@@ -34,6 +34,7 @@
 				<value>com.miniproject.kel2.model.Supplier</value>
 				<value>com.miniproject.kel2.model.Customer</value>
 				<value>com.miniproject.kel2.model.Category</value>
+				<value>com.miniproject.kel2.model.Item</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
