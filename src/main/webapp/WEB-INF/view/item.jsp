@@ -63,10 +63,52 @@
 		});
 		
 		// btn-add untuk menampilkan addvariant ke table variant
-		/* $('#btn-add').click(function(){
-			var ()
-		}); */
+		$('#btn-add').click(function(){
+			var varname  = $('#input-varname').val();
+			var uprice  = $('#input-uprice').val();
+			var sku  = $('#input-sku').val();
+			var beginning = $('#input-beginning').val();
+			
+			var variant = {
+				name : varname,
+				price : uprice,
+				sku : sku
+			};
+			var inventory = {
+				beginning : $('#input-beginning').val()
+			};
+			
+			var add = "<tr><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + 
+					  "</td><td><a class='btn-edit' href='#'> Edit</a><button type='button' class='btn btn-danger'> X </button></td></tr>";
+			$("#tbody-addvar").append(add);
+		}); 
 		
+		// mengambil nilai untuk edit add variant
+		$(document).on('click', '.btn-edit', function(){
+			var element = $(this).parent().parent().find("td");
+			var varname = element.eq(0);
+			var uprice = element.eq(1);
+			var sku = element.eq(2);
+			var beginning = element.eq(3);
+			
+			var variant = {
+				name : varname.text(),
+				price : uprice.text(),
+				sku : sku.text(),
+				active : 0
+			};
+			console.log(variant);
+			$('#modalEdit').modal();
+				/* $('#edit-varname').val();
+				$('#edit-uprice').val();
+				$('#edit-sku').val(); */
+				
+				/* var varname  = $('#edit-varname').val();
+				var uprice  = $('#edit-uprice').val();
+				var sku  = $('#edit-sku').val(); */
+				
+		});
+	
 	});
 </script>
 </head>
@@ -78,9 +120,7 @@
 		<section class="wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h3 class="page-header">
-						<i class="fa fa-files-o"></i> Form Items
-					</h3>
+					<h3 class="page-header"><i class="fa fa-files-o"></i> Form Items</h3>
 				</div>
 			</div>
 			<!-- Form Items -->
@@ -119,7 +159,6 @@
 														<span aria-hidden="true">&times;</span>
 													</button>
 													<h5 class="modal-title" id="exampleModalLabel">Items</h5>
-
 												</div>
 															
 											<form id="target" action="${pageContext.request.contextPath }/item/save" method="POST">									
@@ -130,7 +169,7 @@
 														<input class="col-lg-8" type="text" style="margin-bottom: 10px;" placeholder="Item Name">
 														<select class="col-lg-8" type="text" path="category.id" class="form-control" id="input-category" >
 															<c:forEach var="cat" items="${cats}">
-																<option value="${cat.id}">${cat.name}<option>
+																<option value="${cat.id}">${cat.name}</option>
 															</c:forEach>
 														</select>
 													</div>
@@ -146,7 +185,7 @@
 													</div>
 													
 													<!-- ================ TABLE ===================== -->
-													<table class="table table-bordered">
+													<table class="table table-bordered" id="tbl-addvar1">
 														<thead>
 															<tr>
 																<th>Variant Name</th>
@@ -156,18 +195,10 @@
 																<th>#</th>
 															</tr>
 														</thead>
-														<tbody>
-															<tr>
-																<td></td>
-																<td></td>
-																<td></td>
-																<td></td>
-																<td><a href="" data-toggle="modal" data-target="#modalEdit"> Edit </a>
-																	<button type="button" class="btn btn-danger"> X </button></td>
-															</tr>
+														<tbody id="tbody-addvar">
 														</tbody>
 													</table>
-													<!-- ============== table end =========== -->
+													<!-- ===================== table end =================== -->
 
 
 												</div>
@@ -196,8 +227,7 @@
 										<div class="modal-dialog" role="document">
 											<div class="modal-content">
 												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal"
-														aria-label="Close">
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 														<span aria-hidden="true">&times;</span>
 													</button>
 													<h5 class="modal-title" id="exampleModalLabel">
@@ -207,13 +237,13 @@
 												</div>
 												<div class="modal-body" style="height: 110px">
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-														<input type="text" placeholder="Variant Name">
+														<input type="text" id="input-varname" placeholder="Variant Name">
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-														<input type="text" placeholder="Unit Price">
+														<input type="text" id="input-uprice" placeholder="Unit Price">
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-														<input type="text" placeholder="SKU">
+														<input type="text" id="input-sku" placeholder="SKU">
 													</div>
 													<div class="hr" style="margin-left: 20px;">
 														<hr>
@@ -222,10 +252,10 @@
 													</div>
 
 													<div class="col-lg-6" style="margin-bottom: 10px;">
-														<input type="text" placeholder="Beginning Stock">
+														<input type="text" id=input-beginning" placeholder="Beginning Stock">
 													</div>
 													<div class="col-lg-6" style="margin-bottom: 10px;">
-														<input type="text" placeholder="Alert At">
+														<input type="text" id="input-alertart" placeholder="Alert At">
 													</div>
 
 
@@ -269,11 +299,10 @@
 											<td></td>
 											<td></td>
 											<td></td>
-											<td><a href="" data-toggle="modal"
-												data-target="#modalEdit2"> Edit </a> <!-- Modal EDIT-->
-												<div class="modal fade" id="modalEdit" tabindex="-1"
-													role="dialog" aria-labelledby="modalEditLabel"
-													aria-hidden="true">
+											<td><a href="" data-toggle="modal"data-target="#modalEdit2"> Edit </a> 
+												
+									<!-- ============================================= Modal EDIT =========================================-->
+												<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
 													<div class="modal-dialog" role="document">
 														<div class="modal-content">
 															<div class="modal-header">
@@ -288,13 +317,13 @@
 															</div>
 															<div class="modal-body" style="height: 110px">
 																<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" placeholder="Variant Name">
+																	<input type="text" id="edit-varname" placeholder="Variant Name">
 																</div>
 																<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" placeholder="Unit Price">
+																	<input type="text" id="edit-uprice" placeholder="Unit Price">
 																</div>
 																<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" placeholder="SKU">
+																	<input type="text" id="edit-sku"  placeholder="SKU">
 																</div>
 																<div class="hr" style="margin-left: 20px;">
 																	<hr>
@@ -303,10 +332,10 @@
 																</div>
 
 																<div class="col-lg-6" style="margin-bottom: 10px;">
-																	<input type="text" placeholder="Beginning Stock">
+																	<input type="text" id="edit-beginning" placeholder="Beginning Stock">
 																</div>
 																<div class="col-lg-6" style="margin-bottom: 10px;">
-																	<input type="text" placeholder="Alert At">
+																	<input type="text" id="edit-alert" placeholder="Alert At">
 																</div>
 
 															</div>
