@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,10 +25,6 @@ public class ItemInventory {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(nullable=false)
 	private long id;
-	@Column(name="variant_id")
-	private long variantId;
-	@Column(name="outlet_id", nullable=false)
-	private long OutletId;
 	@Column(nullable=false)
 	private int beginning;
 	@Column(name="purchase_qty")
@@ -52,5 +49,119 @@ public class ItemInventory {
 	@Temporal(TemporalType.DATE)
 	@Column(name="modified_on")
 	private Date modifiedOn;
+	
+	@ManyToOne
+	public ItemVariant itemVariant;
+
+	@ManyToOne
+	public Outlet outlet;
+	
+	public ItemVariant getItemVariant() {
+		return itemVariant;
+	}
+
+	public void setItemVariant(ItemVariant itemVariant) {
+		this.itemVariant = itemVariant;
+	}
+	
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public int getBeginning() {
+		return beginning;
+	}
+
+	public void setBeginning(int beginning) {
+		this.beginning = beginning;
+	}
+
+	public int getPurchaseQty() {
+		return purchaseQty;
+	}
+
+	public void setPurchaseQty(int purchaseQty) {
+		this.purchaseQty = purchaseQty;
+	}
+
+	public int getSalesOrderQty() {
+		return salesOrderQty;
+	}
+
+	public void setSalesOrderQty(int salesOrderQty) {
+		this.salesOrderQty = salesOrderQty;
+	}
+
+	public int getTransferStockQty() {
+		return transferStockQty;
+	}
+
+	public void setTransferStockQty(int transferStockQty) {
+		this.transferStockQty = transferStockQty;
+	}
+
+	public int getAdjustmentQty() {
+		return adjustmentQty;
+	}
+
+	public void setAdjustmentQty(int adjustmentQty) {
+		this.adjustmentQty = adjustmentQty;
+	}
+
+	public int getEndingQty() {
+		return endingQty;
+	}
+
+	public void setEndingQty(int endingQty) {
+		this.endingQty = endingQty;
+	}
+
+	public int getAlertAtQty() {
+		return alertAtQty;
+	}
+
+	public void setAlertAtQty(int alertAtQty) {
+		this.alertAtQty = alertAtQty;
+	}
+
+	public long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public long getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(long modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	
+	
 	
 }

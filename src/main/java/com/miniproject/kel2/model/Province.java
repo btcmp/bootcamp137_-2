@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -38,8 +39,16 @@ public class Province {
 	private List<Customer> customers;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="provinceId", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<Supplier> suppliers;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="province", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<Outlet> outlets;
 	
 	
+	public List<Outlet> getOutlets() {
+		return outlets;
+	}
+	public void setOutlets(List<Outlet> outlets) {
+		this.outlets = outlets;
+	}
 	public List<Supplier> getSuppliers() {
 		return suppliers;
 	}

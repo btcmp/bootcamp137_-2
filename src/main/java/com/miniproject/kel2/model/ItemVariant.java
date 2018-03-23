@@ -1,12 +1,17 @@
 package com.miniproject.kel2.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -25,8 +30,6 @@ public class ItemVariant {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(nullable=false)
 	private long id;
-	@Column(name="item_id", nullable=false)
-	private long itemId;
 	@Column(nullable=false, length=255)
 	private String name;
 	@Column(nullable=false, length=50)
@@ -45,17 +48,32 @@ public class ItemVariant {
 	private Date modifiedOn;
 	@Column(nullable=false)
 	private boolean active;
+	
+	@ManyToOne
+	public Item item;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "itemVariant", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ItemInventory> itemInventories;
+	
+	public Item getItem() {
+		return item;
+	}
+	public void setItem(Item item) {
+		this.item = item;
+	}
+	
+	public List<ItemInventory> getItemInventories() {
+		return itemInventories;
+	}
+	public void setItemInventories(List<ItemInventory> itemInventories) {
+		this.itemInventories = itemInventories;
+	}
+	
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
-	}
-	public long getItemId() {
-		return itemId;
-	}
-	public void setItemId(long itemId) {
-		this.itemId = itemId;
 	}
 	public String getName() {
 		return name;

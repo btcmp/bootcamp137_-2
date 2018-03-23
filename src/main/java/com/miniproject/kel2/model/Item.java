@@ -1,13 +1,17 @@
 package com.miniproject.kel2.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,6 +47,9 @@ public class Item {
 	@ManyToOne
 	public Category category;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ItemVariant> itemVariants;
+	
 	public Category getCategory() {
 		return category;
 	}
@@ -50,9 +57,12 @@ public class Item {
 		this.category = category;
 	}
 	
-	
-	
-	
+	public List<ItemVariant> getItemVariants() {
+		return itemVariants;
+	}
+	public void setItemVariants(List<ItemVariant> itemVariants) {
+		this.itemVariants = itemVariants;
+	}
 	public long getId() {
 		return id;
 	}

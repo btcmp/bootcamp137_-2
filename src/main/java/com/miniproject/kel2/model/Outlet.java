@@ -1,12 +1,17 @@
 package com.miniproject.kel2.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,12 +39,6 @@ public class Outlet {
 	@Email
 	@Column(length=50)
 	private String email;
-	@Column(name="province_id", nullable=false)
-	private long provinceId;
-	@Column(name="region_id", nullable=false)
-	private long regionId;
-	@Column(name="district_id", nullable=false)
-	private long districtId;
 	@Column(name="postal_code", length=6)
 	private String postalCode;
 	@Column(name="created_by")
@@ -54,6 +53,43 @@ public class Outlet {
 	private Date modifiedOn;
 	@Column(nullable=false)
 	private boolean active;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "outlet", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ItemInventory> itemInventories;
+	
+	@ManyToOne
+	public Province province;
+	
+	@ManyToOne
+	public Region region;
+	
+	@ManyToOne
+	public District district;
+	
+	public List<ItemInventory> getItemInventories() {
+		return itemInventories;
+	}
+	public void setItemInventories(List<ItemInventory> itemInventories) {
+		this.itemInventories = itemInventories;
+	}
+	public Province getProvince() {
+		return province;
+	}
+	public void setProvince(Province province) {
+		this.province = province;
+	}
+	public Region getRegion() {
+		return region;
+	}
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+	public District getDistrict() {
+		return district;
+	}
+	public void setDistrict(District district) {
+		this.district = district;
+	}
 	public long getId() {
 		return id;
 	}
@@ -83,24 +119,6 @@ public class Outlet {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public long getProvinceId() {
-		return provinceId;
-	}
-	public void setProvinceId(long provinceId) {
-		this.provinceId = provinceId;
-	}
-	public long getRegionId() {
-		return regionId;
-	}
-	public void setRegionId(long regionId) {
-		this.regionId = regionId;
-	}
-	public long getDistrictId() {
-		return districtId;
-	}
-	public void setDistrictId(long districtId) {
-		this.districtId = districtId;
 	}
 	public String getPostalCode() {
 		return postalCode;

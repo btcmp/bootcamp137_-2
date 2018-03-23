@@ -39,8 +39,16 @@ public class District {
 	private List<Customer> customers;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="districtId", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<Supplier> suppliers;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="district", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<Outlet> outlets;
 	
 	
+	public List<Outlet> getOutlets() {
+		return outlets;
+	}
+	public void setOutlets(List<Outlet> outlets) {
+		this.outlets = outlets;
+	}
 	public List<Supplier> getSuppliers() {
 		return suppliers;
 	}
