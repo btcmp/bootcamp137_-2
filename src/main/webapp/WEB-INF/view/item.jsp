@@ -60,9 +60,12 @@
 		// menampilkan pop up create
 		$('#btn-create').click(function() {
 			$('#modal-create').modal();
-			
 		});
 		
+		// btn-add untuk menampilkan addvariant ke table variant
+		/* $('#btn-add').click(function(){
+			var ()
+		}); */
 		
 	});
 </script>
@@ -232,7 +235,7 @@
 														<button type="button" class="btn btn-primary">Cancel</button>
 													</div>
 													<div class="col-lg-2">
-														<button type="button" class="btn btn-primary">Add</button>
+														<button type="button" id="btn-add" class="btn btn-primary">Add</button>
 
 													</div>
 												</div>
