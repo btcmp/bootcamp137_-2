@@ -44,9 +44,10 @@ public class EmpUserController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
-	public EmpUser save(@RequestBody EmpUser empus) {
-		
-	
-		return null;
+	public void save(@RequestBody EmpUser empus) {
+		empus.getEmp().setUser(empus.getUser());
+		empus.getUser().setEmployee(empus.getEmp());
+		empUserService.Save(empus.getEmp());
+		//empUserService.userSave(empus.getUser());
 	}
 }
