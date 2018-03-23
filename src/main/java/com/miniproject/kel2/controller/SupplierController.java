@@ -34,23 +34,23 @@ public class SupplierController {
 	@Autowired
 	ProvinceService provinceService;
 	
-/*	@Autowired
+	@Autowired
 	RegionService regionService;
 	
 	@Autowired
-	DistrictService districtService;*/
+	DistrictService districtService;
 
 	@RequestMapping
 	public String index(Model model) {
 		List<Supplier> suppliers = supplierService.selectAll();
 		List<Province> provinces = provinceService.selectAll();
-		/*List<Region> regions = regionService.selectAll();
-		List<District> districts = districtService.selectAll(); */
+		List<Region> regions = regionService.selectAll();
+		List<District> districts = districtService.selectAll();
 		
 		model.addAttribute("listSupplier", suppliers);
 		model.addAttribute("listProvince", provinces);
-		/*model.addAttribute("listRegion", regions);
-		model.addAttribute("listDistrict", districts);*/
+		model.addAttribute("listRegion", regions);
+		model.addAttribute("listDistrict", districts);
 		return "supplier";
 	}
 	
