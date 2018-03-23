@@ -224,7 +224,6 @@
 											<td></td>
 											<td><a id="${cat.id}" href="#" class="btn-view"> View </a> 
 											
-											
 												<!-- ============================ Modal VIEW ===========================-->
 												<div class="modal fade" id="modal-view" tabindex="-1"
 													role="dialog" aria-labelledby="modalEditLabel"

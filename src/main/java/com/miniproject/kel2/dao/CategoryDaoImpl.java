@@ -66,6 +66,7 @@ public class CategoryDaoImpl implements CategoryDao{
 		}
 	}
 
+
 	public void updateStatus(Category category) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
