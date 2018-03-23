@@ -62,7 +62,7 @@ public class Outlet {
 	
 	@ManyToOne
 	public Region region;
-	
+	 
 	@ManyToOne
 	public District district;
 	
