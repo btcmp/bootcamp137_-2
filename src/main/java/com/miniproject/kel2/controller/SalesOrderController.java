@@ -9,6 +9,6 @@ public class SalesOrderController {
 
 	@RequestMapping
 	public String index() {
-		return "sales-order";
+		return "sales-order2";
 	}
 }
