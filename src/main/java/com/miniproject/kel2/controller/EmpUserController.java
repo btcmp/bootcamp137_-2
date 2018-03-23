@@ -28,7 +28,7 @@ public class EmpUserController {
 	public String index(Model model) {
 		List<Employee> emp = empUserService.empGetAll();
 		model.addAttribute("emp", emp);
-		
+		 
 		List<User> user = empUserService.userGetAll();
 		model.addAttribute("user", user);
 		
