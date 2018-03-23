@@ -32,7 +32,7 @@ public class EmpUserService {
 		empDao.save(pegawai);*/
 		
 		empDao.save(emp);
-		
+		 
 	}
 	
 	public void empUpdate(Employee emp) {

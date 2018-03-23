@@ -18,7 +18,7 @@ import com.miniproject.kel2.service.EmpUserService;
 @Controller
 @RequestMapping("/employee")
 public class EmpUserController {
-
+ 
 	
 	@Autowired
 	EmpUserService empUserService;
