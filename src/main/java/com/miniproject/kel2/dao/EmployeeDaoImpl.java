@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.miniproject.kel2.model.Employee;
-import com.miniproject.kel2.model.User;
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao{
@@ -54,5 +53,6 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		Session session = sessionFactory.getCurrentSession();
 		return session.get(Employee.class, emp.getId());
 	}
+
 
 }

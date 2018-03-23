@@ -220,67 +220,49 @@ $(document).ready(function(){
 		//event Listener
 		//on click utk submit via ajax
 		$('#btn-save').click(function(evt){
-			evt.preventDefault();
-			var akun = $("#create-account").is(':checked') ? true : false;
 			
+			evt.preventDefault();
+			alert('testing');
+			var akun = $("#create-account").is(':checked') ? true : false;
+			var user = null;
+			
+			if(akun == true){
+				user ={
+						username : $('#username').val(),
+						password : $('#password').val()
+							
+				}
+			}
 			var employee = {
 					firstName : $('#first-name').val(),
 					lastName : $('#last-name').val(),
 					email : $('#email').val(),
 					title : $('#title').val(),
 					haveAccount : akun,
-					active : true
+					user : user
+			
 			};
 			
-			if(akun == true){
-				var user ={
-						username : $('#username').val(),
-						password : $('#password').val(),
-						active : true
-							
-				}
 				
-				var empUser = {
-						employee : employee,
-						user : user
-				}
-				
-				console.log(empUser);
+				console.log(employee);
 				//ajax
 				$.ajax({
+					url : '${pageContext.request.contextPath}/employee/save-emp',
 					type : 'POST',
-					url : '${pageContext.request.contextPath}/employee/save',
-					data : JSON.stringify(empUser),
 					contentType : 'application/json',
-					success : function(){
-						alert('suckess');
-						window.location = '${pageContext.request.contextPath}/employee'
-					}, error : function(){
-						alert('save failed');
-					}
-				})
-			}
-			
-
-			
-			else {
-				$.ajax({
-					type : 'POST',
-					url : '${pageContext.request.contextPath}/employee/save',
 					data : JSON.stringify(employee),
-					contentType : 'application/json',
-					success : function(){
-						alert('suckess');
-						window.location = '${pageContext.request.contextPath}/employee'
+					beforeSend : function(){
+						console.log("connecting to server");
+					},
+					success : function(data){
+						console.log(data);
+						
 					}, error : function(){
-						alert('save failed');
+						alert('gagal bos');
 					}
+					
 				})
-			}
-			
-			console.log(employee);
-			
-			
+				
 			
 			
 		})	

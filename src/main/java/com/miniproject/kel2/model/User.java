@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -47,9 +46,6 @@ public class User {
 			)
 	private List<Role> roles;
 	
-	
-	
-	
 	@Column(name="created_by", nullable=true)
 	private long createdBy;
 	
@@ -63,7 +59,7 @@ public class User {
 	private Date modifiedOn;
 	
 	@Column(name="enabled", nullable=false)
-	private boolean active;
+	private int active;
 	
 	//getter and setter
 	
@@ -177,11 +173,13 @@ public class User {
 		this.modifiedOn = modifiedOn;
 	}
 
-	public boolean isActive() {
+
+
+	public int getActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(int active) {
 		this.active = active;
 	}
 

@@ -3,18 +3,19 @@ package com.miniproject.kel2.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.kel2.model.Employee;
 import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
 import com.miniproject.kel2.service.EmpUserService;
-import com.miniproject.kel2.virtualmodel.EmpUser;
 
 @Controller
 @RequestMapping("/employee")
@@ -42,12 +43,12 @@ public class EmpUserController {
 	//=============================================== DATA OPERATION ====================================================//
 	 
 	
-	@RequestMapping(value="/save", method=RequestMethod.POST)
+	@RequestMapping(value="/save-emp", method=RequestMethod.POST)
+	//@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
-	public void save(@RequestBody EmpUser empus) {
-		empus.getEmp().setUser(empus.getUser());
-		empus.getUser().setEmployee(empus.getEmp());
-		empUserService.Save(empus.getEmp());
-		//empUserService.userSave(empus.getUser());
+	public Employee saveEmp(@RequestBody Employee emp) {
+		empUserService.Save(emp);
+		return emp;
 	}
+	
 }

@@ -24,14 +24,24 @@ public class EmpUserService {
 	
 	public void Save(Employee emp) {
 		
-		/*Employee pegawai = new Employee();
+		User user = new User();
+		if(emp.getUser() != null) {
+			user.setUsername(emp.getUser().getUsername());
+			user.setPassword(emp.getUser().getPassword());
+			user.setRoles(emp.getUser().getRoles());
+			user.setActive(1);
+			
+			userDao.save(user);
+		}
+		
+		
+		Employee pegawai = new Employee();
 		pegawai.setFirstName(emp.getFirstName());
 		pegawai.setLastName(emp.getLastName());
 		pegawai.setEmail(emp.getEmail());
 		pegawai.setTitle(emp.getTitle());
-		empDao.save(pegawai);*/
-		 
-		empDao.save(emp);
+		pegawai.setUser(user);
+		empDao.save(pegawai);
 		 
 	}
 	
@@ -79,4 +89,7 @@ public class EmpUserService {
 		// TODO Auto-generated method stub
 		return userDao.getRoleAll();
 	}
+
+
+
 }
