@@ -56,7 +56,7 @@ $(function(){
 	});
 	$('#input-region').chained('#input-province');
 	$('#input-district').chained('#input-region'); 
-	$('#input-province').change(function(){
+	/* $('#input-province').change(function(){
 		var id = $('#input-province').val();
 		console.log(id);
 		$.ajax({
@@ -73,7 +73,7 @@ $(function(){
 	});
 	$('#input-region').change(function(){
 		var id = $('#input-region').val();
-	}); 
+	}); */ 
 });
 	
 </script>
@@ -175,7 +175,7 @@ $(function(){
 																<option value="${prov.id }">${prov.name }</option>
 															</c:forEach>
 														</select>
-													</div>
+											 		</div>
 													<div class="col-lg-4">
 														<label for="input-region">Region</label> <select
 															class="form-control" id="input-region">
@@ -190,6 +190,8 @@ $(function(){
 															class="form-control" id="input-district">
 															<option value="" selected="selected">-- Choose--</option>
 															<c:forEach items="${listDistrict }" var="dis">
+															<c:set var="region" value=""></c:set>
+																<c:if test=""></c:if>
 																<option value="${dis.id }">${dis.name }</option>
 															</c:forEach>
 														</select>
@@ -241,21 +243,21 @@ $(function(){
 										</div>
 										<form id="save-form" data-parsley-validation>
 											<div class="modal-body" style="height: 350px;">
-
+												<input type="hidden" id="input-id">
 												<div class="form-group">
 													<label for="input-supplier-name">Supplier Name</label> <input
-														type="text" class="form-control" id="input-supplier-name"
+														type="text" class="form-control" id="edit-supplier-name"
 														aria-describedby="emailHelp" placeholder="Supplier Name">
 												</div>
 												<div class="form-group ">
 													<label for="input-address">Address</label>
-													<textarea class="form-control " id="input-address"
+													<textarea class="form-control " id="edit-address"
 														name="input-address" required></textarea>
 												</div>
 												<div class="form-group">
 													<div class="col-lg-4">
 														<label for="input-province">Province</label> <select
-															class="form-control" id="input-province">
+															class="form-control" id="edit-province">
 															<option value="" selected="selected">-- Choose
 																--</option>
 															<option value="">DIISI</option>
@@ -263,7 +265,7 @@ $(function(){
 													</div>
 													<div class="col-lg-4">
 														<label for="input-region">Region</label> <select
-															class="form-control" id="input-region">
+															class="form-control" id="edit-region">
 															<option value="" selected="selected">-- Choose
 																--</option>
 															<option value="">DIISI</option>
@@ -271,7 +273,7 @@ $(function(){
 													</div>
 													<div class="col-lg-4">
 														<label for="input-district">District</label> <select
-															class="form-control" id="input-district">
+															class="form-control" id="edit-district">
 															<option value="" selected="selected">-- Choose
 																--</option>
 															<option value="">DIISI</option>
@@ -282,17 +284,17 @@ $(function(){
 												<div class="form-group">
 													<div class="col-lg-4">
 														<label for="input-postal-code">Postal Code</label> <input
-															type="text" class="form-control" id="input-postal-code"
+															type="text" class="form-control" id="edit-postal-code"
 															aria-describedby="emailHelp" placeholder="Supplier Name">
 													</div>
 													<div class="col-lg-4">
 														<label for="input-phone">Phone</label> <input type="text"
-															class="form-control" id="input-phone"
+															class="form-control" id="edit-phone"
 															aria-describedby="emailHelp" placeholder="Supplier Name">
 													</div>
 													<div class="col-lg-4">
 														<label for="input-email">Email</label> <input type="text"
-															class="form-control" id="input-email"
+															class="form-control" id="edit-email"
 															aria-describedby="emailHelp" placeholder="Supplier Name">
 													</div>
 												</div>
