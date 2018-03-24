@@ -85,7 +85,7 @@
 
 									<div class="col-lg-2">
 										<button class="btn btn-success" type="button"
-											data-toggle="modal" data-target="#exampleModal">Assign
+											data-toggle="modal" data-target="#assign-modal">Assign
 											Outlet</button>
 									</div>
 								</div>
@@ -217,12 +217,42 @@
 </div>
 <!-- End Modal -->
 
+
+<!-- Modal for Assign Outlet  -->
+<div class="modal fade" id="assign-modal" tabindex="-1" role="dialog"
+	aria-labelledby="assignModal" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Assign Outlet</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<c:forEach items = "${outlet }" var="out">
+					<label>${out.name } <span>
+					<input type="checkbox" class="form-control" value="${out.id }" id="outlet"/> </span></label>
+				</c:forEach>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <!-- ===================================================== END CONTENT ============================================================= -->
 <script type="text/javascript">
 
 $(document).ready(function(){
 		
 		//event Listener
+		
+		$('#assign-outlet').on()
 		//on click utk submit via ajax
 		$('#btn-save').click(function(evt){
 			

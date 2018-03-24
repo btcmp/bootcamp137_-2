@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.miniproject.kel2.dao.EmployeeDao;
 import com.miniproject.kel2.dao.UserDao;
 import com.miniproject.kel2.model.Employee;
+import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
 
@@ -90,6 +91,11 @@ public class EmpUserService {
 	public List<Role> roleGetaAll() {
 		// TODO Auto-generated method stub
 		return userDao.getRoleAll();
+	}
+
+	public List<Outlet> outletGetAll() {
+		// TODO Auto-generated method stub
+		return userDao.getOutletAll();
 	}
 
 

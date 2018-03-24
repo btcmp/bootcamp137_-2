@@ -1,6 +1,7 @@
 package com.miniproject.kel2.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -56,6 +60,14 @@ public class Employee {
 	
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
 	private User user;
+	
+	@ManyToMany
+	@JoinTable(
+			name = "employee_outlet",
+			joinColumns={@JoinColumn(name="employee_id")},
+			inverseJoinColumns={@JoinColumn(name="outlet_id")}
+			)
+	private List<Outlet> outlet;
 	
 	//kurang relasi ke tabel employee outlet
 		
@@ -157,6 +169,12 @@ public class Employee {
 
 	public void setActive(int active) {
 		this.active = active;
+	}
+	public List<Outlet> getOutlet() {
+		return outlet;
+	}
+	public void setOutlet(List<Outlet> outlet) {
+		this.outlet = outlet;
 	}
 
 	

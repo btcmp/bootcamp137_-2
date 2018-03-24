@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.kel2.model.Employee;
+import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
 import com.miniproject.kel2.service.EmpUserService;
@@ -35,6 +36,9 @@ public class EmpUserController {
 		
 		List<Role> roles = empUserService.roleGetaAll();
 		model.addAttribute("roles", roles);
+		
+		List<Outlet> outlet = empUserService.outletGetAll();
+		model.addAttribute("outlet", outlet);
 		
 		return "employee";
 	}

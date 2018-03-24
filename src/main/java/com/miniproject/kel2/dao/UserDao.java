@@ -2,6 +2,7 @@ package com.miniproject.kel2.dao;
 
 import java.util.List;
 
+import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
 
@@ -18,4 +19,6 @@ public interface UserDao {
 	
 	//roleall
 	public List<Role> getRoleAll();
+	
+	public List<Outlet> getOutletAll();
 }

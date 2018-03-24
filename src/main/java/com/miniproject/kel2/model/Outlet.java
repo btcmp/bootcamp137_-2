@@ -2,6 +2,7 @@ package com.miniproject.kel2.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -65,6 +67,9 @@ public class Outlet {
 	 
 	@ManyToOne
 	public District district;
+	
+	@ManyToMany
+	private Set<Employee> employee;
 	
 	public List<ItemInventory> getItemInventories() {
 		return itemInventories;
@@ -156,6 +161,13 @@ public class Outlet {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+	public Set<Employee> getEmployee() {
+		return employee;
+	}
+	public void setEmployee(Set<Employee> employee) {
+		this.employee = employee;
+	}
 
+	
 	
 }
