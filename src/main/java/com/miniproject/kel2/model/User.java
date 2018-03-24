@@ -20,8 +20,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
-
-
 @Entity
 @Table(name="user_mp")
 public class User {
@@ -88,8 +86,64 @@ public class User {
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<Supplier> suppliersModified;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<Adjustment> adjustmentsCreated;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<Adjustment> adjustmentsModified;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<DetailAdjustment> detAdjustmentsCreated;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<DetailAdjustment> detAdjustmentsModified;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<HistoryAdjustment> hisAdjustmentsCreated;
+	
 
 	
+	public List<HistoryAdjustment> getHisAdjustmentsCreated() {
+		return hisAdjustmentsCreated;
+	}
+
+	public void setHisAdjustmentsCreated(List<HistoryAdjustment> hisAdjustmentsCreated) {
+		this.hisAdjustmentsCreated = hisAdjustmentsCreated;
+	}
+
+	public List<DetailAdjustment> getDetAdjustmentsCreated() {
+		return detAdjustmentsCreated;
+	}
+
+	public void setDetAdjustmentsCreated(List<DetailAdjustment> detAdjustmentsCreated) {
+		this.detAdjustmentsCreated = detAdjustmentsCreated;
+	}
+
+	public List<DetailAdjustment> getDetAdjustmentsModified() {
+		return detAdjustmentsModified;
+	}
+
+	public void setDetAdjustmentsModified(List<DetailAdjustment> detAdjustmentsModified) {
+		this.detAdjustmentsModified = detAdjustmentsModified;
+	}
+
+	public List<Adjustment> getAdjustmentsCreated() {
+		return adjustmentsCreated;
+	}
+
+	public void setAdjustmentsCreated(List<Adjustment> adjustmentsCreated) {
+		this.adjustmentsCreated = adjustmentsCreated;
+	}
+
+	public List<Adjustment> getAdjustmentsModified() {
+		return adjustmentsModified;
+	}
+
+	public void setAdjustmentsModified(List<Adjustment> adjustmentsModified) {
+		this.adjustmentsModified = adjustmentsModified;
+	}
+
 	public List<Supplier> getSuppliersCreated() {
 		return suppliersCreated;
 	}

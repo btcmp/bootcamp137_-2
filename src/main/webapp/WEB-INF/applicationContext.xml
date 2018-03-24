@@ -38,6 +38,9 @@
 				<value>com.miniproject.kel2.model.ItemVariant</value>
 				<value>com.miniproject.kel2.model.ItemInventory</value>
 				<value>com.miniproject.kel2.model.Outlet</value>
+				<value>com.miniproject.kel2.model.Adjustment</value>
+				<value>com.miniproject.kel2.model.DetailAdjustment</value>
+				<value>com.miniproject.kel2.model.HistoryAdjustment</value>
 				
 			</list>
 		</property>
