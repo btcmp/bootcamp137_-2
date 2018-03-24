@@ -1,11 +1,13 @@
 package com.miniproject.kel2.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,7 +55,19 @@ public class Role {
 	@ManyToMany
 	private Set<User> userRoles;
 
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="role", orphanRemoval=true)
+	private List<User> user;
 	
+	
+	
+	public List<User> getUser() {
+		return user;
+	}
+
+	public void setUser(List<User> user) {
+		this.user = user;
+	}
+
 	public long getId() {
 		return id;
 	}

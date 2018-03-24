@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -38,6 +39,9 @@ public class User {
 	@OneToOne(fetch=FetchType.LAZY)
 	private Employee employee;
 	
+	@ManyToOne
+	private Role role;
+	
 	@ManyToMany
 	@JoinTable(
 			name = "user_roles",
@@ -61,8 +65,18 @@ public class User {
 	@Column(name="enabled", nullable=false)
 	private int active;
 	
+	
+	
 	//getter and setter
 	
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<Customer> customersCreated;
 	

@@ -33,6 +33,7 @@
 					<header class="panel-heading"> ADD EMPLOYEE </header>
 					<div class="panel-body">
 						<div class="form">
+							
 							<form class="form-validate form-horizontal " id="register_form"
 								method="get" action="">
 								<div class="form-group ">
@@ -133,9 +134,13 @@
 
 								<div class="form-group">
 									<div class="col-lg-offset-2 col-lg-10">
-										<button class="btn btn-primary" id="btn-save">Save</button>
-										<button class="btn btn-default" type="button">Cancel</button>
+										<button class="btn btn-primary" type="button" id="btn-save">Save</button>
+										<button class="btn btn-default" type="reset" id="reset-btn" data-toggle="collapse"
+											data-target=".multi-collapse" aria-expanded="true"
+											aria-controls="multiCollapseExample1 multiCollapseExample2 multiCollapseExample3">Cancel</button>
+									
 									</div>
+									
 								</div>
 							</form>
 							<!-- End Form -->
@@ -223,14 +228,21 @@ $(document).ready(function(){
 			
 			evt.preventDefault();
 			alert('testing');
+			
 			var akun = $("#create-account").is(':checked') ? true : false;
+			var idRole = $('#role').val();
+			var idEmployee = $('#id-emp').val();
 			var user = null;
 			
-			if(akun == true){
-				user ={
+			console.log(idRole);
+			
+			if(akun == 1){
+				user = {
 						username : $('#username').val(),
-						password : $('#password').val()
-							
+						password : $('#password').val(),
+						role : {
+							id : idRole
+						}
 				}
 			}
 			var employee = {
@@ -238,7 +250,7 @@ $(document).ready(function(){
 					lastName : $('#last-name').val(),
 					email : $('#email').val(),
 					title : $('#title').val(),
-					haveAccount : akun,
+					haveAccount : 1,
 					user : user
 			
 			};
@@ -254,16 +266,16 @@ $(document).ready(function(){
 					beforeSend : function(){
 						console.log("connecting to server");
 					},
-					success : function(data){
-						console.log(data);
-						
+					success : function(){
+						console.log(employee);
+						alert('save suckess');
 					}, error : function(){
 						alert('gagal bos');
 					}
 					
 				})
 				
-			
+				console.log(idEmployee);
 			
 		})	
 	});

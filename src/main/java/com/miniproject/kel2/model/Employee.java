@@ -1,7 +1,6 @@
 package com.miniproject.kel2.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,11 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
@@ -40,7 +37,7 @@ public class Employee {
 	private String title;
 	
 	@Column(name="have_account", nullable=false)
-	private boolean haveAccount;
+	private int haveAccount;
 	
 	@Column(name="created_by", nullable=true)
 	private long createdBy;
@@ -55,19 +52,19 @@ public class Employee {
 	private Date modifiedOn;
 	
 	@Column(name="active", nullable=false)
-	private boolean active;
+	private int active;
 	
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
 	private User user;
 	
 	//kurang relasi ke tabel employee outlet
-	
-
-
-	
+		
 	
 	public long getId() {
 		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public User getUser() {
@@ -78,9 +75,7 @@ public class Employee {
 		this.user = user;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
+	
 
 	public String getFirstName() {
 		return firstName;
@@ -114,13 +109,7 @@ public class Employee {
 		this.title = title;
 	}
 
-	public boolean isHaveAccount() {
-		return haveAccount;
-	}
 
-	public void setHaveAccount(boolean haveAccount) {
-		this.haveAccount = haveAccount;
-	}
 
 	public long getCreatedBy() {
 		return createdBy;
@@ -154,14 +143,24 @@ public class Employee {
 		this.modifiedOn = modifiedOn;
 	}
 
-	public boolean isActive() {
+	public int getHaveAccount() {
+		return haveAccount;
+	}
+
+	public void setHaveAccount(int haveAccount) {
+		this.haveAccount = haveAccount;
+	}
+
+	public int getActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(int active) {
 		this.active = active;
 	}
 
+	
+	
 
 	
 	

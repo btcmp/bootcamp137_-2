@@ -44,11 +44,11 @@ public class EmpUserController {
 	 
 	
 	@RequestMapping(value="/save-emp", method=RequestMethod.POST)
-	//@ResponseStatus(HttpStatus.CREATED)
-	@ResponseBody
-	public Employee saveEmp(@RequestBody Employee emp) {
+	@ResponseStatus(HttpStatus.CREATED)
+	//@ResponseBody
+	public void saveEmp(@RequestBody Employee emp) {
 		empUserService.Save(emp);
-		return emp;
+		//return emp;
 	}
 	
 }

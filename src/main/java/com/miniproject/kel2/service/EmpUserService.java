@@ -24,25 +24,31 @@ public class EmpUserService {
 	
 	public void Save(Employee emp) {
 		
-		User user = new User();
-		if(emp.getUser() != null) {
-			user.setUsername(emp.getUser().getUsername());
-			user.setPassword(emp.getUser().getPassword());
-			user.setRoles(emp.getUser().getRoles());
-			user.setActive(1);
-			
-			userDao.save(user);
-		}
-		
 		
 		Employee pegawai = new Employee();
+		pegawai.setId(emp.getId());
 		pegawai.setFirstName(emp.getFirstName());
 		pegawai.setLastName(emp.getLastName());
 		pegawai.setEmail(emp.getEmail());
 		pegawai.setTitle(emp.getTitle());
-		pegawai.setUser(user);
+		pegawai.setActive(1);
+		pegawai.setHaveAccount(emp.getHaveAccount());
 		empDao.save(pegawai);
-		 
+		
+		if(emp.getUser() != null) {
+			User user = new User();
+			user.setEmployee(pegawai);
+			user.setUsername(emp.getUser().getUsername());
+			user.setPassword(emp.getUser().getPassword());
+			user.setRoles(emp.getUser().getRoles());
+			user.setRole(emp.getUser().getRole());
+			user.setEmployee(emp.getUser().getEmployee());
+			user.setActive(1);
+			
+			userDao.save(user);	
+		}
+		
+		
 	}
 	
 	public void empUpdate(Employee emp) {
@@ -61,10 +67,6 @@ public class EmpUserService {
 	
 	public List<Employee> empGetAll(){
 		return empDao.getAll();
-	}
-	
-	public void userSave(User user ) {
-		userDao.save(user);
 	}
 	
 	public void userUpdate(User user) {
