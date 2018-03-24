@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -24,7 +25,8 @@ public class Employee {
 	
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="idEmp")
+	@SequenceGenerator(initialValue=100, name="idEmp", sequenceName="idEmp")
 	private long id;
 	
 	@Column(name="first_name", nullable=false, length=50)
@@ -41,7 +43,7 @@ public class Employee {
 	private String title;
 	
 	@Column(name="have_account", nullable=false)
-	private int haveAccount;
+	private boolean haveAccount;
 	
 	@Column(name="created_by", nullable=true)
 	private long createdBy;
@@ -155,14 +157,14 @@ public class Employee {
 		this.modifiedOn = modifiedOn;
 	}
 
-	public int getHaveAccount() {
+	
+
+	public boolean isHaveAccount() {
 		return haveAccount;
 	}
-
-	public void setHaveAccount(int haveAccount) {
+	public void setHaveAccount(boolean haveAccount) {
 		this.haveAccount = haveAccount;
 	}
-
 	public int getActive() {
 		return active;
 	}

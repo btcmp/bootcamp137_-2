@@ -34,12 +34,14 @@
 					<div class="panel-body">
 						<div class="form">
 							
-							<form class="form-validate form-horizontal " id="register_form"
-								method="get" action="">
+							<form class="form-validate form-horizontal " id="form-employee" action="${pageContext.request.contextPath }/employee/save-emp"  method="post" action="">
+								<div><input class=" form-control" id="id" type="hidden" /></div>
+								
 								<div class="form-group ">
 									<label for="fullname" class="control-label col-lg-2">First
 										name <span class="required">*</span>
 									</label>
+									
 									<div class="col-lg-4">
 										<input class=" form-control" id="first-name" name="fullname"
 											type="text" />
@@ -134,7 +136,8 @@
 
 								<div class="form-group">
 									<div class="col-lg-offset-2 col-lg-10">
-										<button class="btn btn-primary" type="button" id="btn-save">Save</button>
+										<button class=" btn btn-primary" type="button" id="btn-save">Save</button>
+										
 										<button class="btn btn-default" type="reset" id="reset-btn" data-toggle="collapse"
 											data-target=".multi-collapse" aria-expanded="true"
 											aria-controls="multiCollapseExample1 multiCollapseExample2 multiCollapseExample3">Cancel</button>
@@ -156,7 +159,7 @@
 								id="order-table">
 								<thead>
 									<tr>
-										<th>Nama</th>
+										<th>Name</th>
 										<th>Email</th>
 										<th>Have Account</th>
 										<th>Outlet Access</th>
@@ -167,14 +170,14 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="#" var="#">
+									<c:forEach items="${emp }" var="emp">
 										<!-- //mengambil id barang -->
 										<tr id="#">
+											<td>${emp.firstName } ${emp.lastName }</td>
+											<td>${emp.email }</td>
+											<td>${emp.haveAccount }</td>
 											<td>#</td>
-											<td>#</td>
-											<td>#</td>
-											<td>#</td>
-											<td>#</td>
+											<td>${emp.user.role.roleName }</td>
 											<td><a id="" class="btn-beli btn btn-warning"
 												style="color: white;"> Edit </a>|<a id=""
 												class="btn-beli btn btn-danger" style="color: white;">
@@ -261,10 +264,8 @@ $(document).ready(function(){
 			
 			var akun = $("#create-account").is(':checked') ? true : false;
 			var idRole = $('#role').val();
-			var idEmployee = $('#id-emp').val();
 			var user = null;
 			
-			console.log(idRole);
 			
 			if(akun == 1){
 				user = {
@@ -272,7 +273,12 @@ $(document).ready(function(){
 						password : $('#password').val(),
 						role : {
 							id : idRole
+						},
+						
+						employee : {
+							id : $(this).attr('id')
 						}
+						
 				}
 			}
 			var employee = {
@@ -280,14 +286,16 @@ $(document).ready(function(){
 					lastName : $('#last-name').val(),
 					email : $('#email').val(),
 					title : $('#title').val(),
-					haveAccount : 1,
+					
+					haveAccount : akun,
 					user : user
 			
 			};
 			
 				
-				console.log(employee);
-				//ajax
+			console.log(employee);
+				
+			//ajax
 				$.ajax({
 					url : '${pageContext.request.contextPath}/employee/save-emp',
 					type : 'POST',
@@ -305,8 +313,7 @@ $(document).ready(function(){
 					
 				})
 				
-				console.log(idEmployee);
-			
+			 
 		})	
 	});
 </script>

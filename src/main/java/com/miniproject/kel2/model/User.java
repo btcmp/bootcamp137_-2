@@ -35,6 +35,7 @@ public class User {
 	 
 	
 	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "employee_id")
 	private Employee employee;
 	
 	@ManyToOne
@@ -67,13 +68,6 @@ public class User {
 	
 	//getter and setter
 	
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
 
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<Customer> customersCreated;
@@ -101,98 +95,15 @@ public class User {
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<HistoryAdjustment> hisAdjustmentsCreated;
-	
-
-	
-	public List<HistoryAdjustment> getHisAdjustmentsCreated() {
-		return hisAdjustmentsCreated;
-	}
-
-	public void setHisAdjustmentsCreated(List<HistoryAdjustment> hisAdjustmentsCreated) {
-		this.hisAdjustmentsCreated = hisAdjustmentsCreated;
-	}
-
-	public List<DetailAdjustment> getDetAdjustmentsCreated() {
-		return detAdjustmentsCreated;
-	}
-
-	public void setDetAdjustmentsCreated(List<DetailAdjustment> detAdjustmentsCreated) {
-		this.detAdjustmentsCreated = detAdjustmentsCreated;
-	}
-
-	public List<DetailAdjustment> getDetAdjustmentsModified() {
-		return detAdjustmentsModified;
-	}
-
-	public void setDetAdjustmentsModified(List<DetailAdjustment> detAdjustmentsModified) {
-		this.detAdjustmentsModified = detAdjustmentsModified;
-	}
-
-	public List<Adjustment> getAdjustmentsCreated() {
-		return adjustmentsCreated;
-	}
-
-	public void setAdjustmentsCreated(List<Adjustment> adjustmentsCreated) {
-		this.adjustmentsCreated = adjustmentsCreated;
-	}
-
-	public List<Adjustment> getAdjustmentsModified() {
-		return adjustmentsModified;
-	}
-
-	public void setAdjustmentsModified(List<Adjustment> adjustmentsModified) {
-		this.adjustmentsModified = adjustmentsModified;
-	}
-
-	public List<Supplier> getSuppliersCreated() {
-		return suppliersCreated;
-	}
-
-	public void setSuppliersCreated(List<Supplier> suppliersCreated) {
-		this.suppliersCreated = suppliersCreated;
-	}
-
-	public List<Supplier> getSuppliersModified() {
-		return suppliersModified;
-	}
-
-	public void setSuppliersModified(List<Supplier> suppliersModified) {
-		this.suppliersModified = suppliersModified;
-	}
-	
-	public List<Customer> getCustomersCreated() {
-		return customersCreated;
-	}
-
-	public void setCustomersCreated(List<Customer> customersCreated) {
-		this.customersCreated = customersCreated;
-	}
-
-	public List<Customer> getCustomersModified() {
-		return customersModified;
-	}
-
-	public void setCustomersModified(List<Customer> customersModified) {
-		this.customersModified = customersModified;
-	}
 
 	public long getId() {
 		return id;
-	}
-
-	public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
 	}
 
 	public void setId(long id) {
 		this.id = id;
 	}
 
-	
 	public String getUsername() {
 		return username;
 	}
@@ -207,6 +118,30 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	public long getCreatedBy() {
@@ -241,8 +176,6 @@ public class User {
 		this.modifiedOn = modifiedOn;
 	}
 
-
-
 	public int getActive() {
 		return active;
 	}
@@ -251,14 +184,80 @@ public class User {
 		this.active = active;
 	}
 
-	public Employee getEmployee() {
-		return employee;
+	public List<Customer> getCustomersCreated() {
+		return customersCreated;
 	}
 
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+	public void setCustomersCreated(List<Customer> customersCreated) {
+		this.customersCreated = customersCreated;
 	}
 
+	public List<Customer> getCustomersModified() {
+		return customersModified;
+	}
+
+	public void setCustomersModified(List<Customer> customersModified) {
+		this.customersModified = customersModified;
+	}
+
+	public List<Supplier> getSuppliersCreated() {
+		return suppliersCreated;
+	}
+
+	public void setSuppliersCreated(List<Supplier> suppliersCreated) {
+		this.suppliersCreated = suppliersCreated;
+	}
+
+	public List<Supplier> getSuppliersModified() {
+		return suppliersModified;
+	}
+
+	public void setSuppliersModified(List<Supplier> suppliersModified) {
+		this.suppliersModified = suppliersModified;
+	}
+
+	public List<Adjustment> getAdjustmentsCreated() {
+		return adjustmentsCreated;
+	}
+
+	public void setAdjustmentsCreated(List<Adjustment> adjustmentsCreated) {
+		this.adjustmentsCreated = adjustmentsCreated;
+	}
+
+	public List<Adjustment> getAdjustmentsModified() {
+		return adjustmentsModified;
+	}
+
+	public void setAdjustmentsModified(List<Adjustment> adjustmentsModified) {
+		this.adjustmentsModified = adjustmentsModified;
+	}
+
+	public List<DetailAdjustment> getDetAdjustmentsCreated() {
+		return detAdjustmentsCreated;
+	}
+
+	public void setDetAdjustmentsCreated(List<DetailAdjustment> detAdjustmentsCreated) {
+		this.detAdjustmentsCreated = detAdjustmentsCreated;
+	}
+
+	public List<DetailAdjustment> getDetAdjustmentsModified() {
+		return detAdjustmentsModified;
+	}
+
+	public void setDetAdjustmentsModified(List<DetailAdjustment> detAdjustmentsModified) {
+		this.detAdjustmentsModified = detAdjustmentsModified;
+	}
+
+	public List<HistoryAdjustment> getHisAdjustmentsCreated() {
+		return hisAdjustmentsCreated;
+	}
+
+	public void setHisAdjustmentsCreated(List<HistoryAdjustment> hisAdjustmentsCreated) {
+		this.hisAdjustmentsCreated = hisAdjustmentsCreated;
+	}
+	
+//	getter
+	
 	
 	
 }

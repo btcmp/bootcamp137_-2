@@ -33,7 +33,7 @@ public class EmpUserService {
 		pegawai.setEmail(emp.getEmail());
 		pegawai.setTitle(emp.getTitle());
 		pegawai.setActive(1);
-		pegawai.setHaveAccount(emp.getHaveAccount());
+		pegawai.setHaveAccount(emp.isHaveAccount());
 		empDao.save(pegawai);
 		
 		if(emp.getUser() != null) {
