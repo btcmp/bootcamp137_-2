@@ -74,10 +74,10 @@ public class SupplierController {
 	
 	@RequestMapping(value="/search/{name}", method=RequestMethod.GET)
 	@ResponseBody
-	public String searchByName(@PathVariable String name, Model model){
+	public List<Supplier> searchByName(@PathVariable String name){
 		List<Supplier> suppliers = supplierService.searchByName(name); 
-		model.addAttribute("listSupplier", suppliers);
-		return "supplier";
+		System.out.println(suppliers);
+		return suppliers;
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
@@ -87,4 +87,6 @@ public class SupplierController {
 		supplier.setId(id);
 		supplierService.delete(supplier);
 	}
+	
+	
 }

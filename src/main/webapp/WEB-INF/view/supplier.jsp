@@ -117,26 +117,89 @@ $(function(){
 			}
 		});
 	});
-	/* $('#input-region').chained('#input-province');
-	$('#input-district').chained('#input-region');  */
-	/* $('#input-province').change(function(){
-		var id = $('#input-province').val();
-		console.log(id);
+	
+	$('#field-search').on('input', function(){
+		var word = $(this).val();
+		console.log(word);
 		$.ajax({
-			url : '${pageContext.request.contextPath}/province/get-region/'+id,
+			url : '${pageContext.request.contextPath}/supplier/search/'+word,
 			type : 'GET',
-			success : function(region){
-				$('#input-region').html(region);
+			success : function(data){
+				$('#table-search').empty();
+				$(data).each(function(index, value){
+					var isi = "<tr>"+
+					"<td>"+value.name+"</td>"+
+					"<td>"+value.address+"</td>"+
+					"<td>"+value.phone+"</td>"+
+					"<td>"+value.email+"</td>"+
+					"<td><div class='"+"btn-group"+"'>"+
+					"<a class='"+"update btn btn-primary"+"' id="+value.id+">"+
+					"<i class='"+"icon_pencil-edit"+"'></i></a>"+
+					"</div></td>"+
+					"</tr>";
+					
+					$('#table-search').append(isi);
+				});
+				
 			},
-			error : function(){
-				alert('failed getting data region!!')
-			},
-			dataType : 'json'
+			error : function(){}
 		}); 
 	});
+	$('#input-region').attr('disabled', 'disabled');
+	$('#input-district').attr('disabled', 'disabled');
+	$('#input-province').change(function(){
+		var id = $(this).val();
+		console.log(id);
+		if(!id==""){
+			$.ajax({
+				url : '${pageContext.request.contextPath}/province/get-region/'+id,
+				type : 'GET',
+				success : function(data){
+					var listRegion = [];
+					var choose = "<option value=''>-- Choose --</option>";
+					listRegion.push(choose);
+					$(data).each(function(index, value){
+						var isi = "<option value='"+value.id+"'>"+value.name+"</option>";
+						listRegion.push(isi);
+					});
+					$('#input-region').html(listRegion);
+					$('#input-region').removeAttr('disabled');
+				},
+				error : function(){
+					alert('failed to get data region');
+				}
+				
+			});
+		}
+	});
+	
 	$('#input-region').change(function(){
-		var id = $('#input-region').val();
-	}); */ 
+		var id = $(this).val();
+		console.log(id);
+		if(!id==""){
+			$.ajax({
+				url : '${pageContext.request.contextPath}/province/get-district/'+id,
+				type : 'GET',
+				success : function(data){
+					var listDistrict = [];
+					var choose = "<option value=''>-- Choose --</option>";
+					listDistrict.push(choose);
+					$(data).each(function(index, value){
+						var isi = "<option value='"+value.id+"'>"+value.name+"</option>";
+						listDistrict.push(isi);
+					});
+					$('#input-district').html(listDistrict);
+					$('#input-district').removeAttr('disabled');
+				},
+				error : function(){
+					alert('failed to get data district');
+				}
+				
+			});
+		}
+	});
+	
+
 });
 	
 </script>
@@ -155,7 +218,7 @@ $(function(){
 							<ul class="nav top-menu">
 								<li>
 									<form class="navbar-form">
-										<input class="form-control" placeholder="Search" type="text">
+										<input class="form-control" placeholder="Search" id="field-search" type="text">
 									</form>
 								</li>
 							</ul>
@@ -173,7 +236,7 @@ $(function(){
 					<br>
 
 					<table class="table table-striped table-advance table-hover">
-						<tbody>
+						<thead>
 							<tr>
 								<th><i class="icon_profile"></i> Name</th>
 								<th><i class="icon_pin_alt"></i> Address</th>
@@ -181,6 +244,8 @@ $(function(){
 								<th><i class="icon_email_alt"></i> Email</th>
 								<th><i class="icon_cogs"></i>Action</th>
 							</tr>
+							</thead>
+							<tbody id="table-search">
 							<c:forEach items="${listSupplier }" var="supp">
 								<tr>
 									<td>${supp.name }</td>
@@ -236,25 +301,25 @@ $(function(){
 															<option value="" selected="selected">-- Choose--</option>
 															<c:forEach items="${listProvince }" var="prov">
 																<option value="${prov.id }">${prov.name }</option>
-															</c:forEach>
+															</c:forEach> 
 														</select>
 											 		</div>
 													<div class="col-lg-4">
 														<label for="input-region">Region</label> <select
 															class="form-control" id="input-region">
 															<option value="" selected="selected">-- Choose--</option>
-															<c:forEach items="${listRegion }" var="reg">
+															<%-- <c:forEach items="${listRegion }" var="reg">
 																<option value="${reg.id }">${reg.name }</option>
-															</c:forEach>
+															</c:forEach> --%>
 														</select>
 													</div>
 													<div class="col-lg-4">
 														<label for="input-district">District</label> <select
 															class="form-control" id="input-district">
 															<option value="" selected="selected">-- Choose--</option>
-															<c:forEach items="${listDistrict }" var="dis">
+															<%-- <c:forEach items="${listDistrict }" var="dis">
 																<option value="${dis.id }">${dis.name }</option>
-															</c:forEach>
+															</c:forEach> --%>
 														</select>
 													</div>
 												</div>

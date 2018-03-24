@@ -26,14 +26,20 @@ public class ProvinceController {
 	DistrictService districtService;
 
 	@RequestMapping(value="/get-region/{id}", method=RequestMethod.GET)
-	public void getRegion(@PathVariable long id, Model model ) {
-		List<Region> regions = regionService.selectByProvince((Long)id);
-		model.addAttribute("listRegion", regions);
+	@ResponseBody
+	public List<Region> getRegion(@PathVariable long id) {
+		List<Region> regions = regionService.selectByProvince(id);
+		System.out.println("banyak region : "+regions.size());
+		return regions;
 	}
 	
 	@RequestMapping(value="/get-district/{id}", method=RequestMethod.GET)
-	public void getDistrict(@PathVariable long id, Model model ) {
-		List<District> district = districtService.selectByRegion((Long)id);
-		model.addAttribute("listDistrict", district);
+	@ResponseBody
+	public List<District> getDistrict(@PathVariable long id) {
+		List<District> district = districtService.selectByRegion(id);
+		System.out.println("banyak district : "+district.size());
+		return district;
 	}
+	
+	
 }
