@@ -57,23 +57,21 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		// menampilkan pop up create
+		
+		// CREATE NEW CATEGORY
 		$('#btn-create').click(function() {
 			$('#modal-create').modal();
 		});
 		
-		// save1 = pada create
+		// EXECUTE = SAVE
 		$('#btn-save').on('click', function(evt){
 			evt.preventDefault();
 			var form = $('#target');
-			//var valid =form.parsley().validate();
 				var cat = {
 						name : $('#input-categoryName').val()
 				}
-				console.log(cat);
-				//if(valid==true){     
-					
-			 // ajax save
+				console.log(cat);    
+			
 			 $.ajax({
 					url : '${pageContext.request.contextPath}/category/save',
 					type :'POST',
@@ -85,11 +83,9 @@
 						alert('saving failed')	
 					}
 			}); 
- 			//}
 		});  
 			
-			
-		// menampilkan pop up view/edit
+		// EDIT CATEGORY (BUTTON VIEW)
 		$('.btn-view').click(function() {
 			var id = $(this).attr('id');
 			
@@ -106,12 +102,14 @@
 				dataType :'json'
 			});
 		});
+		
+		// SET UP DATA EDIT
 		function setEditCategory(cat){
 			$('#edit-id').val(cat.id);
 			$('#edit-categoryName').val(cat.name);
 		}
 		
-		// eksekusi edit (btn save)
+		// EXECUTE = SAVE2
 		$('#btn-save2').click(function(){
 			var cat={
 				id : $('#edit-id').val(),
@@ -132,7 +130,7 @@
 		});
 		
 	
-	 	//btn-X
+	 	//DELETE = X
 		$('#btn-X').click(function(){
 			var cat={
 				id : $('#edit-id').val(), 
@@ -151,7 +149,7 @@
 			});
 		});  
 	 	
-	 	//Search
+	 	// SEARCH
 	 	$('#btn-search').on('click', function(){
 			var word =$('#search').val();
 			window.location="${pageContext.request.contextPath}/category/search?search="+word;
