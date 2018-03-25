@@ -13,8 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.miniproject.kel2.model.District;
 import com.miniproject.kel2.model.Outlet;
+import com.miniproject.kel2.model.Province;
+import com.miniproject.kel2.model.Region;
+import com.miniproject.kel2.service.DistrictService;
 import com.miniproject.kel2.service.OutletService;
+import com.miniproject.kel2.service.ProvinceService;
+import com.miniproject.kel2.service.RegionService;
 
 @Controller
 @RequestMapping("/outlet")
@@ -23,10 +29,25 @@ public class OutletController {
 	@Autowired
 	OutletService outletService;
 	
+	@Autowired
+	ProvinceService provinceService;
+	
+	@Autowired
+	RegionService regionService;
+	
+	@Autowired
+	DistrictService districtService;
+	
 	@RequestMapping
 	public String index(Model model) {
 		List<Outlet> outs = outletService.selectAll();
+		List<Province> provs = provinceService.selectAll();
+		List<Region> regs = regionService.selectAll();
+		List<District> diss = districtService.selectAll();
 		model.addAttribute("outs", outs);
+		model.addAttribute("provs", provs);
+		model.addAttribute("regs", regs);
+		model.addAttribute("diss", diss);
 		return "outlet";
 	}
 
@@ -55,4 +76,13 @@ public class OutletController {
 		out.setId(id);
 		outletService.delete(out);
 	}
+	
+	/*@RequestMapping(value = "/search/", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public List<Outlet> searchByName(@PathVariable String search){
+		List<Outlet> outlets = outletService.searchByName(search);
+		System.out.println(outlets);
+		return outlets;
+	}*/
+	
 }

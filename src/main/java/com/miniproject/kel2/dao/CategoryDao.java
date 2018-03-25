@@ -26,11 +26,14 @@ public interface CategoryDao {
 	// save or update
 	public void saveAtauUpdate(Category category);
 	
-	
-	
-/*	// getByStatus
-	public List<Category> getListByStatus(Category category);
+	// getListByStatus (active = 0)
+	public List<Category> getListByStatus();
 
 	// update status di database
-	public void updateStatus(Category category); */
+	public void updateStatus(Category category);
+	
+	// search by category name
+	public List<Category> getCategoryBySearchName(String search);
+	
+	
 }

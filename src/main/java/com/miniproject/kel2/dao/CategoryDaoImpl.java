@@ -27,6 +27,7 @@ public class CategoryDaoImpl implements CategoryDao{
 		Session session = sessionFactory.getCurrentSession();
 		return session.createCriteria(Category.class).list();
 	}
+	
 	public Category getOne(Category category) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
@@ -54,7 +55,8 @@ public class CategoryDaoImpl implements CategoryDao{
 		session.flush();
 	}
 
-/*	public List<Category> getListByStatus(Category category) {
+	// menampilkan list dengan status active = 0
+	public List<Category> getListByStatus() {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from Category cat where cat.active=0";
@@ -66,12 +68,27 @@ public class CategoryDaoImpl implements CategoryDao{
 		}
 	}
 
-
+	//untuk update status di database
 	public void updateStatus(Category category) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from Category cat set cat.active=1 where cat.id= :id";
+		String hql = "update Category cat set cat.active=1 where cat.id= :id";
 		session.createQuery(hql).setParameter("id", category.getId()).executeUpdate();
 		session.flush();
-	}*/
+	}
+
+	// untuk search
+	public List<Category> getCategoryBySearchName(String search) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Category cat where lower(cat.name) like :cn";
+		List<Category> cats = session.createQuery(hql).setParameter("cn", "%"+search.toLowerCase()+"%").list();
+		if(cats.isEmpty()) {
+			return null;
+		} else {
+			return cats;
+		}
+	}
+	
+	
 }

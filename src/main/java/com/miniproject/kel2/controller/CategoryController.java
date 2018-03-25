@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -26,8 +27,8 @@ public class CategoryController {
 	
 	@RequestMapping
 	public String index(Model model) {
-		List<Category> cats = categoryService.selectAll();
-	//	List<Category> cats = categoryService.getListByStatus();
+	//	List<Category> cats = categoryService.selectAll();
+		List<Category> cats = categoryService.getListByStatus();
 		model.addAttribute("cats", cats);
 		return "category";
 	}
@@ -50,19 +51,24 @@ public class CategoryController {
 		categoryService.update(cat);
 	}
 
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.OK)
-	public void delete(@PathVariable long id) {
-		Category cat = new Category();
-		cat.setId(id);
-		categoryService.delete(cat);
-	}
-	
-	/*@RequestMapping(value = "/updateStatus", method = RequestMethod.PUT)
+	@RequestMapping(value = "/updateStatus", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	public void updateStatus(@RequestBody Category cat) {
 		categoryService.updateStatus(cat);
-	}*/
+	}
 	
-
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable long id) {
+		categoryService.delete(id);
+	}
+	
+	@RequestMapping(value="/search", method=RequestMethod.GET)
+	public String indexBySearch(@RequestParam(value="search", defaultValue="") String search, Model model) {
+		List<Category> cats = categoryService.getCategoryBySearchName(search);
+		model.addAttribute("cats", cats);
+		System.out.println("search : " + search);
+		return "category";
+	}
+	
 }

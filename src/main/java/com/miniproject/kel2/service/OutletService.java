@@ -19,21 +19,31 @@ public class OutletService {
 	public void save(Outlet outlet) {
 		outletDao.save(outlet);
 	}
+	
 	public List<Outlet> selectAll(){
 		return outletDao.selectAll();
 	}
+	
 	public Outlet getOne(long id) {
 		Outlet outlet = new Outlet();
 		outlet.setId(id);
 		return outletDao.getOne(outlet);
 	}
+	
 	public void update(Outlet outlet) {
 		outletDao.update(outlet);
 	}
+	
 	public void delete(Outlet outlet) {
 		outletDao.delete(outlet);
 	}
+	
 	public void saveAtauUpdate(Outlet outlet) {
 		outletDao.saveAtauUpdate(outlet);
 	}
+	
+	/*public List<Outlet> searchByName(String search){
+		return outletDao.searchByName(search);
+	}*/
+	
 }

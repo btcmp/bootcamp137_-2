@@ -35,22 +35,33 @@ public class CategoryService {
 		categoryDao.update(category);
 	}
 	
-	public void delete(Category category) {
+	/*public void delete(Category category) {
 		categoryDao.delete(category);
+	}*/
+	
+	// untuk delete data dari table
+	public void delete(long id) {
+		Category categories = new Category();
+		categories.setId(id);
+		categoryDao.delete(categories);
 	}
 	
 	public void saveAtauUpdate(Category category) {
 		categoryDao.saveAtauUpdate(category);
 	}
 	
-	/*public List<Category> getListByStatus(){
+	public List<Category> getListByStatus(){
 		return categoryDao.getListByStatus();
 	}
 	
+	// untuk update status di atabase menjadi 1
 	public void updateStatus(Category category) {
 		categoryDao.updateStatus(category);
-	}*/
+	}
 	
-	
+	// untuk search
+	public List<Category> getCategoryBySearchName(String search){
+		return categoryDao.getCategoryBySearchName(search);
+	}
 	
 }
