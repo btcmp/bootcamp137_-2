@@ -1,6 +1,6 @@
 package com.miniproject.kel2.model;
 
-import java.util.Date;
+import java.util.Date; 
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -34,7 +34,7 @@ public class User {
 	private String password;
 	 
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name = "employee_id")
 	private Employee employee;
 	
@@ -62,7 +62,7 @@ public class User {
 	private Date modifiedOn;
 	
 	@Column(name="enabled", nullable=false)
-	private int active;
+	private boolean active;
 	
 	
 	
@@ -96,6 +96,7 @@ public class User {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<HistoryAdjustment> hisAdjustmentsCreated;
 
+	
 	
 	
 	public long getId() {
@@ -178,11 +179,12 @@ public class User {
 		this.modifiedOn = modifiedOn;
 	}
 
-	public int getActive() {
+
+	public boolean isActive() {
 		return active;
 	}
 
-	public void setActive(int active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 

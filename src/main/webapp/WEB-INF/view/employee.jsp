@@ -35,8 +35,10 @@
 						<div class="form">
 							
 							<form class="form-validate form-horizontal " id="form-employee" action="${pageContext.request.contextPath }/employee/save-emp"  method="post" action="">
+								
+								
 								<div><input class=" form-control" id="id" type="hidden" /></div>
-								<div><input class=" form-control" id="active" type="hidden" /></div>
+								
 								<div class="form-group ">
 									<label for="fullname" class="control-label col-lg-2">First
 										name <span class="required">*</span>
@@ -258,47 +260,122 @@ $(document).ready(function(){
 		
 	
 		//event Listener
+	//set inactive
+	$(".btn-set").on('click', function(){
+		var id = $(this).attr('id');
+		$('#inactive-id').val(id);
 		
-		$('#assign-outlet').on()
+		$.ajax({
+			url : '${pageContext.request.contextPath}/employee/get-one/'+id,
+			type : 'GET',
+			
+			success : function(emp){
+				setActive(emp);
+				$('#setModal').modal();
+			}, error : function(mhs){
+				alert('update gagal');
+			},
+			dataType : 'json'
+		});
+		
+		
+	})
+	
+	function setActive(emp){
+		console.log(emp);
+		$('#id').val(emp.id),
+		$('#first-name').val(emp.firstName),
+		$('#last-name').val(emp.lastName),
+		$('#email').val(emp.email),
+		$('#title').val(emp.title)
+	
+		if($('create-account').val(emp.haveAccount) == true){
+			$('#create-account').prop('checked',  true),
+			$('#username').val(emp.user.username),
+			$('#password').val(emp.user.password),
+			$('#role').val(emp.user.roles.id)
+			
+		}
+		
+		
+	}
+	//btn-inactive
+	$('#btn-inactive-emp').click(function(){
+		var id = $(this).attr('id');
+		$('#inactive-id').val(id);
+		var user = null;
+		
+		var deactive = {
+				id : $('#id').val(),
+				firstName : $('#first-name').val(),
+				lastName : $('#last-name').val(),
+				email : $('#email').val(),
+				title : $('#title').val(),
+				haveAccount : akun,
+				active : true
+				
+				
+		}
+		
+		console.log(deactive);
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/employee/setInactive',
+			type : 'POST',
+			/* contentType : 'application/json',
+			data : JSON.stringify(deactive), */
+			
+			success : function(data){
+				alert("update succeess");
+			}, error : function(){
+				alert("failed to upadte");
+			},
+			dataType : 'json', 
+		}) 
+		
+		
+	})
+		
+		
+		
 		//on click utk submit via ajax
 		
 		$('#btn-save').click(function(evt){
-			
 			evt.preventDefault();
 			alert('testing');
 			
+			var id = $('#id').val();
+			console.log(id);
+			
 			var akun = $("#create-account").is(':checked') ? true : false;
 			var idRole = $('#role').val();
-			var idEmployee = $(this).attr('id');
 			
 			var user = null;
 			
 			if(akun == true){
 				user = {
-						
-						username : $('#username').val(),
-						password : $('#password').val(),
-						role : {
-							id : idRole
-						},
-						active : true,
-						
-						
+						"active" : true,
+						"username" : $('#username').val(),
+						"password" : $('#password').val(),
+						"role" : {
+							"id" : idRole
+						}
 				}
 			}
 			var employee = {
-					id : $('#id').val(idEmployee),
+					id : $('#id').val(),
 					firstName : $('#first-name').val(),
 					lastName : $('#last-name').val(),
 					email : $('#email').val(),
 					title : $('#title').val(),
 					haveAccount : akun,
+					active : true,
 					user : user
 			
 			};
 			
 				
-			//console.log(employee);
+			console.log(employee);
 				
 			//ajax
 				$.ajax({
@@ -319,63 +396,7 @@ $(document).ready(function(){
 				}) 
 		})	
 		
-		//set inactive
-		$(".btn-set").on('click', function(){
-			var id = $(this).attr('id');
-			$('#inactive-id').val(id);
-			
-			$.ajax({
-				url : '${pageContext.request.contextPath}/employee/get-one/'+id,
-				type : 'GET',
-				
-				success : function(emp){
-					setActive(emp);
-					$('#setModal').modal();
-				}, error : function(mhs){
-					alert('update gagal');
-				},
-				dataType : 'json'
-			});
-			
-			
-		})
 		
-		function setActive(emp){
-			console.log(emp);
-			$('#id').val(emp.id),
-			$('#first-name').val(emp.firstName),
-			$('#last-name').val(emp.lastName),
-			$('#email').val(emp.email),
-			$('#title').val(emp.title)
-			
-		}
-		//btn-inactive
-		$('#btn-inactive-emp').click(function(){
-			var deactive = {
-					id : $('#id').val(),
-					firstName : $('#first-name').val(),
-					lastName : $('#last-name').val(),
-					email : $('#email').val(),
-					title : $('#title').val()
-					
-			}
-			
-			$.ajax({
-				url : '${pageContext.request.contextPath}/employee/setInactive',
-				type : 'POST',
-				data : JSON.stringify(deactive),
-				contentType : 'application/json',
-				success : function(data){
-					alert("update succeess");
-				}, error : function(){
-					alert("failed to upadte");
-				}
-				
-			}) 
-			
-			console.log(deactive);
-			
-		})
 	});
 </script>
 

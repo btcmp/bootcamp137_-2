@@ -58,9 +58,9 @@ public class Employee {
 	private Date modifiedOn;
 	
 	@Column(name="active", nullable=false)
-	private int active;
+	private boolean active;
 	
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToOne(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL)
 	private User user;
 	
 	@ManyToMany
@@ -85,7 +85,7 @@ public class Employee {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(User user) { 
 		this.user = user;
 	}
 
@@ -165,11 +165,12 @@ public class Employee {
 	public void setHaveAccount(boolean haveAccount) {
 		this.haveAccount = haveAccount;
 	}
-	public int getActive() {
+	
+	
+	public boolean isActive() {
 		return active;
 	}
-
-	public void setActive(int active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 	public List<Outlet> getOutlet() {

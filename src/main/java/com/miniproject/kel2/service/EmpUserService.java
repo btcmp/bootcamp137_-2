@@ -23,6 +23,7 @@ public class EmpUserService {
 	@Autowired
 	UserDao userDao;
 	
+	
 	public void Save(Employee emp) {
 		
 		
@@ -32,9 +33,11 @@ public class EmpUserService {
 		pegawai.setLastName(emp.getLastName());
 		pegawai.setEmail(emp.getEmail());
 		pegawai.setTitle(emp.getTitle());
-		pegawai.setActive(1);
+		pegawai.setActive(emp.isActive());
 		pegawai.setHaveAccount(emp.isHaveAccount());
 		empDao.save(pegawai);
+		
+		
 		
 		if(emp.getUser() != null) {
 			User user = new User();
@@ -43,8 +46,7 @@ public class EmpUserService {
 			user.setPassword(emp.getUser().getPassword());
 			user.setRoles(emp.getUser().getRoles());
 			user.setRole(emp.getUser().getRole());
-			user.setEmployee(emp.getUser().getEmployee());
-			user.setActive(emp.getUser().getActive());
+			user.setActive(emp.getUser().isActive());
 			
 			userDao.save(user);	
 		}
@@ -71,14 +73,19 @@ public class EmpUserService {
 	public List<Employee> showActiveEmp(Employee emp) {
 		// TODO Auto-generated method stub
 		Employee employee = new Employee();
-		employee.setActive(1);
-		return empDao.showActive(emp);
+		employee.setActive(true);
+		return empDao.showActive(emp); 
 	}
 	
-	
+	 
 	public void inactive(Employee emp) {
 		// TODO Auto-generated method stub
-		emp.setActive(0);
+		emp.setId(emp.getId());
+		emp.setActive(false);
+		emp.setFirstName("  ");
+		emp.setLastName("  ");
+		emp.setHaveAccount(false);
+		
 		empDao.update(emp);
 	}
 	
