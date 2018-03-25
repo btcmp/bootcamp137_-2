@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +28,7 @@ public class EmpUserController {
 	EmpUserService empUserService;
 	
 	@RequestMapping
-	public String index(Model model) {
+	public String index(Model model, Employee empl) {
 		List<Employee> emp = empUserService.empGetAll();
 		model.addAttribute("emp", emp);
 		 
@@ -39,6 +40,9 @@ public class EmpUserController {
 		
 		List<Outlet> outlet = empUserService.outletGetAll();
 		model.addAttribute("outlet", outlet);
+		
+		List<Employee> showActive = empUserService.showActiveEmp(empl);
+		model.addAttribute("showActive", showActive);
 		
 		return "employee";
 	}
@@ -53,6 +57,20 @@ public class EmpUserController {
 	public void saveEmp(@RequestBody Employee emp) {
 		empUserService.Save(emp);
 		//return emp;
+	}
+	
+	//get.one
+	@RequestMapping(value="/get-one/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public Employee getOne(@PathVariable long id) {
+		return empUserService.empGetOne(id);
+	}
+	
+	//SetInactive
+	@RequestMapping(value="/setInactive", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void inactive(@RequestBody Employee emp) {
+		empUserService.inactive(emp);
 	}
 	
 }

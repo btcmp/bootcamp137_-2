@@ -36,7 +36,7 @@
 							
 							<form class="form-validate form-horizontal " id="form-employee" action="${pageContext.request.contextPath }/employee/save-emp"  method="post" action="">
 								<div><input class=" form-control" id="id" type="hidden" /></div>
-								
+								<div><input class=" form-control" id="active" type="hidden" /></div>
 								<div class="form-group ">
 									<label for="fullname" class="control-label col-lg-2">First
 										name <span class="required">*</span>
@@ -158,6 +158,7 @@
 							<table class="table table-striped table-bordered" cellspacing="0"
 								id="order-table">
 								<thead>
+								
 									<tr>
 										<th>Name</th>
 										<th>Email</th>
@@ -165,12 +166,11 @@
 										<th>Outlet Access</th>
 										<th>Role</th>
 										<th>#</th>
-
-
 									</tr>
+								
 								</thead>
 								<tbody>
-									<c:forEach items="${emp }" var="emp">
+									<c:forEach items="${showActive }" var="emp">
 										<!-- //mengambil id barang -->
 										<tr id="#">
 											<td>${emp.firstName } ${emp.lastName }</td>
@@ -178,10 +178,10 @@
 											<td>${emp.haveAccount }</td>
 											<td>#</td>
 											<td>${emp.user.role.roleName }</td>
-											<td><a id="" class="btn-beli btn btn-warning"
-												style="color: white;"> Edit </a>|<a id=""
-												class="btn-beli btn btn-danger" style="color: white;">
-													Delete </a></td>
+											<td><a id="${emp.id }" class="btn-beli btn btn-warning"
+												style="color: white;"> Edit </a>|<a id="${emp.id }"
+												class="btn-set btn btn-danger" style="color: white;">
+													Set As Inactive </a></td>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -199,21 +199,24 @@
 <!-- container section end -->
 
 <!-- Start Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+<div class="modal fade" id="setModal" tabindex="-1" role="dialog"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+				<h5 class="modal-title" id="exampleModalLabel">SET TO INACTIVE USER</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">...</div>
+			<div class="modal-body">
+			<input type="hidden" id="inactive-id">
+			Are You Sure Change this Employee ? 
+			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-primary" id="btn-inactive-emp">Set Inactive</button>
 			</div>
 		</div>
 	</div>
@@ -253,10 +256,12 @@
 
 $(document).ready(function(){
 		
+	
 		//event Listener
 		
 		$('#assign-outlet').on()
 		//on click utk submit via ajax
+		
 		$('#btn-save').click(function(evt){
 			
 			evt.preventDefault();
@@ -264,36 +269,36 @@ $(document).ready(function(){
 			
 			var akun = $("#create-account").is(':checked') ? true : false;
 			var idRole = $('#role').val();
+			var idEmployee = $(this).attr('id');
+			
 			var user = null;
 			
-			
-			if(akun == 1){
+			if(akun == true){
 				user = {
+						
 						username : $('#username').val(),
 						password : $('#password').val(),
 						role : {
 							id : idRole
 						},
+						active : true,
 						
-						employee : {
-							id : $(this).attr('id')
-						}
 						
 				}
 			}
 			var employee = {
+					id : $('#id').val(idEmployee),
 					firstName : $('#first-name').val(),
 					lastName : $('#last-name').val(),
 					email : $('#email').val(),
 					title : $('#title').val(),
-					
 					haveAccount : akun,
 					user : user
 			
 			};
 			
 				
-			console.log(employee);
+			//console.log(employee);
 				
 			//ajax
 				$.ajax({
@@ -311,10 +316,66 @@ $(document).ready(function(){
 						alert('gagal bos');
 					}
 					
-				})
-				
-			 
+				}) 
 		})	
+		
+		//set inactive
+		$(".btn-set").on('click', function(){
+			var id = $(this).attr('id');
+			$('#inactive-id').val(id);
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/employee/get-one/'+id,
+				type : 'GET',
+				
+				success : function(emp){
+					setActive(emp);
+					$('#setModal').modal();
+				}, error : function(mhs){
+					alert('update gagal');
+				},
+				dataType : 'json'
+			});
+			
+			
+		})
+		
+		function setActive(emp){
+			console.log(emp);
+			$('#id').val(emp.id),
+			$('#first-name').val(emp.firstName),
+			$('#last-name').val(emp.lastName),
+			$('#email').val(emp.email),
+			$('#title').val(emp.title)
+			
+		}
+		//btn-inactive
+		$('#btn-inactive-emp').click(function(){
+			var deactive = {
+					id : $('#id').val(),
+					firstName : $('#first-name').val(),
+					lastName : $('#last-name').val(),
+					email : $('#email').val(),
+					title : $('#title').val()
+					
+			}
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/employee/setInactive',
+				type : 'POST',
+				data : JSON.stringify(deactive),
+				contentType : 'application/json',
+				success : function(data){
+					alert("update succeess");
+				}, error : function(){
+					alert("failed to upadte");
+				}
+				
+			}) 
+			
+			console.log(deactive);
+			
+		})
 	});
 </script>
 

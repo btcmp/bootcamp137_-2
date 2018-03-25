@@ -17,4 +17,7 @@ public interface EmployeeDao {
 		//delete
 	public void delete(Employee emp);
 	
+	public List<Employee> showActive(Employee emp);
+	
+	
 }

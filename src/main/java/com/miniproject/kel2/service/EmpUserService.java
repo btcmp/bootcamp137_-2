@@ -44,7 +44,7 @@ public class EmpUserService {
 			user.setRoles(emp.getUser().getRoles());
 			user.setRole(emp.getUser().getRole());
 			user.setEmployee(emp.getUser().getEmployee());
-			user.setActive(1);
+			user.setActive(emp.getUser().getActive());
 			
 			userDao.save(user);	
 		}
@@ -64,6 +64,22 @@ public class EmpUserService {
 		Employee emp = new Employee();
 		emp.setId(id);
 		return empDao.getOne(emp);
+	}
+	
+	
+
+	public List<Employee> showActiveEmp(Employee emp) {
+		// TODO Auto-generated method stub
+		Employee employee = new Employee();
+		employee.setActive(1);
+		return empDao.showActive(emp);
+	}
+	
+	
+	public void inactive(Employee emp) {
+		// TODO Auto-generated method stub
+		emp.setActive(0);
+		empDao.update(emp);
 	}
 	
 	public List<Employee> empGetAll(){
@@ -97,6 +113,9 @@ public class EmpUserService {
 		// TODO Auto-generated method stub
 		return userDao.getOutletAll();
 	}
+
+	
+
 
 
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.miniproject.kel2.model.Employee;
@@ -30,7 +31,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	public void save(Employee emp) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		session.save(emp);
+		session.saveOrUpdate(emp);
 		session.flush();
 	}
 
@@ -54,5 +55,16 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		return session.get(Employee.class, emp.getId());
 	}
 
+	public List<Employee> showActive(Employee emp) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Employee emp where emp.active = 1";
+		List<Employee> empl = session.createQuery(hql).list();
+		
+		if(empl.isEmpty())
+			return null;
+		else
+		return empl;
+	}
 
 }

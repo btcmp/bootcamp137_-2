@@ -96,6 +96,8 @@ public class User {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<HistoryAdjustment> hisAdjustmentsCreated;
 
+	
+	
 	public long getId() {
 		return id;
 	}
