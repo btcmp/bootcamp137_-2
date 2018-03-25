@@ -16,6 +16,9 @@
 			minDate : '-12M',
 			maxDate : 0
 		});
+		
+		$('#list-item').attr('hidden', 'hidden');
+		
 	});
 </script>
 <!-- ==================================================================  BATAS BUAT ISIAN ========================================================================= -->
@@ -114,7 +117,7 @@
 									STOCK</b></u></label>
 						<hr style="line-height: 4px;">
 					</div>
-					<div class="col-lg-12" id="list-item" hidden="hidden">
+					<div class="col-lg-12" id="list-item">
 						<table class="table table-striped table-advance table-hover">
 							<thead>
 								<tr>
@@ -124,7 +127,7 @@
 									<th style="width: 10%;"><center>#</center></th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="isi-item">
 								<tr>
 									<td></td>
 									<td></td>
@@ -187,9 +190,9 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td>contoh</td>
-										<td readonly="readonly">contoh</td>
-										<td><div contenteditable>contoh edit</div></td>
+										<td></td>
+										<td readonly="readonly"></td>
+										<td><div contenteditable="true"><input type="text" id="input-adj-qty"></div></td>
 									</tr>
 								</tbody>
 							</table>
