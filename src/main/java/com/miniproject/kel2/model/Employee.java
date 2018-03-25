@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -62,6 +63,9 @@ public class Employee {
 	
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL)
 	private User user;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<EmpOutlet> empOutlets;
 	
 	@ManyToMany
 	@JoinTable(
@@ -178,6 +182,12 @@ public class Employee {
 	}
 	public void setOutlet(List<Outlet> outlet) {
 		this.outlet = outlet;
+	}
+	public List<EmpOutlet> getEmpOutlets() {
+		return empOutlets;
+	}
+	public void setEmpOutlets(List<EmpOutlet> empOutlets) {
+		this.empOutlets = empOutlets;
 	}
 
 	
