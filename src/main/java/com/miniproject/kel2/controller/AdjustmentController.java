@@ -47,7 +47,7 @@ public class AdjustmentController {
 	
 	@RequestMapping(value="/search-item/{word}", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ItemInventory> searchByItem(@PathVariable String word){
+	public List<ItemInventory> searchByItem(@PathVariable String word){ 
 		List<ItemInventory> inventories = itemInvetoryService.searchByItemAndVariant(word);
 		System.out.println("jumlah search inventory : "+inventories.size());
 		return inventories;
