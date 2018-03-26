@@ -20,5 +20,7 @@ public interface ItemDao {
 	public void saveAtauUpdate(Item item);
 
 	public List<Category> catSelectAll();
+
+	public List<Item> getItemsByCategory(Category category);
 	
 }

@@ -57,15 +57,16 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	// menampilkan pop up create
+	
+	// CREATE NEW OUTLET
 	$('#btn-create').click(function() {
 		$('#modal-create').modal();
 	});
-	// save pada modal create
+	
+	// EXECUTE = SAVE
 	$('#btn-save').on('click', function(evt){
 		evt.preventDefault();
 		var form = $('#target');
-		//var valid =form.parsley().validate();
 			var outlet = {
 					name : $('#input-outletName').val(),
 					address : $('#input-address').val(),
@@ -82,10 +83,8 @@ $(document).ready(function(){
 							id : $('#input-district').val()
 					}
 			}
-			console.log(outlet);
-			//if(valid==true){     
+			console.log(outlet);     
 	
-		 // ajax save
 		  $.ajax({
 				url : '${pageContext.request.contextPath}/outlet/save',
 				type :'POST',
@@ -97,11 +96,10 @@ $(document).ready(function(){
 					alert('saving failed')	
 				}
 		}); 
-			//}
 	}); 
 	
 	
-	// menampilkan pop up edit
+	// EDIT OUTLET
 	$('.btn-edit').click(function() {
 		var id = $(this).attr('id');
 		
@@ -118,6 +116,8 @@ $(document).ready(function(){
 			dataType :'json'
 		});
 	});
+	
+	// SET UP DATA EDIT
 	function setEditOutlet(out){
 		$('#edit-id').val(out.id);
 		$('#edit-outletName').val(out.name);
@@ -130,7 +130,7 @@ $(document).ready(function(){
 		$('#edit-district').val(out.district.id);
 	}
 	
-	// eksekusi edit (btn save)
+	// EXECUTE = SAVE-EDIT
 	$('#btn-save-edit').click(function(){
 		var outlet = {
 				id : $('#edit-id').val(),
@@ -163,6 +163,7 @@ $(document).ready(function(){
 		});
 	});
 	
+	// SELECT PROVINCE
 	// menampilkan region berdasarkan provinsi yang dipilih
 	$('#input-region').attr('disabled', 'disabled');
 	$('#input-district').attr('disabled', 'disabled');
@@ -192,6 +193,7 @@ $(document).ready(function(){
 		}
 	});
 	
+	// SELECT REGION
 	// menampilkan district berdasarkan region yang dipilih
 	$('#input-region').change(function(){
 		var id = $(this).val();
@@ -219,7 +221,14 @@ $(document).ready(function(){
 		}
 	});
 	
-	
+
+ 	// SEARCH
+ 	$('#btn-search').on('click', function(){
+		var word =$('#search').val();
+		window.location="${pageContext.request.contextPath}/outlet/search?search="+word;
+ 	});
+ 	
+ 	
 });
 		
 </script>
@@ -241,16 +250,19 @@ $(document).ready(function(){
 						<header class="panel-heading"> Outlets </header>
 						<div class="panel-body">
 						<div class="row">
-						<div class="col-lg-10" style="margin-bottom: 10px;">
+						<div class="col-lg-3" style="margin-bottom: 10px;">
 								<ul class="nav top-menu">
 										<li>
 											<form class="navbar-form">
-													<input class="form-control" placeholder="Search" type="text">
+													<input class="form-control" id="search" placeholder="Search" type="text">
 											</form>
 										</li>
 								</ul>
 						</div>
-						<div class="col-lg-2" style="margin-bottom: 10px;">
+						<div class="col-lg-8" style="margin-bottom: 10px;">
+								<button type="button" class="btn btn-primary" id="btn-search"> Search</button>
+						</div>
+						<div class="col-lg-1" style="margin-bottom: 10px;">
 								<button type="button" class="btn btn-primary" id="btn-create">Create</button>
 						</div>
 

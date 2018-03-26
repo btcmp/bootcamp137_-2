@@ -54,16 +54,17 @@ public class OutletDaoImpl implements OutletDao{
 		session.flush();
 	}
 
-	/*public List<Outlet> searchByName(String search) {
+	// untuk search
+	public List<Outlet> searchByName(String search) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from Outlet o where lower(o.search) like lower(nameOutlet)";
-		List<Outlet> outlets = session.createQuery(hql).setParameter("nameOutlet", "%"+search+"%").list();
+		String hql = "from Outlet out where lower(out.name) like :outname";
+		List<Outlet> outlets = session.createQuery(hql).setParameter("outname", "%"+search.toLowerCase()+"%").list();
 		if(outlets.isEmpty()) {
 			return null;
 		} else {
 			return outlets;
 		}
-	}*/
+	}
 
 }

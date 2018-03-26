@@ -42,8 +42,8 @@ public class OutletService {
 		outletDao.saveAtauUpdate(outlet);
 	}
 	
-	/*public List<Outlet> searchByName(String search){
+	public List<Outlet> searchByName(String search){
 		return outletDao.searchByName(search);
-	}*/
+	}
 	
 }

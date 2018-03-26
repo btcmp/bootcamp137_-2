@@ -68,6 +68,7 @@
 			var uprice  = $('#input-uprice').val();
 			var sku  = $('#input-sku').val();
 			var beginning = $('#input-beginning').val();
+			var alert = $('#input-alertat').val();
 			
 			var variant = {
 				name : varname,
@@ -75,40 +76,82 @@
 				sku : sku
 			};
 			var inventory = {
-				beginning : $('#input-beginning').val()
+				beginning : $('#input-beginning').val(),
+				alertAtQty : $('#input-alertat').val()
 			};
 			
-			var add = "<tr><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + 
-					  "</td><td><a class='btn-edit' href='#'> Edit</a><button type='button' class='btn btn-danger'> X </button></td></tr>";
+			var add = "<tr><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + "</td><td>" + alert +
+					  "</td><td><a class='btn-edit' href='#'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
 			$("#tbody-addvar").append(add);
-		}); 
-		
-		// mengambil nilai untuk edit add variant
-		$(document).on('click', '.btn-edit', function(){
-			var element = $(this).parent().parent().find("td");
-			var varname = element.eq(0);
-			var uprice = element.eq(1);
-			var sku = element.eq(2);
-			var beginning = element.eq(3);
 			
-			var variant = {
-				name : varname.text(),
-				price : uprice.text(),
-				sku : sku.text(),
-				active : 0
-			};
-			console.log(variant);
-			$('#modalEdit').modal();
-				/* $('#edit-varname').val();
-				$('#edit-uprice').val();
-				$('#edit-sku').val(); */
-				
-				/* var varname  = $('#edit-varname').val();
-				var uprice  = $('#edit-uprice').val();
-				var sku  = $('#edit-sku').val(); */
-				
 		});
-	
+		
+		/* $('#btn-save').on('click', function(evt){
+
+		} */
+		
+		
+		$('#btn-save').on('click', function(evt){
+			evt.preventDefault();
+			var form = $('#target').val();
+			var variant = [];
+			var inventory = [];
+				var item = {
+						name : $('#input-item-name').val(),
+						category : {
+								id : $('#input-category').val()
+						}
+				};
+				var variant = {
+						price : $('#input-uprice').val()
+				};
+				var inventory = {
+						beginning : $('#input-beginning').val(),
+						alertAtQty : $('#input-alertat').val()
+				}
+		
+				
+				console.log(item);
+				
+				$.ajax({
+					url : '${pageContext.request.contextPath}/item/save',
+					type :'POST',
+					data : JSON.stringify(item),
+					contentType : 'application/json',
+					success: function(data){
+					window.location='${pageContext.request.contextPath}/item';
+					}, error : function(){
+						alert('saving failed')	
+					}
+				});
+		});
+				
+			
+		// mengambil nilai untuk edit add variant
+		/* $('.btn-edit').click(function(){
+			var id = $(this).attr('id');
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/item/get-one/'+id,
+				type :'GET',
+				success: function(item){
+					setEditOutlet(item);
+					$('#modal-edit').modal();
+				},
+				error : function(){
+					alert('failed update')	
+				},
+				dataType :'json'
+			})
+		});	
+		
+		// SET UP DATA EDIT
+		function setEditItem(item){
+			$('#edit-id').val(out.id);
+			$('#edit-outletName').val(out.name);
+			$('#edit-address').val(out.address);
+		} */
+		
 	});
 </script>
 </head>
@@ -165,8 +208,8 @@
 												<div class="modal-body">
 													<div id="input">
 														<input class="col-lg-4" type="image" id="myimage"
-															src="gambar-baju.jpg" style="width: 100px; height: 60px;" />
-														<input class="col-lg-8" type="text" style="margin-bottom: 10px;" placeholder="Item Name">
+															src="resources/gambar-item/gambar-hp.jpg" style="width: 100px; height: 60px;">
+														<input class="col-lg-8" type="text" style="margin-bottom: 10px;" id="input-item-name" placeholder="Item Name">
 														<select class="col-lg-8" type="text" path="category.id" class="form-control" id="input-category" >
 															<c:forEach var="cat" items="${cats}">
 																<option value="${cat.id}">${cat.name}</option>
@@ -176,7 +219,7 @@
 													<div style = "clear:both;"></div>
 
 													<div class="col-lg-8" style="margin-bottom: 10px;">
-														<h5>Variant</h5>
+														<h5><b>Variant</b></h5>
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
 														<button type="button" class="btn btn-primary"
@@ -211,7 +254,7 @@
 														<button type="button" class="btn btn-primary">Cancel</button>
 													</div>
 													<div class="col-lg-5">
-														<button type="button" class="btn btn-primary">Save</button>
+														<button type="button" id="btn-save" class="btn btn-primary">Save</button>
 													</div>
 												</div>
 											 </form>
@@ -247,15 +290,15 @@
 													</div>
 													<div class="hr" style="margin-left: 20px;">
 														<hr>
-														Set Beginning Stock
+														<b>Set Beginning Stock</b>
 														</hr>
 													</div>
 
 													<div class="col-lg-6" style="margin-bottom: 10px;">
-														<input type="text" id=input-beginning" placeholder="Beginning Stock">
+														<input type="text" id="input-beginning" placeholder="Beginning Stock">
 													</div>
 													<div class="col-lg-6" style="margin-bottom: 10px;">
-														<input type="text" id="input-alertart" placeholder="Alert At">
+														<input type="text" id="input-alertat" placeholder="Alert At">
 													</div>
 
 
@@ -281,7 +324,8 @@
 
 
 								<!-- ============================ TABLE ============================= -->
-								<table class="table table-bordered">
+								<table id="tbl-item" class="table table-bordered">
+								
 									<thead>
 										<tr>
 											<th>Name</th>
@@ -302,7 +346,7 @@
 											<td><a href="" data-toggle="modal"data-target="#modalEdit2"> Edit </a> 
 												
 									<!-- ============================================= Modal EDIT =========================================-->
-												<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
+												<div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
 													<div class="modal-dialog" role="document">
 														<div class="modal-content">
 															<div class="modal-header">

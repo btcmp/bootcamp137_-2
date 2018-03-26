@@ -1,36 +1,29 @@
 package com.miniproject.kel2.model;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
+public class TransferStockDetail {
 
-@Entity
-@Table (name="CATEGORY_MP")
-public class Category {
-	public Category() {
+	public TransferStockDetail() {
 		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(nullable=false)
 	private long id;
-	@Column(nullable=false, length=50)
-	private String name;
+	@Column(name="in_stock")
+	private int inStock;
+	@Column(name="transfer_qty", nullable=false)
+	private int transferQty;
 	@Column(name="created_by")
 	private long createdBy;
 	@Temporal(TemporalType.DATE)
@@ -41,35 +34,44 @@ public class Category {
 	@Temporal(TemporalType.DATE)
 	@Column(name="modified_on")
 	private Date modifiedOn;
-	@Column(nullable=false)
-	private boolean active;
 	
-	@Transient // tidak ditampilkan di database
-	private int itemStock;
+	/*@ManyToOne
+	public TransferStock transferStock;
 	
+	@ManyToOne
+	public ItemVariant itemVariant;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Item> items;
-	
-	public List<Item> getItems() {
-		return items;
+	public TransferStock getTransferStock() {
+		return transferStock;
 	}
-	public void setItems(List<Item> items) {
-		this.items = items;
+	public void setTransferStock(TransferStock transferStock) {
+		this.transferStock = transferStock;
 	}
 	
-	
+	public ItemVariant getItemVariant() {
+		return itemVariant;
+	}
+	public void setItemVariant(ItemVariant itemVariant) {
+		this.itemVariant = itemVariant;
+	}
+	*/
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public int getInStock() {
+		return inStock;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setInStock(int inStock) {
+		this.inStock = inStock;
+	}
+	public int getTransferQty() {
+		return transferQty;
+	}
+	public void setTransferQty(int transferQty) {
+		this.transferQty = transferQty;
 	}
 	public long getCreatedBy() {
 		return createdBy;
@@ -95,19 +97,6 @@ public class Category {
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	public int getItemStock() {
-		return itemStock;
-	}
-	public void setItemStock(int itemStock) {
-		this.itemStock = itemStock;
-	}
-	
 	
 	
 }

@@ -89,6 +89,5 @@ public class CategoryDaoImpl implements CategoryDao{
 			return cats;
 		}
 	}
-	
-	
+		
 }

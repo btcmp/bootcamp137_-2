@@ -32,6 +32,14 @@ public class CategoryController {
 		model.addAttribute("cats", cats);
 		return "category";
 	}
+	
+	@RequestMapping(value="/search", method=RequestMethod.GET)
+	public String indexBySearch(@RequestParam(value="search", defaultValue="") String search, Model model) {
+		List<Category> cats = categoryService.getCategoryBySearchName(search);
+		model.addAttribute("cats", cats);
+		System.out.println("search : " + cats.size());
+		return "category";
+	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
@@ -63,12 +71,6 @@ public class CategoryController {
 		categoryService.delete(id);
 	}
 	
-	@RequestMapping(value="/search", method=RequestMethod.GET)
-	public String indexBySearch(@RequestParam(value="search", defaultValue="") String search, Model model) {
-		List<Category> cats = categoryService.getCategoryBySearchName(search);
-		model.addAttribute("cats", cats);
-		System.out.println("search : " + search);
-		return "category";
-	}
+	
 	
 }

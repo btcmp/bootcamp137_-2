@@ -62,4 +62,15 @@ public class ItemDaoImpl implements ItemDao{
 		return session.createCriteria(Category.class).list();
 	}
 
+	public List<Item> getItemsByCategory(Category category) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Item i where i.category = :category";
+		List<Item> items = session.createQuery(hql).setParameter("category", category).list();
+		if(items.isEmpty()) {
+			return null;
+		}
+		return items;
+	}
+
 }

@@ -42,6 +42,8 @@
 				<value>com.miniproject.kel2.model.DetailAdjustment</value>
 				<value>com.miniproject.kel2.model.HistoryAdjustment</value>
 				<value>com.miniproject.kel2.model.EmpOutlet</value>
+				<value>com.miniproject.kel2.model.TransferStock</value>
+				<value>com.miniproject.kel2.model.TransferStockDetail</value>
 				
 			</list>
 		</property>

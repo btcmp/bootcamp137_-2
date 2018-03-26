@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.kel2.dao.ItemDao;
+import com.miniproject.kel2.dao.ItemInventoryDao;
+import com.miniproject.kel2.dao.ItemVariantDao;
 import com.miniproject.kel2.model.Category;
 import com.miniproject.kel2.model.Item;
+import com.miniproject.kel2.model.ItemInventory;
+import com.miniproject.kel2.model.ItemVariant;
 
 @Service
 @Transactional
@@ -17,8 +21,49 @@ public class ItemService {
 	@Autowired
 	ItemDao itemDao;
 	
+	@Autowired
+	ItemVariantDao itemVariantDao;
+	
+	@Autowired
+	ItemInventoryDao itemInventoryDao;
+	
 	public void save(Item item) {
+		List <ItemVariant> itemVariants = item.getItemVariants();
+		item.setItemVariants(null);
 		itemDao.save(item);
+		
+		// object itemVariant
+		for(ItemVariant itemVariant : itemVariants) {
+			List <ItemInventory> itemInventories = itemVariant.getItemInventories();
+			itemVariant.setItemInventories(null);
+			itemVariant.setItem(item);
+			itemVariantDao.save(itemVariant);
+		
+			// object itemInventory
+			for(ItemInventory itemInventory : itemInventories) {
+				itemInventory.setItemVariant(itemVariant);
+				itemInventoryDao.save(itemInventory);
+			}
+		}
+		
+		
+		/*Item itm = new Item();
+		itm.setName(item.getName());
+		itm.setCategory(item.getCategory());
+		itemDao.save(itm);
+		
+		// Object Item Variant
+		for (ItemVariant variant : item.getItemVariants()) {
+			ItemVariant iVar = new ItemVariant ();
+			iVar.setName(variant.getName());
+			iVar.setPrice(variant.getPrice());
+			iVar.setSku(variant.getSku());
+			iVar.setItem(itm);
+			itemVariantDao.save(iVar);
+		}
+		
+		// Object Item Inventory
+		for (ItemInventory inventory : variant.get)*/
 	}
 	
 	public List<Item> selectAll(){

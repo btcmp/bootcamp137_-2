@@ -14,13 +14,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 
 @Entity
-@Table (name="CATEGORY_MP")
-public class Category {
-	public Category() {
+@Table (name="TRANSFER_STOCK_MP")
+public class TransferStock {
+
+	public TransferStock() {
 		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
@@ -29,8 +28,14 @@ public class Category {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(nullable=false)
 	private long id;
-	@Column(nullable=false, length=50)
-	private String name;
+	@Column(name="from_outlet", nullable=false)
+	private long fromOutlet;
+	@Column(name="to_outlet", nullable=false)
+	private long toOutlet;
+	@Column(length=255)
+	private String notes;
+	@Column(length=20, nullable=false)
+	private String status;
 	@Column(name="created_by")
 	private long createdBy;
 	@Temporal(TemporalType.DATE)
@@ -41,23 +46,16 @@ public class Category {
 	@Temporal(TemporalType.DATE)
 	@Column(name="modified_on")
 	private Date modifiedOn;
-	@Column(nullable=false)
-	private boolean active;
 	
-	@Transient // tidak ditampilkan di database
-	private int itemStock;
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "transferStock", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<TransferStockDetail> tsDetails;
 	
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Item> items;
-	
-	public List<Item> getItems() {
-		return items;
+	public List<TransferStockDetail> getTsDetails() {
+		return tsDetails;
 	}
-	public void setItems(List<Item> items) {
-		this.items = items;
-	}
-	
+	public void setTsDetails(List<TransferStockDetail> tsDetails) {
+		this.tsDetails = tsDetails;
+	}*/
 	
 	public long getId() {
 		return id;
@@ -65,11 +63,29 @@ public class Category {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public long getFromOutlet() {
+		return fromOutlet;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setFromOutlet(long fromOutlet) {
+		this.fromOutlet = fromOutlet;
+	}
+	public long getToOutlet() {
+		return toOutlet;
+	}
+	public void setToOutlet(long toOutlet) {
+		this.toOutlet = toOutlet;
+	}
+	public String getNotes() {
+		return notes;
+	}
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public long getCreatedBy() {
 		return createdBy;
@@ -95,19 +111,6 @@ public class Category {
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	public int getItemStock() {
-		return itemStock;
-	}
-	public void setItemStock(int itemStock) {
-		this.itemStock = itemStock;
-	}
-	
 	
 	
 }

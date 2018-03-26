@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -77,12 +78,12 @@ public class OutletController {
 		outletService.delete(out);
 	}
 	
-	/*@RequestMapping(value = "/search/", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public List<Outlet> searchByName(@PathVariable String search){
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String indexBySearch(@RequestParam(value="search", defaultValue="") String search, Model model){
 		List<Outlet> outlets = outletService.searchByName(search);
-		System.out.println(outlets);
-		return outlets;
-	}*/
+		model.addAttribute("outlets", outlets);
+		System.out.println("search : " + search);
+		return "outlet";
+	}
 	
 }
