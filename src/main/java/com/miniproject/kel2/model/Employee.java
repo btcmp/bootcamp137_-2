@@ -18,7 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
+ 
 @Entity
 @Table(name="employee_mp")
 public class Employee {
