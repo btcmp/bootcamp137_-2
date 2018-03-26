@@ -18,7 +18,8 @@ public interface OutletDao {
 	
 	public void saveAtauUpdate(Outlet outlet);
 	
-	// search outlet by name
+	public Outlet getOneId(long id);
+	
 	public List<Outlet> searchByName(String search);
 	
 }

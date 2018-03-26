@@ -1,5 +1,6 @@
 package com.miniproject.kel2.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.miniproject.kel2.dao.EmployeeDao;
 import com.miniproject.kel2.dao.UserDao;
 import com.miniproject.kel2.dao.EmpoutDao;
+import com.miniproject.kel2.dao.OutletDao;
 import com.miniproject.kel2.model.EmpOutlet;
 import com.miniproject.kel2.model.Employee;
 import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
+
+import javassist.compiler.ast.ArrayInit;
 
 @Service
 @Transactional
@@ -28,9 +32,23 @@ public class EmpUserService {
 	@Autowired
 	EmpoutDao	empoutDao;
 	
+	@Autowired
+	OutletDao outletDao;
+	
 	
 	public void Save(Employee emp) {
 		
+		//many to many
+		emp.setOutlet(getAssignedOutlet(emp.getOutlet()));
+		if(emp.getUser() != null) {
+			emp.getUser().setEmployee(emp);
+		}
+		
+		empDao.save(emp);
+		
+		//yang pake one to many
+		
+		/*User user = new User();
 		
 		Employee pegawai = new Employee();
 		pegawai.setId(emp.getId());
@@ -40,6 +58,10 @@ public class EmpUserService {
 		pegawai.setTitle(emp.getTitle());
 		pegawai.setActive(emp.isActive());
 		pegawai.setHaveAccount(emp.isHaveAccount());
+		pegawai.setEmpOutlets(emp.getEmpOutlets());
+		//pegawai.setOutlet(getAssignedOutlet(emp.getOutlet()));
+		pegawai.setUser(user);
+		
 		empDao.save(pegawai);
 		
 		
@@ -54,7 +76,6 @@ public class EmpUserService {
 		}
 		
 		if(emp.getUser() != null) {
-			User user = new User();
 			user.setEmployee(pegawai);
 			user.setUsername(emp.getUser().getUsername());
 			user.setPassword(emp.getUser().getPassword());
@@ -64,11 +85,26 @@ public class EmpUserService {
 			
 			userDao.save(user);	
 		}
+		*/
+		
+		
 		
 		
 		
 	}
 	
+	private List<Outlet> getAssignedOutlet(List<Outlet> outlet) {
+		// TODO Auto-generated method stub
+		
+		List<Outlet> listOutlet = new ArrayList<Outlet>();
+		
+		for(int i = 0; i < outlet.size(); i++) {
+			listOutlet.add(outletDao.getOneId(outlet.get(i).getId()));
+		}
+		return listOutlet;
+	}
+	
+
 	public void empUpdate(Employee emp) {
 		empDao.update(emp);
 	}
@@ -99,15 +135,17 @@ public class EmpUserService {
 	 
 	public void inactive(Employee emp) {
 		// TODO Auto-generated method stub
-		Employee empl = new Employee();
 		
-		empl.setId(emp.getId());
-		empl.setActive(false);
-		empl.setFirstName("  ");
-		empl.setLastName("  ");
-		empl.setHaveAccount(false);
 		
-		empDao.update(empl);
+		emp.setId(emp.getId());
+		emp.setActive(false);
+		emp.setFirstName("sdhjkf");
+		emp.setLastName("daskl");
+		emp.setHaveAccount(emp.isHaveAccount());
+		emp.setActive(emp.isActive());
+		emp.setEmail(emp.getEmail());
+		emp.setTitle(emp.getTitle());
+		empDao.update(emp); 
 	}
 	
 	public List<Employee> empGetAll(){

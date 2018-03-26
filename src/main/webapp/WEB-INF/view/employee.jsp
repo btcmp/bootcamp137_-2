@@ -177,8 +177,12 @@
 										<tr id="#">
 											<td>${emp.firstName } ${emp.lastName }</td>
 											<td>${emp.email }</td>
-											<td>${emp.haveAccount }</td>
-											<td>#</td>
+											<td> <input type="checkbox" <c:if test="${emp.haveAccount == true}">checked</c:if> disabled />   </td>
+											<td>
+												<c:forEach items="${emp.outlet }" var="out">
+													<c:out value="${out.name }, "></c:out> 
+												</c:forEach>
+											</td>
 											<td>${emp.user.role.roleName }</td>
 											<td><a id="${emp.id }" class="btn-beli btn btn-warning"
 												style="color: white;"> Edit </a>|<a id="${emp.id }"
@@ -216,6 +220,7 @@
 			<input type="hidden" id="inactive-id">
 			Are You Sure Change this Employee ? 
 			</div>
+			<div><input type="hidden" id="input-id"></div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary" id="btn-inactive-emp">Set Inactive</button>
@@ -239,14 +244,28 @@
 				</button>
 			</div>
 			<div class="modal-body">
+			<div class="table">
+			
+				<table class="table basic-table">
+				<tbody id="list-outlet">
 				<c:forEach items = "${outlet }" var="out">
-					<label>${out.name } <span>
-					<input type="checkbox" class="form-control" value="${out.id }" id="outlet"/> </span></label>
-				</c:forEach>
+						<tr>
+							<td>
+							<input class = "form-control" type="checkbox" class="form-control" value="${out.id }" id="outlet"/>
+							${out.name }
+							</td> 
+						<td>
+					</tr>
+					</c:forEach>
+				</tbody>
+				</table>
+				
+				
+			</div>
+				
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-primary" id="select-outlet">Save changes</button>
 			</div>
 		</div>
 	</div>
@@ -261,11 +280,39 @@ $(document).ready(function(){
 		//event Listener
 		//on click utk submit via ajax
 		
+		$('#select-outlet').on('click', function(){
+    	var listOutlet=[];
+	    	$('#list-outlet').find('input[type="checkbox"]:checked').each(function(){
+	    		var eo = {
+	    			id : $("#outlet").val()
+	    			};
+	    		listOutlet.push(eo);
+	    	});
+	    	
+	    	
+	    	console.log(JSON.stringify(listOutlet));
+	    	$('#btn-save').attr('listOutlet',JSON.stringify(listOutlet));
+	    	$('#assign-modal').modal('hide');
+	    });
+		
+		
 		$('#btn-save').click(function(evt){
 			evt.preventDefault();
 			alert('testing');
-						
-			var eo = [];
+			
+			var akun = $("#create-account").is(':checked') ? true : false;
+			var idRole = $('#role').val();
+			
+			var user = null;	
+			
+			try{
+	    		var listOutlet = JSON.parse($(this).attr('listOutlet'));
+	    	} catch (ex){
+	    		console.error(ex);
+	    	}
+			
+	    	
+	    	var eo = [];
 			$('#outlet:checked').each(function(){
 				var empOut = {
 						outlet : {
@@ -274,12 +321,6 @@ $(document).ready(function(){
 				}
 				eo.push(empOut);
 			})
-			
-			
-			var akun = $("#create-account").is(':checked') ? true : false;
-			var idRole = $('#role').val();
-			
-			var user = null;	
 			
 			
 			if(akun == true){
@@ -301,7 +342,10 @@ $(document).ready(function(){
 					haveAccount : akun,
 					active : true,
 					user : user,
-					empOutlets : eo
+					/* empOutlets : eo,
+					 */
+					 outlet : listOutlet
+					
 			
 			};
 			
@@ -326,74 +370,48 @@ $(document).ready(function(){
 					
 				}); 
 		});
-		
-		function setActive(emp){
-			console.log(emp);
-			$('#id').val(emp.id),
-			$('#first-name').val(emp.firstName),
-			$('#last-name').val(emp.lastName),
-			$('#email').val(emp.email),
-			$('#title').val(emp.title)
-		
-			if($('create-account').val(emp.haveAccount) == true){
-				$('#create-account').prop('checked',  true),
-				$('#username').val(emp.user.username),
-				$('#password').val(emp.user.password),
-				$('#role').val(emp.user.roles.id)
-				
-			};
-		};
+		/*  end save function */
 		
 		
-		$(".btn-set").on('click', function(){
+		/* inactive function */
+			//show modal
+		$(".btn-set").click(function(evt){
+			evt.preventDefault();
 			var id = $(this).attr('id');
-			$('#inactive-id').val(id);
 			
-			$.ajax({
-				url : '${pageContext.request.contextPath}/employee/get-one/'+id,
-				type : 'GET',
-				dataType : 'json',
-				
-				success : function(emp){
-					setActive(emp);
-					$('#setModal').modal();
-				}, error : function(mhs){
-					alert('update gagal');
-				}
-			});
-			
-			
+			console.log(id);
+			$('#input-id').val(id);
+			$('#setModal').modal('show');
 		});
 		
-		
-		
-		//btn-inactive
-		/* $('#btn-inactive-emp').click(function(){
-			var id = $(this).attr('id');
-			$('#inactive-id').val(id);
-			var user = null;
-			
-			var deactive = {
+		/* set to inactive */
+		$("#btn-inactive-emp").on('click', function(){
+			var inactive = {
+					id : $('#input-id').val(),
+					
 					active : false
-					
-					
 			}
 			
-			console.log(deactive);
-			
+			console.log(inactive);
 			$.ajax({
 				url : '${pageContext.request.contextPath}/employee/setInactive',
 				type : 'POST',
+				data : JSON.stringify(inactive),
 				contentType : 'application/json',
-				data : JSON.stringify(deactive),
 				
 				success : function(data){
-					alert("update succeess");
-				}, error : function(){
-					alert("failed to upadte");
-				} 
-			}) 
-		})  */
+					alert('sukses deactive');
+				}, error : function(data){
+					alert('failed deactivated employee');
+				}
+				
+			});
+		});
+		/* end deactivate employee */
+		
+		
+		
+	
 	});
 </script>
 

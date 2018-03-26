@@ -66,7 +66,7 @@ public class Employee {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="employee", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<EmpOutlet> empOutlets;
 	
-	@ManyToMany
+	@ManyToMany( cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinTable(
 			name = "employee_outlet",
 			joinColumns={@JoinColumn(name="employee_id")},

@@ -63,7 +63,8 @@ public class EmpUserController {
 	@RequestMapping(value="/get-one/{id}", method=RequestMethod.GET)
 	@ResponseBody
 	public Employee getOne(@PathVariable long id) {
-		return empUserService.empGetOne(id);
+		Employee emp = empUserService.empGetOne(id);
+		return emp;
 	}
 	
 	//SetInactive
