@@ -258,99 +258,29 @@
 
 $(document).ready(function(){
 		
-	
 		//event Listener
-	//set inactive
-	$(".btn-set").on('click', function(){
-		var id = $(this).attr('id');
-		$('#inactive-id').val(id);
-		
-		$.ajax({
-			url : '${pageContext.request.contextPath}/employee/get-one/'+id,
-			type : 'GET',
-			
-			success : function(emp){
-				setActive(emp);
-				$('#setModal').modal();
-			}, error : function(mhs){
-				alert('update gagal');
-			},
-			dataType : 'json'
-		});
-		
-		
-	})
-	
-	function setActive(emp){
-		console.log(emp);
-		$('#id').val(emp.id),
-		$('#first-name').val(emp.firstName),
-		$('#last-name').val(emp.lastName),
-		$('#email').val(emp.email),
-		$('#title').val(emp.title)
-	
-		if($('create-account').val(emp.haveAccount) == true){
-			$('#create-account').prop('checked',  true),
-			$('#username').val(emp.user.username),
-			$('#password').val(emp.user.password),
-			$('#role').val(emp.user.roles.id)
-			
-		}
-		
-		
-	}
-	//btn-inactive
-	$('#btn-inactive-emp').click(function(){
-		var id = $(this).attr('id');
-		$('#inactive-id').val(id);
-		var user = null;
-		
-		var deactive = {
-				id : $('#id').val(),
-				firstName : $('#first-name').val(),
-				lastName : $('#last-name').val(),
-				email : $('#email').val(),
-				title : $('#title').val(),
-				haveAccount : akun,
-				active : true
-				
-				
-		}
-		
-		console.log(deactive);
-		
-		$.ajax({
-			url : '${pageContext.request.contextPath}/employee/setInactive',
-			type : 'POST',
-			/* contentType : 'application/json',
-			data : JSON.stringify(deactive), */
-			
-			success : function(data){
-				alert("update succeess");
-			}, error : function(){
-				alert("failed to upadte");
-			},
-			dataType : 'json', 
-		}) 
-		
-		
-	})
-		
-		
-		
 		//on click utk submit via ajax
 		
 		$('#btn-save').click(function(evt){
 			evt.preventDefault();
 			alert('testing');
+						
+			var eo = [];
+			$('#outlet:checked').each(function(){
+				var empOut = {
+						outlet : {
+							id : $(this).val()
+						}
+				}
+				eo.push(empOut);
+			})
 			
-			var id = $('#id').val();
-			console.log(id);
 			
 			var akun = $("#create-account").is(':checked') ? true : false;
 			var idRole = $('#role').val();
 			
-			var user = null;
+			var user = null;	
+			
 			
 			if(akun == true){
 				user = {
@@ -370,7 +300,8 @@ $(document).ready(function(){
 					title : $('#title').val(),
 					haveAccount : akun,
 					active : true,
-					user : user
+					user : user,
+					empOutlets : eo
 			
 			};
 			
@@ -393,10 +324,76 @@ $(document).ready(function(){
 						alert('gagal bos');
 					}
 					
-				}) 
-		})	
+				}); 
+		});
+		
+		function setActive(emp){
+			console.log(emp);
+			$('#id').val(emp.id),
+			$('#first-name').val(emp.firstName),
+			$('#last-name').val(emp.lastName),
+			$('#email').val(emp.email),
+			$('#title').val(emp.title)
+		
+			if($('create-account').val(emp.haveAccount) == true){
+				$('#create-account').prop('checked',  true),
+				$('#username').val(emp.user.username),
+				$('#password').val(emp.user.password),
+				$('#role').val(emp.user.roles.id)
+				
+			};
+		};
 		
 		
+		$(".btn-set").on('click', function(){
+			var id = $(this).attr('id');
+			$('#inactive-id').val(id);
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/employee/get-one/'+id,
+				type : 'GET',
+				dataType : 'json',
+				
+				success : function(emp){
+					setActive(emp);
+					$('#setModal').modal();
+				}, error : function(mhs){
+					alert('update gagal');
+				}
+			});
+			
+			
+		});
+		
+		
+		
+		//btn-inactive
+		/* $('#btn-inactive-emp').click(function(){
+			var id = $(this).attr('id');
+			$('#inactive-id').val(id);
+			var user = null;
+			
+			var deactive = {
+					active : false
+					
+					
+			}
+			
+			console.log(deactive);
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/employee/setInactive',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(deactive),
+				
+				success : function(data){
+					alert("update succeess");
+				}, error : function(){
+					alert("failed to upadte");
+				} 
+			}) 
+		})  */
 	});
 </script>
 

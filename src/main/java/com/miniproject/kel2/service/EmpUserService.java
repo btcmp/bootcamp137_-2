@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.kel2.dao.EmployeeDao;
 import com.miniproject.kel2.dao.UserDao;
+import com.miniproject.kel2.dao.EmpoutDao;
+import com.miniproject.kel2.model.EmpOutlet;
 import com.miniproject.kel2.model.Employee;
 import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.Role;
@@ -22,6 +24,9 @@ public class EmpUserService {
 	
 	@Autowired
 	UserDao userDao;
+	
+	@Autowired
+	EmpoutDao	empoutDao;
 	
 	
 	public void Save(Employee emp) {
@@ -38,6 +43,15 @@ public class EmpUserService {
 		empDao.save(pegawai);
 		
 		
+		if(emp.getEmpOutlets() != null) {
+			for(EmpOutlet empout : emp.getEmpOutlets()) {
+				EmpOutlet eo = new EmpOutlet();
+				eo.setEmployee(pegawai);
+				eo.setOutlet(empout.getOutlet());
+				
+				empoutDao.save(eo);
+			}
+		}
 		
 		if(emp.getUser() != null) {
 			User user = new User();
@@ -52,6 +66,7 @@ public class EmpUserService {
 		}
 		
 		
+		
 	}
 	
 	public void empUpdate(Employee emp) {
@@ -64,7 +79,11 @@ public class EmpUserService {
 	
 	public Employee empGetOne(long id) {
 		Employee emp = new Employee();
-		emp.setId(id);
+		emp.setId(emp.getId());
+		emp.setActive(true);
+		emp.setFirstName("sbka");
+		emp.setLastName("cnsalk");
+		emp.setHaveAccount(true);
 		return empDao.getOne(emp);
 	}
 	
@@ -80,13 +99,15 @@ public class EmpUserService {
 	 
 	public void inactive(Employee emp) {
 		// TODO Auto-generated method stub
-		emp.setId(emp.getId());
-		emp.setActive(false);
-		emp.setFirstName("  ");
-		emp.setLastName("  ");
-		emp.setHaveAccount(false);
+		Employee empl = new Employee();
 		
-		empDao.update(emp);
+		empl.setId(emp.getId());
+		empl.setActive(false);
+		empl.setFirstName("  ");
+		empl.setLastName("  ");
+		empl.setHaveAccount(false);
+		
+		empDao.update(empl);
 	}
 	
 	public List<Employee> empGetAll(){
