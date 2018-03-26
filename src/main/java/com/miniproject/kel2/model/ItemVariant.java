@@ -58,8 +58,15 @@ public class ItemVariant {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="variantId", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<DetailAdjustment> detAdjustments;
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="itemVariant", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<TransferStockDetail> tsDetails;
 	
-	
+	public List<TransferStockDetail> getTsDetails() {
+		return tsDetails;
+	}
+	public void setTsDetails(List<TransferStockDetail> tsDetails) {
+		this.tsDetails = tsDetails;
+	}
 	public List<DetailAdjustment> getDetAdjustments() {
 		return detAdjustments;
 	}

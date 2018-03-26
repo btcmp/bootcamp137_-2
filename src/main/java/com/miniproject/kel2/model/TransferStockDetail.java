@@ -3,13 +3,17 @@ package com.miniproject.kel2.model;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+@Entity
+@Table(name="TRANSFER_STOCK_DETAIL_MP")
 public class TransferStockDetail {
 
 	public TransferStockDetail() {
@@ -35,7 +39,7 @@ public class TransferStockDetail {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 	
-	/*@ManyToOne
+	@ManyToOne
 	public TransferStock transferStock;
 	
 	@ManyToOne
@@ -54,7 +58,7 @@ public class TransferStockDetail {
 	public void setItemVariant(ItemVariant itemVariant) {
 		this.itemVariant = itemVariant;
 	}
-	*/
+	
 	public long getId() {
 		return id;
 	}

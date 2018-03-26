@@ -47,7 +47,7 @@ public class TransferStock {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 	
-	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "transferStock", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "transferStock", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TransferStockDetail> tsDetails;
 	
 	public List<TransferStockDetail> getTsDetails() {
@@ -55,7 +55,7 @@ public class TransferStock {
 	}
 	public void setTsDetails(List<TransferStockDetail> tsDetails) {
 		this.tsDetails = tsDetails;
-	}*/
+	}
 	
 	public long getId() {
 		return id;
