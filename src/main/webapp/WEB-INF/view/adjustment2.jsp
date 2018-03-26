@@ -17,7 +17,37 @@
 			maxDate : 0
 		});
 		
+		$('#list-adjustment').attr('hidden', 'hidden');
 		$('#list-item').attr('hidden', 'hidden');
+		
+		//search item in add item
+		$('#search-item').on('input', function(){
+			var word = $(this).val();
+			console.log(word);
+			
+			if(!word==""){
+				$.ajax({
+					url : '${pageContext.request.contextPath}/adjustment/search-item/'+word,
+					type : 'GET',
+					success : function(data){
+						$('#isi-item').empty();
+						$(data).each(function(index, value){
+							console.log(value.beginning);
+							var isi = "<tr>"+
+							"<td>"+value.itemVariant.item.name+" - "+value.itemVariant.name+"</td>"+
+							"<td>"+value.endingQty+"</td>"+
+							"<td><div contenteditable='true'><input type='text' id='input-adj-qty'></div></td>"+
+							"</tr>";
+							
+							$('#isi-item').append(isi);
+						});
+						
+					},
+					error : function(){}
+				}); 
+			}
+		});
+		
 		
 		
 	});
@@ -128,7 +158,7 @@
 									<th style="width: 10%;"><center>#</center></th>
 								</tr>
 							</thead>
-							<tbody id="isi-item">
+							<tbody id="isi-adjustment">
 								<tr>
 									<td></td>
 									<td></td>
@@ -176,7 +206,7 @@
 					<div class="form-group">
 						<div class="col-lg-12">
 							<input class="form-control"
-								placeholder="Item Name - Variant Name" type="text">
+								placeholder="Item Name - Variant Name" type="text" id="search-item">
 						</div>
 					</div>
 					<div class="form-group">
@@ -189,7 +219,7 @@
 										<th style="width: 25%;"><center>Adj. Qty</center></th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="isi-item">
 									<tr>
 										<td></td>
 										<td readonly="readonly"></td>

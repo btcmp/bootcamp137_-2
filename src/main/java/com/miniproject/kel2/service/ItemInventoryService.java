@@ -41,5 +41,10 @@ public class ItemInventoryService {
 	public void saveAtauUpdate(ItemInventory itemInventory) {
 		itemInventoryDao.saveAtauUpdate(itemInventory);
 	}
+	
+	//search item inventory by item-variant
+	public List<ItemInventory> searchByItemAndVariant(String word){
+		return itemInventoryDao.searchByItemAndVariant(word);
+	}
 
 }

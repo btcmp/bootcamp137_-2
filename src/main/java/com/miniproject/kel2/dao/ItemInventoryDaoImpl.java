@@ -55,4 +55,17 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		session.flush();
 	}
 
+	public List<ItemInventory> searchByItemAndVariant(String word) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ItemInventory i where lower(i.itemVariant.item.name) like lower(:name)";
+		List<ItemInventory> inventories = session.createQuery(hql).setParameter("name", "%"+word+"%").list();
+		if(inventories.isEmpty()) {
+			return null;
+		}else {
+			return inventories;
+		}
+		
+	}
+
 }

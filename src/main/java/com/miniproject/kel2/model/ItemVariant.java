@@ -17,7 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 
-@Entity 
+@Entity
 @Table (name="ITEM_VARIANT_MP")
 public class ItemVariant {
 	

@@ -18,4 +18,6 @@ public interface ItemInventoryDao {
 	
 	public void saveAtauUpdate(ItemInventory itemInventory);
 
+	public List<ItemInventory> searchByItemAndVariant(String word);
+
 }
