@@ -44,7 +44,7 @@ public class Category {
 	@Column(nullable=false)
 	private boolean active;
 	
-	@Transient // tidak ditampilkan di database
+	@Transient // untuk mendeklarasikan property secara sementara, tidak ditampilkan di database
 	private int itemStock;
 	
 	

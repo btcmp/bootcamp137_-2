@@ -21,7 +21,6 @@ import com.miniproject.kel2.service.CategoryService;
 @RequestMapping("/category")
 public class CategoryController {
 
-
 	@Autowired
 	CategoryService categoryService;
 	

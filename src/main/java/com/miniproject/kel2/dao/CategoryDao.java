@@ -35,5 +35,4 @@ public interface CategoryDao {
 	// search by category name
 	public List<Category> getCategoryBySearchName(String search);
 	
-	
 }
