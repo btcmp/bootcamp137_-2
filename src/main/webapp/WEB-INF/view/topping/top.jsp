@@ -472,7 +472,7 @@
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="view-sales-order.html">Sales Order</a></li>
+							<li><a class="" href="sales-order">Sales Order</a></li>
 						</ul></li>
 
 				</ul>
