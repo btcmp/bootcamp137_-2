@@ -454,9 +454,8 @@
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="#" id="adjustment">Adjusment</a></li>
-							<li><a class="" href="adjustment2">Adjusment
-									Detail</a></li>
+							<li><a class="" href="adjustment" id="adjustment">Adjusment</a></li>
+							
 						</ul></li>
 					<li class="sub-menu"><a href="javascript:;" class=""> <i
 							class="icon_desktop"></i> <span>Transfer Stok</span> <span

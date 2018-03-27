@@ -491,7 +491,8 @@ $(document).ready(function(){
 					},
 					success : function(){
 						console.log(employee);
-						alert('save suckess');
+						alert('save sucsess');
+						window.location = '${pageContext.request.contextPath}/employee';
 					}, error : function(){
 						alert('gagal bos');
 					}
@@ -549,8 +550,15 @@ $(document).ready(function(){
 			$.ajax({
 				url : '${pageContext.request.contextPath}/employee/get-one/'+id,
 				type : 'GET',
-				ContectType : 'json',
-				data : JSON.stringify()
+				contentType : 'application/json',
+				
+				success : function(OneEmp){
+					//setDataEditEmp(OneEmp);
+					alert('done');
+					$('#edit-modal').modal('show');
+				}, error : function(){
+					alert('failed');
+				}
 				
 			})
 			
@@ -558,7 +566,14 @@ $(document).ready(function(){
 		})
 		
 		
-		function setDataEditEmp(){
+		function setDataEditEmp(OneEmp){
+			console.log(OneEmp);
+			$('#update-id').val(OneEmp.id),
+			$('#update-first-name').val(OneEmp.firstName),
+			$('#update-last-name').val(OneEmp.lastName),
+			$('#update-email').val(OneEmp.email),
+			$('#update-create-account').val(OneEmp.haveAccount)
+			
 			
 		}
 		

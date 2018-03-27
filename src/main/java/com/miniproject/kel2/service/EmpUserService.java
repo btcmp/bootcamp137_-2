@@ -114,12 +114,13 @@ public class EmpUserService {
 	}
 	
 	public Employee empGetOne(long id) {
+		
 		Employee emp = new Employee();
 		emp.setId(emp.getId());
-		emp.setActive(true);
-		emp.setFirstName("sbka");
-		emp.setLastName("cnsalk");
-		emp.setHaveAccount(true);
+		emp.setActive(emp.isActive());
+		emp.setFirstName(emp.getFirstName());
+		emp.setLastName(emp.getLastName());
+		emp.setHaveAccount(emp.isHaveAccount());
 		return empDao.getOne(emp);
 	}
 	
