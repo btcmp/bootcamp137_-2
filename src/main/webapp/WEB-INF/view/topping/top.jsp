@@ -135,7 +135,7 @@
 <script src="${resources}/js/owl.carousel.js"></script>
 <!-- jQuery full calendar -->
 <script src="${resources}/js/fullcalendar.min.js"></script>
-Full Google Calendar - Calendar
+
 <script src="${resources}/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
 <!--script for this page only-->
 <script src="${resources}/js/calendar-custom.js"></script>
@@ -454,8 +454,8 @@ Full Google Calendar - Calendar
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="#" id="view-adjustment">Adjusment</a></li>
-							<li><a class="" href="view-detail-adjusment.html">Adjusment
+							<li><a class="" href="#" id="adjustment">Adjusment</a></li>
+							<li><a class="" href="adjustment2">Adjusment
 									Detail</a></li>
 						</ul></li>
 					<li class="sub-menu"><a href="javascript:;" class=""> <i

@@ -369,7 +369,7 @@
 									</label>
 									<div class="col-lg-10">
 										<input class="form-control " id="update-username" name="update-username"
-											type="text" />
+											type="text" /> 
 									</div>
 								</div>
 								<div class="form-group collapse multi-collapse "
