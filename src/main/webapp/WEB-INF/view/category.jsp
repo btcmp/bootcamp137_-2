@@ -2,6 +2,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
+		
 		// CREATE NEW CATEGORY
 		$('#btn-create').click(function() {
 			$('#modal-create').modal();
