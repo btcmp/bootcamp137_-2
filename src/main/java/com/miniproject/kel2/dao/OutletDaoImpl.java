@@ -25,7 +25,13 @@ public class OutletDaoImpl implements OutletDao{
 	public List<Outlet> selectAll() {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		return session.createCriteria(Outlet.class).list();
+		String hql = "from Outlet o order by o.id desc";
+		List<Outlet> outlets = session.createQuery(hql).list();
+		if(outlets.isEmpty()) {
+			return null;
+		} else {
+			return outlets;
+		}
 	}
 
 	public Outlet getOne(Outlet outlet) {

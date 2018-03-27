@@ -59,7 +59,13 @@ public class ItemDaoImpl implements ItemDao{
 	public List<Category> catSelectAll() {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		return session.createCriteria(Category.class).list();
+		String hql = "from Category cat where cat.active=0";
+		List<Category> categories = session.createQuery(hql).list();
+		if(categories.isEmpty()) {
+			return null;
+		} else {
+			return categories;
+		}
 	}
 
 	public List<Item> getItemsByCategory(Category category) {

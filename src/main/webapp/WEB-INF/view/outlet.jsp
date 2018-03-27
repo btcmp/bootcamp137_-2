@@ -106,7 +106,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
+
 	// SELECT PROVINCE
 	// menampilkan region berdasarkan provinsi yang dipilih
 	$('#input-region').attr('disabled', 'disabled');
@@ -165,7 +165,6 @@ $(document).ready(function(){
 		}
 	});
 	
-
  	// SEARCH
  	$('#btn-search').on('click', function(){
 		var word =$('#search').val();
