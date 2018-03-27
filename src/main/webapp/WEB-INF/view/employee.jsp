@@ -184,7 +184,7 @@
 												</c:forEach>
 											</td>
 											<td>${emp.user.role.roleName }</td>
-											<td><a id="${emp.id }" class="btn-beli btn btn-warning"
+											<td><a id="${emp.id }" class="btn-edit btn btn-warning"
 												style="color: white;"> Edit </a>|<a id="${emp.id }"
 												class="btn-set btn btn-danger" style="color: white;">
 													Set As Inactive </a></td>
@@ -251,7 +251,7 @@
 				<c:forEach items = "${outlet }" var="out">
 						<tr>
 							<td>
-							<input class = "form-control" type="checkbox" class="form-control" value="${out.id }" id="outlet"/>
+							<input class = "form-control" type="checkbox" class="form-control" value="" id="${out.id }"/>
 							${out.name }
 							</td> 
 						<td>
@@ -271,6 +271,134 @@
 	</div>
 </div>
 
+<!-- Modal for Edit Employee  -->
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog"
+	aria-labelledby="editModal" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="false">&times;</span>
+				</button>
+				<h5 class="modal-title" id="exampleModalLabel">Assign Outlet</h5>
+				
+			</div>
+			<div class="modal-body">
+			
+			<div class="form">
+							
+							<form class="form-validate form-horizontal " id="update-form-employee" action="${pageContext.request.contextPath }/employee/save-emp"  method="post" action="">
+								
+								
+								<div><input class=" form-control" id="update-id" type="hidden" /></div>
+								
+								<div class="form-group ">
+									<label for="update-first-name" class="control-label col-lg-2">First
+										name <span class="required">*</span>
+									</label>
+									
+									<div class="col-lg-4">
+										<input class=" form-control" id="update-first-name" name="update-last-name"
+											type="text" />
+									</div>
+									<label for="update-last-name" class="control-label col-lg-2">Last
+										name <span class="required">*</span>
+									</label>
+									<div class="col-lg-4">
+										<input class=" form-control" id="update-last-name" name="update-last-name"
+											type="text" />
+									</div>
+								</div>
+								<div class="form-group ">
+									<label for="update-email" class="control-label col-lg-2">Email
+										<span class="required">*</span>
+									</label>
+									<div class="col-lg-10">
+										<input class="form-control " id="update-email" name="update-email"
+											type="email" />
+									</div>
+								</div>
+								<div class="form-group ">
+									<label for="update-title" class="control-label col-lg-2">Title
+										<span class="required">*</span>
+									</label>
+									<div class="col-lg-2">
+										<select class="form-control" id="update-title">
+											<option value="Mr.">Mr.</option>
+											<option value="Mrs.">Mrs.</option>
+										</select>
+									</div>
+
+									<label for="update-create-account" class="control-label col-lg-2">Create
+										Account ? <span class="required">*</span>
+									</label>
+									<div class="col-lg-2">
+										<input style="padding-left: 0px; width: 20px;"
+											class="checkbox form-control " id="update-create-account" name="update-create-account"
+											type="checkbox" data-toggle="collapse"
+											data-target=".multi-collapse" aria-expanded="false"
+											aria-controls="multiCollapseExample1 multiCollapseExample2 multiCollapseExample3" />
+									</div>
+
+									<div class="col-lg-2">
+										<button class="btn btn-success" type="button"
+											data-toggle="modal" data-target="#assign-modal">Assign
+											Outlet</button>
+									</div>
+								</div>
+
+
+								<!-- for collapse -->
+								<div class="form-group collapse multi-collapse "
+									id="multiCollapseExample3">
+									<label for="update-role" class="control-label col-lg-2">Role <span
+										class="required">*</span></label>
+									<div class="col-lg-4">
+										<select class="form-control" id="update-role">
+										<c:forEach items="${roles }" var="roles">
+											<option value="${roles.id }">${roles.roleName }</option>
+										</c:forEach>
+										</select>
+									</div>
+								</div>
+								<div class="form-group collapse multi-collapse "
+									id="multiCollapseExample1">
+									<label for="update-username" class="control-label col-lg-2">Username
+										<span class="required">*</span>
+									</label>
+									<div class="col-lg-10">
+										<input class="form-control " id="update-username" name="update-username"
+											type="text" />
+									</div>
+								</div>
+								<div class="form-group collapse multi-collapse "
+									id="multiCollapseExample2">
+									<label for="update-password" class="control-label col-lg-2">Password
+										<span class="required">*</span>
+									</label>
+									<div class="col-lg-10">
+										<input class="form-control " id="update-password" name="update-password"
+											type="password" />
+									</div>
+								</div>
+							</form>
+							<!-- End Form -->
+					</div>
+				
+			</div>
+			<div class="modal-footer">
+				<div class="col-lg-offset-2 col-lg-10">
+										<button class=" btn btn-primary" type="button" id="btn-update">Save</button>
+										
+										<button class="btn btn-default" type="reset" id="update-reset-btn" data-toggle="collapse"
+											data-target=".multi-collapse" aria-expanded="true"
+											aria-controls="multiCollapseExample1 multiCollapseExample2 multiCollapseExample3">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End Modal Edit Employee -->
 
 <!-- ===================================================== END CONTENT ============================================================= -->
 <script type="text/javascript">
@@ -284,7 +412,7 @@ $(document).ready(function(){
     	var listOutlet=[];
 	    	$('#list-outlet').find('input[type="checkbox"]:checked').each(function(){
 	    		var eo = {
-	    			id : $("#outlet").val()
+	    			id : $(this).attr('id')
 	    			};
 	    		listOutlet.push(eo);
 	    	});
@@ -316,7 +444,7 @@ $(document).ready(function(){
 			$('#outlet:checked').each(function(){
 				var empOut = {
 						outlet : {
-							id : $(this).val()
+							id : $(this).attr('id')
 						}
 				}
 				eo.push(empOut);
@@ -409,6 +537,32 @@ $(document).ready(function(){
 		});
 		/* end deactivate employee */
 		
+		
+		/* start edit employee */
+		$('.btn-edit').on('click', function(evt){
+			evt.preventDefault();
+			var id = $(this).attr('id');
+			$('#update-id').val(id);
+			
+			
+			console.log(id);
+			$.ajax({
+				url : '${pageContext.request.contextPath}/employee/get-one/'+id,
+				type : 'GET',
+				ContectType : 'json',
+				data : JSON.stringify()
+				
+			})
+			
+			
+		})
+		
+		
+		function setDataEditEmp(){
+			
+		}
+		
+		/* end edit employee */
 		
 		
 	

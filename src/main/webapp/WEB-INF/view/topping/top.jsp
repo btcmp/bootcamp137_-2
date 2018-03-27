@@ -430,11 +430,11 @@ Full Google Calendar - Calendar
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="view-form-employee.html">Employee</a></li>
-							<li><a class="" href="view-category.html">Category</a></li>
-							<li><a class="" href="view-supplier.html">Supplier</a></li>
-							<li><a class="" href="view-outlet.html">Outlet</a></li>
-							<li><a class="" href="view-items.html">Item</a>
+							<li><a class="" href="employee">Employee</a></li>
+							<li><a class="" href="category">Category</a></li>
+							<li><a class="" href="supplier">Supplier</a></li>
+							<li><a class="" href="outlet">Outlet</a></li>
+							<li><a class="" href="item">Item</a>
 						</ul></li>
 					<li class="sub-menu"><a href="javascript:;" class=""> <i
 							class="icon_desktop"></i> <span>Purchase</span> <span
