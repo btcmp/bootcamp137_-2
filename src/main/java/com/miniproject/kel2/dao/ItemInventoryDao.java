@@ -20,4 +20,6 @@ public interface ItemInventoryDao {
 
 	public List<ItemInventory> searchByItemAndVariant(String word);
 
+	public void updateInStock(int inStock, long idVar);
+
 }

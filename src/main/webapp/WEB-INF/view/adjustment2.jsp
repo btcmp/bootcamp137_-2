@@ -90,7 +90,7 @@
 					variantId :{
 						id : $(data).attr('id')
 					},
-					inStock : $(data).find('td').eq(1).text(),
+					inStock : $(data).find('td').eq(1).text() - $(data).find('td').eq(2).text(),
 					actualStock : $(data).find('td').eq(2).text()
 				}
 				listDetAdjustment.push(detAdjustment);
@@ -115,7 +115,8 @@
 				data : JSON.stringify(adjustment),
 				success : function(data){
 					console.log(data);
-					alert('save success!!');
+					window.location="${pageContext.request.contextPath}/adjustment";
+					//alert('save success!!');
 					//window.location = '${pageContext.request.contextPath}/adjustment';
 				},
 				error : function(){

@@ -68,4 +68,12 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		
 	}
 
+	public void updateInStock(int inStock, long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update ItemInventory i set i.beginning = :inStock where i.itemVariant.id = :idVariant";
+		session.createQuery(hql).setParameter("inStock", inStock).setParameter("idVariant", id).executeUpdate();
+		session.flush();
+	}
+
 }
