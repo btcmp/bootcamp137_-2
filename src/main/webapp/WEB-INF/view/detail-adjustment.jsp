@@ -1,4 +1,12 @@
 <%@ include file="topping/top.jsp"%>
+<script type="text/javascript">
+	$(function(){
+		
+		$('#btn-done').click(function(){
+			window.location="${pageContext.request.contextPath}/adjustment";
+		});
+	});
+</script>
 	  
 	 <!-- ==================================================================  BATAS BUAT ISIAN ========================================================================= -->
 	 <section id="main-content">
@@ -23,10 +31,10 @@
 						  
 						  <div class="col-lg-12" style="margin-bottom:30px;">
 							<p></p>
-							<p><label for="input-notes">Created By : </label></p>
-							<p><label for="input-notes">Adjustment Status : </label></p>
+							<p><label for="input-notes">Created By : [User]</label></p>
+							<p><label for="input-notes">Adjustment Status : ${adjustment.status }</label></p>
 							<label for="input-notes">Notes</label>
-							<textarea class="form-control " id="notes" name="input-notes" disabled></textarea>
+							<textarea class="form-control " id="notes" name="input-notes" disabled>${adjustment.notes }</textarea>
 						  </div>
 						  
 						  <header class="panel-heading" style="height: 40px;">
@@ -34,9 +42,9 @@
 						   </header>
 						   <div class="col-lg-12" style="margin-bottom:30px;">
 							<p></p>
-							<p><label for="input-notes">On [date] - [status]</label></p>
-							<p><label for="input-notes">On [date] - [status]</label></p>
-							<p><label for="input-notes">On [date] - [status]</label></p>
+							<c:forEach items="${listHistory }" var="hisAdj">
+							<p><label for="input-notes">${hisAdj.createOn } - ${hisAdj.status }</label></p>
+							</c:forEach>
 						  </div>
 						  
 						  <header class="panel-heading" style="height: 40px;">
@@ -52,11 +60,13 @@
 								  </tr>
 								</thead>
 								<tbody>
+								<c:forEach items="${listDetailAdjustment }" var="detAdj">
 								  <tr>
-									 <td>[item]</td>
-									 <td>[stock]</td>
-									 <td>[adj.qty]</td>
+									 <td>${detAdj.variantId.item.name } - ${detAdj.variantId.name }</td>
+									 <td>${detAdj.inStock }</td>
+									 <td>${detAdj.actualStock }</td>
 								  </tr>
+								  </c:forEach>
 								</tbody>
 							</table>
 						  </div>

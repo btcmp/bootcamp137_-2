@@ -35,5 +35,16 @@ public class DetailAdjustmentService {
 	public void delete(DetailAdjustment detAdjustment) {
 		detAdjustmentDao.delete(detAdjustment);
 	}
+
+	public List<DetailAdjustment> searchById(long id) {
+		// TODO Auto-generated method stub
+		List<DetailAdjustment> detAdjustment = detAdjustmentDao.searchById(id);
+		if(detAdjustment.isEmpty() ) {
+			return null;
+		}else {
+			return detAdjustment;
+		}
+		
+	}
 }
 

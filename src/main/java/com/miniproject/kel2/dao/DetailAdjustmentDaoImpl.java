@@ -48,4 +48,17 @@ public class DetailAdjustmentDaoImpl implements DetailAdjustmentDao{
 		session.flush();
 	}
 
+	public List<DetailAdjustment> searchById(long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from DetailAdjustment da where da.adjustmentId.id = :id";
+		List<DetailAdjustment> detAdjustments = session.createQuery(hql).setParameter("id", id).list();
+		if(detAdjustments.isEmpty()) {
+			return null;
+		}else {
+			return detAdjustments;
+		}
+		
+	}
+
 }

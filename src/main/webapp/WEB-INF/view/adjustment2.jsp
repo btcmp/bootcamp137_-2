@@ -7,8 +7,11 @@
 		$('#btn-add-item').click(function() {
 			$('#modal-add-item').modal();
 		});
-		$('#btn-edit').click(function() {
-			$('#modal-edit-adjustment').modal();
+		$('.update').click(function() {
+			var id = $(this).attr('id');
+			
+			window.location= "${pageContext.request.contextPath}/adjustment/get-detail/"+id;
+			
 		});
 
 		$("#pickup").datepicker({
@@ -33,10 +36,10 @@
 						$('#isi-item').empty();
 						$(data).each(function(index, value){
 							console.log(value.beginning);
-							var isi = "<tr>"+
+							var isi = "<tr id='"+value.itemVariant.id+"' class='"+value.id+"'>"+
 							"<td>"+value.itemVariant.item.name+" - "+value.itemVariant.name+"</td>"+
 							"<td>"+value.endingQty+"</td>"+
-							"<td><div contenteditable='true'><input type='text' id='input-adj-qty'></div></td>"+
+							"<td><div contenteditable='true'><input type='text' id='input-adj-qty-"+value.id+"'></div></td>"+
 							"</tr>";
 							
 							$('#isi-item').append(isi);
@@ -48,7 +51,87 @@
 			}
 		});
 		
+		//add item pindah ke list adjustment
+		$('#add-item').click(function(){
+			$('#table-add-item > tbody > tr').each(function(index, data){
+				var idVar = $(data).attr('id');
+				var id = $(data).attr('class');
+				var itemVariant = $(data).find('td').eq(0).text();
+				var inStock = $(data).find('td').eq(1).text();
+				var adjQty = $('#input-adj-qty-'+id+'').val();
+				if(!adjQty == ""){
+					var isi = "<tr id='"+idVar+"'>"+
+					"<td>"+itemVariant+"</td>"+
+					"<td>"+inStock+"</td>"+
+					"<td>"+adjQty+"</td>"+
+					"<td>"+
+						"<a href='#' class='cancel btn btn-danger' id='cancel'>X</a>"+
+						"</td>"+
+					"</tr>";
+					
+					$('#isi-adjustment').append(isi);
+					
+				}
+			});
+			$('#list-item').removeAttr('hidden');
+		});
 		
+		//cancel list adjustment
+		$('#cancel').on('click', function(){
+			alert('hallo cancel');
+		});
+		
+		//save adjustment
+		$('#save-adjustment').click(function(){
+			var listDetAdjustment = [];
+			var listHistory = [];
+			$('#table-adjustment > tbody > tr').each(function(index, data){
+				var detAdjustment = {
+					variantId :{
+						id : $(data).attr('id')
+					},
+					inStock : $(data).find('td').eq(1).text(),
+					actualStock : $(data).find('td').eq(2).text()
+				}
+				listDetAdjustment.push(detAdjustment);
+				var history = {
+					status : "waiting"
+				}
+				listHistory.push(history);
+			});
+			
+			var adjustment = {
+				status : "waiting",
+				notes : $('#input-notes').val(),
+				hisAdjustments : listHistory,
+				detAdjustments : listDetAdjustment
+			}
+			
+			console.log(adjustment);
+			$.ajax({
+				url : '${pageContext.request.contextPath}/adjustment/save',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(adjustment),
+				success : function(data){
+					console.log(data);
+					alert('save success!!');
+					//window.location = '${pageContext.request.contextPath}/adjustment';
+				},
+				error : function(){
+					alert('save adjustment failed');
+				}
+			});
+		});
+		
+		//reset
+		$('#btn-reset').click(function(){
+			$('#isi-item').empty();
+		});
+		$('#cancel-adjustment').click(function(){
+			$('#isi-adjustment').empty();
+			$('#list-item').attr('hidden', 'hidden');
+		});
 		
 	});
 </script>
@@ -97,17 +180,19 @@
 							</tr>
 						</thead>
 						<tbody>
+						<c:forEach items="${listAdjustment }" var="adj">
 							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>${adj.createdOn }</td>
+								<td>${adj.notes }</td>
+								<td>${adj.status }</td>
 								<td>
 									<div class="btn-group">
-										<a class="btn btn-primary" id="btn-edit"><i
+										<a class="update btn btn-primary" id="${adj.id }"><i
 											class="icon_pencil-edit"></i></a>
 									</div>
 								</td>
 							</tr>
+						</c:forEach>
 						</tbody>
 					</table>
 				</section>
@@ -140,7 +225,7 @@
 					</div>
 					<div class="form-group ">
 						<label for="input-notes">Notes</label>
-						<textarea class="form-control " id="input-address"
+						<textarea class="form-control " id="input-notes"
 							name="input-notes" required></textarea>
 					</div>
 					<div class="form-group">
@@ -149,7 +234,7 @@
 						<hr style="line-height: 4px;">
 					</div>
 					<div class="col-lg-12" id="list-item">
-						<table class="table table-striped table-advance table-hover">
+						<table class="table table-striped table-advance table-hover" id="table-adjustment">
 							<thead>
 								<tr>
 									<th style="width: 40%;"><center>Item</center></th>
@@ -159,16 +244,6 @@
 								</tr>
 							</thead>
 							<tbody id="isi-adjustment">
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>
-										<div class="btn-group">
-											<a class="btn btn-danger" id="btn-edit">X</a>
-										</div>
-									</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -180,8 +255,8 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="reset" class="btn btn-primary">Cancel</button>
-					<button type="button" id="add" class="btn btn-primary">Save
+					<button type="reset" class="btn btn-primary" id="cancel-adjustment">Cancel</button>
+					<button type="button" id="save-adjustment" class="btn btn-primary">Save
 						& Submit</button>
 				</div>
 			</form>
@@ -211,7 +286,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-lg-12">
-							<table class="table table-striped table-advance table-hover">
+							<table class="table table-striped table-advance table-hover" id="table-add-item">
 								<thead>
 									<tr>
 										<th style="width: 40%;"><center>Item</center></th>
@@ -220,11 +295,6 @@
 									</tr>
 								</thead>
 								<tbody id="isi-item">
-									<tr>
-										<td></td>
-										<td readonly="readonly"></td>
-										<td><div contenteditable="true"><input type="text" id="input-adj-qty"></div></td>
-									</tr>
 								</tbody>
 							</table>
 						</div>
@@ -232,10 +302,10 @@
 				</div>
 				<div class="modal-footer">
 					<div class="col-lg-10" style="float: right;">
-						<button type="button" id="add" class="btn btn-primary">Add</button>
+						<button type="button" id="add-item" class="btn btn-primary">Add</button>
 					</div>
 					<div class="col-lg-2">
-						<button type="reset" class="btn btn-primary">Cancel</button>
+						<button type="reset" class="btn btn-primary" id="btn-reset">Cancel</button>
 					</div>
 				</div>
 			</form>

@@ -10,10 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="DETAIL_ADJUSTMENT_MP")
 public class DetailAdjustment {
+	
+	public DetailAdjustment() {
+		this.createdOn = new Date();
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="detAdj")
@@ -29,9 +35,11 @@ public class DetailAdjustment {
 	private int actualStock;
 	@ManyToOne
 	private User createdBy;
+	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	@ManyToOne
 	private User modifiedBy;
+	@Temporal(TemporalType.DATE)
 	private Date modifiedOn;
 	
 	

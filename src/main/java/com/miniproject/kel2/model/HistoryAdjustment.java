@@ -10,11 +10,17 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="HISTORY_ADJUSTMENT_MP")
 public class HistoryAdjustment {
 
+	public HistoryAdjustment() {
+		this.createdOn = new Date();
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="hisAdj")
 	@SequenceGenerator(initialValue=121213, name="hisAdj", sequenceName="hisAdj")
@@ -25,6 +31,7 @@ public class HistoryAdjustment {
 	private String status;
 	@ManyToOne
 	private User createdBy;
+	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	
 	public long getId() {

@@ -14,10 +14,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="ADJUSTMENT_MP")
 public class Adjustment {
+	
+	public Adjustment() {
+		this.createdOn = new Date();
+	}
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="adj")
@@ -31,9 +37,11 @@ public class Adjustment {
 	private String status;
 	@ManyToOne
 	private User createdBy;
+	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	@ManyToOne
 	private User modifiedBy;
+	@Temporal(TemporalType.DATE)
 	private Date modifiedOn;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="adjustmentId", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<DetailAdjustment> detAdjustments;

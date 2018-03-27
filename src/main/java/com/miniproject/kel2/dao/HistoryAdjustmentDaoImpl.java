@@ -48,4 +48,16 @@ public class HistoryAdjustmentDaoImpl implements HistoryAdjustmentDao{
 		session.flush();
 	}
 
+	public List<HistoryAdjustment> searchById(long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from HistoryAdjustment ha where ha.adjustmentId.id = :id";
+		List<HistoryAdjustment> hisAdjustment = session.createQuery(hql).setParameter("id", id).list();
+		if(hisAdjustment.isEmpty() || hisAdjustment == null) {
+			return null;
+		}else {
+			return hisAdjustment;
+		}
+	}
+
 }

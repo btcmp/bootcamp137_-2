@@ -35,4 +35,9 @@ public class HistoryAdjustmentService {
 	public void delete(HistoryAdjustment hisAdjustment) {
 		hisAdjustmentDao.delete(hisAdjustment);
 	}
+
+	public List<HistoryAdjustment> searchById(long id) {
+		// TODO Auto-generated method stub
+		return hisAdjustmentDao.searchById(id);
+	}
 }

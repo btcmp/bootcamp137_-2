@@ -15,4 +15,6 @@ public interface DetailAdjustmentDao {
 	public void update(DetailAdjustment detAdjustment);
 	
 	public void delete(DetailAdjustment detAdjustment);
+
+	public List<DetailAdjustment> searchById(long id);
 }
