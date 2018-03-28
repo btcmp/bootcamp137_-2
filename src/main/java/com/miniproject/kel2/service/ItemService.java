@@ -33,16 +33,16 @@ public class ItemService {
 		itemDao.save(item);
 		
 		// object itemVariant
-		for(ItemVariant itemVariant : itemVariants) {
-			List <ItemInventory> itemInventories = itemVariant.getItemInventories();
-			itemVariant.setItemInventories(null);
-			itemVariant.setItem(item);
-			itemVariantDao.save(itemVariant);
+		ItemInventory inventory;
+		for(ItemVariant variant : itemVariants) {
+			inventory = variant.getItemInventories().get(0);
+			variant.setItemInventories(null);
+			variant.setItem(item);
+			itemVariantDao.save(variant);
 		
-			// object itemInventory
-			for(ItemInventory itemInventory : itemInventories) {
-				itemInventory.setItemVariant(itemVariant);
-				itemInventoryDao.save(itemInventory);
+			inventory.setItemVariant(variant);
+			inventory.setEndingQty(inventory.getBeginning());
+			itemInventoryDao.save(inventory);
 			}
 		}
 		
@@ -54,17 +54,24 @@ public class ItemService {
 		
 		// Object Item Variant
 		for (ItemVariant variant : item.getItemVariants()) {
-			ItemVariant iVar = new ItemVariant ();
-			iVar.setName(variant.getName());
-			iVar.setPrice(variant.getPrice());
-			iVar.setSku(variant.getSku());
-			iVar.setItem(itm);
-			itemVariantDao.save(iVar);
-		}
+			ItemVariant var = new ItemVariant ();
+			var.setName(variant.getName());
+			var.setPrice(variant.getPrice());
+			var.setSku(variant.getSku());
+			var.setItem(itm);
+			itemVariantDao.save(var);
+		
 		
 		// Object Item Inventory
-		for (ItemInventory inventory : variant.get)*/
-	}
+		for (ItemInventory inventory : variant.getItemInventories) {
+			ItemInventory invent = new ItemInventory();
+			invent.setBeginning(inventory.getBeginning());
+			invent.setAlertAtQty(inventory.getAlertAtQty());
+			invent.setItemVariant(var);
+			itemInventoryDao.save(itemInventory);
+		}
+		}*/
+
 	
 	public List<Item> selectAll(){
 		return itemDao.selectAll();

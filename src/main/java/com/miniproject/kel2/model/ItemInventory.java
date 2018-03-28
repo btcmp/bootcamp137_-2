@@ -34,7 +34,7 @@ public class ItemInventory {
 	private int transferStockQty;
 	@Column(name="adjustment_qty")
 	private int adjustmentQty;
-	@Column(name="ending_qty", nullable=false)
+	@Column(name="ending_qty")
 	private int endingQty;
 	@Column(name="alert_at_qty", nullable=false)
 	private int alertAtQty;

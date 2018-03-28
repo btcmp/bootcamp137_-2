@@ -24,52 +24,98 @@
 				alertAtQty : $('#input-alertat').val()
 			};
 			
-			var add = "<tr><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + "</td><td>" + alert +
+			var add = "<tr><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
 					  "</td><td><a class='btn-edit' href='#'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
 			$("#tbody-addvar").append(add);
 			
 		});
 		
-		/* $('#btn-save').on('click', function(evt){
 
-		} */
-		
-		
+		/* $('#btn-save').on('click', function(){
+			//var form = $('#target').val();
+			var itemVariants =[];
+			var itemInventories = [];
+			$('#tbl-addvar > #tbody-addvar > tr').each(function(index, data){
+					var inventory = {
+							beginning : $(data).find('td').eq(3).text(),
+							alertAtQty : $(data).find('td').eq(4).text()
+					}
+					var variant = {
+							name : $(data).find('td').eq(0).text(),
+							price : $(data).find('td').eq(1).text(),
+							sku : $(data).find('td').eq(2).text(),
+							itemInventories : inventory
+					}
+					itemVariants.push(variant);
+			});
+			
+			var item = {
+					name : $('#input-item-name').val(),
+					category : {
+							id : $('#input-category').val(),
+					},
+					itemVariants : itemVariants
+			};
+			console.log(item);
+			
+			   $.ajax({
+				url : '${pageContext.request.contextPath}/item/save',
+				type :'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(item),
+				success: function(data){
+					console.log(data);
+					window.location='${pageContext.request.contextPath}/item';
+				}, error : function(){
+					alert('saving failed')	
+				}
+			});  
+		});  
+		 */
+		 
 		$('#btn-save').on('click', function(evt){
 			evt.preventDefault();
-			var form = $('#target').val();
-			var variant = [];
-			var inventory = [];
-				var item = {
-						name : $('#input-item-name').val(),
-						category : {
-								id : $('#input-category').val()
-						}
-				};
-				var variant = {
-						price : $('#input-uprice').val()
-				};
-				var inventory = {
-						beginning : $('#input-beginning').val(),
-						alertAtQty : $('#input-alertat').val()
-				}
-		
-				
-				console.log(item);
-				
-				$.ajax({
-					url : '${pageContext.request.contextPath}/item/save',
-					type :'POST',
-					data : JSON.stringify(item),
-					contentType : 'application/json',
-					success: function(data){
-					window.location='${pageContext.request.contextPath}/item';
-					}, error : function(){
-						alert('saving failed')	
+			var itemVariants =[];
+			var itemInventories = [];
+			$('#tbl-addvar > #tbody-addvar > tr').each(function(index, data){
+					var inventory = {
+							beginning : $(data).find('td').eq(3).text(),
+							alertAtQty : $(data).find('td').eq(4).text()
 					}
-				});
-		});
-				
+					var variant = {
+							name : $(data).find('td').eq(0).text(),
+							price : $(data).find('td').eq(1).text(),
+							sku : $(data).find('td').eq(2).text(),
+							itemInventories : [inventory]
+					}
+					itemVariants.push(variant);
+			});
+			
+			var item = {
+					name : $('#input-item-name').val(),
+					category : {
+							id : $('#input-category').val(),
+					},
+					itemVariants : itemVariants
+			};
+			console.log(item);
+			
+			   $.ajax({
+				url : '${pageContext.request.contextPath}/item/save',
+				type :'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(item),
+				success: function(data){
+					alert('save')
+					window.location='${pageContext.request.contextPath}/item';
+				}, error : function(){
+					alert('saving failed')	
+				}
+			});  
+		});  
+		 
+ 		
+		});  
 			
 		// mengambil nilai untuk edit add variant
 		/* $('.btn-edit').click(function(){
@@ -96,7 +142,7 @@
 			$('#edit-address').val(out.address);
 		} */
 		
-	});
+
 </script>
 
 
@@ -170,7 +216,7 @@
 													</div>
 													
 													<!-- ================ TABLE ===================== -->
-													<table class="table table-bordered" id="tbl-addvar1">
+													<table class="table table-bordered" id="tbl-addvar">
 														<thead>
 															<tr>
 																<th>Variant Name</th>
@@ -279,15 +325,16 @@
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach items ="${items}" var="item">
+										<c:forEach items ="${inventories}" var="inv">
 										<tr>
-											<td>${item.name}</td>
-											<td>${item.category.name}</td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td><a href="" data-toggle="modal"data-target="#modalEdit2"> Edit </a> 
-												
+											<td>${inv.itemVariant.item.name}-${inv.itemVariant.name}</td>
+											<td>${inv.itemVariant.item.category.name}</td>
+											<td>${inv.itemVariant.price}</td>
+											<td>${inv.beginning}</td>
+											<td>${inv.alertAtQty}</td>
+											<td>
+												<a id="${inv.itemVariant.item.id}" href="#" data-toggle="modal"data-target="#modalEdit2"> Edit </a> 
+											
 									<!-- ============================================= Modal EDIT =========================================-->
 												<div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
 													<div class="modal-dialog" role="document">
@@ -365,7 +412,7 @@
 											<div class="modal-body">
 												<div id="input">
 													<input class="col-lg-4" type="image" id="myimage"
-														src="gambar-baju.jpg" style="width: 100px; height: 60px;" />
+															src="resources/gambar-item/gambar-hp.jpg" style="width: 100px; height: 60px;">
 													<input class="col-lg-8" type="text"
 														style="margin-bottom: 10px;" placeholder="Item Name">
 													<select class="col-lg-8" type="text"

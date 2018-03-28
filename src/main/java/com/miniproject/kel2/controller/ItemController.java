@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.kel2.model.Category;
 import com.miniproject.kel2.model.Item;
+import com.miniproject.kel2.model.ItemInventory;
+import com.miniproject.kel2.model.ItemVariant;
+import com.miniproject.kel2.service.ItemInventoryService;
 import com.miniproject.kel2.service.ItemService;
+import com.miniproject.kel2.service.ItemVariantService;
 
 @Controller
 @RequestMapping("/item")
@@ -24,19 +28,31 @@ public class ItemController {
 	@Autowired
 	ItemService itemService;
 	
+	@Autowired
+	ItemVariantService itemVariantService;
+	
+	@Autowired
+	ItemInventoryService itemInventoryService;
+	
 	@RequestMapping
 	public String index (Model model) {
 		List<Item> items = itemService.selectAll();
 		List<Category> cats = itemService.catSelectAll();
+		List<ItemVariant> variants = itemVariantService.selectAll();
+		List<ItemInventory> inventories = itemInventoryService.selectAll();
 		model.addAttribute("items", items);
 		model.addAttribute("cats", cats);
+		model.addAttribute("variants", variants);
+		model.addAttribute("inventories", inventories);
 		return "item";
 	}
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
-	public void save(@RequestBody Item item) {
-		itemService.saveAtauUpdate(item);
+	//@ResponseStatus(HttpStatus.CREATED)
+	@ResponseBody
+	public Item save(@RequestBody Item item) {
+		itemService.save(item);
+		return item;
 	}
 
 	@RequestMapping(value = "/get-one/{id}", method = RequestMethod.GET)
@@ -58,4 +74,5 @@ public class ItemController {
 		item.setId(id);
 		itemService.delete(item);
 	}
+	
 }
