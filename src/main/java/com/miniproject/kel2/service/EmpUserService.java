@@ -99,7 +99,7 @@ public class EmpUserService {
 		return listOutlet;
 	}
 	
-
+ 
 	public void empUpdate(Employee emp) {
 	
 		emp.setOutlet(getAssignedOutlet(emp.getOutlet()));

@@ -70,7 +70,7 @@ public class EmpUserController {
 		if(OneEmp.getUser() != null) {
 			OneEmp.getUser().setEmployee(null);
 		}
-		
+		 
 		return OneEmp;
 	}
 	

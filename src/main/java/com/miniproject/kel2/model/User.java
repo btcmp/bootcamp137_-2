@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="user_mp")
 public class User {
-	
+	 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="idUser")
 	@SequenceGenerator(initialValue=1, name="idUser", sequenceName="idUser")

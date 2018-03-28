@@ -42,7 +42,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		session.update(emp);
 		session.flush();
 	}
-
+ 
 	public void delete(Employee emp) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();

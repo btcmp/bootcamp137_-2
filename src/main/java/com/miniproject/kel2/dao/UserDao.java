@@ -1,6 +1,6 @@
 package com.miniproject.kel2.dao;
 
-import java.util.List;
+import java.util.List; 
 
 import com.miniproject.kel2.model.Employee;
 import com.miniproject.kel2.model.Outlet;

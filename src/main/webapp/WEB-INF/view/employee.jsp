@@ -718,7 +718,7 @@ $(document).ready(function(){
 			
 		})
 		
-		
+		 
 		
 		/* end edit employee */
 		
