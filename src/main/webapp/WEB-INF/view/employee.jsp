@@ -108,6 +108,8 @@
 										</select>
 									</div>
 								</div>
+								<input class="form-control " id="user-id" name="user-id"
+											type="hidden" />
 								<div class="form-group collapse multi-collapse "
 									id="multiCollapseExample1">
 									<label for="username" class="control-label col-lg-2">Username
@@ -245,7 +247,6 @@
 			</div>
 			<div class="modal-body">
 			<div class="table">
-			
 				<table class="table basic-table">
 				<tbody id="list-outlet">
 				<c:forEach items = "${outlet }" var="out">
@@ -259,10 +260,7 @@
 					</c:forEach>
 				</tbody>
 				</table>
-				
-				
-			</div>
-				
+			</div>	
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" id="select-outlet">Save changes</button>
@@ -291,7 +289,7 @@
 							<form class="form-validate form-horizontal " id="update-form-employee" action="${pageContext.request.contextPath }/employee/save-emp"  method="post" action="">
 								
 								
-								<div><input class=" form-control" id="update-id" type="hidden" /></div>
+								<div><input class="form-control" id="update-id" type="hidden" /></div>
 								
 								<div class="form-group ">
 									<label for="update-first-name" class="control-label col-lg-2">First
@@ -299,14 +297,14 @@
 									</label>
 									
 									<div class="col-lg-4">
-										<input class=" form-control" id="update-first-name" name="update-last-name"
+										<input class=" form-control reset" id="update-first-name" name="update-last-name"
 											type="text" />
 									</div>
 									<label for="update-last-name" class="control-label col-lg-2">Last
 										name <span class="required">*</span>
 									</label>
 									<div class="col-lg-4">
-										<input class=" form-control" id="update-last-name" name="update-last-name"
+										<input class=" form-control reset" id="update-last-name" name="update-last-name"
 											type="text" />
 									</div>
 								</div>
@@ -315,7 +313,7 @@
 										<span class="required">*</span>
 									</label>
 									<div class="col-lg-10">
-										<input class="form-control " id="update-email" name="update-email"
+										<input class="form-control reset" id="update-email" name="update-email"
 											type="email" />
 									</div>
 								</div>
@@ -323,14 +321,14 @@
 									<label for="update-title" class="control-label col-lg-2">Title
 										<span class="required">*</span>
 									</label>
-									<div class="col-lg-2">
+									<div class="col-lg-3">
 										<select class="form-control" id="update-title">
 											<option value="Mr.">Mr.</option>
 											<option value="Mrs.">Mrs.</option>
 										</select>
 									</div>
 
-									<label for="update-create-account" class="control-label col-lg-2">Create
+									<label for="update-create-account" class="control-label col-lg-2">Have
 										Account ? <span class="required">*</span>
 									</label>
 									<div class="col-lg-2">
@@ -343,7 +341,7 @@
 
 									<div class="col-lg-2">
 										<button class="btn btn-success" type="button"
-											data-toggle="modal" data-target="#assign-modal">Assign
+											data-toggle="modal" data-target="#update-assign-modal">Assign
 											Outlet</button>
 									</div>
 								</div>
@@ -368,7 +366,7 @@
 										<span class="required">*</span>
 									</label>
 									<div class="col-lg-10">
-										<input class="form-control " id="update-username" name="update-username"
+										<input class="form-control reset " id="update-username" name="update-username"
 											type="text" /> 
 									</div>
 								</div>
@@ -378,8 +376,8 @@
 										<span class="required">*</span>
 									</label>
 									<div class="col-lg-10">
-										<input class="form-control " id="update-password" name="update-password"
-											type="password" />
+										<input class="form-control reset" id="update-password" name="update-password"
+											type="text" />
 									</div>
 								</div>
 							</form>
@@ -399,7 +397,44 @@
 	</div>
 </div>
 <!-- End Modal Edit Employee -->
-
+<!-- Modal for Edit Assign Outlet  -->
+<div class="modal fade" id="update-assign-modal" tabindex="-1" role="dialog"
+	aria-labelledby="assignModal" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Assign Outlet</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+			<div class="table">
+				<table class="table basic-table">
+				<tbody id="update-list-outlet">
+				<c:forEach items = "${outlet }" var="out">
+						<tr>
+							<td>
+							<input class = "form-control" type="checkbox" class="form-control" name="update-outlet" id="${out.id }"/>
+							${out.name }
+							</td> 
+							<td>
+								<textarea rows="" cols="" id="some-textarea"></textarea>
+							</td>
+						<td>
+					</tr>
+					</c:forEach>
+				</tbody>
+				</table>
+			</div>	
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="update-select-outlet">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
 <!-- ===================================================== END CONTENT ============================================================= -->
 <script type="text/javascript">
 
@@ -422,6 +457,7 @@ $(document).ready(function(){
 	    	$('#btn-save').attr('listOutlet',JSON.stringify(listOutlet));
 	    	$('#assign-modal').modal('hide');
 	    });
+		
 		
 		
 		$('#btn-save').click(function(evt){
@@ -453,6 +489,7 @@ $(document).ready(function(){
 			
 			if(akun == true){
 				user = {
+						"id" : $("#user-id").val(),
 						"active" : true,
 						"username" : $('#username').val(),
 						"password" : $('#password').val(),
@@ -553,7 +590,7 @@ $(document).ready(function(){
 				contentType : 'application/json',
 				
 				success : function(OneEmp){
-					//setDataEditEmp(OneEmp);
+					setDataEditEmp(OneEmp);
 					alert('done');
 					$('#edit-modal').modal('show');
 				}, error : function(){
@@ -568,16 +605,124 @@ $(document).ready(function(){
 		
 		function setDataEditEmp(OneEmp){
 			console.log(OneEmp);
-			$('#update-id').val(OneEmp.id),
-			$('#update-first-name').val(OneEmp.firstName),
-			$('#update-last-name').val(OneEmp.lastName),
-			$('#update-email').val(OneEmp.email),
-			$('#update-create-account').val(OneEmp.haveAccount)
+			resetForm();
+			$('#update-id').val(OneEmp.id);
+			$('#update-first-name').val(OneEmp.firstName);
+			$('#update-last-name').val(OneEmp.lastName);
+			$('#update-email').val(OneEmp.email);
+			$('#update-title').val(OneEmp.title);
+			$('#update-create-account').val(OneEmp.haveAccount);
 			
+			if(OneEmp.user != null ){
+				//alert("Employee Doesn`t have account")
+				
+				$('#update-username').val(OneEmp.user.username);
+				$('#update-password').val(OneEmp.user.password);
+				$('#update-role').val(OneEmp.user.role.id);
+				
+			};
 			
+			if (OneEmp.haveAccount == true){
+				$('#update-create-account').prop('checked', true);
+				$('.multi-collapse').collapse("show")
+			}
+			
+			//masih belum paham saya
+			if(OneEmp.outlet != null){
+				
+		   }
+		}
+	
+		
+		function resetForm(){
+			$(".reset").val(" ");
 		}
 		
+		/* update */
+		
+		$('#update-select-outlet').on('click', function(){
+	    	var listOutlet=[];
+		    	$('#update-list-outlet').find('input[type="checkbox"]:checked').each(function(){
+		    		var eo = {
+		    			id : $(this).attr('id')
+		    			};
+		    		listOutlet.push(eo);
+		    	});
+		    	
+		    	
+		    	console.log(JSON.stringify(listOutlet));
+		    	$('#btn-update').attr('listOutlet',JSON.stringify(listOutlet));
+		    	$('#update-assign-modal').modal('hide');
+		    });
+		
+		
+		$("#btn-update").on('click', function(evt){
+			evt.preventDefault();
+			alert('testing');
+			
+			try{
+	    		var listOutlet = JSON.parse($(this).attr('listOutlet'));
+	    	} catch (ex){
+	    		console.error(ex);
+	    	}
+			
+			var akun = $("#update-create-account").is(':checked') ? true : false;
+			var idRole = $('#update-role').val();
+			
+			var user = null;	
+			
+			if(akun == true){
+				user = {
+						/* "id" : $("#update-user-id").val(), */
+						"active" : true,
+						"username" : $('#update-username').val(),
+						"password" : $('#update-password').val(),
+						"role" : {
+							"id" : idRole
+						}
+				}
+			}
+			var employee = {
+					id : $('#update-id').val(),
+					firstName : $('#update-first-name').val(),
+					lastName : $('#update-last-name').val(),
+					email : $('#update-email').val(),
+					title : $('#update-title').val(),
+					haveAccount : akun,
+					active : true,
+					user : user,
+					outlet : listOutlet
+			};
+			
+			
+			//ajax
+			$.ajax({
+				url : '${pageContext.request.contextPath}/employee/update',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(employee),
+				beforeSend : function(){
+					console.log("connecting to server");
+				},
+				success : function(){
+					console.log(employee);
+					alert('save sucsess');
+					window.location = '${pageContext.request.contextPath}/employee';
+				}, error : function(){
+					alert('gagal bos');
+				}
+				
+			}); 
+			
+			
+			
+		})
+		
+		
+		
 		/* end edit employee */
+		
+		
 		
 		
 	

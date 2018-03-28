@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.miniproject.kel2.model.Employee;
 import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
@@ -67,6 +68,37 @@ public class UserDaoImpl implements UserDao{
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
 		return session.createCriteria(Outlet.class).list();
+	}
+
+	/*public User getUserByEmployee(User user) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from User u where u.employee.id :uid ";
+		
+		List<User> getUser =  session.createQuery(hql).setParameter("uid", user.getEmployee().getId()).list();
+		User userLagi = getUser.get(0); 
+		
+		if(getUser.isEmpty()) {
+			return null;
+		} else {
+			return user;
+		}
+	}*/
+
+	public User getUserByEmployee(Employee emp) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from User u where u.employee.id = :uid ";		
+		List<User> getUser =  session.createQuery(hql).setParameter("uid", emp.getId()).list();
+		User userLagi = getUser.get(0);
+		 
+		
+		if(getUser.isEmpty()) {
+			return null;
+		} else {
+			
+			return userLagi;
+		}
 	}
 
 }

@@ -7,7 +7,7 @@ import com.miniproject.kel2.model.Employee;
 public interface EmployeeDao {
 
 	//getOne
-	public Employee getOne(Employee emp);
+	public Employee getOne(long id);
 	//getAll
 	public List<Employee> getAll();
 		//save

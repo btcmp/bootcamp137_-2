@@ -65,9 +65,11 @@ public class EmpUserController {
 	public Employee getOne(@PathVariable long id) {
 		
 		Employee OneEmp = empUserService.empGetOne(id);
-		/*if(OneEmp.getUser() != null) {
+		
+		//untuk menangani rekursif infinite
+		if(OneEmp.getUser() != null) {
 			OneEmp.getUser().setEmployee(null);
-		}*/
+		}
 		
 		return OneEmp;
 	}
@@ -77,6 +79,13 @@ public class EmpUserController {
 	@ResponseStatus(HttpStatus.OK)
 	public void inactive(@RequestBody Employee emp) {
 		empUserService.inactive(emp);
+	}
+	
+	
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void update(@RequestBody Employee emp) {
+		empUserService.empUpdate(emp);
 	}
 	
 }

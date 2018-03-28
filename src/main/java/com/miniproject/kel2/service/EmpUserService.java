@@ -85,12 +85,7 @@ public class EmpUserService {
 			
 			userDao.save(user);	
 		}
-		*/
-		
-		
-		
-		
-		
+		*/	
 	}
 	
 	private List<Outlet> getAssignedOutlet(List<Outlet> outlet) {
@@ -106,6 +101,27 @@ public class EmpUserService {
 	
 
 	public void empUpdate(Employee emp) {
+	
+		emp.setOutlet(getAssignedOutlet(emp.getOutlet()));
+		User user;
+		
+		if(emp.getUser() != null) {
+			user = userDao.getUserByEmployee(emp);
+			if (user != null) {
+				//untuk set id user yang diambil dari tabel user.employee_id
+				emp.getUser().setId(user.getId());
+			}
+			emp.getUser().setEmployee(emp);
+			} 
+		else {
+			user = userDao.getUserByEmployee(emp);
+			if (user != null) {
+				user.setActive(false);
+				emp.setUser(user);
+			}
+			emp.getUser().setEmployee(emp);
+			} 
+		
 		empDao.update(emp);
 	}
 	
@@ -114,14 +130,7 @@ public class EmpUserService {
 	}
 	
 	public Employee empGetOne(long id) {
-		
-		Employee emp = new Employee();
-		emp.setId(emp.getId());
-		emp.setActive(emp.isActive());
-		emp.setFirstName(emp.getFirstName());
-		emp.setLastName(emp.getLastName());
-		emp.setHaveAccount(emp.isHaveAccount());
-		return empDao.getOne(emp);
+		return empDao.getOne(id);
 	}
 	
 	
@@ -180,10 +189,4 @@ public class EmpUserService {
 		// TODO Auto-generated method stub
 		return userDao.getOutletAll();
 	}
-
-	
-
-
-
-
 }
