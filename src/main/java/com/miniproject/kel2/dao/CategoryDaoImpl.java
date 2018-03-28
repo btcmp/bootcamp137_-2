@@ -22,6 +22,7 @@ public class CategoryDaoImpl implements CategoryDao{
 		session.flush();
 	}
 
+	
 	public List<Category> selectAll() {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();

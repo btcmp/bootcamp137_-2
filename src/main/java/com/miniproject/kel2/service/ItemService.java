@@ -46,7 +46,6 @@ public class ItemService {
 			}
 		}
 		
-		
 		/*Item itm = new Item();
 		itm.setName(item.getName());
 		itm.setCategory(item.getCategory());

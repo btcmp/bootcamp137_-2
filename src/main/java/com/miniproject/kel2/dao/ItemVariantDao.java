@@ -18,4 +18,5 @@ public interface ItemVariantDao {
 	
 	public void saveAtauUpdate(ItemVariant itemVariant);
 	
+	
 }

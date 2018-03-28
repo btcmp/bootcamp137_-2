@@ -49,6 +49,7 @@ public class ItemInventory {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 	
+	
 	@ManyToOne
 	public ItemVariant itemVariant;
 

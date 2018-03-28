@@ -335,6 +335,7 @@
 											<td>
 												<a id="${inv.itemVariant.item.id}" href="#" data-toggle="modal"data-target="#modalEdit2"> Edit </a> 
 											
+											
 									<!-- ============================================= Modal EDIT =========================================-->
 												<div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
 													<div class="modal-dialog" role="document">

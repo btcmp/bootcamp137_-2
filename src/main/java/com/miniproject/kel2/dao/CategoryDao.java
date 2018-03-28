@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.miniproject.kel2.model.Category;
 
-
 public interface CategoryDao {
 
 	// create

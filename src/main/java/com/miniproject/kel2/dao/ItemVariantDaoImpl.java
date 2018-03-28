@@ -56,4 +56,5 @@ public class ItemVariantDaoImpl implements ItemVariantDao{
 		session.flush();
 	}
 
+	
 }

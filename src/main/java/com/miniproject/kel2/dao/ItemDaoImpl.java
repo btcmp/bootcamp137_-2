@@ -28,7 +28,7 @@ public class ItemDaoImpl implements ItemDao{
 		Session session = sessionFactory.getCurrentSession();
 		return session.createCriteria(Item.class).list();
 	}
-
+	
 	public Item getOne(Item item) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();

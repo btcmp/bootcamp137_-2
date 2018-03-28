@@ -11,7 +11,6 @@ import com.miniproject.kel2.dao.ItemDao;
 import com.miniproject.kel2.model.Category;
 import com.miniproject.kel2.model.Item;
 
-
 @Service
 @Transactional
 public class CategoryService {

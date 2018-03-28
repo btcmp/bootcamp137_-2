@@ -23,5 +23,5 @@ public interface ItemInventoryDao {
 	public void updateInStock(int inStock, long idVar);
 
 	public ItemInventory searchEndingQtyByLastModifiedVariant(long id);
-
+	
 }

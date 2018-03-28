@@ -47,4 +47,5 @@ public class ItemInventoryService {
 		return itemInventoryDao.searchByItemAndVariant(word);
 	}
 
+	
 }

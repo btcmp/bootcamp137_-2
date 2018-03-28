@@ -41,4 +41,5 @@ public class ItemVariantService {
 	public void saveAtauUpdate(ItemVariant itemVariant) {
 		itemVariantDao.saveAtauUpdate(itemVariant);
 	}
+	
 }

@@ -28,6 +28,7 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		return session.createCriteria(ItemInventory.class).list();
 	}
 
+	
 	public ItemInventory getOne(ItemInventory itemInventory) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();

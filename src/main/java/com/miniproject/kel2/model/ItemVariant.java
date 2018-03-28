@@ -49,6 +49,7 @@ public class ItemVariant {
 	@Column(nullable=false)
 	private boolean active;
 	
+	
 	@ManyToOne
 	public Item item;
 	

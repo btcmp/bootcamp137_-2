@@ -93,6 +93,7 @@
 			});
 		});  
 	 	
+	 	
 	 	// SEARCH
 	 	$('#btn-search').on('click', function(){
 			var word =$('#search').val();
