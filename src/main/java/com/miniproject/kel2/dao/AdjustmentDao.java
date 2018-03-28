@@ -15,4 +15,8 @@ public interface AdjustmentDao {
 	public void update(Adjustment adjustment);
 	
 	public void delete(Adjustment adjusment);
+
+	public void updateStatusAdjustment(String status, long id);
+
+	public List<Adjustment> searchByDateRange(long tglFrom, long tglTo);
 }

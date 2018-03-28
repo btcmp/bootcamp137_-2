@@ -57,10 +57,18 @@ public class AdjustmentController {
 		System.out.println(adjustment);
 	}
 	
+	@RequestMapping(value="/search/{tglFrom}/{tglTo}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Adjustment> search(@PathVariable long tglFrom, long tglTo){
+		List<Adjustment> adjustments = adjustmentService.searchByDateRange(tglFrom, tglTo);
+		System.out.println("jumlah search daterange : "+adjustments.size());
+		return adjustments;
+	}
+	
 	@RequestMapping(value="/search-item/{word}", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ItemInventory> searchByItem(@PathVariable String word){ 
-		List<ItemInventory> inventories = itemInvetoryService.searchByItemAndVariant(word);
+	public List<Object[]> searchByItem(@PathVariable String word){ 
+		List<Object[]> inventories = itemInvetoryService.searchByItemAndVariant(word);
 		System.out.println("jumlah search inventory : "+inventories.size());
 		return inventories;
 	}
@@ -83,18 +91,32 @@ public class AdjustmentController {
 	@RequestMapping(value="/get-detail/{id}", method=RequestMethod.GET)
 	public String getDetail(@PathVariable long id, Model model) {
 		Adjustment adjustment = adjustmentService.getOne(id);
-//		List<DetailAdjustment> detAdjustments = detAdjustmentService.searchById(id);
-//		List<HistoryAdjustment> hisAdjustments = hisAdjustmentService.searchById(id);
-//		System.out.println("jumlah detail adjustment : "+detAdjustments.size());
-//		System.out.println("jumlah history adjustment : "+hisAdjustments.size());
+		List<DetailAdjustment> detAdjustments = detAdjustmentService.searchById(id);
+		List<HistoryAdjustment> hisAdjustments = hisAdjustmentService.searchById(id);
+		System.out.println("jumlah detail adjustment : "+detAdjustments.size());
+		System.out.println("jumlah history adjustment : "+hisAdjustments.size());
 		model.addAttribute("adjustment", adjustment);
-//		model.addAttribute("listDetailAdjustment", detAdjustments);
-//		model.addAttribute("listHistory", hisAdjustments);
+		model.addAttribute("listDetailAdjustment", detAdjustments);
+		model.addAttribute("listHistory", hisAdjustments);
 		return "detail-adjustment";
 	}
 	
 	@RequestMapping(value="/detail")
 	public String detail() {
 		return "detail-adjustment";
+	}
+	
+	//save history adjustment in detail adjustment view
+	@RequestMapping(value="/detail/save-history")
+	@ResponseStatus(HttpStatus.CREATED)
+	public void saveHistory(@RequestBody HistoryAdjustment hisAdjustment) {
+		hisAdjustmentService.save(hisAdjustment);
+	}
+	
+	//klik button done detail adjustment
+	@RequestMapping(value="/detail/done/{id}", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public void doneDetail(@PathVariable long id) {
+		adjustmentService.updateStatusAdjustment(id);
 	}
 }

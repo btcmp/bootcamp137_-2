@@ -31,7 +31,7 @@ public class HistoryAdjustment {
 	private String status;
 	@ManyToOne
 	private User createdBy;
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdOn;
 	
 	public long getId() {

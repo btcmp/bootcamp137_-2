@@ -48,4 +48,24 @@ public class AdjustmentDaoImpl implements AdjustmentDao{
 		session.flush();
 	}
 
+	public void updateStatusAdjustment(String status, long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update Adjustment a set a.status = :status where a.id = :id";
+		session.createQuery(hql).setParameter("status", status).setParameter("id", id).executeUpdate();
+		session.flush();
+	}
+
+	public List<Adjustment> searchByDateRange(long tglFrom, long tglTo) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Adjustment a where a.createdOn between :from and :to";
+		List<Adjustment> adjustments = session.createQuery(hql).setParameter("from", tglFrom).setParameter("to", tglTo).list();
+		if(adjustments.isEmpty()) {
+			return null;
+		}else {
+			return adjustments;
+		}
+	}
+
 }

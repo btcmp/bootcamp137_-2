@@ -43,7 +43,7 @@ public class ItemInventoryService {
 	}
 	
 	//search item inventory by item-variant
-	public List<ItemInventory> searchByItemAndVariant(String word){
+	public List<Object[]> searchByItemAndVariant(String word){
 		return itemInventoryDao.searchByItemAndVariant(word);
 	}
 

@@ -15,10 +15,42 @@
 		});
 
 		$("#pickup").datepicker({
-			dateFormat : 'mm-dd-yy',
+			dateFormat : 'yy-mm-dd',
 			minDate : '-12M',
 			maxDate : 0
 		});
+		//seacrh date range
+		function search(){
+			if($('#return').val() != "" && $('#pickup').val() != ""){
+				var tglFrom = $('#pickup').val();
+				var tglTo = $('#return').val();
+				
+				$.ajax({
+					url : '${pageContext.request.contextPath}/adjustment/search/'+tglFrom+'/'+tglTo,
+					type : 'GET',
+					success : function(data){
+						$('#data-adjustment').empty();
+						$(data).each(function(index, value){
+							console.log(value.id);
+							var dataAdj = "<tr id='"+value.createdOn+"'>"+
+							"<td>"+value.notes+"</td>"+
+							"<td>"+value.status+"</td>"+
+							"<td><div class='btn-group'>"+
+							"<a class='update btn btn-primary' id='"+value.id+"'>"+
+							"<i class='icon_pencil-edit'></i></a>"+
+							"</div></td>"+
+							"</tr>";
+							
+							$('#data-adjustment').append(dataAdj);
+						});
+					},
+					error : function(){
+						alert('failed search data adjustment');
+					}
+				});
+			}
+		}
+		
 		
 		$('#list-adjustment').attr('hidden', 'hidden');
 		$('#list-item').attr('hidden', 'hidden');
@@ -35,11 +67,11 @@
 					success : function(data){
 						$('#isi-item').empty();
 						$(data).each(function(index, value){
-							console.log(value.beginning);
-							var isi = "<tr id='"+value.itemVariant.id+"' class='"+value.id+"'>"+
-							"<td>"+value.itemVariant.item.name+" - "+value.itemVariant.name+"</td>"+
-							"<td>"+value.endingQty+"</td>"+
-							"<td><div contenteditable='true'><input type='text' id='input-adj-qty-"+value.id+"'></div></td>"+
+							//console.log(value.beginning);
+							var isi = "<tr id='"+value[2]+"'>"+
+							"<td>"+value[3]+" - "+value[1]+"</td>"+
+							"<td>"+value[0]+"</td>"+
+							"<td><div contenteditable='true'><input type='text' id='input-adj-qty-"+value[2]+"'></div></td>"+
 							"</tr>";
 							
 							$('#isi-item').append(isi);
@@ -55,10 +87,9 @@
 		$('#add-item').click(function(){
 			$('#table-add-item > tbody > tr').each(function(index, data){
 				var idVar = $(data).attr('id');
-				var id = $(data).attr('class');
 				var itemVariant = $(data).find('td').eq(0).text();
 				var inStock = $(data).find('td').eq(1).text();
-				var adjQty = $('#input-adj-qty-'+id+'').val();
+				var adjQty = $('#input-adj-qty-'+idVar+'').val();
 				if(!adjQty == ""){
 					var isi = "<tr id='"+idVar+"'>"+
 					"<td>"+itemVariant+"</td>"+
@@ -92,20 +123,20 @@
 					},
 					inStock : $(data).find('td').eq(1).text() - $(data).find('td').eq(2).text(),
 					actualStock : $(data).find('td').eq(2).text()
-				}
+				};
 				listDetAdjustment.push(detAdjustment);
 				var history = {
 					status : "waiting"
-				}
+				};
 				listHistory.push(history);
 			});
 			
 			var adjustment = {
-				status : "waiting",
+				status : "Submitted",
 				notes : $('#input-notes').val(),
 				hisAdjustments : listHistory,
 				detAdjustments : listDetAdjustment
-			}
+			};
 			
 			console.log(adjustment);
 			$.ajax({
@@ -154,7 +185,7 @@
 										<label for="pickup">Search date:</label> <input type="text"
 											id="pickup" data-date-range-end="#return"> <label
 											for="return">-</label> <input type="text" id="return"
-											data-date-range-start="#pickup">
+											data-date-range-start="#pickup" oninput="search()">
 									</form>
 								</li>
 							</ul>
@@ -180,7 +211,7 @@
 								<th><i class="icon_cogs"></i>Action</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="data-adjustment">
 						<c:forEach items="${listAdjustment }" var="adj">
 							<tr>
 								<td>${adj.createdOn }</td>

@@ -55,11 +55,11 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		session.flush();
 	}
 
-	public List<ItemInventory> searchByItemAndVariant(String word) {
+	public List<Object[]> searchByItemAndVariant(String word) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from ItemInventory i where lower(i.itemVariant.item.name) like lower(:name)";
-		List<ItemInventory> inventories = session.createQuery(hql).setParameter("name", "%"+word+"%").list();
+		String hql = "select min(i.endingQty), i.itemVariant.name, i.itemVariant.id, i.itemVariant.item.name from ItemInventory i where lower(i.itemVariant.item.name) like lower(:name) group by i.itemVariant.name, i.itemVariant.id, i.itemVariant.item.name";
+		List<Object[]> inventories = session.createQuery(hql).setParameter("name", "%"+word+"%").list();
 		if(inventories.isEmpty()) {
 			return null;
 		}else {
@@ -74,6 +74,20 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		String hql = "update ItemInventory i set i.beginning = :inStock where i.itemVariant.id = :idVariant";
 		session.createQuery(hql).setParameter("inStock", inStock).setParameter("idVariant", id).executeUpdate();
 		session.flush();
+	}
+
+	public ItemInventory searchEndingQtyByLastModifiedVariant(long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ItemInventory i where i.itemVariant.id = :id and i.modifiedOn is not null order by i.modifiedOn desc";
+		List<ItemInventory> inventories = session.createQuery(hql).setParameter("id", id).list();
+		ItemInventory inv = inventories.get(0);
+		if(inventories.isEmpty()) {
+			return null;
+		}else {
+			return inv;
+		}
+		
 	}
 
 }

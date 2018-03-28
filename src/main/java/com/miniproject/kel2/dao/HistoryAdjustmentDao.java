@@ -17,4 +17,6 @@ public interface HistoryAdjustmentDao {
 	public void delete(HistoryAdjustment hisAdjustment);
 
 	public List<HistoryAdjustment> searchById(long id);
+
+	public HistoryAdjustment searchByIdAdjustment(long id);
 }

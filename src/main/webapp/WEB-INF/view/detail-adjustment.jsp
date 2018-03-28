@@ -3,7 +3,48 @@
 	$(function(){
 		
 		$('#btn-done').click(function(){
-			window.location="${pageContext.request.contextPath}/adjustment";
+			var idAdjustment = "${adjustment.id}";
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/adjustment/detail/done/'+idAdjustment,
+				type : 'GET',
+				success : function(data){
+					window.location="${pageContext.request.contextPath}/adjustment";
+				},
+				error : function(){
+					alert('failed update adjustment');
+				}
+			});
+			
+		});
+		
+		$('#change-status').change(function(){
+			var status = $(this).val();
+			var createdOn = new Date();
+			
+			if(status != ""){
+				var history = {
+					adjustmentId : {
+						id : "${adjustment.id}"
+					},
+					createdOn : new Date(),
+					status : status
+				}
+				
+				$.ajax({
+					url : '${pageContext.request.contextPath}/adjustment/detail/save-history',
+					type : 'POST',
+					contentType : 'application/json',
+					data : JSON.stringify(history),
+					success : function(data){
+						//alert('save history success');
+						window.location = '${pageContext.request.contextPath}/adjustment/get-detail/'+"${adjustment.id}";
+					},
+					error : function(){
+						alert ('failed save history');
+					}
+				});
+			}
 		});
 	});
 </script>
@@ -20,10 +61,10 @@
 								Adjustment Detail
 							</div>
 							<div class="col-sm-2" style="float:right;">
-								<select class="btn btn-primary" id="input-province">
+								<select class="btn btn-primary" id="change-status">
 									<option value="" selected="selected">More --> </option>
-									<option value="approve">Approve</option>
-									<option value="reject">Reject</option>
+									<option value="Approved">Approve</option>
+									<option value="Rejected">Reject</option>
 									<option value="print">Print</option>
 								</select>
 							</div>
@@ -43,7 +84,7 @@
 						   <div class="col-lg-12" style="margin-bottom:30px;">
 							<p></p>
 							<c:forEach items="${listHistory }" var="hisAdj">
-							<p><label for="input-notes">${hisAdj.createOn } - ${hisAdj.status }</label></p>
+							<p><label for="input-notes">${hisAdj.createdOn } - ${hisAdj.status }</label></p>
 							</c:forEach>
 						  </div>
 						  
@@ -59,7 +100,7 @@
 									 <th><center>Adjustment Qty.</center></th>
 								  </tr>
 								</thead>
-								<tbody>
+								<tbody style="text-align : center;">
 								<c:forEach items="${listDetailAdjustment }" var="detAdj">
 								  <tr>
 									 <td>${detAdj.variantId.item.name } - ${detAdj.variantId.name }</td>
