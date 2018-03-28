@@ -81,8 +81,8 @@ public class OutletController {
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String indexBySearch(@RequestParam(value="search", defaultValue="") String search, Model model){
 		List<Outlet> outlets = outletService.searchByName(search);
-		model.addAttribute("outlets", outlets);
-		System.out.println("search : " + search);
+		model.addAttribute("outs", outlets);
+		System.out.println("search : " + outlets.size());
 		return "outlet";
 	}
 	

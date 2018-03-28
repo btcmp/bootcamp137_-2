@@ -16,7 +16,7 @@
 <meta name="author" content="GeeksLabs">
 <meta name="keyword"
 	content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-<link rel="shortcut icon" href="img/favicon.png">
+<link rel="shortcut icon" href="${resources}img/favicon.png">
 
 <title>Point of Sale</title>
 
@@ -454,8 +454,9 @@
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="adjustment" id="adjustment">Adjusment</a></li>
-							
+							<li><a class="" href="#" id="adjustment">Adjusment</a></li>
+							<li><a class="" href="adjustment2">Adjusment
+									Detail</a></li>
 						</ul></li>
 					<li class="sub-menu"><a href="javascript:;" class=""> <i
 							class="icon_desktop"></i> <span>Transfer Stok</span> <span
@@ -472,7 +473,7 @@
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="sales-order">Sales Order</a></li>
+							<li><a class="" href="view-sales-order.html">Sales Order</a></li>
 						</ul></li>
 
 				</ul>

@@ -168,6 +168,7 @@ $(document).ready(function(){
  	// SEARCH
  	$('#btn-search').on('click', function(){
 		var word =$('#search').val();
+		console.log(word);
 		window.location="${pageContext.request.contextPath}/outlet/search?search="+word;
  	});
  	
