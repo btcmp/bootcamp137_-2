@@ -14,11 +14,144 @@
 			$('#modal-done-payment').modal();
 		});
 
-		$("#pickup").datepicker({
-			dateFormat : 'mm-dd-yy',
-			minDate : '-12M',
-			maxDate : '+12M'
+		$("#input-cust-dob").datepicker({
+			dateFormat : 'yy-mm-dd'
 		});
+		
+		//input region dan district
+		$('#input-region').attr('disabled', 'disabled');
+		$('#input-district').attr('disabled', 'disabled');
+		$('#input-province').change(function(){
+			var id = $(this).val();
+			console.log(id);
+			if(!id==""){
+				$.ajax({
+					url : '${pageContext.request.contextPath}/province/get-region/'+id,
+					type : 'GET',
+					success : function(data){
+						var listRegion = [];
+						var choose = "<option value=''>-- Choose --</option>";
+						listRegion.push(choose);
+						$(data).each(function(index, value){
+							var isi = "<option value='"+value.id+"'>"+value.name+"</option>";
+							listRegion.push(isi);
+						});
+						$('#input-region').html(listRegion);
+						$('#input-region').removeAttr('disabled');
+					},
+					error : function(){
+						alert('failed to get data region');
+					}
+					
+				});
+			}
+		});
+		
+		$('#input-region').change(function(){
+			var id = $(this).val();
+			console.log(id);
+			if(!id==""){
+				$.ajax({
+					url : '${pageContext.request.contextPath}/province/get-district/'+id,
+					type : 'GET',
+					success : function(data){
+						var listDistrict = [];
+						var choose = "<option value=''>-- Choose --</option>";
+						listDistrict.push(choose);
+						$(data).each(function(index, value){
+							var isi = "<option value='"+value.id+"'>"+value.name+"</option>";
+							listDistrict.push(isi);
+						});
+						$('#input-district').html(listDistrict);
+						$('#input-district').removeAttr('disabled');
+					},
+					error : function(){
+						alert('failed to get data district');
+					}
+					
+				});
+			}
+		});
+
+		//input customer
+		$('#add-cust').click(function() {
+			var name = $('#input-cust-name').val();
+			var email = $('#input-cust-email').val();
+			var phone = $('#input-cust-phone').val();
+			var dob = $('#input-cust-dob').val();
+			var address = $('#input-address').val();
+			var province = $('#input-province').val();
+			var region = $('#input-region').val();
+			var district = $('#input-district').val();
+			
+			var customer = {
+				name : name,
+				email : email,
+				phone : phone,
+				dob : dob,
+				address : address,
+				provinceId :{
+					id : province
+				},
+				regionId : {
+					id : region
+				},
+				districtId : {
+					id : district
+				},
+				modifiedOn : new Date(),
+				createdOn : new Date(),
+				active : 0
+			}
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/sales-order/save-customer',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(customer),
+				success : function(data){
+					//alert('success save new customer');
+					$('#form-add-cust').trigger('reset');
+					$('#modal-add-cust').modal('hide');
+				},
+				error : function(){
+					alert('failed save new customer');
+				}
+			});
+		});
+		
+		//search customer 
+		$('#input-search-cust').on('input', function(){
+			var word = $(this).val();
+			console.log(word);
+			$.ajax({
+				url : '${pageContext.request.contextPath}/sales-order/search-customer/'+word,
+				type : 'GET',
+				success : function(data){
+					$('#isi-customer').empty();
+					$(data).each(function(index, value){
+						var isi = "<tr id='"+value.id+"'>"+
+						"<td>"+value.name+"</td>"+
+						"<td>"+value.phone+"</td>"+
+						"<td>"+value.email+"</td>"+
+						"</tr>";
+						$('#isi-customer').append(isi);
+					});
+					
+				},
+				error : function(){
+					//alert('failed to search customer');
+				}
+			});
+		});
+		
+		//click table
+		$("#table-customer").on("click", "tr", function(e) {
+			var id = $(this).attr('id');
+			console.log(id);
+			var name = 
+		});
+		
 	});
 </script>
 <!-- ==================================================================  BATAS BUAT ISIAN ========================================================================= -->
@@ -125,7 +258,7 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<div class="col-lg-9">
-							<input class="form-control" placeholder="Search Customer..."
+							<input class="form-control" placeholder="Search Customer..." id="input-search-cust"
 								type="text">
 						</div>
 						<div class="col-lg-3">
@@ -133,17 +266,11 @@
 								New</button>
 						</div>
 						<p></p>
-						<br>
-						<br>
+						<br> <br>
 						<p></p>
 						<div class="col-lg-12">
-							<table class="table table-striped table-advance table-hover">
-								<tbody>
-									<tr>
-										<td>[cust. name]</td>
-										<td>[phone]</td>
-										<td>[email]</td>
-									</tr>
+							<table class="table table-striped table-advance table-hover" id="table-customer">
+								<tbody id="isi-customer" style="cursor:pointer">
 								</tbody>
 							</table>
 						</div>
@@ -167,7 +294,7 @@
 					type="button">X</button>
 				<h4 class="modal-title">NEW CUSTOMER</h4>
 			</div>
-			<form id="save-form" data-parsley-validation>
+			<form id="form-add-cust" data-parsley-validation>
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="input-supplier-name"><b>PROFILE </b></label> <input
@@ -181,7 +308,7 @@
 					<br>
 					<div class="form-group">
 						<label for="input-supplier-name"><b>DAY OF BIRTH </b></label> <input
-							type="date" class="form-control" id="input-cust-name"
+							type="text" class="form-control" id="input-cust-dob"
 							aria-describedby="emailHelp" placeholder="Day of birth">
 					</div>
 					<br>
@@ -189,23 +316,20 @@
 						<label for="input-address">ADDRESS</label>
 						<textarea class="form-control " id="input-address"
 							name="input-address" required></textarea>
-						<select class="form-control" id="input-province"
-							style="width: 33%; float: left;">
-							<option value="" selected="selected">-- Province --</option>
-							<option value="">DIISI</option>
-						</select> <select class="form-control" id="input-region"
-							style="width: 33%; float: left;">
-							<option value="" selected="selected">-- Region --</option>
-							<option value="">DIISI</option>
-						</select> <select class="form-control" id="input-district"
-							style="width: 33%; float: left;">
-							<option value="" selected="selected">-- District --</option>
-							<option value="">DIISI</option>
+						<select class="form-control" id="input-province" style="width:34%; float:left;">
+							<option value="" selected="selected">-- Choose --</option>
+							<c:forEach items="${listProvince }" var="prov">
+								<option value="${prov.id }">${prov.name }</option>
+							</c:forEach>
+						</select> <select class="form-control" id="input-region" style="width:33%; float:left;">
+							<option value="" selected="selected">-- Choose --</option>
+						</select> <select class="form-control" id="input-district" style="width:33%; float:left;">
+							<option value="" selected="selected">-- Choose --</option>
 						</select>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" id="add" class="btn btn-primary">Done</button>
+					<button type="button" id="add-cust" class="btn btn-primary">Done</button>
 				</div>
 			</form>
 		</div>
@@ -241,8 +365,7 @@
 							<button type="button" id="btn-done" class="btn btn-primary">Done</button>
 						</div>
 						<p></p>
-						<br>
-						<br>
+						<br> <br>
 						<p></p>
 					</div>
 				</div>
@@ -274,8 +397,7 @@
 						</div>
 						<div class="col-lg-2"></div>
 					</div>
-					<br>
-					<br>
+					<br> <br>
 					<div class="form-group">
 						<div class="col-lg-12">
 							<center>
@@ -297,9 +419,7 @@
 								style="width: 20%; float: left;">Send</button>
 						</div>
 					</div>
-					<br>
-					<br>
-					<br>
+					<br> <br> <br>
 					<div class="form-group">
 						<div class="col-lg-12">
 							<button type="button" id="btn-done" class="btn btn-primary"

@@ -382,8 +382,8 @@ $(function(){
 												</div>
 												<div class="form-group">
 													<div class="col-lg-4">
-														<label for="edit-province">Province</label> <select
-															class="form-control" id="edit-province">
+														<label for="edit-province">Province</label>
+														<select class="form-control" id="edit-province">
 															<option value="" selected="selected">-- Choose
 																--</option>
 															<c:forEach items="${listProvince }" var="prov">
@@ -392,8 +392,8 @@ $(function(){
 														</select>
 													</div>
 													<div class="col-lg-4">
-														<label for="input-region">Region</label> <select
-															class="form-control" id="edit-region">
+														<label for="input-region">Region</label> 
+														<select class="form-control" id="edit-region">
 															<option value="" selected="selected">-- Choose
 																--</option>
 															<c:forEach items="${listRegion }" var="reg">
@@ -402,8 +402,8 @@ $(function(){
 														</select>
 													</div>
 													<div class="col-lg-4">
-														<label for="input-district">District</label> <select
-															class="form-control" id="edit-district">
+														<label for="input-district">District</label> 
+														<select class="form-control" id="edit-district">
 															<option value="" selected="selected">-- Choose
 																--</option>
 															<c:forEach items="${listDistrict }" var="dis">
