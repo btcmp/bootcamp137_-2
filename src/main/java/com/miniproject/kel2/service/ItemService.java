@@ -83,7 +83,30 @@ public class ItemService {
 	}
 	
 	public void update(Item item) {
-		itemDao.update(item);
+		List<ItemVariant> itemVariants = item.getItemVariants();
+			item.setItemVariants(null);
+			itemDao.update(item);
+			
+			ItemInventory inventory;
+			for(ItemVariant variant : itemVariants) {
+				inventory = variant.getItemInventories().get(0);
+				variant.setItemInventories(null);
+				variant.setItem(item);
+				if(variant.getId()==0) {
+					itemVariantDao.save(variant);
+					inventory.setItemVariant(variant);
+					inventory.setEndingQty(inventory.getBeginning());
+					itemInventoryDao.save(inventory);
+				} 
+				else {
+					itemVariantDao.update(variant);
+					inventory.setItemVariant(variant);
+					inventory.setEndingQty(inventory.getBeginning());
+					itemInventoryDao.update(inventory);
+				
+				}
+			}
+			
 	}
 	
 	public void delete(Item item) {

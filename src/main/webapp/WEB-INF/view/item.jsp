@@ -1,12 +1,15 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 	$(function() {
+		index = 0;
+		
 		// menampilkan pop up create
 		$('#btn-create').click(function() {
 			$('#modal-create').modal();
 		});
-		
-		// btn-add untuk menampilkan addvariant ke table variant
+
+	/* -------------------------------------------------------------- ADD VARIANT (CREATE) -------------------------------------------------------------------- */
+		// ADD NEW VARIANT DARI ADD VARIANT 
 		$('#btn-add').click(function(){
 			var varname  = $('#input-varname').val();
 			var uprice  = $('#input-uprice').val();
@@ -24,55 +27,16 @@
 				alertAtQty : $('#input-alertat').val()
 			};
 			
-			var add = "<tr><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
-					  "</td><td><a class='btn-edit' href='#'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
+			var add = "<tr id=tr-var "+ index + " ><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
+					  "</td><td><a class='btn-edit' href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
 			$("#tbody-addvar").append(add);
-			
-		});
-		
+			index++;
+			console.log(index);
+		});	
 
-		/* $('#btn-save').on('click', function(){
-			//var form = $('#target').val();
-			var itemVariants =[];
-			var itemInventories = [];
-			$('#tbl-addvar > #tbody-addvar > tr').each(function(index, data){
-					var inventory = {
-							beginning : $(data).find('td').eq(3).text(),
-							alertAtQty : $(data).find('td').eq(4).text()
-					}
-					var variant = {
-							name : $(data).find('td').eq(0).text(),
-							price : $(data).find('td').eq(1).text(),
-							sku : $(data).find('td').eq(2).text(),
-							itemInventories : inventory
-					}
-					itemVariants.push(variant);
-			});
-			
-			var item = {
-					name : $('#input-item-name').val(),
-					category : {
-							id : $('#input-category').val(),
-					},
-					itemVariants : itemVariants
-			};
-			console.log(item);
-			
-			   $.ajax({
-				url : '${pageContext.request.contextPath}/item/save',
-				type :'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(item),
-				success: function(data){
-					console.log(data);
-					window.location='${pageContext.request.contextPath}/item';
-				}, error : function(){
-					alert('saving failed')	
-				}
-			});  
-		});  
-		 */
-		 
+	
+	/* ------------------------------------------------------------------ SAVE (CREATE) -------------------------------------------------------------------- */
+		// SAVE ITEM + VARIANT
 		$('#btn-save').on('click', function(evt){
 			evt.preventDefault();
 			var itemVariants =[];
@@ -114,34 +78,49 @@
 			});  
 		});  
 		 
- 		
-		});  
+	
+ 	/* ------------------------------------------------------------------ EDIT VARIANT (CREATE) ---------------------------------------------------------------- */	
+		// EDIT VARIANT
+	 	$('#tbody-addvar').on('click', '.btn-edit', function(evt){
+			evt.preventDefault();
+			var element = $(this).parent().parent();
+				$('#modal-edit').modal();
+				$('#edit-varname').val(element.find('td').eq(0).text());	
+				$('#edit-uprice').val(element.find('td').eq(1).text());
+				$('#edit-sku').val(element.find('td').eq(2).text());
+				$('#edit-beginning').val(element.find('td').eq(3).text());
+				$('#edit-alert').val(element.find('td').eq(4).text());
+				$('#id-hidden-variant').val(element.find('td').eq(0).attr('id'));
+				//console.log(element.find('td').eq(0).attr('id'));
+				
+				console.log(element.attr('id'));
+				console.log(element)
+	 	});
+	 	
+ 	
+	/* -------------------------------------------------------------- DELETE VARIANT (CREATE) ------------------------------------------------------------------- */
+ 		$('#tbody-addvar').on('click', '#btn-X', function(){
+ 			$(this).parent().parent().remove();
+ 		});
+
+	
+	/* -------------------------------------------------------------- ADD DARI EDIT VARIANT (CREATE) -------------------------------------------------------------------- */
+		// ADD dari modal edit pada CREATE
+		 $('#btn-add-from-edit').click(function(evt){
+			evt.preventDefault;
+			var index =$('#id-hidden-variant').val();
+			console.log(index)
 			
-		// mengambil nilai untuk edit add variant
-		/* $('.btn-edit').click(function(){
-			var id = $(this).attr('id');
-			
-			$.ajax({
-				url : '${pageContext.request.contextPath}/item/get-one/'+id,
-				type :'GET',
-				success: function(item){
-					setEditOutlet(item);
-					$('#modal-edit').modal();
-				},
-				error : function(){
-					alert('failed update')	
-				},
-				dataType :'json'
-			})
-		});	
-		
-		// SET UP DATA EDIT
-		function setEditItem(item){
-			$('#edit-id').val(out.id);
-			$('#edit-outletName').val(out.name);
-			$('#edit-address').val(out.address);
-		} */
-		
+			$('#tr-var' + index).remove();
+			$('#tbody-addvar').append("<tr id=tr-var2 " + index + "><p style='display:none;'>" + $('#id-hidden-variant').val() + "</p><td>" + $('#edit-varname').val() + "</td><td>" + $('#edit-uprice').val() + "</td><td>" 
+					+ $('#edit-sku').val() + "</td><td>" + $('#edit-beginning').val() + "</td><td style='display:none;'>" + $('#edit-alert').val() +
+					"</td><td><a class='btn-edit' href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>");
+		 	index++;
+		 	
+		 	alert('save ok');
+ 			}); 
+ 			
+	});	
 
 </script>
 
@@ -266,6 +245,7 @@
 													</h5>
 
 												</div>
+												<form>
 												<div class="modal-body" style="height: 110px">
 													<div class="col-lg-4" style="margin-bottom: 10px;">
 														<input type="text" id="input-varname" placeholder="Variant Name">
@@ -288,18 +268,16 @@
 													<div class="col-lg-6" style="margin-bottom: 10px;">
 														<input type="text" id="input-alertat" placeholder="Alert At">
 													</div>
-
-
 												</div>
 												<div class="modal-footer">
 													<div class="col-lg-10">
-														<button type="button" class="btn btn-primary">Cancel</button>
+														<button type="reset"  class="btn btn-primary">Cancel</button>
 													</div>
 													<div class="col-lg-2">
 														<button type="button" id="btn-add" class="btn btn-primary">Add</button>
-
 													</div>
 												</div>
+												</form>
 											</div>
 
 										</div>
@@ -333,7 +311,7 @@
 											<td>${inv.beginning}</td>
 											<td>${inv.alertAtQty}</td>
 											<td>
-												<a id="${inv.itemVariant.item.id}" href="#" data-toggle="modal"data-target="#modalEdit2"> Edit </a> 
+												<a id="${inv.itemVariant.item.id}" href="#" class="btn-edit-utama" data-toggle="modal"data-target="#modal-edit-utama"> Edit </a> 
 											
 											
 									<!-- ============================================= Modal EDIT =========================================-->
@@ -348,9 +326,11 @@
 																<h5 class="modal-title" id="exampleModalLabel">
 																	<center>Edit Variant</center>
 																</h5>
-
 															</div>
+															<form>
 															<div class="modal-body" style="height: 110px">
+																<input type="hidden" name="edit-id" id="edit-id">
+																<p id="id-hidden-variant"></p>
 																<div class="col-lg-4" style="margin-bottom: 10px;">
 																	<input type="text" id="edit-varname" placeholder="Variant Name">
 																</div>
@@ -371,19 +351,20 @@
 																</div>
 																<div class="col-lg-6" style="margin-bottom: 10px;">
 																	<input type="text" id="edit-alert" placeholder="Alert At">
+																	<input type="hidden" id="id-variant">
 																</div>
 
 															</div>
 															<div class="modal-footer">
 																<div class="col-lg-10">
-																	<button type="button" class="btn btn-primary">Cancel</button>
+																	<button type="reset" class="btn btn-primary">Cancel</button>
 																</div>
 																<div class="col-lg-2">
-																	<button type="button" class="btn btn-primary">Add</button>
+																	<button type="button" id="btn-add-from-edit"class="btn btn-primary">Add</button>
 
 																</div>
 															</div>
-
+															</form>
 														</div>
 
 
@@ -397,7 +378,7 @@
 
 
 								<!-- ================= Modal EDIT UTAMA =================== -->
-								<div class="modal fade" id="modalEdit2" tabindex="-1"
+								<div class="modal fade" id="modal-edit-utama" tabindex="-1"
 									role="dialog" aria-labelledby="exampleModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog" role="document">
@@ -415,14 +396,14 @@
 													<input class="col-lg-4" type="image" id="myimage"
 															src="resources/gambar-item/gambar-hp.jpg" style="width: 100px; height: 60px;">
 													<input class="col-lg-8" type="text"
-														style="margin-bottom: 10px;" placeholder="Item Name">
-													<select class="col-lg-8" type="text"
-														style="margin-bottom: 10px;">
-														<option>Category 1</option>
-														<option>Category 2</option>
-														<option>Category 3</option>
-													</select>
-												</div>
+														style="margin-bottom: 10px;" id="edit-name-utama" placeholder="Item Name">
+													<select class="col-lg-8" type="text" path="category.id" class="form-control" id="edit-category-utama" >
+															<c:forEach var="cat" items="${cats}">
+																<option value="${cat.id}">${cat.name}</option>
+															</c:forEach>
+														</select>
+													</div>
+													<div style = "clear:both;"></div>
 
 												<div class="col-lg-8" style="margin-bottom: 10px;">
 													<h5>VARIANT</h5>
@@ -433,27 +414,20 @@
 														Variant</button>
 												</div>
 
-												<table class="table table-bordered">
+												<table class="table table-bordered" id="tbl-edit-utama">
 													<thead>
 														<tr>
 															<th>Variant Name</th>
 															<th>Unit Price</th>
 															<th>SKU</th>
 															<th>Beginning Stock</th>
+															<th style="display:none">Alert At</th>
+															<th style="display:none">ID Variant</th>
+															<th style="display:none">ID Inventory</th>
 															<th>#</th>
 														</tr>
 													</thead>
-													<tbody>
-														<tr>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td><a href="" data-toggle="modal"
-																data-target="#modalEdit3"> Edit </a>
-																<button type="button" class="btn btn-danger">X
-																</button></td>
-														</tr>
+													<tbody id="tbody-edit-utama">
 													</tbody>
 												</table>
 												<!--  table end -->
