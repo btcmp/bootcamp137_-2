@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
@@ -52,4 +55,15 @@ public class PurchaseRequestController {
 	public void save(@RequestBody PurchaseRequest pr) {
 		prService.save(pr);
 	}
+	
+	@RequestMapping(value="/search-item-variant/{keyword}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Object[]> searchByItem(@PathVariable String keyword){
+		List<Object[]> iinventories = iiService.searchByItemAndVariant(keyword);
+		System.out.println("hasil search inventory : "+iinventories.size());
+		return iinventories;
+		
+	}
+	
 }
+
