@@ -96,7 +96,17 @@ public class User {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<HistoryAdjustment> hisAdjustmentsCreated;
 
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<SalesOrder> salesOrdersCreated;
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<SalesOrder> salesOrdersModified;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<SalesOrderDetail> salesOrderDetailsCreated;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<SalesOrderDetail> salesOrderDetailsModified;
 	
 	
 	public long getId() {
@@ -259,6 +269,40 @@ public class User {
 	public void setHisAdjustmentsCreated(List<HistoryAdjustment> hisAdjustmentsCreated) {
 		this.hisAdjustmentsCreated = hisAdjustmentsCreated;
 	}
+
+	public List<SalesOrder> getSalesOrdersCreated() {
+		return salesOrdersCreated;
+	}
+
+	public void setSalesOrdersCreated(List<SalesOrder> salesOrdersCreated) {
+		this.salesOrdersCreated = salesOrdersCreated;
+	}
+
+	public List<SalesOrder> getSalesOrdersModified() {
+		return salesOrdersModified;
+	}
+
+	public void setSalesOrdersModified(List<SalesOrder> salesOrdersModified) {
+		this.salesOrdersModified = salesOrdersModified;
+	}
+
+	public List<SalesOrderDetail> getSalesOrderDetailsCreated() {
+		return salesOrderDetailsCreated;
+	}
+
+	public void setSalesOrderDetailsCreated(List<SalesOrderDetail> salesOrderDetailsCreated) {
+		this.salesOrderDetailsCreated = salesOrderDetailsCreated;
+	}
+
+	public List<SalesOrderDetail> getSalesOrderDetailsModified() {
+		return salesOrderDetailsModified;
+	}
+
+	public void setSalesOrderDetailsModified(List<SalesOrderDetail> salesOrderDetailsModified) {
+		this.salesOrderDetailsModified = salesOrderDetailsModified;
+	}
+	
+	
 	
 //	getter
 	

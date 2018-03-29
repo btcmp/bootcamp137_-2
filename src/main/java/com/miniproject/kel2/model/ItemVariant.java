@@ -61,6 +61,9 @@ public class ItemVariant {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="itemVariant", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<TransferStockDetail> tsDetails;
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="variantId", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<SalesOrderDetail> salesOrderDetails;
+	
 	public List<TransferStockDetail> getTsDetails() {
 		return tsDetails;
 	}
@@ -140,6 +143,12 @@ public class ItemVariant {
 	}
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	public List<SalesOrderDetail> getSalesOrderDetails() {
+		return salesOrderDetails;
+	}
+	public void setSalesOrders(List<SalesOrderDetail> salesOrderDetails) {
+		this.salesOrderDetails = salesOrderDetails;
 	}
 	
 	
