@@ -46,7 +46,9 @@
 				<value>com.miniproject.kel2.model.TransferStockDetail</value>
 				<value>com.miniproject.kel2.model.SalesOrder</value>
 				<value>com.miniproject.kel2.model.SalesOrderDetail</value>
-				
+				<value>com.miniproject.kel2.model.PurchaseRequest</value>
+				<value>com.miniproject.kel2.model.RequestDetail</value>
+				<value>com.miniproject.kel2.model.HistoryPurchaseRequest</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
