@@ -50,6 +50,9 @@ public class TransferStock {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "transferStock", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TransferStockDetail> tsDetails;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "transferStock", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<HistoryTransferStock> historyTransferStock;
+	
 	public List<TransferStockDetail> getTsDetails() {
 		return tsDetails;
 	}
@@ -57,6 +60,12 @@ public class TransferStock {
 		this.tsDetails = tsDetails;
 	}
 	
+	public List<HistoryTransferStock> getHistoryTransferStock() {
+		return historyTransferStock;
+	}
+	public void setHistoryTransferStock(List<HistoryTransferStock> historyTransferStock) {
+		this.historyTransferStock = historyTransferStock;
+	}
 	public long getId() {
 		return id;
 	}

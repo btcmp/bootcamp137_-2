@@ -44,6 +44,7 @@
 				<value>com.miniproject.kel2.model.EmpOutlet</value>
 				<value>com.miniproject.kel2.model.TransferStock</value>
 				<value>com.miniproject.kel2.model.TransferStockDetail</value>
+				<value>com.miniproject.kel2.model.HistoryTransferStock</value>
 				<value>com.miniproject.kel2.model.SalesOrder</value>
 				<value>com.miniproject.kel2.model.SalesOrderDetail</value>
 				<value>com.miniproject.kel2.model.PurchaseRequest</value>
