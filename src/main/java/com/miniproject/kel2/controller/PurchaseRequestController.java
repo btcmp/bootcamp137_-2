@@ -3,6 +3,7 @@ package com.miniproject.kel2.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.PurchaseRequest;
+import com.miniproject.kel2.model.RequestDetail;
 import com.miniproject.kel2.service.PurchaseRequestHistoryService;
 import com.miniproject.kel2.service.PurchaseRequestService;
 import com.miniproject.kel2.service.ItemInventoryService;
@@ -44,6 +47,10 @@ public class PurchaseRequestController {
 		List<PurchaseRequest> prs = prService.selectAll();
 		model.addAttribute("prs", prs);
 		
+		
+		List<RequestDetail> prd = rdService.selectAll();
+		model.addAttribute("prd", prd);
+		
 		List<ItemInventory> items = iiService.selectAll();
 		model.addAttribute("items", items);
 		
@@ -52,8 +59,10 @@ public class PurchaseRequestController {
 	
 	/*===================================================== START ==================================================*/
 	@RequestMapping("/save")
+	@ResponseStatus(HttpStatus.CREATED)
 	public void save(@RequestBody PurchaseRequest pr) {
 		prService.save(pr);
+		
 	}
 	
 	@RequestMapping(value="/search-item-variant/{keyword}", method=RequestMethod.GET)
@@ -64,6 +73,17 @@ public class PurchaseRequestController {
 		return iinventories;
 		
 	}
+	
+	@RequestMapping(value="/get-one/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public PurchaseRequest getOne(@PathVariable long id) {
+		
+		PurchaseRequest purReq = prService.getOne(id);
+		
+		return purReq;
+	}
+	
+	
 	
 }
 

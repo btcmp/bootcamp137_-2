@@ -2,6 +2,7 @@ package com.miniproject.kel2.dao;
 
 import java.util.List;
 
+import com.miniproject.kel2.model.PurchaseRequest;
 import com.miniproject.kel2.model.RequestDetail;
 
 public interface RequestPurchaseDetailDao {
@@ -15,4 +16,6 @@ public interface RequestPurchaseDetailDao {
 	public void update(RequestDetail requestDetail);
 	
 	public void delete(RequestDetail requestDetail);
+
+	public List<RequestDetail> selectByRequest(PurchaseRequest pr);
 }

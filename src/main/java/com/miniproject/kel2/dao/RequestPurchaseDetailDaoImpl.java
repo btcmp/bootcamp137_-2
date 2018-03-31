@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.miniproject.kel2.model.PurchaseRequest;
 import com.miniproject.kel2.model.RequestDetail;
 
 @Repository
@@ -47,6 +48,15 @@ public class RequestPurchaseDetailDaoImpl implements RequestPurchaseDetailDao{
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(requestDetail);
 		session.flush();
+	}
+
+	public List<RequestDetail> selectByRequest(PurchaseRequest pr) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from RequestDetail rd where rd.pr.id = :prid";
+		List<RequestDetail> rd = session.createQuery(hql).setParameter("prid", pr.getId()).list();
+		
+		return rd;
 	}
 
 	

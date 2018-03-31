@@ -53,7 +53,10 @@ public class ItemVariant {
 	@ManyToOne
 	public Item item;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "itemVariant", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "itemvar", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<RequestDetail> requestDetail;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "itemVariant", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemInventory> itemInventories;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="variantId", cascade=CascadeType.ALL, orphanRemoval=true)
@@ -76,6 +79,16 @@ public class ItemVariant {
 	}
 	public void setDetAdjustments(List<DetailAdjustment> detAdjustments) {
 		this.detAdjustments = detAdjustments;
+	}
+	
+	public List<RequestDetail> getRequestDetail() {
+		return requestDetail;
+	}
+	public void setRequestDetail(List<RequestDetail> requestDetail) {
+		this.requestDetail = requestDetail;
+	}
+	public void setSalesOrderDetails(List<SalesOrderDetail> salesOrderDetails) {
+		this.salesOrderDetails = salesOrderDetails;
 	}
 	public Item getItem() {
 		return item;

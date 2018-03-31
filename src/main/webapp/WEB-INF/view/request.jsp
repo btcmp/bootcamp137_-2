@@ -83,7 +83,7 @@
 						</div>
 						<div>
 							<table class="table table-striped table-bordered text-center"
-								cellspacing="0" id="order-table">
+								cellspacing="0" id="request-table">
 								<thead>
 									<tr>
 										<th>Create Date</th>
@@ -94,15 +94,15 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="#" var="#">
+									<c:forEach items="${prs }" var="pr">
 										<!-- //mengambil id barang -->
 										<tr id="#">
-											<td>#</td>
-											<td>#</td>
-											<td>#</td>
-											<td>#</td>
-											<td><a id="" class="btn-beli btn btn-warning"
-												style="color: white;"> Edit </a>|<a id=""
+											<td>${pr.createdOn }</td>
+											<td>${pr.prNo }</td>
+											<td>${pr.notes }</td>
+											<td>${pr.status }</td>
+											<td><a id="${pr.id }" class="btn-edit btn btn-warning"
+												style="color: white;"> Edit </a>|<a id="${pr.id }"
 												class="btn-beli btn btn-danger" style="color: white;">
 													Delete </a></td>
 										</tr>
@@ -150,7 +150,7 @@
 						</label>
 						<div class="form-group">
 							<div class="col-lg-12">
-								<input class="form-control" type="date" name="" id="create-date"/>
+								<input class="form-control" type="text" name="" id="ready-date"/>
 							</div>
 						</div>
 
@@ -159,7 +159,7 @@
 						<div class="form-group">
 
 							<div class="col-lg-12">
-								<textarea class="form-control" id="notes"></textarea>
+								<textarea class="form-control" id="request-notes"></textarea>
 							</div>
 						</div>
 
@@ -206,7 +206,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-primary">Save</button>
+				<button type="button" class="btn btn-primary" id="btn-save-request">Save</button>
 			</div>
 		</div>
 	</div>
@@ -215,7 +215,7 @@
 
 <!--------------------------------------------------------------------- EDIT MODAL ------------------------------------------------------------->
 <!-- Start Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+<div class="modal fade" id="update-request-modal" tabindex="-1" role="dialog"
 	aria-labelledby="editModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -233,6 +233,7 @@
 						<div class="form-group">
 							<label for="outlet-name" class="control-label"><span
 								class="required">*</span> EDIT  PR : {isi nama outlet}</label>
+								<input class="form-control" type="hidden" name="" id="update-id"/>
 						</div>
 
 						<label for="outlet-name" class="control-label"> Target
@@ -240,7 +241,7 @@
 						</label>
 						<div class="form-group">
 							<div class="col-lg-12">
-								<input class="form-control" type="date" name="" id="update-date"/>
+								<input class="form-control" type="text" name="" id="update-date"/>
 							</div>
 						</div>
 
@@ -264,12 +265,20 @@
 										<tr>
 
 											<th><center>Item</center></th>
-											<th><center>In Stock</center></th>
+											<th><center>In Stock</cente></th>
 											<th><center>Request Qty</center></th>
 											<th><center>cancel</center></th>
 										</tr>
 									</thead>
 									<tbody align="center" id="edit-tabel-request">
+									<%-- <c:forEach items="${prd }" var="pr">
+										<tr id="#">
+											<td>${pr.itemvar.name }</td>
+											<td>${pr.itemvar.itemInventories.beginning}</td>
+											<td>${pr.requestQty }</td>
+											<td>*</td>
+										</tr>
+									</c:forEach> --%>
 									</tbody>
 								</table>
 							</div>
@@ -338,25 +347,7 @@
 											<th>Request Qty.</th>
 										</tr>
 									</thead>
-									<tbody id="hasil-search-itemVar">
-										<%--  <c:forEach items="${items }" var="item">
-                                    <!-- //mengambil id barang -->
-                                        <tr id = "#">
-                                            <td>${item.itemVariant.item.name } - ${item.itemVariant.name }</td>
-                                            <td>${item.beginning }</td>
-                                            <td>
-                                            <% int jumlah = 0; %>
-                                            	<select class="jumlah-request form-control" id="jumlah-request-${item.id }">
-                                            		<c:forEach begin = "0" end = "${item.beginning - 1}">
-                                            			<option value="<%=jumlah %>"><%=jumlah=jumlah+1 %></option>
-                                            		</c:forEach>
-                                            	</select>
-                                            
-                                           
-                                            </td>
-                                        </tr>
-                                    </c:forEach> --%>
-									</tbody>
+									<tbody id="hasil-search-itemVar"></tbody>
 								</table>
 							</div>
 							<div class="col-lg-1"></div>
@@ -366,7 +357,7 @@
 			</div>
 			<div class="modal-footer">
 				<div class="col-lg-3">
-					<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-info" data-dismiss="modal" id="btn-reset" >Cancel</button>
 				</div>
 				<div class="col-lg-8">
 					<button type="button" class="btn btn-primary"
@@ -383,6 +374,10 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		 $('#ready-date').datepicker({
+			 dateformat : 'yy-mm-dd',
+			autoclose : true
+		}); 
 /*=======================================Search on modal add item Variant=================================================  */
 		$('#search-item-variant').on('input', function() {
 				var keyword = $(this).val();
@@ -434,13 +429,106 @@
 						"<td>"+ 
 							"<a href='#' class='cancel btn btn-danger' id='btn-cancel-add-item'>X</a>"+
 						"</td>"+ 
-					"</tr>";
-					$('#isi-tabel-request').append(isiTabel);
-					}
-				});
-			$('#tabel-list-item').removeAttr('hidden');
+						"</tr>";
+						$('#isi-tabel-request').append(isiTabel);
+						}
+					});
+				$('#tabel-list-item').removeAttr('hidden');
 			});
+		
+	/*=================================================== Save Request Modal =================================================  */
+	$('#btn-save-request').on('click', function(evt){
+		evt.preventDefault();
+		var listDetailRequest = [];
+		var listHistoryRequest = [];
+		$('#table-result-add-item > tbody > tr ').each(function(index, data){
+			var detailRequest = {
+				itemvar : {
+					id : $(data).attr('id')
+				},
+				requestQty : $(data).find('td').eq(2).text(),
+			};
+			
+			listDetailRequest.push(detailRequest);
+			var history = {
+					status : "waiting"
+			};
+			listHistoryRequest.push(history);
+		});
+		
+		//sementara menggunakan random code
+		function makeid() {
+			  var kode = "";
+			  var possible = "0123456789";
+
+			  for (var i = 0; i < 3; i++)
+			    kode += possible.charAt(Math.floor(Math.random() * possible.length));
+			   
+			  return kode;
+		}
+		
+		
+		console.log(makeid());
+		//set date format fot suitable in oracle database
+		var date = $('#ready-date').val().split('/');
+		var inputDate = date[0]+'-'+date[1]+'-'+date[2];
+		var prNo = date[0]+date[1]+date[2];
+		var request = {
+				status : "Created",
+				notes : $('#request-notes').val(),
+				readyTime : inputDate,
+				prNo : "pr_" + prNo,
+				requestDetail : listDetailRequest,
+				historyPr : listHistoryRequest
+		};
+		
+		console.log(request);
+		/* ajax to save */
+		 $.ajax({
+			url : '${pageContext.request.contextPath}/request/save',
+			type : 'POST',
+			contentType : 'application/json',
+			data : JSON.stringify(request),
+			success : function(data){
+				alert('save success');
+				//window.location='${pageContext.request.contextPath}/request';
+			}, error : function(){
+				alert('save request failed');
+			}
+		});
+	});
+	
+	/*=================================================== Update Request Modal =================================================  */
+	$(".btn-edit").on('click', function(evt){
+		evt.preventDefault();
+		var idEdit = $(this).attr('id');
+		//console.log(idEdit);
+		
+		
+		//set value for pop up edit
+		$.ajax({
+			url : '${pageContext.request.contextPath}/request/get-one/'+idEdit,
+			type : 'GET',
+			contentType : 'application/json',
+			
+			success : function(purReq){
+				setDataUpdateRequest(purReq);
+				$('#update-request-modal').modal();
+			}, error : function(){
+				alert('fail get the data');
+			}
 		})
+	})
+	
+	function setDataUpdateRequest(purReq){
+		console.log(purReq);
+		$("#update-id").val(purReq.id);
+		$("#update-date").val(purReq.readyTime);
+		$("#update-prNo").val(purReq.prNo);
+		$("#update-notes").val(purReq.notes);
+	}
+
+})
 </script>
 
 <%@ include file="topping/bottom.jsp"%>
