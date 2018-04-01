@@ -47,5 +47,10 @@ public class ItemInventoryService {
 		return itemInventoryDao.searchByItemAndVariant(word);
 	}
 
+	public List<Object[]> searchItemInventoryByName(String word) {
+		// TODO Auto-generated method stub
+		return itemInventoryDao.searchItemInventoryByName(word);
+	}
+
 	
 }

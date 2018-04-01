@@ -23,5 +23,7 @@ public interface ItemInventoryDao {
 	public void updateInStock(int inStock, long idVar);
 
 	public ItemInventory searchEndingQtyByLastModifiedVariant(long id);
+
+	public List<Object[]> searchItemInventoryByName(String word);
 	
 }

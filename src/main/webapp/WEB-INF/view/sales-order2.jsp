@@ -8,11 +8,16 @@
 			$('#modal-add-cust').modal();
 		});
 		$('#btn-charge').click(function() {
-			$('#modal-payment-method').modal();
+			if($('#btn-search-customer').text('Choose Customer')){
+				//alert('Please choose customer');
+				$('#btn-charge').attr('disabled', 'disabled');
+			}
+				$('#btn-charge').removeAttr('disabled');
+				$('#modal-payment-method').modal();
 		});
-		$('#btn-done').click(function() {
+		/* $('#btn-done').click(function() {
 			$('#modal-done-payment').modal();
-		});
+		}); */
 
 		$("#input-cust-dob").datepicker({
 			dateFormat : 'yy-mm-dd'
@@ -149,10 +154,233 @@
 		$("#table-customer").on("click", "tr", function(e) {
 			var id = $(this).attr('id');
 			console.log(id);
-			var name = 
+			var name = $(this).find('td').eq(0).text();
+			$('#btn-search-customer').html(name);
+			$('#input-search-cust').val("");
+			$('#isi-customer').empty();
+			$('#modal-search-customer').modal('hide');
 		});
 		
+		//search item variant
+		$('#search-item-variant').on('input', function(){
+			var word = $(this).val();
+			if(word != ""){
+				$.ajax({
+					url : '${pageContext.request.contextPath}/sales-order/search-item-variant/'+word,
+					type : 'GET',
+					success : function(data){
+						$('#isi-item-variant').empty();
+						$(data).each(function(index, value){
+							var angka = value[3];
+							var rupiah = '';
+							var angkarev = angka.toString().split('').reverse().join('');
+							for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.'; 
+							var price = 'Rp  '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
+							
+							var isi = "<tr id='"+value[1]+"'>"+
+							"<td style='width: 60%'>"+value[0]+" - "+value[2]+"</td>"+
+							"<td style='width: 30%'>"+price+"</td>"+
+							"<td style='width: 10%'><div class='btn-group'>"+
+							"<a class='btn btn-primary' id='btn-choose-item'>"+
+							"<i class='icon_check'></i></a>"+
+							"</div></td>"+
+							"</tr>";
+							$('#isi-item-variant').append(isi);
+						});
+					},
+					error : function(){
+						
+					}
+				});
+			}else{
+				$('#isi-item-variant').empty();
+			}
+		});
+		
+		//move item variant to totalan
+		$(document).on('click', '#btn-choose-item', function() {
+			var element = $(this).parent().parent().parent();
+			var id = element.attr('id');
+			var item  = element.find('td').eq(0).text();
+			var price  = element.find('td').eq(1).text();
+			console.log("id diklik : "+id);
+			var jmlStruk = $('#table-struk > tbody > tr').length;
+			if(jmlStruk != 0){
+				for(i = 0; i<jmlStruk ; i++){
+					var idTable = $('#table-struk > tbody > tr').eq(i).attr('id');
+					if(idTable !== id){
+						var qty = 1;
+						console.log("id bawah : "+id);
+						var isi = "<tr id='"+id+"'>"+
+							"<td style='width: 40%'>"+item+"</td>"+
+							"<td style='width: 20%'><button id='btn-minus' class='icon_minus-06' style='height:25px;' /><input type='text' value='"+qty+"' id='quantity' style='width:30px; height:26px;'/><button id='btn-plus' class='icon_plus' style='height:25px;'/></td>"+
+							"<td style='width: 30%' class='price'>"+price+"</td>"+
+							"<td><div class='btn-group'>"+
+							"<a class='btn btn-danger' id='btn-delete-receipt'>X</a>"+
+							"</div></td>"+
+							"</tr>";
+						$('#isi-struk').append(isi);
+						//$(this).attr('disabled', 'disabled');
+					}else{
+						alert('The selected item is already available on the receipt. Please set the quantity as you want');
+						$('#table-struk > tbody > tr').eq(i).remove();
+					}
+				}
+			}else{
+				var qty = 1;
+				var isi = "<tr id='"+id+"'>"+
+				"<td style='width: 40%'>"+item+"</td>"+
+				"<td style='width: 20%'><button id='btn-minus' class='icon_minus-06' style='height:25px;' /><input type='text' value='"+qty+"' style='width:30px; height:26px;'/><button id='btn-plus' class='icon_plus' style='height:25px;'/></td>"+
+				"<td style='width: 30%' class='price'>"+price+"</td>"+
+				"<td><div class='btn-group'>"+
+				"<a class='btn btn-danger' id='btn-delete-receipt'>X</a>"+
+				"</div></td>"+
+				"</tr>";
+				$('#isi-struk').append(isi);
+				//$(this).attr('disabled', 'disabled');
+			}
+			
+			//setting grand total receipt
+			hitung();
+		});
+		
+		//minus quantity in receipt
+		$(document).on('click', '#btn-minus', function() {
+			var element = $(this).parent();
+			var input = parseInt(element.find('input').val());
+			var rup = element.parent().find('td').eq(2).text();
+			var price = parseInt(rup.replace(/,.*|[^0-9]/g, ''), 10)/input;
+	    	//console.log(input);
+	    	if (!isNaN(input) && input > 1) {
+	    		var jml = input-1;
+	    		element.find('input').val(jml);
+	    		
+	    		var angka = jml*price;
+	    		var rupiah = '';
+				var angkarev = angka.toString().split('').reverse().join('');
+				for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.'; 
+				var subTotal = 'Rp  '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
+				
+	    		element.parent().find('td').eq(2).html(subTotal);
+	        } else {
+	        	element.find('input').val(1);
+	        }
+	    	
+	    	//setting grand total receipt
+	    	hitung();
+		});
+		
+		//plus quantity in receipt
+		$(document).on('click', '#btn-plus', function() {
+			var element = $(this).parent();
+			var input = parseInt(element.find('input').val());
+			var rup = element.parent().find('td').eq(2).text();
+			var price = parseInt(rup.replace(/,.*|[^0-9]/g, ''), 10)/input;
+	    	//console.log(price);
+	    	if (!isNaN(input) && input > 0) {
+	    		var jml = input+1;
+	    		element.find('input').val(jml);
+	    		
+	    		var angka = jml*price;
+	    		var rupiah = '';
+				var angkarev = angka.toString().split('').reverse().join('');
+				for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.'; 
+				var subTotal = 'Rp  '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
+				
+	    		element.parent().find('td').eq(2).html(subTotal);
+	        } else {
+	        	element.find('input').val(1);
+	        }
+	    	
+	    	//setting grand total receipt
+	    	hitung();
+		});
+		
+		//delete list receipt
+		$(document).on('click', '#btn-delete-receipt', function() {
+			var element = $(this).parent().parent().parent();
+			console.log(element);
+			element.remove();
+			//setting grand total receipt
+			hitung();
+		});
+		
+		//button clear sale
+		$('#btn-clear-sale').click(function(){
+			$('#search-item-variant').val("");
+			$('#isi-item-variant').empty();
+			$('#btn-search-customer').html('Choose Customer');
+			$('#isi-struk').empty();
+			$('#btn-charge').html("Charge Rp 0,00");
+			$('#total-bayar').html("Rp 0,00");
+		});
+		
+		//button cash done 
+		$('#btn-done').click(function(){
+			var rup = $('#total-bayar').text();
+			var total = parseInt(rup.replace(/,.*|[^0-9]/g, ''), 10);
+			var bayar = $('#input-cash').val();
+			var bayar1 = parseInt(bayar.replace(/,.*|[^0-9]/g, ''), 10);
+			var kembalian = bayar1 - total;
+			
+			var rupiah = '';
+		    var angkarev = kembalian.toString().split('').reverse().join('');
+			for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.'; 
+			var grandTotal = 'Rp  '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
+			
+			if(kembalian < 0){
+				alert('Sorry, your cash not enough');
+			}else{
+				$('#field-return').val(grandTotal);
+				$('#out-off').html('Out of '+bayar);
+				$('#modal-done-payment').modal();
+			}
+			
+		});
+		
+		function hitung(){
+			var angka = 0;
+			// iterate through each td based on class and add the values
+			if($('#table-struk > tbody > tr').length == 0){
+				$('#total-bayar').html("Rp 0,00");
+			}else{
+				$(".price").each(function() {
+				    var rup = $(this).text();
+				    var price = parseInt(rup.replace(/,.*|[^0-9]/g, ''), 10);
+				    
+				    if(!isNaN(price) && price.length != 0) {
+				        angka += parseFloat(price);
+				    }
+				    
+				    var rupiah = '';
+				    var angkarev = angka.toString().split('').reverse().join('');
+					for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.'; 
+					var grandTotal = 'Rp  '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
+				    console.log("grandTotal : "+grandTotal);
+				    $('#total-bayar').html(grandTotal);
+				    $('#btn-charge').html("Charge "+grandTotal);
+				});
+			}
+		};
+		
 	});
+	
+	$(document).ready(function(){
+		const autoNumericRupiah = {
+			    digitGroupSeparator        : '.',
+			    decimalCharacter           : ',',
+			    decimalPlaces			   : 2,
+			    currencySymbol             : 'Rp ',
+			    currencySymbolPlacement    : AutoNumeric.options.currencySymbolPlacement.prefix,
+			    roundingMethod             : 'U',
+			    minimumValue			   : 0,
+			    formatOnPageLoad		   : true
+			};
+
+			// Initialization
+		new AutoNumeric('#input-cash', autoNumericRupiah);
+    });
+	
 </script>
 <!-- ==================================================================  BATAS BUAT ISIAN ========================================================================= -->
 <section id="main-content">
@@ -165,22 +393,12 @@
 					<div class="col-sm-6">
 						<div class="col-lg-12" style="width: 100%;">
 							<P></P>
-							<input class="form-control" placeholder="Search" type="text">
+							<input class="form-control" placeholder="Search" type="text" id="search-item-variant">
 
 							<br>
 							<P></P>
-							<table class="table table-striped table-advance table-hover">
-								<tbody>
-									<tr>
-										<td style="width: 60%">[item-variant]</td>
-										<td style="width: 30%">Rp [price]</td>
-										<td style="width: 10%">
-											<div class="btn-group">
-												<a class="btn btn-primary" id="btn-edit"><i
-													class="icon_check"></i></a>
-											</div>
-										</td>
-									</tr>
+							<table class="table table-striped table-advance table-hover" id="table-item">
+								<tbody id="isi-item-variant">
 								</tbody>
 							</table>
 						</div>
@@ -195,31 +413,22 @@
 								Customer</button>
 							<br>
 							<P></P>
-							<table class="table table-striped table-advance table-hover">
+							<table class="table table-striped table-advance table-hover" id="table-struk">
 								<thead>
 									<tr>
 										<th style="width: 40%;"><center>Item</center></th>
-										<th style="width: 25%;"><center>Qty</center></th>
-										<th style="width: 25%;"><center>Subtotal</center></th>
+										<th style="width: 20%;"><center>Qty</center></th>
+										<th style="width: 30%;"><center>Subtotal</center></th>
 										<th style="width: 10%;"><center>#</center></th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td>
-											<div class="btn-group">
-												<a class="btn btn-danger" id="btn-edit">X</a>
-											</div>
-										</td>
-									</tr>
+								<tbody id="isi-struk">
+									
 								</tbody>
 								<tfoot>
 									<tr>
 										<td colspan="2"><b>Total</b></td>
-										<td colspan="2">Rp</td>
+										<td colspan="2" id="total-bayar">Rp 0,00</td>
 									<tr>
 								</tfoot>
 							</table>
@@ -227,7 +436,7 @@
 							<button type="button" id="btn-clear-sale" class="btn btn-primary">Clear
 								Sale</button>
 							<button type="button" id="btn-charge" class="btn btn-primary"
-								style="float: right;">Charge Rp [0]</button>
+								style="float: right;">Charge Rp 0,00</button>
 							<br>
 							<P></P>
 						</div>
@@ -358,8 +567,7 @@
 							</h5>
 						</div>
 						<div class="col-lg-8">
-							<input class="form-control" placeholder="Search Customer..."
-								type="text">
+							<input class="form-control" id="input-cash" type="text" >
 						</div>
 						<div class="col-lg-3">
 							<button type="button" id="btn-done" class="btn btn-primary">Done</button>
@@ -392,16 +600,16 @@
 					<div class="form-group">
 						<div class="col-lg-2"></div>
 						<div class="col-lg-8">
-							<input class="form-control" value="Rp [return]" type="text"
-								style="height: 50px;">
+							<input class="form-control" value="" type="text" id="field-return"
+								style="height: 50px;" readonly>
 						</div>
 						<div class="col-lg-2"></div>
 					</div>
 					<br> <br>
 					<div class="form-group">
 						<div class="col-lg-12">
-							<center>
-								<h5>Out of Rp.[0]</h5>
+							<center><b>
+								<h4 id="out-off">Out of Rp.[0]</h4></b>
 							</center>
 							<hr style="line-height: 3px;">
 						</div>

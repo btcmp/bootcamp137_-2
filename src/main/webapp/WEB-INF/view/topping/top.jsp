@@ -161,6 +161,7 @@
 <script src="${resources}/js/jquery.slimscroll.min.js"></script>
 <script src="${resources}/js/jquery.chained.min.js"></script>
 <script src="${resources}/js/BuroRaDer.DateRangePicker.js"></script>
+<script src="${resources}/js/autoNumeric.js"></script>
 <script>
 	//knob
 	$(function() {

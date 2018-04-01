@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.miniproject.kel2.dao.CustomerDao;
 import com.miniproject.kel2.model.Customer;
 import com.miniproject.kel2.model.District;
+import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.Province;
 import com.miniproject.kel2.model.Region;
 import com.miniproject.kel2.model.SalesOrder;
 import com.miniproject.kel2.service.CustomerService;
 import com.miniproject.kel2.service.DistrictService;
+import com.miniproject.kel2.service.ItemInventoryService;
 import com.miniproject.kel2.service.ProvinceService;
 import com.miniproject.kel2.service.RegionService;
 import com.miniproject.kel2.service.SalesOrderService;
@@ -43,6 +45,9 @@ public class SalesOrderController {
 	
 	@Autowired
 	CustomerService customerService;
+	
+	@Autowired
+	ItemInventoryService itemInventoryService;
 
 	@RequestMapping
 	public String index(Model model) {
@@ -70,5 +75,21 @@ public class SalesOrderController {
 		return customers;
 	}
 	
-	//
+	//bagian search item variant
+	@RequestMapping(value="/search-item-variant/{word}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Object[]> searchItemInventoryByName(@PathVariable String word){
+		List<Object[]> inventories = itemInventoryService.searchItemInventoryByName(word);
+		System.out.println("jumlah search inventories : "+inventories.size());
+		return inventories;
+	}
+	
+	//mindahin dari item ke struk
+	@RequestMapping(value="/get-nota/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public ItemInventory getNota(@PathVariable long id) {
+		ItemInventory inv = itemInventoryService.getOne(id);
+		System.out.println("bisa ambil inventory setelah checklist");
+		return inv;
+	}
 }
