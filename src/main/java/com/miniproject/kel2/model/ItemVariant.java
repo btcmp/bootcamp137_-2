@@ -53,10 +53,10 @@ public class ItemVariant {
 	@ManyToOne
 	public Item item;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "itemvar", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "itemvar", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<RequestDetail> requestDetail;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "itemVariant", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "itemVariant", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemInventory> itemInventories;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="variantId", cascade=CascadeType.ALL, orphanRemoval=true)

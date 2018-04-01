@@ -65,6 +65,9 @@ public class Outlet {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<PurchaseRequest> pr;
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="outlet", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<TransferStock> tStocks;
+	
 	@ManyToOne
 	public Province province;
 	
@@ -77,8 +80,12 @@ public class Outlet {
 	@ManyToMany(mappedBy="outlet")
 	private Set<Employee> employee;
 	
-	
-	
+	public List<TransferStock> gettStocks() {
+		return tStocks;
+	}
+	public void settStocks(List<TransferStock> tStocks) {
+		this.tStocks = tStocks;
+	}
 	public List<EmpOutlet> getEmpOutlets() {
 		return empOutlets;
 	}

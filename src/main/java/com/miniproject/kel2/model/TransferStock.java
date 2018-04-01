@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,9 +30,9 @@ public class TransferStock {
 	@Column(nullable=false)
 	private long id;
 	@Column(name="from_outlet", nullable=false)
-	private long fromOutlet;
+	private String fromOutlet;
 	@Column(name="to_outlet", nullable=false)
-	private long toOutlet;
+	private String toOutlet;
 	@Column(length=255)
 	private String notes;
 	@Column(length=20, nullable=false)
@@ -53,6 +54,9 @@ public class TransferStock {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "transferStock", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<HistoryTransferStock> historyTransferStock;
 	
+	@ManyToOne
+	public Outlet outlet;
+	
 	public List<TransferStockDetail> getTsDetails() {
 		return tsDetails;
 	}
@@ -66,22 +70,31 @@ public class TransferStock {
 	public void setHistoryTransferStock(List<HistoryTransferStock> historyTransferStock) {
 		this.historyTransferStock = historyTransferStock;
 	}
+	
+	public Outlet getOutlet() {
+		return outlet;
+	}
+	public void setOutlet(Outlet outlet) {
+		this.outlet = outlet;
+	}
+	
+	
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
-	public long getFromOutlet() {
+	public String getFromOutlet() {
 		return fromOutlet;
 	}
-	public void setFromOutlet(long fromOutlet) {
+	public void setFromOutlet(String fromOutlet) {
 		this.fromOutlet = fromOutlet;
 	}
-	public long getToOutlet() {
+	public String getToOutlet() {
 		return toOutlet;
 	}
-	public void setToOutlet(long toOutlet) {
+	public void setToOutlet(String toOutlet) {
 		this.toOutlet = toOutlet;
 	}
 	public String getNotes() {
