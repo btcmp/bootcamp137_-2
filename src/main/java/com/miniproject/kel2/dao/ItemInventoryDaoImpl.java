@@ -94,7 +94,10 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 	public List<Object[]> searchItemInventoryByName(String word) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "select distinct i.itemVariant.item.name, i.itemVariant.id, i.itemVariant.name, i.itemVariant.price from ItemInventory i where lower(i.itemVariant.item.name) like lower(:item) or lower(i.itemVariant.name) like lower(:variant)";
+		String hql = "select i.itemVariant.item.name, i.itemVariant.id, i.itemVariant.name, i.itemVariant.price, min(i.endingQty) "
+				+ "from ItemInventory i "
+				+ "where lower(i.itemVariant.item.name) like lower(:item) or lower(i.itemVariant.name) like lower(:variant)"
+				+ "group by i.itemVariant.item.name, i.itemVariant.id, i.itemVariant.name, i.itemVariant.price";
 		List<Object[]> inventories = session.createQuery(hql).setParameter("item", "%"+word+"%").setParameter("variant", "%"+word+"%").list();
 		if(inventories.isEmpty()) {
 			return null;

@@ -8,4 +8,6 @@ public interface SalesOrderDao {
 
 	public List<SalesOrder> selectAll();
 
+	public void save(SalesOrder so);
+
 }

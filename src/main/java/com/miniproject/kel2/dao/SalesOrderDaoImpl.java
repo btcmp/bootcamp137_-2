@@ -20,4 +20,11 @@ public class SalesOrderDaoImpl implements SalesOrderDao{
 		Session session = sessionFactory.getCurrentSession();
 		return session.createCriteria(SalesOrder.class).list();
 	}
+
+	public void save(SalesOrder so) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		session.save(so);
+		session.flush();
+	}
 }

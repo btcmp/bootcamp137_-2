@@ -92,4 +92,11 @@ public class SalesOrderController {
 		System.out.println("bisa ambil inventory setelah checklist");
 		return inv;
 	}
+	
+	//save data sales order
+	@RequestMapping(value="/save", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	public void save(@RequestBody SalesOrder salesOrder) {
+		salesOrderService.save(salesOrder);
+	}
 }

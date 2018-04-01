@@ -7,13 +7,9 @@
 		$('#btn-add-cust').click(function() {
 			$('#modal-add-cust').modal();
 		});
+		$('#btn-charge').attr('disabled', 'disabled');
 		$('#btn-charge').click(function() {
-			if($('#btn-search-customer').text('Choose Customer')){
-				//alert('Please choose customer');
-				$('#btn-charge').attr('disabled', 'disabled');
-			}
-				$('#btn-charge').removeAttr('disabled');
-				$('#modal-payment-method').modal();
+			$('#modal-payment-method').modal();
 		});
 		/* $('#btn-done').click(function() {
 			$('#modal-done-payment').modal();
@@ -156,9 +152,11 @@
 			console.log(id);
 			var name = $(this).find('td').eq(0).text();
 			$('#btn-search-customer').html(name);
+			$('#btn-search-customer').attr('name', id);
 			$('#input-search-cust').val("");
 			$('#isi-customer').empty();
 			$('#modal-search-customer').modal('hide');
+			$('#btn-charge').removeAttr('disabled');
 		});
 		
 		//search item variant
@@ -181,7 +179,7 @@
 							"<td style='width: 60%'>"+value[0]+" - "+value[2]+"</td>"+
 							"<td style='width: 30%'>"+price+"</td>"+
 							"<td style='width: 10%'><div class='btn-group'>"+
-							"<a class='btn btn-primary' id='btn-choose-item'>"+
+							"<a class='btn btn-primary' id='btn-choose-item' name='"+value[4]+"'>"+
 							"<i class='icon_check'></i></a>"+
 							"</div></td>"+
 							"</tr>";
@@ -203,15 +201,16 @@
 			var id = element.attr('id');
 			var item  = element.find('td').eq(0).text();
 			var price  = element.find('td').eq(1).text();
-			console.log("id diklik : "+id);
+			var jmlStock = $(this).attr('name');
+			//console.log("id diklik : "+id);
 			var jmlStruk = $('#table-struk > tbody > tr').length;
 			if(jmlStruk != 0){
 				for(i = 0; i<jmlStruk ; i++){
 					var idTable = $('#table-struk > tbody > tr').eq(i).attr('id');
 					if(idTable !== id){
 						var qty = 1;
-						console.log("id bawah : "+id);
-						var isi = "<tr id='"+id+"'>"+
+						//console.log("id bawah : "+id);
+						var isi = "<tr id='"+id+"' class='"+jmlStock+"'>"+
 							"<td style='width: 40%'>"+item+"</td>"+
 							"<td style='width: 20%'><button id='btn-minus' class='icon_minus-06' style='height:25px;' /><input type='text' value='"+qty+"' id='quantity' style='width:30px; height:26px;'/><button id='btn-plus' class='icon_plus' style='height:25px;'/></td>"+
 							"<td style='width: 30%' class='price'>"+price+"</td>"+
@@ -228,7 +227,7 @@
 				}
 			}else{
 				var qty = 1;
-				var isi = "<tr id='"+id+"'>"+
+				var isi = "<tr id='"+id+"' class='"+jmlStock+"'>"+
 				"<td style='width: 40%'>"+item+"</td>"+
 				"<td style='width: 20%'><button id='btn-minus' class='icon_minus-06' style='height:25px;' /><input type='text' value='"+qty+"' style='width:30px; height:26px;'/><button id='btn-plus' class='icon_plus' style='height:25px;'/></td>"+
 				"<td style='width: 30%' class='price'>"+price+"</td>"+
@@ -274,20 +273,26 @@
 		$(document).on('click', '#btn-plus', function() {
 			var element = $(this).parent();
 			var input = parseInt(element.find('input').val());
+			var stock = parseInt(element.parent().attr('class'));
+			console.log("stok : "+stock);
 			var rup = element.parent().find('td').eq(2).text();
 			var price = parseInt(rup.replace(/,.*|[^0-9]/g, ''), 10)/input;
 	    	//console.log(price);
 	    	if (!isNaN(input) && input > 0) {
-	    		var jml = input+1;
-	    		element.find('input').val(jml);
-	    		
-	    		var angka = jml*price;
-	    		var rupiah = '';
-				var angkarev = angka.toString().split('').reverse().join('');
-				for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.'; 
-				var subTotal = 'Rp  '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
-				
-	    		element.parent().find('td').eq(2).html(subTotal);
+	    		if(input < stock){
+		    		var jml = input+1;
+		    		element.find('input').val(jml);
+		    		
+		    		var angka = jml*price;
+		    		var rupiah = '';
+					var angkarev = angka.toString().split('').reverse().join('');
+					for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.'; 
+					var subTotal = 'Rp  '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
+					
+		    		element.parent().find('td').eq(2).html(subTotal);
+	    		}else if(input >= stock){
+	    			alert('The quantity is maximum');
+	    		}
 	        } else {
 	        	element.find('input').val(1);
 	        }
@@ -316,7 +321,7 @@
 		});
 		
 		//button cash done 
-		$('#btn-done').click(function(){
+		$(document).on('click', '#btn-done', function(){
 			var rup = $('#total-bayar').text();
 			var total = parseInt(rup.replace(/,.*|[^0-9]/g, ''), 10);
 			var bayar = $('#input-cash').val();
@@ -326,16 +331,59 @@
 			var rupiah = '';
 		    var angkarev = kembalian.toString().split('').reverse().join('');
 			for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.'; 
-			var grandTotal = 'Rp  '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
+			var sisa = 'Rp  '+rupiah.split('',rupiah.length-1).reverse().join('')+',00';
 			
 			if(kembalian < 0){
 				alert('Sorry, your cash not enough');
 			}else{
-				$('#field-return').val(grandTotal);
+				$('#field-return').val(sisa);
 				$('#out-off').html('Out of '+bayar);
 				$('#modal-done-payment').modal();
 			}
 			
+			
+			//save sales order
+			var listDetailSO = [];
+			$('#table-struk > tbody > tr').each(function(index, data){
+				var jml = parseInt($(data).find('td').eq(1).find('input').val().replace(/,.*|[^0-9]/g, ''), 10);
+				var total = parseInt($(data).find('td').eq(2).text().replace(/,.*|[^0-9]/g, ''), 10);
+				var price = total/jml;
+				var detailSO = {
+					variantId : {
+						id : $(this).attr('id')
+					},
+					qty : jml,
+					subTotal : total,
+					unitPrice : price,
+					createdOn : new Date(),
+					modifiedOn : new Date()
+				}
+				listDetailSO.push(detailSO);
+			});
+			var idCust = $('#btn-search-customer').attr('name');
+			//console.log("id cust : "+idCust);
+			var salesOrder = {
+				customer : {
+					id : idCust
+				},
+				grandTotal : bayar1,
+				createdOn : new Date(),
+				modifiedOn : new Date(),
+				sods : listDetailSO
+			}
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/sales-order/save',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(salesOrder),
+				success : function(data){
+					alert('save sales order success');
+				},
+				error : function(){
+					alert('failed save sales order');
+				}
+			});
 		});
 		
 		function hitung(){
@@ -623,16 +671,16 @@
 							</center>
 							<input class="form-control" placeholder="Customer Email"
 								type="text" style="width: 80%; float: left;">
-							<button type="button" id="btn-done" class="btn btn-primary"
+							<button type="button" id="btn-send-email" class="btn btn-primary"
 								style="width: 20%; float: left;">Send</button>
 						</div>
 					</div>
 					<br> <br> <br>
 					<div class="form-group">
 						<div class="col-lg-12">
-							<button type="button" id="btn-done" class="btn btn-primary"
+							<button type="button" id="btn-print-receipt" class="btn btn-primary"
 								style="width: 100%;">Print Receipt</button>
-							<button type="button" id="btn-done" class="btn btn-danger"
+							<button type="button" id="btn-nothanks" class="btn btn-danger"
 								style="width: 100%;">No,Thanks & Done</button>
 						</div>
 					</div>
