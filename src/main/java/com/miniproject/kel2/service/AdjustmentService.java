@@ -17,6 +17,7 @@ import com.miniproject.kel2.model.HistoryAdjustment;
 import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.ItemVariant;
 
+
 @Service
 @Transactional
 public class AdjustmentService {

@@ -2,6 +2,7 @@
 <script type="text/javascript">
 	$(function() {
 		$('#btn-add').click(function() {
+			
 			$('#modal-add-adjustment').modal();
 		});
 		$('#btn-add-item').click(function() {

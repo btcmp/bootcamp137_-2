@@ -14,6 +14,7 @@
 			
 		});
 
+		
 		$("#pickup").datepicker({
 			dateFormat : 'yy-mm-dd',
 			minDate : '-12M',
