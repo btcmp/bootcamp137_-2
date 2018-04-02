@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -58,6 +59,20 @@ public class RequestPurchaseDetailDaoImpl implements RequestPurchaseDetailDao{
 		
 		return rd;
 	}
+
+	public List<RequestDetail> selectDetailByPr(PurchaseRequest pr) {
+		// TODO Auto-generated method stub
+		
+		Session session = sessionFactory.getCurrentSession();
+		//String hql = "from RequestDetail rd where rd.pr.id = :prid";
+		List<RequestDetail> rd = session.createCriteria(RequestDetail.class).add(Restrictions.eq("pr.id", pr.getId())).list(); 
+ 		if(rd.isEmpty()) {
+ 			return null;
+ 		}else {
+ 			return rd;
+ 		}
+	}
+
 
 	
 }

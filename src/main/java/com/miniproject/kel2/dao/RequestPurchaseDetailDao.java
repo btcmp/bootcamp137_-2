@@ -18,4 +18,6 @@ public interface RequestPurchaseDetailDao {
 	public void delete(RequestDetail requestDetail);
 
 	public List<RequestDetail> selectByRequest(PurchaseRequest pr);
+
+	public List<RequestDetail> selectDetailByPr(PurchaseRequest pr);
 }

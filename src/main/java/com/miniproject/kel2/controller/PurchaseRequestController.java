@@ -100,7 +100,7 @@ public class PurchaseRequestController {
 		PurchaseRequest pr = prService.getOne(id);
 		model.addAttribute(pr);
 		//System.out.println(pr);
-		return "detailpr";
+		return "requestdetail";
 		
 	}
 	
