@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.miniproject.kel2.model.HistoryPurchaseRequest;
 import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.PurchaseRequest;
@@ -35,10 +36,11 @@ public class PurchaseRequestController {
 	PurchaseRequestDetailService rdService;
 	
 	@Autowired
-	PurchaseRequestHistoryService HisProReqService;
+	PurchaseRequestHistoryService hisProReqService;
 	
 	@Autowired
 	ItemInventoryService iiService;
+	
 	
 	
 	
@@ -98,10 +100,41 @@ public class PurchaseRequestController {
 	//@ResponseStatus(HttpStatus.FOUND)
 	public String toDetail(@PathVariable long id, Model model ) {
 		PurchaseRequest pr = prService.getOne(id);
-		model.addAttribute(pr);
+		model.addAttribute("pr", pr);
+		
+		List<RequestDetail>rd = rdService.selectByRequest(pr);
+		model.addAttribute("rd", rd);
+		
+		List<HistoryPurchaseRequest> hpr = hisProReqService.selectByRequest(pr);
+		model.addAttribute("hpr", hpr);
+		
 		//System.out.println(pr);
 		return "requestdetail";
 		
+	}
+	
+	@RequestMapping(value="/Approved/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void approved(@PathVariable long id) {
+		prService.approve(id);
+	}
+	
+	@RequestMapping(value="/Rejected/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void rejected(@PathVariable long id) {
+		prService.rejected(id);
+	}
+	
+	@RequestMapping(value="/Printed/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void printed(@PathVariable long id) {
+		prService.printed(id);
+	}
+	
+	@RequestMapping(value="/CreatePo/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void created(@PathVariable long id) {
+		prService.created(id);
 	}
 	
 }

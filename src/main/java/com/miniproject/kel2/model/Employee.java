@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
  
 @Entity
@@ -30,6 +32,8 @@ public class Employee {
 	private long id;
 	
 	@Column(name="first_name", nullable=false, length=50)
+	@NotNull
+	
 	private String firstName;
 	
 	@Column(name="last_name", nullable=false, length=50)

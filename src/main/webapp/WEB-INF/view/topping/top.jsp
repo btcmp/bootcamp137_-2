@@ -51,8 +51,11 @@
 <link href="${resources}/css/style-responsive.css" rel="stylesheet">
 <link href="${resources}/css/xcharts.min.css" rel=" stylesheet">
 <link href="${resources}/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-<link href="${resources}/css/BuroRaDer.DateRangePicker.css"
-	rel="stylesheet">
+<link href="${resources}/css/BuroRaDer.DateRangePicker.css" rel="stylesheet">
+
+
+
+
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
 <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
@@ -162,7 +165,16 @@
 <script src="${resources}/js/jquery.chained.min.js"></script>
 <script src="${resources}/js/BuroRaDer.DateRangePicker.js"></script>
 <script src="${resources}/js/autoNumeric.js"></script>
+
+<!-- validator -->
+<script src="${resources}/jquery.validate.min.js"></script>
+<script src="${resources}/validator/form-validator/jquery.form-validator.min.js"></script>
+
+
 <script>
+
+	$.validate();
+	
 	//knob
 	$(function() {
 		$(".knob").knob({

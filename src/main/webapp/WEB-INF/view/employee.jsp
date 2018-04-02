@@ -46,7 +46,7 @@
 									
 									<div class="col-lg-4">
 										<input class=" form-control" id="first-name" name="fullname"
-											type="text" />
+											type="text" data-validation="length" data-validation-length="min8" />
 									</div>
 									<label for="fullname" class="control-label col-lg-2">Last
 										name <span class="required">*</span>
@@ -442,7 +442,7 @@ $(document).ready(function(){
 		
 		//event Listener
 		//on click utk submit via ajax
-		
+		$.validate();
 		$('#select-outlet').on('click', function(){
     	var listOutlet=[];
 	    	$('#list-outlet').find('input[type="checkbox"]:checked').each(function(){

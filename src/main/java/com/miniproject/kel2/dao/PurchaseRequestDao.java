@@ -15,4 +15,12 @@ public interface PurchaseRequestDao {
 	public void update(PurchaseRequest purchaseRequest);
 	
 	public void delete(PurchaseRequest purchaseRequest);
+
+	public void approve(long id);
+
+	public void printed(long id);
+
+	public void created(long id);
+
+	public void rejected(long id);
 }

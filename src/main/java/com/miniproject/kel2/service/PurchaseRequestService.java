@@ -35,9 +35,8 @@ public class PurchaseRequestService {
 
 	public void save(PurchaseRequest pr) {
 		// TODO Auto-generated method stub
-		/*PurchaseRequest prq = new PurchaseRequest();
-		
-		pr.setId(pr.getId());
+		PurchaseRequest prq = new PurchaseRequest();
+		prq.setId(pr.getId());
 		prq.setStatus(pr.getStatus());
 		prq.setNotes(pr.getNotes());
 		prq.setPrNo(pr.getPrNo());
@@ -67,13 +66,12 @@ public class PurchaseRequestService {
 		if(pr.getRequestDetail() != null) {
 			for(RequestDetail rd : pr.getRequestDetail()) {
 				RequestDetail prds = new RequestDetail();
-				
 				prds.setId(rd.getId());
-				prds.setCreatedOn(new Date());
-				prds.setItemvar(rd.getItemvar());
-				prds.setRequestQty(rd.getRequestQty());
+				prds.setCreatedOn(rd.getCreatedOn());
 				prds.setModifiedOn(rd.getModifiedOn());
 				prds.setPr(prq);
+				prds.setItemvar(rd.getItemvar());
+				prds.setRequestQty(rd.getRequestQty());
 				
 				rpdDao.save(prds);
 			}
@@ -82,75 +80,15 @@ public class PurchaseRequestService {
 		if(pr.getId() != 0 && pr.getStatus()=="Created") {
 			
 		}else {
-			for(HistoryPurchaseRequest hpr : pr.getHistoryPr()) {
+			
 				HistoryPurchaseRequest hisPr = new HistoryPurchaseRequest();
 				
-				hisPr.setCreatedOn(new Date());
-				hisPr.setStatus(hpr.getStatus());
+				hisPr.setCreatedOn(pr.getCreatedOn());
+				hisPr.setStatus(pr.getStatus());
 				hisPr.setPr(prq);
 				hprDao.save(hisPr);
 			}
-		}
 		
-*/	
-		//nanti malem di chek lagi
-		PurchaseRequest pureq = new PurchaseRequest();
-		pureq.setId(pr.getId());
-		pureq.setOutlet(pr.getOutlet());
-		pureq.setPrNo(pr.getPrNo());
-		pureq.setReadyTime(pr.getReadyTime());
-		pureq.setStatus(pr.getStatus());
-		pureq.setNotes(pr.getNotes());
-		
-		
-		if(pureq.getId()!=0) {
-			pureq.setModifiedOn(new Date());
-			PurchaseRequest pure = prDao.getOne(pureq.getId());
-			pureq.setCreatedOn(pure.getCreatedOn());
-		}else {
-			pureq.setCreatedOn(new Date());
-		}
-		
-		Calendar cal = Calendar.getInstance();
-		
-		int tahun = cal.get(Calendar.YEAR);
-		
-		
-		prDao.save(pureq);
-		
-		
-		List<RequestDetail> prds = rpdDao.selectDetailByPr(pureq);
-		if(prds == null) {
-			
-		}else {
-			for(RequestDetail prd : prds) {
-				rpdDao.delete(prd);
-			}
-		}
-		
-		if(pr.getRequestDetail()!=null) {
-			for(RequestDetail prd : pr.getRequestDetail()) {
-				RequestDetail puReqDet = new RequestDetail();
-				puReqDet.setId(prd.getId());
-				puReqDet.setCreatedOn(pureq.getCreatedOn());
-				puReqDet.setModifiedOn(pureq.getModifiedOn());
-				puReqDet.setPr(pureq);
-				puReqDet.setItemvar(prd.getItemvar());
-				puReqDet.setRequestQty(prd.getRequestQty());
-				puReqDet.setCreatedOn(pureq.getCreatedOn());
-				rpdDao.save(puReqDet);
-			}
-		}
-		
-		if(pr.getId() != 0 && pr.getStatus()=="created") {
-			
-		}else {
-			HistoryPurchaseRequest prh = new HistoryPurchaseRequest();
-			prh.setPr(pureq);
-			prh.setStatus(pureq.getStatus());
-			prh.setCreatedOn(pureq.getCreatedOn());
-			hprDao.save(prh);
-		}
 	}
 
 	public PurchaseRequest getOne(long id) {
@@ -173,5 +111,50 @@ public class PurchaseRequestService {
 	}
 	
 	
-	
+	public void approve(long id) {
+		prDao.approve(id);
+		PurchaseRequest pr = prDao.getOne(id);
+		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
+		hpr.setCreatedOn(new Date());
+		hpr.setPr(pr);
+		hpr.setStatus(pr.getStatus());
+		
+		hprDao.save(hpr);
+	}
+
+	public void printed(long id) {
+		// TODO Auto-generated method stub
+		prDao.printed(id);
+		PurchaseRequest pr = prDao.getOne(id);
+		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
+		hpr.setCreatedOn(new Date());
+		hpr.setPr(pr);
+		hpr.setStatus(pr.getStatus());
+		
+		hprDao.save(hpr);
+	}
+
+	public void created(long id) {
+		// TODO Auto-generated method stub
+		prDao.created(id);
+		PurchaseRequest pr = prDao.getOne(id);
+		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
+		hpr.setCreatedOn(new Date());
+		hpr.setPr(pr);
+		hpr.setStatus(pr.getStatus());
+		
+		hprDao.save(hpr);
+	}
+
+	public void rejected(long id) {
+		// TODO Auto-generated method stub
+		prDao.rejected(id);
+		PurchaseRequest pr = prDao.getOne(id);
+		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
+		hpr.setCreatedOn(new Date());
+		hpr.setPr(pr);
+		hpr.setStatus(pr.getStatus());
+		
+		hprDao.save(hpr);
+	}
 }

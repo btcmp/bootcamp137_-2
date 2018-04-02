@@ -56,8 +56,11 @@ public class RequestPurchaseDetailDaoImpl implements RequestPurchaseDetailDao{
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from RequestDetail rd where rd.pr.id = :prid";
 		List<RequestDetail> rd = session.createQuery(hql).setParameter("prid", pr.getId()).list();
-		
-		return rd;
+		if(rd.isEmpty()) {
+ 			return null;
+ 		}else {
+ 			return rd;
+ 		}
 	}
 
 	public List<RequestDetail> selectDetailByPr(PurchaseRequest pr) {
