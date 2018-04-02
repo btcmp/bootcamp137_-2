@@ -21,6 +21,7 @@ import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.TransferStock;
 import com.miniproject.kel2.model.TransferStockDetail;
 
+
 @Service
 @Transactional
 public class TransferStockService {

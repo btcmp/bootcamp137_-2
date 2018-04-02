@@ -5,6 +5,7 @@ import java.util.List;
 import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.TransferStock;
 
+
 public interface TransferStockDao {
 
 	public void save(TransferStock transferStock);

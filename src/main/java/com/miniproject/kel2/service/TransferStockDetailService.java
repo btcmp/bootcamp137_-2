@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.miniproject.kel2.dao.TransferStockDetailDao;
 import com.miniproject.kel2.model.TransferStockDetail;
 
+
 @Service
 @Transactional
 public class TransferStockDetailService {

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.miniproject.kel2.model.TransferStockDetail;
 
+
 @Repository
 public class TransferStockDetailDaoImpl implements TransferStockDetailDao{
 	
