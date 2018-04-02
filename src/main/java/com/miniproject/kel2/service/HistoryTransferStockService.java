@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.kel2.dao.HistoryTransferStockDao;
 import com.miniproject.kel2.model.HistoryTransferStock;
+import com.miniproject.kel2.model.TransferStockDetail;
 
 @Service
 @Transactional
@@ -41,4 +42,18 @@ public class HistoryTransferStockService {
 	public void saveAtauUpdate(HistoryTransferStock htStock) {
 		htStockDao.saveAtauUpdate(htStock);
 	}
+
+	public List<HistoryTransferStock> getByTsId(long id) {
+		// TODO Auto-generated method stub
+		List<HistoryTransferStock> htStock = htStockDao.getByTsId(id);
+		if(htStock.isEmpty()) {
+			return null;
+		} else {
+			return htStock;
+		}
+	}
+
+	
+
+	
 }

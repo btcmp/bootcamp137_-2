@@ -87,7 +87,17 @@ public class CategoryService {
 	
 	// untuk search
 	public List<Category> getCategoryBySearchName(String search){
-		return categoryDao.getCategoryBySearchName(search);
+		List<Category> categories = categoryDao.getCategoryBySearchName(search);
+		for(Category category : categories) {
+			List<Item> items = itemDao.getItemsByCategory(category);
+			if (items == null) {
+				category.setItemStock(0);
+			}
+			else {
+				category.setItemStock(items.size());
+			}
+		}
+		return categories;
 	}
 	
 	

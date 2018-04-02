@@ -138,7 +138,7 @@ public class TransferStockController {
 	public String getDetail(@PathVariable long id, Model model) {
 		TransferStock transferStock = transferStockService.getOne(id);
 		List<TransferStockDetail> tsDetails = tsDetailService.searchById(id);
-		List<HistoryTransferStock> htStocks = htStockService.selectAll();
+		List<HistoryTransferStock> htStocks = htStockService.getByTsId(id);
 		System.out.println("detail ts : "+tsDetails.size());
 		System.out.println("history ts : "+htStocks.size());
 		model.addAttribute("transferStock", transferStock);

@@ -23,5 +23,4 @@ public interface ItemDao {
 
 	public List<Item> getItemsByCategory(Category category);
 	
-	
 }

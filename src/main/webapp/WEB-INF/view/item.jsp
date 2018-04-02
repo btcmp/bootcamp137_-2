@@ -119,9 +119,101 @@
 		 	
 		 	alert('save ok');
  			}); 
- 			
+	/*----------------------------------------------------EDIT DATA UTAMA -----------------------------------------------*/
+	  	/* $('#btn-edit-utama').on('click',function(evt){
+			evt.preventDefault();
+			
+			var itemVariants =[];
+			var itemInventories = [];
+			
+		  $('#tbl-edit-utama > #tbody-edit-utama > tr').each(function(index,data){
+		    	var inventory = {
+		    			id : $(data).find('td').eq(7).text(),
+						beginning :$(data).find('td').eq(3).text(),
+					    alertAtQty :$(data).find('td').eq(4).text(),
+					    itemVariant : {
+					    	 id : $(data).find('td').eq(6).text()
+					    }
+				 }
+		    	
+		    	var variant = {
+		    			id : $(data).find('td').eq(6).text(),
+						name : $(data).find('td').eq(0).text(),
+						price : $(data).find('td').eq(1).text(),
+						sku : $(data).find('td').eq(2).text(),
+						itemInventories : [inventory],
+						item : {
+					    	id : $(data).find('td').eq(6).text()
+					     }
+		    	}
+		    	
+		    	itemVariants.push(variant)
+		  });
+		  console.log(itemVariants)
+		  
+		  
+		  var item = {
+		    	id : $('#edit-id-utama').val(),
+		    	name : $('#edit-name-utama').val(),
+		    	active : active,
+		    	category:{
+		    		id :  $('#edit-category-utama').val()
+		    	},
+		    	itemVariants : itemVariants
+		    }
+		  
+		  if(item.name!==""){
+		    	//console.log(item.name)
+		    	 $.ajax({
+				    	url:'${pageContext.request.contextPath}/item/update',
+				    	type : 'PUT',
+				    	data : JSON.stringify(item),
+				    	contentType : 'application/JSON',
+				    	success : function(){
+				    		alert('save success')
+				    		window.location = '${pageContext.request.contextPath}/item';
+				    	},
+				    	error : function(){
+				    		alert('save failed')
+				    	}
+				    });
+		    }  
+		     */
+		$('.btn-edit-utama').on('click', function(evt) {  
+	//	 $('body').on('click', '.btn-edit-utama', function(evt){
+			evt.preventDefault();
+	    	var id=$(this).attr('id');	
+			
+	    	console.log(id)
+    		$.ajax({
+			url :'${pageContext.request.contextPath}/item/get-one/'+id,
+			type :'GET',
+			dataType:'json',
+			success : function(dt){	
+				$('#modal-edit-utama').modal();
+				$('#edit-id-utama').val(parseInt(id));
+			 	var index = 0;
+				$.each(dt,function(key,invent){
+					$('#edit-name-utama').val(invent.itemVariant.item.name);
+					$('#edit-category-utama').val(invent.itemVariant.item.category.id);
+					$('#tbody-edit-utama').append('<tr id=tr-var3'+index+'><td>' + invent.itemVariant.name +'</td><td>'+
+							invent.itemVariant.price +'</td><td>'+invent.itemVariant.sku
+							+'</td><td>'+invent.beginning+'</td><td style="display:none">'+invent.alertAtQty+'</td>'
+							+'<td style="display:none">'+invent.itemVariant.id+'</td>'
+							+'<td style="display:none">'+invent.id+'</td>'
+							+'<td> <a href="#" id="-edit-variant-utama" > Edit </a> <a href="#" id="btn-X-utama"> X </a>'
+							+'</tr>');
+					index++;
+				})
+			}, 				
+			error:function() {
+				alert('failed getting data')
+			}
+		});
+	}); 
+		
 	});	
-
+	
 </script>
 
 
@@ -393,6 +485,7 @@
 											</div>
 											<div class="modal-body">
 												<div id="input">
+												<input type="hidden" id="edit-id-utama" class="form-control">	
 													<input class="col-lg-4" type="image" id="myimage"
 															src="resources/gambar-item/gambar-hp.jpg" style="width: 100px; height: 60px;">
 													<input class="col-lg-8" type="text"

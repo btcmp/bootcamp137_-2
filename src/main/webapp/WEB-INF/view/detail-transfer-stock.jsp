@@ -66,7 +66,7 @@
                           </header>
                           <div class="panel-body">
 						  <div class="col-lg-10" style="maegin-bottom:10px;">
-									<h5>Transfer Stock Detail</h5>
+									<h5><b>Transfer Stock Detail</b></h5>
 					   		  </div>
 							<div class="btn-group col-lg-2" style="maegin-bottom:10px;">
                                                   <a class="btn btn-primary" href="" id="change-status" title="Bootstrap 3 themes generator">More</a>
@@ -83,8 +83,12 @@
 							<p><label for="input-notes">Transfer Stock Status : ${transferStock.status}</label></p>
 							<label for="input-notes">Notes</label>
 							  <textarea class="col-lg-12" type="text"  id="notes" style="margin-bottom:10px;" name="input-notes">  ${transferStock.notes} </textarea>
-							   <h5> Status History </h5> </br>
-							   
+							 <div class="form-group">
+							 <p><label for="history"> Status History</label></p>
+							 <c:forEach var="hts" items="${htStocks}">
+									<p><label>On ${hts.createdOn} - ${hts.status}</label></p>
+							</c:forEach>
+							 </div>  
 							    <h5> Transfer Stock Items </h5>
 								
 								<table class="table table-bordered">

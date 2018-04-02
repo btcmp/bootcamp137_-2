@@ -24,7 +24,7 @@ public class HistoryTransferStock {
 	private String status;
 	@Column(name="create_by")
 	private long createdBy;
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	@Column(name="create_on")
 	private Date createdOn;
 	

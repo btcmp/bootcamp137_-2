@@ -26,7 +26,15 @@ public class CategoryDaoImpl implements CategoryDao{
 	public List<Category> selectAll() {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		return session.createCriteria(Category.class).list();
+		String hql = "from Category cat where cat.active = 0 order by cat.id desc";
+		List<Category> cats = session.createQuery(hql).list();
+		if(cats==null) {
+			Category cat = new Category();
+			cats.set(0, cat);
+			return cats;
+		} else {
+			return cats;
+		}
 	}
 	
 	public Category getOne(Category category) {

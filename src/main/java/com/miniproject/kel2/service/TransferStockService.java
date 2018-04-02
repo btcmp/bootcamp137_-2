@@ -28,14 +28,14 @@ public class TransferStockService {
 	@Autowired
 	TransferStockDao transferStockDao;
 	
-//	@Autowired 
-//	ItemInventoryDao itemInventoryDao;
+	@Autowired 
+	ItemInventoryDao itemInventoryDao;
 	
 	@Autowired
 	TransferStockDetailDao tsDetailDao;
 	
-//	@Autowired
-//	HistoryTransferStockDao htStockDao;
+	@Autowired
+	HistoryTransferStockDao htStockDao;
 	
 	/*public void save(TransferStock transferStock) {
 		TransferStock ts = new TransferStock();
@@ -77,8 +77,9 @@ public class TransferStockService {
 			ii.setBeginning(50);
 		}
 		itemInventoryDao.save(ii);
-	}
+		}
 	}*/
+	
 	public void save(TransferStock transferStock) {
 		TransferStock ts = new TransferStock();
 	//	ts.setCreatedOn(new Date());
@@ -100,8 +101,31 @@ public class TransferStockService {
 			tsDetail.setTransferStock(ts);
 			tsDetailDao.save(tsDetail);
 			
+			/*ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(tsd.getItemVariant().getId());
+
+			ItemInventory ii = new ItemInventory();
+			ii.setItemVariant(tsd.getItemVariant());
+			ii.setEndingQty(tsd.getInStock());
+			ii.setTransferStockQty(tsd.getTransferQty());
+			ii.setModifiedOn(new Date());
+			if (inv != null) {
+				ii.setAlertAtQty(inv.getAlertAtQty());
+				ii.setBeginning(inv.getEndingQty());
+			} else {
+				ii.setAlertAtQty(5);
+				ii.setBeginning(50);
+			}
+			itemInventoryDao.save(ii);*/
 		}
 		
+		for(HistoryTransferStock hts : transferStock.getHistoryTransferStock()) {
+			HistoryTransferStock htStock = new HistoryTransferStock ();
+			htStock.setTransferStock(ts);
+			htStock.setCreatedOn(hts.getCreatedOn());
+			htStock.setStatus(hts.getStatus());
+			htStock.setCreatedBy(hts.getCreatedBy());
+			htStockDao.save(htStock);
+		}
 	}
 	
 	public List<TransferStock> selectAll(){
@@ -144,4 +168,5 @@ public class TransferStockService {
 		// TODO Auto-generated method stub
 		return transferStockDao.getByOutletId(search);
 	}
+	
 }

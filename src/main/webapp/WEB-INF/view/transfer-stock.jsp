@@ -57,7 +57,7 @@ $(document).ready(function(){
 	/* ---------------------------------------- SAVE TRANSFER STOCK ITEM -------------------------------------------- */
 	$('#btn-save').click(function(){
 		var tsDetails = []; 	// list ts detail
-	//	var htStocks = []; 		// list history ts
+		var htStocks = []; 		// list history ts
 		
 		 $('#tbl-item-ts > tbody > tr').each(function(index, data){
 			var tsDetail = {
@@ -69,18 +69,23 @@ $(document).ready(function(){
 			};
 			tsDetails.push(tsDetail);
 			
-	//		var htStock = {
-	//				status : "created"
-	//		};
-	//		htStocks.push(htStock);
+			var htStock = {
+					status : "Submitted",
+					createdOn : new Date()
+			};
+			htStocks.push(htStock);
 		});
 		
 		var transferStock = {
 			status : "Submitted",
-			fromOutlet : $('#input-from-outlet').val(),
-			toOutlet : $('#input-to-outlet').val(),
+			fromOutlet : {
+				id :$('#input-from-outlet').val()
+			},
+			toOutlet : {
+				id : $('#input-to-outlet').val()
+			},
 			notes : $('#input-notes').val(),
-	//		htStocks : htStocks,
+			historyTransferStock : htStocks,
 			tsDetails : tsDetails
 		};
 		
@@ -190,12 +195,11 @@ $(document).ready(function(){
 					<header class="panel-heading"> TRANSFER STOCK </header>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-lg-10" style="margin-bottom: 10px;">
-								<select class="form-control">
-									<option>To Outlet 1</option>
-									<option>To Outlet 2</option>
-								</select>
-							</div>				
+							<select class="col-lg-10" id="search-outlet" type="text" class="form-control" style="margin-bottom: 10px;">
+									<c:forEach var="out" items="${outs}">
+										<option value="${out.id}">${out.name}</option>
+									</c:forEach>
+							</select>			
 							<div class="col-lg-1" style="margin-bottom: 10px;">
 								<button type="button" class="btn btn-primary">Export</button>
 							</div>
@@ -217,8 +221,8 @@ $(document).ready(function(){
 								<c:forEach items="${tStocks}" var="ts">
 									<tr>
 										<td>${ts.modifiedOn}</td>
-										<td>${ts.fromOutlet}</td>
-										<td>${ts.toOutlet}</td>
+										<td>${ts.fromOutlet.name}</td>
+										<td>${ts.toOutlet.name}</td>
 										<td>${ts.status}</td>
 										<td><a href="#" id="${ts.id }" class="view" data-toggle="modal"
 											data-target="#modalEdit"> View </a></td>

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.miniproject.kel2.model.HistoryTransferStock;
+import com.miniproject.kel2.model.TransferStockDetail;
 
 @Repository
 public class HistoryTransferStockDaoImpl implements HistoryTransferStockDao{
@@ -54,4 +55,17 @@ public class HistoryTransferStockDaoImpl implements HistoryTransferStockDao{
 		session.saveOrUpdate(htStock);
 		session.flush();
 	}
+
+	public List<HistoryTransferStock> getByTsId(long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from HistoryTransferStock hts where hts.transferStock.id = :id";
+		List<HistoryTransferStock> htStocks = session.createQuery(hql).setParameter("id", id).list();
+		if(htStocks.isEmpty()) {
+			return null;
+		} else {
+			return htStocks;
+		}
+	}
+
 }
