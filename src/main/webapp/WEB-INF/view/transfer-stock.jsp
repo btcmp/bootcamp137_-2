@@ -5,7 +5,7 @@ $(document).ready(function(){
 	$('#search-item-variant').on('input', function(){
 		var word = $(this).val();
 		console.log(word);
-		
+	 	
 		if(!word==""){
 			$.ajax({
 				url : '${pageContext.request.contextPath}/transfer-stock/search-item/'+word,
