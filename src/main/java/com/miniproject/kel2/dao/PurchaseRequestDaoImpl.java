@@ -33,13 +33,15 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao {
 	public void save(PurchaseRequest purchaseRequest) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		session.save(purchaseRequest);
+		session.clear();
+		session.saveOrUpdate(purchaseRequest);
 		session.flush();
 	}
 
 	public void update(PurchaseRequest purchaseRequest) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
+		session.clear();
 		session.update(purchaseRequest);
 		session.flush();
 	}

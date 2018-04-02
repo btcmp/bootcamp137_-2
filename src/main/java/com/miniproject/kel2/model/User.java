@@ -109,6 +109,24 @@ public class User {
 	private List<SalesOrderDetail> salesOrderDetailsModified;
 	
 	
+	//purchase request
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<PurchaseRequest> purchaseRequestsCreated;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<RequestDetail> requestDetailsCreated;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<HistoryPurchaseRequest> historyPurchaseRequestsCreated;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<PurchaseRequest> purchaseRequestsModified;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+	private List<RequestDetail> requestDetailsModified;
+	
+	
+	
 	public long getId() {
 		return id;
 	}
@@ -301,6 +319,47 @@ public class User {
 	public void setSalesOrderDetailsModified(List<SalesOrderDetail> salesOrderDetailsModified) {
 		this.salesOrderDetailsModified = salesOrderDetailsModified;
 	}
+
+	public List<PurchaseRequest> getPurchaseRequestsCreated() {
+		return purchaseRequestsCreated;
+	}
+
+	public void setPurchaseRequestsCreated(List<PurchaseRequest> purchaseRequestsCreated) {
+		this.purchaseRequestsCreated = purchaseRequestsCreated;
+	}
+
+	public List<RequestDetail> getRequestDetailsCreated() {
+		return requestDetailsCreated;
+	}
+
+	public void setRequestDetailsCreated(List<RequestDetail> requestDetailsCreated) {
+		this.requestDetailsCreated = requestDetailsCreated;
+	}
+
+	public List<HistoryPurchaseRequest> getHistoryPurchaseRequestsCreated() {
+		return historyPurchaseRequestsCreated;
+	}
+
+	public void setHistoryPurchaseRequestsCreated(List<HistoryPurchaseRequest> historyPurchaseRequestsCreated) {
+		this.historyPurchaseRequestsCreated = historyPurchaseRequestsCreated;
+	}
+
+	public List<PurchaseRequest> getPurchaseRequestsModified() {
+		return purchaseRequestsModified;
+	}
+
+	public void setPurchaseRequestsModified(List<PurchaseRequest> purchaseRequestsModified) {
+		this.purchaseRequestsModified = purchaseRequestsModified;
+	}
+
+	public List<RequestDetail> getRequestDetailsModified() {
+		return requestDetailsModified;
+	}
+
+	public void setRequestDetailsModified(List<RequestDetail> requestDetailsModified) {
+		this.requestDetailsModified = requestDetailsModified;
+	}
+
 	
 	
 	

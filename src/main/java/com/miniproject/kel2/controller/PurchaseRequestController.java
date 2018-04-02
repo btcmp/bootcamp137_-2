@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -65,6 +66,16 @@ public class PurchaseRequestController {
 		
 	}
 	
+	@RequestMapping(value="/search-item", method=RequestMethod.GET)
+	@ResponseBody
+	public List<ItemInventory> searchItemInventoriesByName(@RequestParam(value="search", defaultValue="")String search){
+		List<ItemInventory> iinventories = iiService.searchInventoryByItemName(search);
+		System.out.println("Query result : " +iinventories.size());
+		
+		return iinventories;
+		
+	}
+	
 	@RequestMapping(value="/search-item-variant/{keyword}", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Object[]> searchByItem(@PathVariable String keyword){
@@ -83,7 +94,15 @@ public class PurchaseRequestController {
 		return purReq;
 	}
 	
-	
+	@RequestMapping(value="/detail/{id}", method=RequestMethod.GET)
+	//@ResponseStatus(HttpStatus.FOUND)
+	public String toDetail(@PathVariable long id, Model model ) {
+		PurchaseRequest pr = prService.getOne(id);
+		model.addAttribute(pr);
+		//System.out.println(pr);
+		return "detailpr";
+		
+	}
 	
 }
 

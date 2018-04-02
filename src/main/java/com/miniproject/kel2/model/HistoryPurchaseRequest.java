@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="History_pr_mp")
@@ -21,13 +24,16 @@ public class HistoryPurchaseRequest {
 	private long id;
 	
 	@ManyToOne
+	@JoinColumn(name="pr_id")
+	@JsonBackReference
 	private PurchaseRequest pr;
 	
 	@Column(name="status")
 	private String status;
 	
-	@Column(name="created_By")
-	private long createdBy;
+	@ManyToOne
+	@JoinColumn(name="created_By")
+	private User createdBy;
 	
 	@Column(name="created_on")
 	private Date createdOn;
@@ -56,11 +62,13 @@ public class HistoryPurchaseRequest {
 		this.status = status;
 	}
 
-	public long getCreatedBy() {
+	
+
+	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(long createdBy) {
+	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 

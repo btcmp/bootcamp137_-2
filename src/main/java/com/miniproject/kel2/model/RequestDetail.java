@@ -7,12 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
-@Table(name="product_request_detail_mp")
+@Table(name="purchase_request_detail_mp")
 public class RequestDetail {
 
 	@Id
@@ -21,22 +24,27 @@ public class RequestDetail {
 	private long id;
 	
 	@ManyToOne
+	@JoinColumn(name="pr_id")
+	@JsonBackReference
 	private PurchaseRequest pr;
 	
 	@ManyToOne
+	@JoinColumn(name="variant_id")
 	private ItemVariant itemvar;
 				
 	@Column(name="request_qty")
 	private int requestQty;
 	
-	@Column(name="created_by")
-	private long createdBy;
+	@ManyToOne
+	@JoinColumn(name="created_by")
+	private User createdBy;
 	
 	@Column(name="created_on")
 	private Date createdOn;
 	
-	@Column(name="modified_by")
-	private long modifiedBy;
+	@ManyToOne
+	@JoinColumn(name="modified_by")
+	private User modifiedBy;
 	
 	@Column(name="modified_on")
 	private Date modifiedOn;
@@ -74,13 +82,7 @@ public class RequestDetail {
 		this.requestQty = requestQty;
 	}
 
-	public long getCreatedBy() {
-		return createdBy;
-	}
 
-	public void setCreatedBy(long createdBy) {
-		this.createdBy = createdBy;
-	}
 
 	public Date getCreatedOn() {
 		return createdOn;
@@ -90,13 +92,7 @@ public class RequestDetail {
 		this.createdOn = createdOn;
 	}
 
-	public long getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(long modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
+	
 
 	public Date getModifiedOn() {
 		return modifiedOn;
@@ -104,6 +100,22 @@ public class RequestDetail {
 
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
+	}
+
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public User getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(User modifiedBy) {
+		this.modifiedBy = modifiedBy;
 	}
 	
 	

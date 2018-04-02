@@ -55,10 +55,11 @@
 							</div>
 							<div class="col-lg-2">
 								<select class="form-control">
-									<option>Status</option>
-									<option>Role Administrator</option>
-									<option>Role Bak Office</option>
-									<option>Role Cashier</option>
+									<option value="All">All</option>
+						    		<option value="Created">Created</option>
+						    		<option value="Submitted">Submitted</option>
+						    		<option value="Approved">Approved</option>
+						    		<option value="Rejected">Rejected</option>
 
 								</select>
 							</div>
@@ -75,8 +76,7 @@
 
 							</div>
 							<div class="col-lg-1">
-								<button class="btn btn-primary" data-toggle="modal"
-									data-target="#addModal">Create</button>
+								<button class="btn btn-primary" id="btn-create">Create</button>
 
 							</div>
 
@@ -101,10 +101,16 @@
 											<td>${pr.prNo }</td>
 											<td>${pr.notes }</td>
 											<td>${pr.status }</td>
-											<td><a id="${pr.id }" class="btn-edit btn btn-warning"
-												style="color: white;"> Edit </a>|<a id="${pr.id }"
-												class="btn-beli btn btn-danger" style="color: white;">
-													Delete </a></td>
+											<td><script>
+												if('${pr.status}' != 'Submitted'){
+													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id }"> |');
+												}else {
+													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id }" disabled> |');
+												}
+											</script> 
+											<a href='${pageContext.request.contextPath}/request/detail/${pr.id}' class="btn-view-pr btn btn-info" key-id="${pr.id }">View</a>
+																		
+											</td>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -150,6 +156,7 @@
 						</label>
 						<div class="form-group">
 							<div class="col-lg-12">
+							<input class="form-control" type="hidden" name="" id="id-request"/>
 								<input class="form-control" type="text" name="" id="ready-date"/>
 							</div>
 						</div>
@@ -159,6 +166,7 @@
 						<div class="form-group">
 
 							<div class="col-lg-12">
+								<textarea class="form-control" id="prNo"></textarea>
 								<textarea class="form-control" id="request-notes"></textarea>
 							</div>
 						</div>
@@ -180,15 +188,6 @@
 										</tr>
 									</thead>
 									<tbody align="center" id="isi-tabel-request">
-										<%--  <c:forEach items="#" var="#">
-                                    <!-- //mengambil id barang -->
-                                        <tr id = "#">
-                                            <td>#</td>
-                                            <td>#</td>
-                                            <td>#</td>
-                                            <td><a id="" class="btn-beli btn btn-danger" style = "color : white;"> X </a></td>
-                                        </tr>
-                                    </c:forEach> --%>
 									</tbody>
 								</table>
 							</div>
@@ -196,98 +195,7 @@
 
 
 						<div class="col-lg-12">
-							<button class="form-control btn btn-primary" data-toggle="modal"
-								data-target="#item-modal">Add Item</button>
-						</div>
-					</div>
-
-
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-primary" id="btn-save-request">Save</button>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- End Modal -->
-
-<!--------------------------------------------------------------------- EDIT MODAL ------------------------------------------------------------->
-<!-- Start Modal -->
-<div class="modal fade" id="update-request-modal" tabindex="-1" role="dialog"
-	aria-labelledby="editModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="editeModalLabel">PURCHASE REQUEST</h5>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<!-- modal body -->
-				<div class="form">
-					<div class="form-validate form-horizontal" id="update-PR-form">
-						<div class="form-group">
-							<label for="outlet-name" class="control-label"><span
-								class="required">*</span> EDIT  PR : {isi nama outlet}</label>
-								<input class="form-control" type="hidden" name="" id="update-id"/>
-						</div>
-
-						<label for="outlet-name" class="control-label"> Target
-							Waktu Item Ready : <span class="required">*</span>
-						</label>
-						<div class="form-group">
-							<div class="col-lg-12">
-								<input class="form-control" type="text" name="" id="update-date"/>
-							</div>
-						</div>
-
-						<label for="outlet-name" class="control-label"> Notes: <span
-							class="required">*</span></label>
-						<div class="form-group">
-
-							<div class="col-lg-12">
-								<textarea class="form-control" id="update-notes"></textarea>
-							</div>
-						</div>
-
-						<label for="outlet-name" class="control-label"> Edit Purchase
-							Request : <span class="required">*</span>
-						</label>
-						<div class="form-group">
-							<div class="col-lg-12">
-								<table class="table basic-table" cellspacing="0"
-									id="edit-result-add-item">
-									<thead>
-										<tr>
-
-											<th><center>Item</center></th>
-											<th><center>In Stock</cente></th>
-											<th><center>Request Qty</center></th>
-											<th><center>cancel</center></th>
-										</tr>
-									</thead>
-									<tbody align="center" id="edit-tabel-request">
-									<%-- <c:forEach items="${prd }" var="pr">
-										<tr id="#">
-											<td>${pr.itemvar.name }</td>
-											<td>${pr.itemvar.itemInventories.beginning}</td>
-											<td>${pr.requestQty }</td>
-											<td>*</td>
-										</tr>
-									</c:forEach> --%>
-									</tbody>
-								</table>
-							</div>
-						</div>
-
-
-						<div class="col-lg-12">
-							<button class="form-control btn btn-primary" data-toggle="modal"
-								data-target="#item-modal">Add Item</button>
+							<button class="form-control btn btn-primary" id="item-add-modal">Add Item</button>
 						</div>
 					</div>
 
@@ -301,12 +209,13 @@
 
 
 				<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-primary">Save</button>
+				<button type="button" class="btn btn-primary" id="btn-save">Save</button>
 			</div>
 		</div>
 	</div>
 </div>
-<!----------------------------------------------------- End Modal ------------------------------------------------------------------>
+<!-- End Modal -->
+
 
 <!------------------------------------------------ Start Modal add item ------------------------------------------------------------>
 <div class="modal fade" id="item-modal" tabindex="-1" role="dialog"
@@ -357,12 +266,12 @@
 			</div>
 			<div class="modal-footer">
 				<div class="col-lg-3">
-					<button type="button" class="btn btn-info" data-dismiss="modal" id="btn-reset" >Cancel</button>
+					<button type="reset" class="reset btn btn-info" data-dismiss="modal" id="btn-reset" >Cancel</button>
 				</div>
-				<div class="col-lg-8">
+				<!-- <div class="col-lg-8">
 					<button type="button" class="btn btn-primary"
 						id="add-to-modal-request">Add</button>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
@@ -385,66 +294,94 @@
 
 				if (!keyword == "") {
 					$.ajax({
-						url : '${pageContext.request.contextPath}/request/search-item-variant/'+ keyword,
+						url : '${pageContext.request.contextPath}/request/search-item?search='+keyword,
 						type : 'GET',
 						success : function(data) {
 							$('#hasil-search-itemVar').empty();
-							$(data).each(function(index,value) {
-								var hasil = "<tr id='"+value[2]+"'>"
-								+ "<td>"
-								+ value[3]
-								+ " - "
-								+ value[1]
-								+ "</td>"
-								+ "<td>"
-								+ value[0]
-								+ "</td>"
-								+ "<td>"
-								+ "<div contenteditable='true'>"
-								+ "<input type='text' id='jumlah-request-"+value[2]+"'>"
-								+ "</div>"
-								+ "</td>"
-								+ "</tr>";
-
-						$('#hasil-search-itemVar').append(hasil);
-					});
-				}, error : function() {}
-														})
-			}
-		})
-
-/*======================================= Set to Create Request Modal =================================================  */
-			$('#add-to-modal-request').on('click',function() {
-				$('#table-result-search > tbody > tr').each(function(index,data) {
-				var idVariant = $(data).attr('id');
-				var itemVariant = $(data).find('td').eq(0).text();
-				var inStock = $(data).find('td').eq(1).text();
-				var reqQty = $('#jumlah-request-'+ idVariant+ '').val();
-		
-				if (!reqQty == "") {
-					var isiTabel = "<tr id='"+idVariant+"'>"+
-						"<td>"+ itemVariant + "</td>"	+ 
-						"<td>"+ inStock+ "</td>"+ 
-						"<td>"+ reqQty+ "</td>"+ 
-						"<td>"+ 
-							"<a href='#' class='cancel btn btn-danger' id='btn-cancel-add-item'>X</a>"+
-						"</td>"+ 
-						"</tr>";
-						$('#isi-tabel-request').append(isiTabel);
+							$.each(data, function(index, val){
+								$('#hasil-search-itemVar').append(
+								'<tr id = "tr'+val.id+'"><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td>'
+								+'<td id="inStock'+ val.id +'">'+ val.beginning +'</td>'
+								+'<td id="td-qty'+ val.id +'"><input class="form-control" type="number" min="0" max="'+val.beginning+'" id="jumlah-request-'+ val.id +'" value="" /></td>'
+								+'<td><button type="button" id="'+ val.id +'" class="tbl-add-brg btn btn-primary btn-add'+val.id
+								+'" key-id="'+val.itemVariant.id+'">Add</button></td></tr>');
+							});
+						},
+						error : function() {
+							$('#hasil-search-itemVar').empty()
 						}
 					});
-				$('#tabel-list-item').removeAttr('hidden');
+				}
 			});
+			
+
+	/*------------------------------------------ modal set up -------------------------------------------------------------*/
+		$('#btn-create').on('click', function(){
+		$('#addModal').modal('show');
+	})
+	
+	$('#item-add-modal').on('click', function(){
+			$('#addModal').modal('hide');
+			$('#item-modal').modal('show');
+	})
+	
+	
+	
 		
+	/*======================================= Set to Create Request Modal =================================================  */
+	var itemKe = [];
+	$('#add-to-modal-request').on('click', function(){
+		
+	})
+	$('#hasil-search-itemVar').on('click', '.tbl-add-brg',  function(){
+		var element = $(this).parent().parent();
+		var id = $(this).attr('id');
+		var idVariant = $(this).attr('key-id');
+		var ItemVarName = element.find('td').eq(0).text();
+		var InStok	= element.find('td').eq(1).text();
+		var reqQty = $('#jumlah-request-'+id).val();
+		
+		if(itemKe.indexOf(id.toString()) == -1){
+			$('#isi-tabel-request').append(
+					'<tr id="'+id+'" key-id="'+idVariant+'">'
+						+'<td>'+ ItemVarName + '</td>'
+						+'<td>'+ InStok + '</td>'
+						+'<td>'+ reqQty + '</td>'
+						+'<td>'+ '<button type="button" class="btn btn-danger btn-delete" id="btn-del'+id+'" key-id="'+id+'">&times;</button>' + '</td>'
+						+'</tr>'
+					);
+			itemKe.push(id);
+		} else {
+			//edit
+			var target = $('#list-item > #'+id+'');
+				var oldReq = target.find('td').eq(2).text();
+				var newReq = parseInt(oldReq)+parseInt(reqQty);
+				target.find('td').eq(2).text(newReq);
+		}
+		
+		$('#item-modal').modal('hide');
+		$('#addModal').modal('show');
+		
+	});
+	/*==================================================== DELETE ITEM IN DISPLAY ============================================ */
+	$('#table-result-add-item').on('click', '.btn-delete', function(){
+
+		var id = $(this).attr('key-id');
+		$(this).parent().parent().remove();
+		var index = itemKe.indexOf(id.toString());
+		if(index > -1 ){
+			itemKe.splice(index, 1);
+		}
+	});
 	/*=================================================== Save Request Modal =================================================  */
-	$('#btn-save-request').on('click', function(evt){
+	$('#btn-save').on('click', function(evt){
 		evt.preventDefault();
 		var listDetailRequest = [];
 		var listHistoryRequest = [];
 		$('#table-result-add-item > tbody > tr ').each(function(index, data){
 			var detailRequest = {
 				itemvar : {
-					id : $(data).attr('id')
+					id : $(data).attr('key-id')
 				},
 				requestQty : $(data).find('td').eq(2).text(),
 			};
@@ -471,13 +408,16 @@
 		console.log(makeid());
 		//set date format fot suitable in oracle database
 		var date = $('#ready-date').val().split('/');
-		var inputDate = date[0]+'-'+date[1]+'-'+date[2];
-		var prNo = date[0]+date[1]+date[2];
+		var inputDate = date[2]+'-'+date[0]+'-'+date[1];
+		
+		
+		
 		var request = {
+				id : $('#id-request').val(),
 				status : "Created",
 				notes : $('#request-notes').val(),
 				readyTime : inputDate,
-				prNo : "pr_" + prNo,
+				prNo : $('#prNo').val(),
 				requestDetail : listDetailRequest,
 				historyPr : listHistoryRequest
 		};
@@ -491,43 +431,46 @@
 			data : JSON.stringify(request),
 			success : function(data){
 				alert('save success');
-				//window.location='${pageContext.request.contextPath}/request';
+				window.location='${pageContext.request.contextPath}/request';
 			}, error : function(){
 				alert('save request failed');
 			}
 		});
-	});
+	})
+	
 	
 	/*=================================================== Update Request Modal =================================================  */
-	$(".btn-edit").on('click', function(evt){
-		evt.preventDefault();
-		var idEdit = $(this).attr('id');
-		//console.log(idEdit);
-		
-		
-		//set value for pop up edit
+	$('#request-table').on('click', '.btn-update', function(){
+		console.log('edit');
+		$('#isi-tabel-request').empty();
+		var idEdit = $(this).attr('key-id');
 		$.ajax({
 			url : '${pageContext.request.contextPath}/request/get-one/'+idEdit,
 			type : 'GET',
-			contentType : 'application/json',
-			
-			success : function(purReq){
-				setDataUpdateRequest(purReq);
-				$('#update-request-modal').modal();
-			}, error : function(){
-				alert('fail get the data');
+			dataType: 'json',
+			success : function(data){
+				console.log(data);
+				$('#id-request').val(data.id);
+				$('#request-notes').val(data.notes);
+				$('#prNo').val(data.prNo);
+				var date = data.readyTime.split('-');
+				var tanggal = date[1]+'/'+date[2]+'/'+date[0];
+				$('#ready-date').val(tanggal);
+				$(data.requestDetail).each(function(key, val){
+					$('#isi-tabel-request').append(
+						'<tr key-id="'+val.itemvar.id+'"><td>'+val.itemvar.item.name+'-'+val.itemvar.name+'</td>'
+						+'<td>null</td>'
+						+'<td>'+val.requestQty+'</td>'
+						+'<td><button type="button" class="btn btn-danger btn-delete" id="btn-del'+idEdit+'" key-id="'+idEdit+'">&times;</button>'
+					);
+				});
+				$('#addModal').modal('show');
+			}, 
+			error : function(){
+				console.log('gagal');
 			}
-		})
-	})
-	
-	function setDataUpdateRequest(purReq){
-		console.log(purReq);
-		$("#update-id").val(purReq.id);
-		$("#update-date").val(purReq.readyTime);
-		$("#update-prNo").val(purReq.prNo);
-		$("#update-notes").val(purReq.notes);
-	}
-
+		});
+	});
 })
 </script>
 

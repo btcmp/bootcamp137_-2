@@ -52,5 +52,10 @@ public class ItemInventoryService {
 		return itemInventoryDao.searchItemInventoryByName(word);
 	}
 
+	public List<ItemInventory> searchInventoryByItemName(String search) {
+		// TODO Auto-generated method stub
+		return itemInventoryDao.searchInventoryByItemName(search);
+	}
+
 	
 }

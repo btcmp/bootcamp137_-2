@@ -25,5 +25,7 @@ public interface ItemInventoryDao {
 	public ItemInventory searchEndingQtyByLastModifiedVariant(long id);
 
 	public List<Object[]> searchItemInventoryByName(String word);
+
+	public List<ItemInventory> searchInventoryByItemName(String search);
 	
 }

@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -17,8 +18,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
-@Table(name="product_request_mp")
+@Table(name="purchase_request_mp")
 public class PurchaseRequest {
 
 	@Id
@@ -42,22 +48,28 @@ public class PurchaseRequest {
 	@Column(name = "status")
 	private String status;
 	
-	@Column(name = "created_by")
-	private long createdBy;
+	@ManyToOne
+	@JoinColumn(name = "created_by")
+	private User createdBy;
 	
 	@Column(name="created_on")
 	private Date createdOn;
 	
-	@Column(name="modified_by")
-	private long modifiedBy;
+	@ManyToOne
+	@JoinColumn(name="modified_by")
+	private User modifiedBy;
 	
 	@Column(name="modified_on")
 	private Date modifiedOn;
-	
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="pr", orphanRemoval=true)
+	 
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="pr")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonManagedReference
 	private List<RequestDetail> requestDetail;
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="pr", orphanRemoval=true)
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="pr")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonManagedReference
 	private List<HistoryPurchaseRequest> historyPr;
 	
 
@@ -109,14 +121,7 @@ public class PurchaseRequest {
 		this.status = status;
 	}
 
-	public long getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(long createdBy) {
-		this.createdBy = createdBy;
-	}
-
+	
 	public Date getCreatedOn() {
 		return createdOn;
 	}
@@ -125,13 +130,6 @@ public class PurchaseRequest {
 		this.createdOn = createdOn;
 	}
 
-	public long getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(long modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
 
 	public Date getModifiedOn() {
 		return modifiedOn;
@@ -155,6 +153,22 @@ public class PurchaseRequest {
 
 	public void setHistoryPr(List<HistoryPurchaseRequest> historyPr) {
 		this.historyPr = historyPr;
+	}
+
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public User getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(User modifiedBy) {
+		this.modifiedBy = modifiedBy;
 	}
 	
 	
