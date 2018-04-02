@@ -147,8 +147,23 @@ public class TransferStockController {
 		return "detail-transfer-stock";
 	}
 	
-	/*@RequestMapping(value="/detail")
+	// button edit 
+	@RequestMapping(value="/detail/done/{id}", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public void done(@PathVariable long id) {
+		transferStockService.updateStatus(id);
+	}
+	
+	
+	@RequestMapping(value="/detail")
 	public String detail() {
 		return "detail-transfer-stock";
-	}*/
+	}
+	
+	// untuk save history TS pada detail TS
+	@RequestMapping(value="/detail/save-history")
+	@ResponseStatus(HttpStatus.CREATED)
+	public void saveHistory(@RequestBody HistoryTransferStock htStock) {
+		htStockService.save(htStock);
+	}
 }

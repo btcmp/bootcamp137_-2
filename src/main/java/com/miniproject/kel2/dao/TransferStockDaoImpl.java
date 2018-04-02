@@ -68,6 +68,7 @@ public class TransferStockDaoImpl implements TransferStockDao {
 		return session.createCriteria(Outlet.class).list();
 	}
 
+	// untuk search
 	public List<TransferStock> getByOutletId(long search) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
@@ -79,5 +80,17 @@ public class TransferStockDaoImpl implements TransferStockDao {
 			return tStocks;
 		}
 	}
+
+	// untuk update status
+	public void updateStatus(String status, long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update TransferStock ts set ts.status = :status where ts.id = :id";
+		session.createQuery(hql).setParameter("status", status).setParameter("id", id).executeUpdate();
+		session.flush();
+	}
+
+	
+	
 
 }

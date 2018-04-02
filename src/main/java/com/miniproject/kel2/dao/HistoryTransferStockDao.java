@@ -21,5 +21,7 @@ public interface HistoryTransferStockDao {
 
 	public List<HistoryTransferStock> getByTsId(long id);
 
+	// untuk update status 
+	public HistoryTransferStock searchByIdTransferStock(long id);
 
 }

@@ -27,4 +27,8 @@ public interface TransferStockDao {
 	// untuk search
 	public List<TransferStock> getByOutletId(long search);
 	
+	// untuk update status
+	public void updateStatus(String status, long id);
+	
+	
 }

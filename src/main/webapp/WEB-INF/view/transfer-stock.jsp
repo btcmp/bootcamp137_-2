@@ -64,7 +64,7 @@ $(document).ready(function(){
 					itemVariant : {
 							id : $(data).attr('id')
 					},
-					inStock : $(data).find('td').eq(1).text(),
+					inStock : $(data).find('td').eq(1).text() - $(data).find('td').eq(2).text(),
 					transferQty :  $(data).find('td').eq(2).text()
 			};
 			tsDetails.push(tsDetail);
@@ -170,6 +170,15 @@ $(document).ready(function(){
 		window.location= "${pageContext.request.contextPath}/transfer-stock/get-detail/"+id;
 	});
  
+ // search outlet
+	 $('#search-outlet').change(function(){
+			var word = $(this).val();
+			if (word=="all") {
+				window.location = "${pageContext.request.contextPath}/transfer-stock";
+			} else if (word!=="empty") {
+				window.location = "${pageContext.request.contextPath}/search-outlet?search="+word;
+			}
+		})
 });
 	
 
@@ -196,9 +205,11 @@ $(document).ready(function(){
 					<div class="panel-body">
 						<div class="row">
 							<select class="col-lg-10" id="search-outlet" type="text" class="form-control" style="margin-bottom: 10px;">
+									<option value="empty"> Search Outlet </option>
 									<c:forEach var="out" items="${outs}">
 										<option value="${out.id}">${out.name}</option>
 									</c:forEach>
+									<option value="all">All Outlet</option>
 							</select>			
 							<div class="col-lg-1" style="margin-bottom: 10px;">
 								<button type="button" class="btn btn-primary">Export</button>

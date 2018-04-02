@@ -1,6 +1,6 @@
 <%@ include file="topping/top.jsp"%>
 <script>
-/* $(function(){
+ $(function(){
 	$('#change-status').change(function(){
 		var status = $(this).val();
 		var modifiedOn = new Date();
@@ -28,13 +28,13 @@
 				}
 			});
 		}
-	});
+	}); 
 
 	$('#btn-done').click(function(){
 		var idtransferStock = "${transferStock.id}";
 		
 		$.ajax({
-			url : '${pageContext.request.contextPath}/transfer-stock/update-status/'+idtransferStock,
+			url : '${pageContext.request.contextPath}/transfer-stock/detail/done/'+idtransferStock,
 			type : 'GET',
 			success : function(data){
 				window.location="${pageContext.request.contextPath}/transfer-stock";
@@ -45,7 +45,7 @@
 		});
 	});
 
-}); */
+}); 
 </script>
 
 
@@ -68,16 +68,15 @@
 						  <div class="col-lg-10" style="maegin-bottom:10px;">
 									<h5><b>Transfer Stock Detail</b></h5>
 					   		  </div>
-							<div class="btn-group col-lg-2" style="maegin-bottom:10px;">
-                                                  <a class="btn btn-primary" href="" id="change-status" title="Bootstrap 3 themes generator">More</a>
-                                                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="" title="Bootstrap 3 themes generator"><span class="caret"></span></a>
-                                                  <ul class="dropdown-menu">
-                                                    <li><a href="" title="Bootstrap 3 themes generator">Approve</a></li>
-                                                    <li><a href="" title="Bootstrap 3 themes generator">Reject</a></li>
-                                                    <li><a href="" title="Bootstrap 3 themes generator">Print</a></li>
-                                                  </ul>
-                                           </div><!-- /btn-group --> 
-										   <div style = "clear:both;"></div>
+							<div class="col-sm-2">
+								<select class="btn btn-primary" id="change-status">
+									<option value="" selected="selected">More</option>
+									<option value="Approved">Approve</option>
+									<option value="Rejected">Reject</option>
+									<option value="print">Print</option>
+								</select>
+							</div>
+							<div style = "clear:both;"></div>
 							<div class="col-lg-12"> 
 							<p><label for="input-notes">Created By : [User]</label></p>
 							<p><label for="input-notes">Transfer Stock Status : ${transferStock.status}</label></p>

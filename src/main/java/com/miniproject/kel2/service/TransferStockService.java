@@ -101,7 +101,7 @@ public class TransferStockService {
 			tsDetail.setTransferStock(ts);
 			tsDetailDao.save(tsDetail);
 			
-			/*ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(tsd.getItemVariant().getId());
+			ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(tsd.getItemVariant().getId());
 
 			ItemInventory ii = new ItemInventory();
 			ii.setItemVariant(tsd.getItemVariant());
@@ -115,7 +115,7 @@ public class TransferStockService {
 				ii.setAlertAtQty(5);
 				ii.setBeginning(50);
 			}
-			itemInventoryDao.save(ii);*/
+			itemInventoryDao.save(ii);
 		}
 		
 		for(HistoryTransferStock hts : transferStock.getHistoryTransferStock()) {
@@ -160,13 +160,22 @@ public class TransferStockService {
 		transferStockDao.saveUpdate(transferStock);
 	}
 	
+	// untuk list outlet
 	public List<Outlet> outSelectAll(){
 		return transferStockDao.outSelectAll();
 	}
 	
+	// untuk search
 	public List<TransferStock> getByOutletId(long search) {
 		// TODO Auto-generated method stub
 		return transferStockDao.getByOutletId(search);
+	}
+	
+	// untuk update status
+	public void updateStatus(long id) {
+		HistoryTransferStock hts = htStockDao.searchByIdTransferStock(id);
+		String status = hts.getStatus();
+		transferStockDao.updateStatus(status, id);
 	}
 	
 }
