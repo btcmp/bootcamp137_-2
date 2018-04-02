@@ -68,7 +68,15 @@ public class SupplierController {
 	
 	@RequestMapping(value="/get-one/{id}", method=RequestMethod.GET)
 	@ResponseBody
-	public Supplier getOne(@PathVariable long id) {
+	public Supplier getOne(@PathVariable long id, Model model) {
+		long idProv = supplierService.getOne(id).getProvinceId().getId();
+		List<Region> regions = regionService.selectByProvince(idProv);
+		System.out.println("jumlah region : "+regions.size());
+		long idReg = supplierService.getOne(id).getRegionId().getId();
+		List<District> districts = districtService.selectByRegion(idReg);
+		System.out.println("jumlah district : "+districts.size());
+		model.addAttribute("listRegion", regions);
+		model.addAttribute("listDistrict", districts);
 		return supplierService.getOne(id);
 	}
 	
@@ -88,5 +96,20 @@ public class SupplierController {
 		supplierService.delete(supplier);
 	}
 	
+	@RequestMapping(value="/search-name-valid/{name}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Supplier> searchNameValidation(@PathVariable String name){
+		List<Supplier> sups = supplierService.searchByNameValidation(name);
+		System.out.println("supplier valid : "+sups.size());
+		return sups;
+	}
+	
+	@RequestMapping(value="/search-email-valid/{email:.+}", method=RequestMethod.GET)
+	@ResponseBody
+	public String searchEmailValidation(@PathVariable("email") String email){
+		String sups = supplierService.searchByEmailValidation(email);
+		System.out.println("email valid : "+sups);
+		return sups;
+	}
 	
 }

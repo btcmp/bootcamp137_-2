@@ -19,7 +19,7 @@
 		<intercept-url pattern="/category**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" />
 		<intercept-url pattern="/outlet**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" />
 		<intercept-url pattern="/item**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" />
-		<intercept-url pattern="/supplier**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" />
+		<!-- <intercept-url pattern="/supplier**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" /> -->
 		
 		
 

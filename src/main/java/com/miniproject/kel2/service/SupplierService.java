@@ -39,4 +39,14 @@ public class SupplierService {
 	public List<Supplier> searchByName(String name){
 		return supplierDao.searchByName(name);
 	}
+
+	public List<Supplier> searchByNameValidation(String nama) {
+		// TODO Auto-generated method stub
+		return supplierDao.searchByNameValidation(nama);
+	}
+
+	public String searchByEmailValidation(String email) {
+		// TODO Auto-generated method stub
+		return supplierDao.searchByEmailValidation(email);
+	}
 }

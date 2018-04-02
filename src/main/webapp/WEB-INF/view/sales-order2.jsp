@@ -1,6 +1,7 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 	$(function() {
+		
 		$('#btn-search-customer').click(function() {
 			$('#modal-search-customer').modal();
 		});

@@ -6,18 +6,35 @@ var Script = function () {
 
     $().ready(function() {
         // validate the comment form when it is submitted
-        $("#feedback_form").validate();
+        $("#save-form-supplier").validate();
 
         // validate signup form on keyup and submit
-        $("#register_form").validate({
+        $("#save-form-supplier").validate({
             rules: {
-                fullname: {
+                '#input-supplier-name': {
                     required: true,
-                    minlength: 6
+                    minlength: 5
                 },
-                address: {
+                '#input-address': {
                     required: true,
                     minlength: 10
+                },
+                '#input-province': {
+                    required: true
+                },
+                '#input-region': {
+                    required: true
+                },
+                '#input-district': {
+                    required: true
+                },
+                '#input-postal-code': {
+                    required: true,
+                    minlength : 5
+                },
+                '#input-email': {
+                    required: true,
+                    email : true
                 },
                 username: {
                     required: true,
@@ -42,7 +59,32 @@ var Script = function () {
                 },
                 agree: "required"
             },
-            messages: {                
+            messages: {  
+            	'#input-supplier-name': {
+            		required: "Please enter a Full Name.",
+                    minlength: "Your Full Name must consist of at least 6 characters long."
+                },
+                '#input-address': {
+                	required: "Please enter a Full Name.",
+                    minlength: "Your Full Name must consist of at least 6 characters long."
+                },
+                '#input-province': {
+                	required: "Please enter a Full Name.",
+                },
+                '#input-region': {
+                	required: "Please enter a Full Name.",
+                },
+                '#input-district': {
+                	required: "Please enter a Full Name.",
+                },
+                '#input-postal-code': {
+                	required: "Please enter a Full Name.",
+                    minlength: "Your Full Name must consist of at least 6 characters long."
+                },
+                '#input-email': {
+                	required: "Please enter a Full Name.",
+                    minlength: "Your Full Name must consist of at least 6 characters long."
+                },
                 fullname: {
                     required: "Please enter a Full Name.",
                     minlength: "Your Full Name must consist of at least 6 characters long."

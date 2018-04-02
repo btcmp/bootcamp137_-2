@@ -18,5 +18,9 @@ public interface SupplierDao {
 	public void delete(Supplier supplier);
 	
 	public void save(Supplier supplier);
+
+	public List<Supplier> searchByNameValidation(String nama);
+
+	public String searchByEmailValidation(String email);
 	
 }

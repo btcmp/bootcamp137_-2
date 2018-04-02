@@ -127,7 +127,7 @@
 				};
 				listDetAdjustment.push(detAdjustment);
 				var history = {
-					status : "waiting"
+					status : "Submitted"
 				};
 				listHistory.push(history);
 			});
