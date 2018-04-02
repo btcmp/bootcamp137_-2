@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.TransferStock;
 
-
 @Repository
 public class TransferStockDaoImpl implements TransferStockDao {
 
