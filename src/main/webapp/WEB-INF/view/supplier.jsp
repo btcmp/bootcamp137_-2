@@ -32,6 +32,19 @@ $(function(){
 		}
 	});
 	
+	//validasi address
+	$('#input-address').on('input', function() {
+		var input=$(this);
+		var address = $(this).val();
+		var re = /[a-zA-Z]/;
+		var is_valid=re.test(name);
+		if(is_valid){
+			input.removeClass("invalid").addClass("valid");
+		}else{
+			input.removeClass("valid").addClass("textonly");
+		}
+	});
+	
 	//validasi email
 	$('#input-email').on('input', function() {
 		var input=$(this);

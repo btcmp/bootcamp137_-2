@@ -21,7 +21,7 @@
 			maxDate : 0
 		});
 		//seacrh date range
-		function search(){
+		$(document).on('click', '#pickup', function(){
 			if($('#return').val() != "" && $('#pickup').val() != ""){
 				var tglFrom = $('#pickup').val();
 				var tglTo = $('#return').val();
@@ -50,7 +50,7 @@
 					}
 				});
 			}
-		}
+		});
 		
 		
 		$('#list-adjustment').attr('hidden', 'hidden');
