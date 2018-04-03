@@ -353,7 +353,7 @@
 			itemKe.push(id);
 		} else {
 			//edit
-			var target = $('#list-item > #'+id+'');
+			var target = $('#isi-tabel-request > #'+id+'');
 				var oldReq = target.find('td').eq(2).text();
 				var newReq = parseInt(oldReq)+parseInt(reqQty);
 				target.find('td').eq(2).text(newReq);

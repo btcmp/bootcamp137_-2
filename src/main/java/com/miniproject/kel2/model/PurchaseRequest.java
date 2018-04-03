@@ -63,12 +63,11 @@ public class PurchaseRequest {
 	private Date modifiedOn;
 	 
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="pr")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	//@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonManagedReference
 	private List<RequestDetail> requestDetail;
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="pr")
-	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonManagedReference
 	private List<HistoryPurchaseRequest> historyPr;
 	

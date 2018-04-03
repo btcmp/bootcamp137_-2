@@ -125,7 +125,22 @@ public class User {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<RequestDetail> requestDetailsModified;
 	
-	
+	//purchase order
+		@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+		private List<PurchaseOrder> purchaseOrderCreated;
+		
+		@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+		private List<OrderDetail> orderDetailsCreated;
+		
+		@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+		private List<HistoryPurchaseOrder> historyPurchaseOrderCreated;
+		
+		@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+		private List<PurchaseOrder> purchaseOrderModified;
+		
+		@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+		private List<OrderDetail> orderDetailsModified;
+		
 	
 	public long getId() {
 		return id;

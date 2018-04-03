@@ -8,10 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.miniproject.kel2.dao.HistoryPurchaseOrderDao;
 import com.miniproject.kel2.dao.HistoryPurchaseRequestDao;
+import com.miniproject.kel2.dao.OrderDetailDao;
+import com.miniproject.kel2.dao.PurchaseOrderDao;
 import com.miniproject.kel2.dao.PurchaseRequestDao;
 import com.miniproject.kel2.dao.RequestPurchaseDetailDao;
+import com.miniproject.kel2.model.HistoryPurchaseOrder;
 import com.miniproject.kel2.model.HistoryPurchaseRequest;
+import com.miniproject.kel2.model.OrderDetail;
+import com.miniproject.kel2.model.PurchaseOrder;
 import com.miniproject.kel2.model.PurchaseRequest;
 import com.miniproject.kel2.model.RequestDetail;
 
@@ -27,6 +33,15 @@ public class PurchaseRequestService {
 	
 	@Autowired
 	RequestPurchaseDetailDao rpdDao;
+	
+	@Autowired
+	PurchaseOrderDao poDao;
+	
+	@Autowired
+	HistoryPurchaseOrderDao hpoDao;
+	
+	@Autowired
+	OrderDetailDao odpDao; 
 
 	public List<PurchaseRequest> selectAll() {
 		// TODO Auto-generated method stub
@@ -134,17 +149,6 @@ public class PurchaseRequestService {
 		hprDao.save(hpr);
 	}
 
-	public void created(long id) {
-		// TODO Auto-generated method stub
-		prDao.created(id);
-		PurchaseRequest pr = prDao.getOne(id);
-		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
-		hpr.setCreatedOn(new Date());
-		hpr.setPr(pr);
-		hpr.setStatus(pr.getStatus());
-		
-		hprDao.save(hpr);
-	}
 
 	public void rejected(long id) {
 		// TODO Auto-generated method stub
@@ -156,5 +160,65 @@ public class PurchaseRequestService {
 		hpr.setStatus(pr.getStatus());
 		
 		hprDao.save(hpr);
+	}
+	
+	public void created(long id) {
+		// TODO Auto-generated method stub
+		prDao.created(id);
+		PurchaseRequest pr = prDao.getOne(id);
+		//cari prd by pr
+		List<RequestDetail> prd = rpdDao.selectDetailByPr(pr);
+		
+		if(prd.isEmpty()) {
+			
+		} else {
+			pr.setRequestDetail(prd);
+		}
+		
+		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
+		hpr.setCreatedOn(new Date());
+		hpr.setPr(pr);
+		hpr.setStatus(pr.getStatus());
+		hprDao.save(hpr);
+		
+		//save to po
+		float grandTotal = 0;
+		
+		PurchaseOrder po = new PurchaseOrder();
+		po.setCreatedOn(hpr.getCreatedOn());
+		po.setCreatedBy(pr.getCreatedBy());
+		po.setNotes(pr.getNotes());
+		po.setOutlet(pr.getOutlet());
+		po.setStatus("Created");
+		po.setGrandTotal(grandTotal);
+		po.setPr(pr);
+		
+		poDao.save(po);
+		
+		if(pr.getRequestDetail() != null) {
+			for(RequestDetail rd : pr.getRequestDetail()) {
+				OrderDetail pod = new OrderDetail();
+				pod.setCreatedOn(new Date());
+				pod.setCreatedBy(rd.getCreatedBy());
+				pod.setRequestQty(rd.getRequestQty());
+				pod.setVariant(rd.getItemvar());
+				pod.setUnitCost(rd.getItemvar().getPrice());
+				pod.setSubTotal(rd.getItemvar().getPrice()*rd.getRequestQty());
+				grandTotal += ((rd.getItemvar().getPrice()*rd.getRequestQty()));
+				pod.setPo(po);
+				odpDao.save(pod);
+			}
+				
+		}
+		
+		
+		
+		HistoryPurchaseOrder hpo = new HistoryPurchaseOrder();
+		hpo.setCreatedOn(po.getCreatedOn());
+		hpo.setCreatedBy(po.getCreatedBy());
+		hpo.setStatus(po.getStatus());
+		hpo.setPo(po);
+		hpoDao.save(hpo);
+		
 	}
 }

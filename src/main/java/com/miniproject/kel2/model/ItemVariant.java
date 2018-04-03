@@ -35,7 +35,7 @@ public class ItemVariant {
 	@Column(nullable=false, length=50)
 	private String sku;
 	@Column(nullable=false)
-	private double price;
+	private float price;
 	@Column(name="created_by")
 	private long createdBy;
 	@Temporal(TemporalType.DATE)
@@ -122,10 +122,10 @@ public class ItemVariant {
 	public void setSku(String sku) {
 		this.sku = sku;
 	}
-	public double getPrice() {
+	public float getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 	public long getCreatedBy() {

@@ -21,7 +21,7 @@
 		$('#change-status').change(function(){
 			var status = $(this).val();
 			var createdOn = new Date();
-			
+			console.log(status);
 			if(status != ""){
 				var history = {
 					adjustmentId : {
