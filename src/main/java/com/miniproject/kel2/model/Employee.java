@@ -78,7 +78,7 @@ public class Employee {
 	private List<Outlet> outlet;
 	
 	//kurang relasi ke tabel employee outlet
-		
+
 	
 	public long getId() {
 		return id;
