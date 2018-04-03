@@ -379,12 +379,16 @@
 				contentType : 'application/json',
 				data : JSON.stringify(salesOrder),
 				success : function(data){
-					alert('save sales order success');
+					//alert('save sales order success');
 				},
 				error : function(){
 					alert('failed save sales order');
 				}
 			});
+			
+			//tutup modal
+			$('#input-cash').val('');
+			$('#modal-payment-method').modal('hide');
 		});
 		
 		function hitung(){
@@ -412,6 +416,26 @@
 			}
 		};
 		
+		$(document).on('click', '#btn-nothanks', function(){
+			window.location = "${pageContext.request.contextPath}/sales-order";
+		});
+		
+		$(document).on('click', '#btn-send-email', function(){
+			alert('success your email');
+		});
+		
+		$(document).on('click', '#btn-print-receipt', function(){
+			//buat controller untuk print struk
+			var idCust = $('#btn-search-customer').attr('name');
+			console.log("idCustomer : "+idCust);
+			$.ajax({
+				url : '${pageContext.request.contextPath}/generate/receipt/'+idCust,
+				type : 'GET',
+				success : function(data){},
+				error : function(){}
+			});
+			//window.location = "${pageContext.request.contextPath}/generate/receipt/"+idCust;
+		});
 	});
 	
 	$(document).ready(function(){
