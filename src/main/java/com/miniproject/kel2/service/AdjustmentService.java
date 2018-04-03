@@ -66,21 +66,6 @@ public class AdjustmentService {
 			detAdj.setVariantId(da.getVariantId());
 			detAdjustmentDao.save(detAdj);
 			
-			ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(da.getVariantId().getId());
-			
-			ItemInventory ii = new ItemInventory();
-			ii.setItemVariant(da.getVariantId());
-			ii.setEndingQty(da.getInStock());
-			ii.setAdjustmentQty(da.getActualStock());
-			ii.setModifiedOn(new Date());
-			if(inv != null) {
-				ii.setAlertAtQty(inv.getAlertAtQty());
-				ii.setBeginning(inv.getEndingQty());
-			}else {
-				ii.setAlertAtQty(5);
-				ii.setBeginning(50);
-			}
-			itemInventoryDao.save(ii);
 		}
 //		itemInventoryDao.updateInStock(adjustment.getDetAdjustments().get(0).getInStock(), adjustment.getDetAdjustments().get(0).getVariantId().getId());
 	}
@@ -100,6 +85,27 @@ public class AdjustmentService {
 		HistoryAdjustment ha = hisAdjustmentDao.searchByIdAdjustment(id);
 		String status = ha.getStatus();
 		adjustmentDao.updateStatusAdjustment(status, id);
+		
+		if(status.equals("Approved")) {
+			List<DetailAdjustment> detAdjustments = detAdjustmentDao.searchById(id);
+			for(DetailAdjustment detAdj : detAdjustments) {
+				ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(detAdj.getVariantId().getId());
+				
+				ItemInventory ii = new ItemInventory();
+				ii.setItemVariant(detAdj.getVariantId());
+				ii.setEndingQty(detAdj.getActualStock());
+				ii.setAdjustmentQty(detAdj.getActualStock());
+				ii.setModifiedOn(new Date());
+				if(inv != null) {
+					ii.setAlertAtQty(inv.getAlertAtQty());
+					ii.setBeginning(inv.getEndingQty());
+				}else {
+					ii.setAlertAtQty(5);
+					ii.setBeginning(50);
+				}
+				itemInventoryDao.save(ii);
+			}
+		}
 	}
 
 	public List<Adjustment> searchByDateRange(long tglFrom, long tglTo) {

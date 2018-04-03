@@ -52,7 +52,7 @@
 <link href="${resources}/css/xcharts.min.css" rel=" stylesheet">
 <link href="${resources}/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 <link href="${resources}/css/BuroRaDer.DateRangePicker.css" rel="stylesheet">
-
+<link href="${resources}/lama/dataTable.css" rel="stylesheet">
 
 
 
@@ -117,6 +117,17 @@
 	font: 10px arial, san serif;
 	text-align: left;
 }
+
+.error{
+	display: none;
+	margin-left: 10px;
+}		
+
+.error_show{
+	color: red;
+	margin-left: 10px;
+}
+
 </style>
 </head>
 
@@ -165,6 +176,7 @@
 <script src="${resources}/js/jquery.chained.min.js"></script>
 <script src="${resources}/js/BuroRaDer.DateRangePicker.js"></script>
 <script src="${resources}/js/autoNumeric.js"></script>
+<script src="${resources}/lama/dataTable.min.js"></script>
 
 <!-- validator -->
 <script src="${resources}/jquery.validate.min.js"></script>

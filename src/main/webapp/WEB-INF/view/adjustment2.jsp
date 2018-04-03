@@ -106,11 +106,16 @@
 				}
 			});
 			$('#list-item').removeAttr('hidden');
+			$('#search-item').val("");
+			$('#isi-item').empty();
+			$('#modal-add-item').modal('hide');
 		});
 		
 		//cancel list adjustment
-		$('#cancel').on('click', function(){
-			alert('hallo cancel');
+		$(document).on('click', '#cancel', function(){
+			var element = $(this).parent().parent();
+			//console.log(element);
+			element.remove();
 		});
 		
 		//save adjustment
@@ -122,7 +127,7 @@
 					variantId :{
 						id : $(data).attr('id')
 					},
-					inStock : $(data).find('td').eq(1).text() - $(data).find('td').eq(2).text(),
+					inStock : $(data).find('td').eq(1).text(),
 					actualStock : $(data).find('td').eq(2).text()
 				};
 				listDetAdjustment.push(detAdjustment);

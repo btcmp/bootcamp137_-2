@@ -79,8 +79,8 @@ public class SupplierDaoImpl implements SupplierDao{
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "select s.email from Supplier s where lower(s.email) like lower(:emailnya)";
-		int em = session.createQuery(hql).setParameter("emailnya", email).hashCode();
-		if(em == 0) {
+		List<Object[]> sups = session.createQuery(hql).setParameter("emailnya", email).list();
+		if(sups.isEmpty()) {
 			String none = "";
 			return none;
 		}else {

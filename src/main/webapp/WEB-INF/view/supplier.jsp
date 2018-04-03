@@ -1,7 +1,7 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 $(function(){
-	
+	$.validate();
 	$('#input-supplier-name').on('input', function() {
 		var input=$(this);
 		var name = $(this).val();
@@ -36,6 +36,7 @@ $(function(){
 	$('#input-email').on('input', function() {
 		var input=$(this);
 		var email = $(this).val().toString();
+		console.log("email : "+email);
 		if(email != ""){
 			$.ajax({
 				url : '${pageContext.request.contextPath}/supplier/search-email-valid/'+email,
@@ -43,7 +44,7 @@ $(function(){
 				success : function(data){
 					if(data == "ada"){
 						input.removeClass("valid").addClass("emailSama");
-						console.log(data.length);
+						console.log(data);
 					}else{
 						var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 						var is_valid=re.test(email);
@@ -524,7 +525,7 @@ $(function(){
 												type="button">X</button>
 											<h4 class="modal-title">Supplier Detail</h4>
 										</div>
-										<form action="#" method="post" data-validate="parsley" id="save-form-supplier">
+										<form action="#" method="post" id="save-form-supplier">
 											<div class="modal-body" style="height: 400px;">
 
 												<div class="form-group">
@@ -537,8 +538,9 @@ $(function(){
 												<div class="form-group ">
 													<label for="input-address">Address</label>
 													<textarea class="form-control " id="input-address" name="address"
-														name="input-address" data-parsley-required="true"></textarea>
-														<span class="error">This field is required</span>
+														name="input-address" data-validation="length" data-validation-length="5-200"></textarea>
+														<!-- <span class="error">This field is required</span> -->
+														<span class="required">*</span>
 												</div>
 												<div class="form-group">
 													<div class="col-lg-4">

@@ -1,13 +1,16 @@
 package com.miniproject.kel2.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.miniproject.kel2.dao.ItemInventoryDao;
 import com.miniproject.kel2.dao.SalesOrderDao;
 import com.miniproject.kel2.dao.SalesOrderDetailDao;
+import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.SalesOrder;
 import com.miniproject.kel2.model.SalesOrderDetail;
 
@@ -20,6 +23,9 @@ public class SalesOrderService {
 	
 	@Autowired
 	SalesOrderDetailDao salesOrderDetailDao;
+	
+	@Autowired
+	ItemInventoryDao itemInventoryDao;
 
 	public List<SalesOrder> selectAll() {
 		// TODO Auto-generated method stub
@@ -45,6 +51,17 @@ public class SalesOrderService {
 			detSO.setVariantId(sod.getVariantId());
 			detSO.setSoId(so);
 			salesOrderDetailDao.save(detSO);
+			
+			ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(sod.getVariantId().getId());
+			
+			ItemInventory ii = new ItemInventory();
+			ii.setItemVariant(sod.getVariantId());
+			ii.setEndingQty(inv.getEndingQty() - sod.getQty());
+			ii.setSalesOrderQty(sod.getQty());
+			ii.setModifiedOn(new Date());
+			ii.setAlertAtQty(inv.getAlertAtQty());
+			ii.setBeginning(inv.getEndingQty());
+			itemInventoryDao.save(ii);
 		}
 	}
 
