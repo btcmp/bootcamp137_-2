@@ -1,7 +1,283 @@
 <%@ include file="topping/top.jsp"%>
+
+<!-- ==================================================================  BATAS BUAT ISIAN ========================================================================= -->
+<section id="main-content">
+	<section class="wrapper">
+		<div class="row">
+			<div class="col-lg-12">
+				<section class="panel">
+					<header class="panel-heading"> SUPPLIER </header>
+						<div class="col-sm-9">
+						<div class="nav search-row" id="top_menu"
+							style="margin-bottom: 30px;">
+							<!--  search form start -->
+							<ul class="nav top-menu">
+								<li>
+									<form class="navbar-form">
+										<input class="form-control" placeholder="Search" id="field-search" type="text">
+									</form>
+								</li>
+							</ul>
+							<!--  search form end -->
+						</div>
+					</div>
+					<div class="col-sm-1" style="float: left; margin-top: 15px;">
+						<a class="btn btn-primary" id="btn-export"><span
+							class="icon_folder_download"></span> Export</a>
+					</div>
+					<div class="col-sm-2" style="float: right; margin-top: 15px;">
+						<a class="btn btn-primary" id="btn-add"><span
+							class="icon_plus_alt"></span> Create</a>
+					</div>
+					<br>
+					<table class="table table-striped table-advance table-hover" id="table-master-supplier">
+						<thead>
+							<tr>
+								<th><i class="icon_profile"></i> Name</th>
+								<th><i class="icon_pin_alt"></i> Address</th>
+								<th><i class="icon_mobile"></i> Phone</th>
+								<th><i class="icon_email_alt"></i> Email</th>
+								<th><i class="icon_cogs"></i>Action</th>
+							</tr>
+						</thead>
+						<tbody id="table-search">
+							<c:forEach items="${listSupplier }" var="supp">
+								<tr>
+									<td>${supp.name }</td>
+									<td>${supp.address }</td>
+									<td>${supp.phone }</td>
+									<td>${supp.email }</td>
+									<td>
+										<div class="btn-group">
+											<a class="update btn btn-primary" id="${supp.id }"><i
+												class="icon_pencil-edit"></i></a>
+										</div>
+									</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</section>
+			</div>
+		</div>
+	</section>
+</section>
+					
+
+					
+					
+	<!-- ===================================================== MODAL INPUT =================================================================== -->
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="myModalLabel"
+	role="dialog" tabindex="-1" id="modal-add-supplier"
+	class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button aria-hidden="true" data-dismiss="modal" class="close"
+					type="button">X</button>
+				<h4 class="modal-title">Supplier Detail</h4>
+			</div>
+			<form action="#" method="post" id="save-form-supplier">
+				<div class="modal-body" style="height: 400px;">
+					<div class="form-group">
+					  <label class="control-label">Text</label>
+					  <input type="text" class="form-control" placeholder="Enter text" required>
+					</div>
+					
+					
+					<div class="form-group">
+						<label for="input-supplier-name">Supplier Name</label> <input
+							type="text" class="form-control" id="input-supplier-name"  name="supplier-name"	aria-describedby="emailHelp" placeholder="Supplier Name" required />
+						<!-- <span class="error">This field is required</span> -->
+					</div>
+					<div class="form-group ">
+						<label for="input-address">Address</label>
+						<textarea class="form-control " id="input-address" name="address"
+							name="input-address" data-validation="length" data-validation-length="5-200"></textarea>
+							<!-- <span class="error">This field is required</span> -->
+							<!-- <span class="required">*</span> -->
+					</div>
+					<div class="form-group">
+						<div class="col-lg-4">
+							<label for="input-province">Province</label> <select
+								class="form-control" id="input-province" name="province">
+								<option value="" selected="selected">-- Choose--</option>
+								<c:forEach items="${listProvince }" var="prov">
+									<option value="${prov.id }">${prov.name }</option>
+								</c:forEach> 
+							</select>
+							<!-- <span class="error">This field is required</span> -->
+				 		</div>
+						<div class="col-lg-4">
+							<label for="input-region">Region</label> <select
+								class="form-control" id="input-region" name="region">
+								<option value="" selected="selected">-- Choose--</option>
+								<%-- <c:forEach items="${listRegion }" var="reg">
+									<option value="${reg.id }">${reg.name }</option>
+								</c:forEach> --%>
+							</select>
+							<!-- <span class="error">This field is required</span> -->
+						</div>
+						<div class="col-lg-4">
+							<label for="input-district">District</label> <select
+								class="form-control" id="input-district" name="district">
+								<option value="" selected="selected">-- Choose--</option>
+								<%-- <c:forEach items="${listDistrict }" var="dis">
+									<option value="${dis.id }">${dis.name }</option>
+								</c:forEach> --%>
+							</select>
+							<span class="error">This field is required</span>
+						</div>
+					</div>
+					<div style="height: 100px;"></div>
+					<div class="form-group">
+						<div class="col-lg-4">
+							<label for="input-postal-code">Postal Code</label> <input
+								type="text" class="form-control" id="input-postal-code" name="postal-code"
+								aria-describedby="emailHelp" placeholder="Supplier Name" data-parsley-required="true">
+								<span class="error">This field is required</span>
+						</div>
+						<div class="col-lg-4">
+							<label for="input-phone">Phone</label> <input type="text"
+								class="form-control" id="input-phone" name="phone"
+								aria-describedby="emailHelp" placeholder="Supplier Name" data-parsley-required="true">
+								<span class="error">This field is required</span>
+						</div>
+						<div class="col-lg-4">
+							<label for="input-email">Email</label> <input type="text"
+								class="form-control" id="input-email" data-parsley-type="email"  name="email"
+								aria-describedby="emailHelp" placeholder="Supplier Name" data-parsley-required="true">
+								<span class="error">This field is required</span>
+						</div>
+					</div>
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="reset" class="btn btn-primary">Cancel</button>
+					<button type="submit" id="add" class="btn btn-primary">Save</button>
+					<button type="submit" class="btn btn-default" id="btnEmpty">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- ===================================================== MODAL =================================================================== -->
+
+<!-- ===================================================== MODAL EDIT =================================================================== -->
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="myModalLabel"
+	role="dialog" tabindex="-1" id="modal-edit-supplier"
+	class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button aria-hidden="true" data-dismiss="modal" class="close"
+					type="button">X</button>
+				<h4 class="modal-title">Supplier Detail</h4>
+			</div>
+			<form id="edit-form" data-parsley-validation>
+				<div class="modal-body" style="height: 350px;">
+				
+				
+				
+					<input type="hidden" id="input-id">
+					<div class="form-group">
+						<label for="edit-supplier-name">Supplier Name</label> <input
+							type="text" class="form-control" id="edit-supplier-name"
+							aria-describedby="emailHelp" placeholder="Supplier Name">
+					</div>
+					<div class="form-group">
+					  <label class="control-label">Text</label>
+					  <input type="text" class="form-control" placeholder="Enter text" required>
+					</div>
+					<div class="form-group ">
+						<label for="edit-address">Address</label>
+						<textarea class="form-control " id="edit-address"
+							name="input-address" ></textarea>
+					</div>
+					<div class="form-group">
+						<div class="col-lg-4">
+							<label for="edit-province">Province</label>
+							<select class="form-control" id="edit-province">
+								<option value="" selected="selected">-- Choose
+									--</option>
+								<c:forEach items="${listProvince }" var="prov">
+									<option value="${prov.id }">${prov.name }</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="col-lg-4">
+							<label for="input-region">Region</label> 
+							<select class="form-control" id="edit-region">
+								<option value="" selected="selected">-- Choose
+									--</option>
+								<c:forEach items="${listRegion }" var="reg">
+									<option value="${reg.id }">${reg.name }</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="col-lg-4">
+							<label for="input-district">District</label> 
+							<select class="form-control" id="edit-district">
+								<option value="" selected="selected">-- Choose
+									--</option>
+								<c:forEach items="${listDistrict }" var="dis">
+									<option value="${dis.id }">${dis.name }</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<div style="height: 70px;"></div>
+					<div class="form-group">
+						<div class="col-lg-4">
+							<label for="input-postal-code">Postal Code</label> <input
+								type="text" class="form-control" id="edit-postal-code"
+								aria-describedby="emailHelp" placeholder="Supplier Name">
+						</div>
+						<div class="col-lg-4">
+							<label for="input-phone">Phone</label> <input type="text"
+								class="form-control" id="edit-phone"
+								aria-describedby="emailHelp" placeholder="Supplier Name">
+						</div>
+						<div class="col-lg-4">
+							<label for="input-email">Email</label> <input type="text"
+								class="form-control" id="edit-email"
+								aria-describedby="emailHelp" placeholder="Supplier Name">
+						</div>
+					</div>
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="reset" class="btn btn-primary">Cancel</button>
+					<button type="button" id="btn-update" class="btn btn-primary">Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- ===================================================== MODAL =================================================================== -->
+
 <script type="text/javascript">
-$(function(){
-	$.validate();
+
+$(document).ready(function(){
+	$('#btnEmpty').click(function(evt) {
+		evt.preventDefault();
+		 $('#save-form-supplier').smkValidate();
+		    // Code here
+		    /* $.smkAlert({
+		      text: 'Validate!',
+		      type: 'success'
+		    }); */
+		  
+		});
+	
+	
+	
 	$('#input-supplier-name').on('input', function() {
 		var input=$(this);
 		var name = $(this).val();
@@ -457,258 +733,8 @@ $(function(){
 
 	  $('#save-form-supplier').parsley({
 		    inputs: Parsley.options.inputs + ',[data-parsley-check-children]'
-	}); */
+	}); */	
 });
 </script>
-<!-- ==================================================================  BATAS BUAT ISIAN ========================================================================= -->
-<section id="main-content">
-	<section class="wrapper">
-		<div class="row">
-			<div class="col-lg-12">
-				<section class="panel">
-					<header class="panel-heading"> SUPPLIER </header>
-
-					<div class="col-sm-9">
-						<div class="nav search-row" id="top_menu"
-							style="margin-bottom: 30px;">
-							<!--  search form start -->
-							<ul class="nav top-menu">
-								<li>
-									<form class="navbar-form">
-										<input class="form-control" placeholder="Search" id="field-search" type="text">
-									</form>
-								</li>
-							</ul>
-							<!--  search form end -->
-						</div>
-					</div>
-					<div class="col-sm-1" style="float: left; margin-top: 15px;">
-						<a class="btn btn-primary" id="btn-export"><span
-							class="icon_folder_download"></span> Export</a>
-					</div>
-					<div class="col-sm-2" style="float: right; margin-top: 15px;">
-						<a class="btn btn-primary" id="btn-add"><span
-							class="icon_plus_alt"></span> Create</a>
-					</div>
-					<br>
-
-					<table class="table table-striped table-advance table-hover" id="table-master-supplier">
-						<thead>
-							<tr>
-								<th><i class="icon_profile"></i> Name</th>
-								<th><i class="icon_pin_alt"></i> Address</th>
-								<th><i class="icon_mobile"></i> Phone</th>
-								<th><i class="icon_email_alt"></i> Email</th>
-								<th><i class="icon_cogs"></i>Action</th>
-							</tr>
-							</thead>
-							<tbody id="table-search">
-							<c:forEach items="${listSupplier }" var="supp">
-								<tr>
-									<td>${supp.name }</td>
-									<td>${supp.address }</td>
-									<td>${supp.phone }</td>
-									<td>${supp.email }</td>
-									<td>
-										<div class="btn-group">
-											<a class="update btn btn-primary" id="${supp.id }"><i
-												class="icon_pencil-edit"></i></a>
-										</div>
-									</td>
-								</tr>
-							</c:forEach>
-							</section>
-							</div>
-							</div>
-							<!-- page end-->
-							</section>
-							</section>
-							<!--main content end-->
-							</section>
-
-							<!-- ===================================================== MODAL INPUT =================================================================== -->
-							<!-- Modal -->
-							<div aria-hidden="true" aria-labelledby="myModalLabel"
-								role="dialog" tabindex="-1" id="modal-add-supplier"
-								class="modal fade">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button aria-hidden="true" data-dismiss="modal" class="close"
-												type="button">X</button>
-											<h4 class="modal-title">Supplier Detail</h4>
-										</div>
-										<form action="#" method="post" id="save-form-supplier">
-											<div class="modal-body" style="height: 400px;">
-
-												<div class="form-group">
-													<label for="input-supplier-name">Supplier Name</label> <input
-														type="text" class="form-control" id="input-supplier-name"  name="supplier-name"
-														 data-parsley-required="true"
-														aria-describedby="emailHelp" placeholder="Supplier Name" data-parsley-id="5043">
-													<span class="error">This field is required</span>
-												</div>
-												<div class="form-group ">
-													<label for="input-address">Address</label>
-													<textarea class="form-control " id="input-address" name="address"
-														name="input-address" data-validation="length" data-validation-length="5-200"></textarea>
-														<!-- <span class="error">This field is required</span> -->
-														<span class="required">*</span>
-												</div>
-												<div class="form-group">
-													<div class="col-lg-4">
-														<label for="input-province">Province</label> <select
-															class="form-control" id="input-province" name="province">
-															<option value="" selected="selected">-- Choose--</option>
-															<c:forEach items="${listProvince }" var="prov">
-																<option value="${prov.id }">${prov.name }</option>
-															</c:forEach> 
-														</select>
-														<span class="error">This field is required</span>
-											 		</div>
-													<div class="col-lg-4">
-														<label for="input-region">Region</label> <select
-															class="form-control" id="input-region" name="region">
-															<option value="" selected="selected">-- Choose--</option>
-															<%-- <c:forEach items="${listRegion }" var="reg">
-																<option value="${reg.id }">${reg.name }</option>
-															</c:forEach> --%>
-														</select>
-														<span class="error">This field is required</span>
-													</div>
-													<div class="col-lg-4">
-														<label for="input-district">District</label> <select
-															class="form-control" id="input-district" name="district">
-															<option value="" selected="selected">-- Choose--</option>
-															<%-- <c:forEach items="${listDistrict }" var="dis">
-																<option value="${dis.id }">${dis.name }</option>
-															</c:forEach> --%>
-														</select>
-														<span class="error">This field is required</span>
-													</div>
-												</div>
-												<div style="height: 100px;"></div>
-												<div class="form-group">
-													<div class="col-lg-4">
-														<label for="input-postal-code">Postal Code</label> <input
-															type="text" class="form-control" id="input-postal-code" name="postal-code"
-															aria-describedby="emailHelp" placeholder="Supplier Name" data-parsley-required="true">
-															<span class="error">This field is required</span>
-													</div>
-													<div class="col-lg-4">
-														<label for="input-phone">Phone</label> <input type="text"
-															class="form-control" id="input-phone" name="phone"
-															aria-describedby="emailHelp" placeholder="Supplier Name" data-parsley-required="true">
-															<span class="error">This field is required</span>
-													</div>
-													<div class="col-lg-4">
-														<label for="input-email">Email</label> <input type="text"
-															class="form-control" id="input-email" data-parsley-type="email"  name="email"
-															aria-describedby="emailHelp" placeholder="Supplier Name" data-parsley-required="true">
-															<span class="error">This field is required</span>
-													</div>
-												</div>
-
-
-											</div>
-											<div class="modal-footer">
-												<button type="reset" class="btn btn-primary">Cancel</button>
-												<button type="submit" id="add" class="btn btn-primary">Save</button>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-
-							<!-- ===================================================== MODAL =================================================================== -->
-
-							<!-- ===================================================== MODAL EDIT =================================================================== -->
-							<!-- Modal -->
-							<div aria-hidden="true" aria-labelledby="myModalLabel"
-								role="dialog" tabindex="-1" id="modal-edit-supplier"
-								class="modal fade">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button aria-hidden="true" data-dismiss="modal" class="close"
-												type="button">X</button>
-											<h4 class="modal-title">Supplier Detail</h4>
-										</div>
-										<form id="edit-form" data-parsley-validation>
-											<div class="modal-body" style="height: 350px;">
-												<input type="hidden" id="input-id">
-												<div class="form-group">
-													<label for="edit-supplier-name">Supplier Name</label> <input
-														type="text" class="form-control" id="edit-supplier-name"
-														aria-describedby="emailHelp" placeholder="Supplier Name">
-												</div>
-												<div class="form-group ">
-													<label for="edit-address">Address</label>
-													<textarea class="form-control " id="edit-address"
-														name="input-address" required></textarea>
-												</div>
-												<div class="form-group">
-													<div class="col-lg-4">
-														<label for="edit-province">Province</label>
-														<select class="form-control" id="edit-province">
-															<option value="" selected="selected">-- Choose
-																--</option>
-															<c:forEach items="${listProvince }" var="prov">
-																<option value="${prov.id }">${prov.name }</option>
-															</c:forEach>
-														</select>
-													</div>
-													<div class="col-lg-4">
-														<label for="input-region">Region</label> 
-														<select class="form-control" id="edit-region">
-															<option value="" selected="selected">-- Choose
-																--</option>
-															<c:forEach items="${listRegion }" var="reg">
-																<option value="${reg.id }">${reg.name }</option>
-															</c:forEach>
-														</select>
-													</div>
-													<div class="col-lg-4">
-														<label for="input-district">District</label> 
-														<select class="form-control" id="edit-district">
-															<option value="" selected="selected">-- Choose
-																--</option>
-															<c:forEach items="${listDistrict }" var="dis">
-																<option value="${dis.id }">${dis.name }</option>
-															</c:forEach>
-														</select>
-													</div>
-												</div>
-												<div style="height: 70px;"></div>
-												<div class="form-group">
-													<div class="col-lg-4">
-														<label for="input-postal-code">Postal Code</label> <input
-															type="text" class="form-control" id="edit-postal-code"
-															aria-describedby="emailHelp" placeholder="Supplier Name">
-													</div>
-													<div class="col-lg-4">
-														<label for="input-phone">Phone</label> <input type="text"
-															class="form-control" id="edit-phone"
-															aria-describedby="emailHelp" placeholder="Supplier Name">
-													</div>
-													<div class="col-lg-4">
-														<label for="input-email">Email</label> <input type="text"
-															class="form-control" id="edit-email"
-															aria-describedby="emailHelp" placeholder="Supplier Name">
-													</div>
-												</div>
-
-
-											</div>
-											<div class="modal-footer">
-												<button type="reset" class="btn btn-primary">Cancel</button>
-												<button type="button" id="btn-update" class="btn btn-primary">Save</button>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-
-							<!-- ===================================================== MODAL =================================================================== -->
 
 <%@ include file="topping/bottom.jsp"%>
