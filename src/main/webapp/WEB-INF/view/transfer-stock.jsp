@@ -43,7 +43,19 @@ $(document).ready(function(){
 						  	  "<td>"+ "<a href='#' class='cancel btn btn-danger' id='btn-X'>X</a>"+ "</td>"+
 							  "</tr>";
 					$('#tbody-transfer-stock').append(add);
-					
+				} else if (transferQty>inStock) {
+						alert("Stock Kurang");
+				} else if (transferQty<1) {
+						alert("Sisa 1");
+				}else {
+					var add = "<tr id='"+idVar+"'>"+
+							  "<td>"+itemVariant+"</td>"+
+							  "<td>"+inStock+"</td>"+
+							  "<td>"+transferQty+"</td>"+
+						  	  "<td>"+ "<a href='#' class='cancel btn btn-danger' id='btn-X'>X</a>"+ "</td>"+
+							  "</tr>";
+					$('#tbody-transfer-stock').append(add);
+				
 				}
 			});
 			$('#list-item').removeAttr('hidden');
@@ -56,53 +68,57 @@ $(document).ready(function(){
 
 	/* ---------------------------------------- SAVE TRANSFER STOCK ITEM -------------------------------------------- */
 	$('#btn-save').click(function(){
-		var tsDetails = []; 	// list ts detail
-		var htStocks = []; 		// list history ts
-		
-		 $('#tbl-item-ts > tbody > tr').each(function(index, data){
-			var tsDetail = {
-					itemVariant : {
-							id : $(data).attr('id')
-					},
-					inStock : $(data).find('td').eq(1).text() - $(data).find('td').eq(2).text(),
-					transferQty :  $(data).find('td').eq(2).text()
-			};
-			tsDetails.push(tsDetail);
+		if ($('#input-from-outlet').val()==$('#input-to-outlet').val()) {
+			alert("outlet sama")
+		} else {	
+			var tsDetails = []; 	// list ts detail
+			var htStocks = []; 		// list history ts
 			
-			var htStock = {
-					status : "Submitted",
-					createdOn : new Date()
+			 $('#tbl-item-ts > tbody > tr').each(function(index, data){
+				var tsDetail = {
+						itemVariant : {
+								id : $(data).attr('id')
+						},
+						inStock : $(data).find('td').eq(1).text() - $(data).find('td').eq(2).text(),
+						transferQty :  $(data).find('td').eq(2).text()
+				};
+				tsDetails.push(tsDetail);
+				
+				var htStock = {
+						status : "Submitted",
+						createdOn : new Date()
+				};
+				htStocks.push(htStock);
+			});
+			
+			var transferStock = {
+				status : "Submitted",
+				fromOutlet : {
+					id :$('#input-from-outlet').val()
+				},
+				toOutlet : {
+					id : $('#input-to-outlet').val()
+				},
+				notes : $('#input-notes').val(),
+				historyTransferStock : htStocks,
+				tsDetails : tsDetails
 			};
-			htStocks.push(htStock);
-		});
-		
-		var transferStock = {
-			status : "Submitted",
-			fromOutlet : {
-				id :$('#input-from-outlet').val()
-			},
-			toOutlet : {
-				id : $('#input-to-outlet').val()
-			},
-			notes : $('#input-notes').val(),
-			historyTransferStock : htStocks,
-			tsDetails : tsDetails
-		};
-		
-		console.log(transferStock);
-		
-		$.ajax({
-			url : '${pageContext.request.contextPath }/transfer-stock/save',
-			type : 'POST',
-			data : JSON.stringify(transferStock),
-			contentType : 'application/json',
-			success : function(){
-				alert('save successfully');
-				window.location='${pageContext.request.contextPath}/transfer-stock';
-			}, error : function(){
-				alert('save failed');
-			}
-		});
+			
+			console.log(transferStock);
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath }/transfer-stock/save',
+				type : 'POST',
+				data : JSON.stringify(transferStock),
+				contentType : 'application/json',
+				success : function(){
+					alert('save successfully');
+					window.location='${pageContext.request.contextPath}/transfer-stock';
+				}, error : function(){
+					alert('save failed');
+				}
+			})
+		}
 
 	}); 
 	 
@@ -176,7 +192,7 @@ $(document).ready(function(){
 			if (word=="all") {
 				window.location = "${pageContext.request.contextPath}/transfer-stock";
 			} else if (word!=="empty") {
-				window.location = "${pageContext.request.contextPath}/search-outlet?search="+word;
+				window.location = "${pageContext.request.contextPath}/transfer-stock/search-outlet?search="+word;
 			}
 		})
 });
@@ -255,7 +271,7 @@ $(document).ready(function(){
 </section>
 <!--main content end-->
 
-	<!-- Modal CREATE-->
+	<!------------------------------------------------ MODAL CREATE ------------------------------------------------------------------>
 								<div class="modal fade" id="exampleModal" tabindex="-1"
 									role="dialog" aria-labelledby="exampleModalLabel"
 									aria-hidden="true">
@@ -307,8 +323,8 @@ $(document).ready(function(){
 											</table>
 											</div>
 											<button type="button" id="btn-add-item" class="btn btn-primary col-lg-12"
-													data-toggle="modal" data-target="#modal-add">Add
-													Transfer Item</button>
+													data-toggle="modal" data-target="#modal-add">
+													Add Transfer Item</button>
 											</div>
 											<div class="modal-footer">
 												<div class="col-lg-9">
@@ -321,14 +337,11 @@ $(document).ready(function(){
 											</form>
 										</div>
 									</div>
-
-
-
-
 								</div>
-								<!-- modal CREATE end -->
+		<!---------------------------------------------- MODAL CREATE END------------------------------------------------------------------>
 								
-									<!-- Modal ADD-->
+								
+		<!-------------------------------------------------- MODAL ADD -------------------------------------------------------------------->
 							<div class="modal fade" id="modal-add" tabindex="-1" role="dialog"
 								aria-labelledby="modalEditLabel" aria-hidden="true">
 								<div class="modal-dialog" role="document">
@@ -345,6 +358,8 @@ $(document).ready(function(){
 											<input class="col-lg-12" type="text" id="search-item-variant"
 												style="margin-bottom: 10px;"
 												placeholder="Item Name-Varian Name">
+												
+						<!--------------------------------------- TABLE ---------------------------------->
 											<table id="tbl-add-item" class="table table-bordered">
 												<thead>
 													<tr>
@@ -356,7 +371,7 @@ $(document).ready(function(){
 												<tbody id="tbody-item">
 												</tbody>
 											</table>
-											<!--  table end -->
+						<!------------------------------------- TABLE END ---------------------------------->
 
 										</div>
 										<div class="modal-footer">
@@ -372,6 +387,6 @@ $(document).ready(function(){
 								</div>
 
 							</div>
-							<!-- modal ADD end -->
+			<!---------------------------------------------- MODAL ADD END ------------------------------------------------------------------>
 
 <%@ include file="topping/bottom.jsp"%>

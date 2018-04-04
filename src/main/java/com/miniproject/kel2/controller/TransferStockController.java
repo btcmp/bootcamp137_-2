@@ -166,4 +166,13 @@ public class TransferStockController {
 	public void saveHistory(@RequestBody HistoryTransferStock htStock) {
 		htStockService.save(htStock);
 	}
+	
+	// untuk update stock
+	@RequestMapping(value = "/update-stock/{id}", method = RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.OK)
+	public void updateStatusAndStock(@RequestBody String newStatus, @PathVariable long id) {
+		TransferStock transferStock = transferStockService.getOne(id);
+		transferStock.setStatus(newStatus);
+		transferStockService.saveUpdateStock(transferStock);
+	}
 }

@@ -85,7 +85,7 @@ public class CategoryService {
 		categoryDao.updateStatus(category);
 	}
 	
-	// untuk search
+	// untuk search category name
 	public List<Category> getCategoryBySearchName(String search){
 		List<Category> categories = categoryDao.getCategoryBySearchName(search);
 		for(Category category : categories) {
@@ -98,6 +98,12 @@ public class CategoryService {
 			}
 		}
 		return categories;
+	}
+
+	//validasi untuk category name
+	public List<Category> searchByNameValidation(String search) {
+		// TODO Auto-generated method stub
+		return categoryDao.searchByNameValidation(search);
 	}
 	
 	

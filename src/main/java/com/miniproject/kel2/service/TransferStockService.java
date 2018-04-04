@@ -1,5 +1,5 @@
 package com.miniproject.kel2.service;
- 
+
 import java.util.Date;
 import java.util.List;
 
@@ -24,83 +24,71 @@ import com.miniproject.kel2.model.TransferStockDetail;
 @Service
 @Transactional
 public class TransferStockService {
-	
+
 	@Autowired
 	TransferStockDao transferStockDao;
-	
-	@Autowired 
+
+	@Autowired
 	ItemInventoryDao itemInventoryDao;
-	
+
 	@Autowired
 	TransferStockDetailDao tsDetailDao;
-	
+
 	@Autowired
 	HistoryTransferStockDao htStockDao;
-	
-	/*public void save(TransferStock transferStock) {
-		TransferStock ts = new TransferStock();
-		ts.setCreatedOn(new Date());
-		ts.setFromOutlet(transferStock.getFromOutlet());
-		ts.setToOutlet(transferStock.getToOutlet());
-		ts.setNotes(transferStock.getNotes());
-		ts.setStatus(transferStock.getStatus());
-		transferStockDao.save(ts);
-		
-		for(HistoryTransferStock hts : transferStock.getHistoryTransferStock()) {
-			HistoryTransferStock htStock = new HistoryTransferStock();
-			htStock.setTransferStock(ts); 
-			htStock.setCreatedOn(new Date());
-			htStock.setStatus(hts.getStatus());
-			htStockDao.save(htStock);
-		}
-		
-		for(TransferStockDetail tsd : transferStock.getTsDetails()) {
-			TransferStockDetail tsDetail = new TransferStockDetail();
-			tsDetail.setTransferStock(ts);
-			tsDetail.setInStock(tsd.getInStock());
-			tsDetail.setCreatedOn(new Date());
-			tsDetail.setItemVariant(tsd.getItemVariant());
-			tsDetailDao.save(tsDetail);
-			
-		ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(tsd.getItemVariant().getId());
 
-		ItemInventory ii = new ItemInventory();
-		ii.setItemVariant(tsd.getItemVariant());
-		ii.setEndingQty(tsd.getInStock());
-		ii.setTransferStockQty(tsd.getTransferQty());
-		ii.setModifiedOn(new Date());
-		if (inv != null) {
-			ii.setAlertAtQty(inv.getAlertAtQty());
-			ii.setBeginning(inv.getEndingQty());
-		} else {
-			ii.setAlertAtQty(5);
-			ii.setBeginning(50);
-		}
-		itemInventoryDao.save(ii);
-		}
-	}*/
-	
+	/*
+	 * public void save(TransferStock transferStock) { TransferStock ts = new
+	 * TransferStock(); ts.setCreatedOn(new Date());
+	 * ts.setFromOutlet(transferStock.getFromOutlet());
+	 * ts.setToOutlet(transferStock.getToOutlet());
+	 * ts.setNotes(transferStock.getNotes());
+	 * ts.setStatus(transferStock.getStatus()); transferStockDao.save(ts);
+	 * 
+	 * for(HistoryTransferStock hts : transferStock.getHistoryTransferStock()) {
+	 * HistoryTransferStock htStock = new HistoryTransferStock();
+	 * htStock.setTransferStock(ts); htStock.setCreatedOn(new Date());
+	 * htStock.setStatus(hts.getStatus()); htStockDao.save(htStock); }
+	 * 
+	 * for(TransferStockDetail tsd : transferStock.getTsDetails()) {
+	 * TransferStockDetail tsDetail = new TransferStockDetail();
+	 * tsDetail.setTransferStock(ts); tsDetail.setInStock(tsd.getInStock());
+	 * tsDetail.setCreatedOn(new Date());
+	 * tsDetail.setItemVariant(tsd.getItemVariant()); tsDetailDao.save(tsDetail);
+	 * 
+	 * ItemInventory inv =
+	 * itemInventoryDao.searchEndingQtyByLastModifiedVariant(tsd.getItemVariant().
+	 * getId());
+	 * 
+	 * ItemInventory ii = new ItemInventory();
+	 * ii.setItemVariant(tsd.getItemVariant()); ii.setEndingQty(tsd.getInStock());
+	 * ii.setTransferStockQty(tsd.getTransferQty()); ii.setModifiedOn(new Date());
+	 * if (inv != null) { ii.setAlertAtQty(inv.getAlertAtQty());
+	 * ii.setBeginning(inv.getEndingQty()); } else { ii.setAlertAtQty(5);
+	 * ii.setBeginning(50); } itemInventoryDao.save(ii); } }
+	 */
+
 	public void save(TransferStock transferStock) {
 		TransferStock ts = new TransferStock();
-	//	ts.setCreatedOn(new Date());
+		// ts.setCreatedOn(new Date());
 		ts.setFromOutlet(transferStock.getFromOutlet());
 		ts.setToOutlet(transferStock.getToOutlet());
 		ts.setNotes(transferStock.getNotes());
 		ts.setStatus(transferStock.getStatus());
 		transferStockDao.save(ts);
-		
-		for(TransferStockDetail tsd : transferStock.getTsDetails()) {
+
+		for (TransferStockDetail tsd : transferStock.getTsDetails()) {
 			ItemVariant iv = new ItemVariant();
 			iv.setId(tsd.getItemVariant().getId());
-		
+
 			TransferStockDetail tsDetail = new TransferStockDetail();
 			tsDetail.setItemVariant(iv);
-		//	tsDetail.setCreatedOn(new Date());
+			// tsDetail.setCreatedOn(new Date());
 			tsDetail.setInStock(tsd.getInStock());
 			tsDetail.setTransferQty(tsd.getTransferQty());
 			tsDetail.setTransferStock(ts);
 			tsDetailDao.save(tsDetail);
-			
+
 			ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(tsd.getItemVariant().getId());
 
 			ItemInventory ii = new ItemInventory();
@@ -117,9 +105,9 @@ public class TransferStockService {
 			}
 			itemInventoryDao.save(ii);
 		}
-		
-		for(HistoryTransferStock hts : transferStock.getHistoryTransferStock()) {
-			HistoryTransferStock htStock = new HistoryTransferStock ();
+
+		for (HistoryTransferStock hts : transferStock.getHistoryTransferStock()) {
+			HistoryTransferStock htStock = new HistoryTransferStock();
 			htStock.setTransferStock(ts);
 			htStock.setCreatedOn(hts.getCreatedOn());
 			htStock.setStatus(hts.getStatus());
@@ -127,55 +115,84 @@ public class TransferStockService {
 			htStockDao.save(htStock);
 		}
 	}
-	
-	public List<TransferStock> selectAll(){
+
+	public List<TransferStock> selectAll() {
 		return transferStockDao.selectAll();
 	}
-	
-	/*public TransferStock getOne(long id) {
-		return transferStockDao.getOne(id);
-	}*/
-	
+
+	/*
+	 * public TransferStock getOne(long id) { return transferStockDao.getOne(id); }
+	 */
+
 	public TransferStock getOne(long id) {
 		TransferStock transferStock = new TransferStock();
 		transferStock.setId(id);
 		return transferStockDao.getOne(transferStock);
 	}
-	
+
 	public void update(TransferStock transferStock) {
 		transferStockDao.update(transferStock);
 	}
-	
-	/*public void delete(long id) {
-		TransferStock tStocks = new TransferStock();
-		tStocks.setId(id);
-		transferStockDao.delete(tStocks);
-	}*/
-	
+
+	/*
+	 * public void delete(long id) { TransferStock tStocks = new TransferStock();
+	 * tStocks.setId(id); transferStockDao.delete(tStocks); }
+	 */
+
 	public void delete(TransferStock transferStock) {
 		transferStockDao.delete(transferStock);
 	}
-	
+
 	public void saveUpdate(TransferStock transferStock) {
 		transferStockDao.saveUpdate(transferStock);
 	}
-	
+
 	// untuk list outlet
-	public List<Outlet> outSelectAll(){
+	public List<Outlet> outSelectAll() {
 		return transferStockDao.outSelectAll();
 	}
-	
+
 	// untuk search
 	public List<TransferStock> getByOutletId(long search) {
 		// TODO Auto-generated method stub
 		return transferStockDao.getByOutletId(search);
 	}
-	
+
 	// untuk update status
 	public void updateStatus(long id) {
 		HistoryTransferStock hts = htStockDao.searchByIdTransferStock(id);
 		String status = hts.getStatus();
 		transferStockDao.updateStatus(status, id);
 	}
-	
+
+	public void saveUpdateStock(TransferStock transferStock) {
+		transferStockDao.saveUpdate(transferStock);
+		long idToOutlet = transferStock.getToOutlet().getId();
+		long idFromOutlet = transferStock.getFromOutlet().getId();
+		List<TransferStockDetail> tsd = tsDetailDao.getTransferStockById(transferStock.getId());
+		for (TransferStockDetail tsDetail : tsd) {
+			long variantId = tsDetail.getItemVariant().getId();
+			ItemInventory invent = itemInventoryDao.searchInventoryByVariantAndOutletId(variantId, idFromOutlet);
+			invent.setEndingQty(invent.getEndingQty() - tsDetail.getTransferQty());
+
+			ItemInventory iv = itemInventoryDao.searchInventoryByVariantAndOutletId(variantId, idToOutlet);
+			if (iv != null) {
+				iv.setEndingQty(iv.getEndingQty() + tsDetail.getTransferQty());
+			} else {
+				ItemInventory ivNew = new ItemInventory();
+				ivNew.setAdjustmentQty(0);
+				ivNew.setAlertAtQty(1);
+				ivNew.setBeginning(tsDetail.getTransferQty());
+				ivNew.setEndingQty(tsDetail.getTransferQty());
+				ivNew.setItemVariant(tsDetail.getItemVariant());
+				ivNew.setOutlet(transferStock.getToOutlet());
+				ivNew.setCreatedBy(0);
+				ivNew.setModifiedBy(0);
+				ivNew.setPurchaseQty(0);
+				ivNew.setSalesOrderQty(0);
+				ivNew.setTransferStockQty(0);
+				itemInventoryDao.save(ivNew);
+			}
+		}
+	}
 }

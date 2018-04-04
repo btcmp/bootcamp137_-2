@@ -1,7 +1,7 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 $(document).ready(function(){
-	
+	$.validate();
 	// CREATE NEW OUTLET
 	$('#btn-create').click(function() {
 		$('#modal-create').modal();
@@ -126,8 +126,8 @@ $(document).ready(function(){
 						var isi = "<option value='"+value.id+"'>"+value.name+"</option>";
 						listRegion.push(isi);
 					});
-					$('#input-region').html(listRegion);
-					$('#input-region').removeAttr('disabled');
+					$('#input-region').html(listRegion); // untuk mengisi dropdown region
+					$('#input-region').removeAttr('disabled'); // untuk membuka disabled
 				},
 				error : function(){
 					alert('failed to get data region');
@@ -154,8 +154,8 @@ $(document).ready(function(){
 						var isi = "<option value='"+value.id+"'>"+value.name+"</option>";
 						listDistrict.push(isi);
 					});
-					$('#input-district').html(listDistrict);
-					$('#input-district').removeAttr('disabled');
+					$('#input-district').html(listDistrict); // untuk mengisi dropdown district
+					$('#input-district').removeAttr('disabled'); // untuk membuka disabled
 				},
 				error : function(){
 					alert('failed to get data district');
@@ -172,7 +172,14 @@ $(document).ready(function(){
 		window.location="${pageContext.request.contextPath}/outlet/search?search="+word;
  	});
  	
- 	
+ 	// VALID POSTAL CODE
+ 	/* $('#form').validate({
+ 	    rules: { 
+ 	        ktp: { 
+ 	            digits: true, minlength:10, maxlength:10  
+ 	        }  
+ 	    }  
+ 	}); */
 });
 		
 </script>
@@ -263,8 +270,10 @@ $(document).ready(function(){
 													<div class="modal-body" style="height: 180px;">
 															<div class="input">
 																	<input type="hidden" id="input-id" name="input-id" />
-																	<input class="col-lg-12" id="input-outletName" type="text"style="margin-bottom: 10px;" placeholder="Outlet Name">
-																	<textarea class="col-lg-12" id="input-address" type="text" style="margin-bottom: 10px;" placeholder="Address"></textarea>
+																	<input class="col-lg-12" id="input-outletName" type="text"style="margin-bottom: 10px;" placeholder="Outlet Name"
+																	data-validation="length" data-validation-length="max20">
+																	<textarea class="col-lg-12" id="input-address" type="text" style="margin-bottom: 10px;" placeholder="Address"
+																	data-validation="length" data-validation-length="max100"></textarea>
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
 																	<select class="form-control" id="input-province">
@@ -288,13 +297,16 @@ $(document).ready(function(){
 																	</select>
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" id="input-postalCode" style="margin-bottom: 10px;" placeholder="Postal Code">
+																	<input type="text" id="input-postalCode" style="margin-bottom: 10px;" placeholder="Postal Code" 
+																	data-validation="length" data-validation-length="5" pattern="^([0-9)]+$" required="required">
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" id="input-phone" style="margin-bottom: 10px;"placeholder="Phone">
+																	<input type="text" id="input-phone" style="margin-bottom: 10px;"placeholder="Phone" 
+																	data-validation="length" data-validation-length="11-13">
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" id="input-email" style="margin-bottom: 10px;" placeholder="Email">
+																	<input type="text" id="input-email" style="margin-bottom: 10px;" placeholder="Email"
+																	data-validation="email">
 															</div>
 													</div>
 													<div class="modal-footer">

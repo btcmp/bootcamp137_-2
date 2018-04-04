@@ -56,6 +56,14 @@ public class ItemInventory {
 	@ManyToOne
 	public Outlet outlet;
 	
+	public Outlet getOutlet() {
+		return outlet;
+	}
+
+	public void setOutlet(Outlet outlet) {
+		this.outlet = outlet;
+	}
+
 	public ItemVariant getItemVariant() {
 		return itemVariant;
 	}

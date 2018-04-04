@@ -33,6 +33,9 @@ public interface CategoryDao {
 	
 	// search by category name
 	public List<Category> getCategoryBySearchName(String search);
+
+	// search untuk validasi
+	public List<Category> searchByNameValidation(String search);
 	
 	
 }

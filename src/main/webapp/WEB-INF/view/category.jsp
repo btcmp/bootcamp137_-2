@@ -8,7 +8,7 @@
 		});
 		
 		// EXECUTE = SAVE
-		$('#btn-save').on('click', function(evt){
+		/* $('#btn-save').on('click', function(evt){
 			evt.preventDefault();
 			var form = $('#target');
 				var cat = {
@@ -28,7 +28,7 @@
 					}
 			}); 
 		});  
-			
+			 */
 		// EDIT CATEGORY (BUTTON VIEW)
 		$('.btn-view').click(function() {
 			var id = $(this).attr('id');
@@ -101,6 +101,88 @@
 			window.location="${pageContext.request.contextPath}/category/search?search="+word;
 	 	});
 	 	
+	 	// VALID NAME
+	 	$('#input-categoryName').on('input', function() {
+			var input=$(this);
+			var name = $(this).val();
+			if(name != ""){
+				$.ajax({
+					url : '${pageContext.request.contextPath}/category/search-name-valid/'+name,
+					type : 'GET',
+					success : function(data){
+						if(data.length != 0){
+							input.removeClass("valid").addClass("namaSama");
+							console.log(data.length);
+						}else{
+							var re = /[a-zA-Z]/;
+							var is_valid=re.test(name);
+								if(is_valid){
+									input.removeClass("invalid").addClass("valid");
+								}
+								else{
+									input.removeClass("valid").addClass("textonly");
+								}
+						}
+						
+					},
+					error : function(){}
+				});
+			}else{
+				input.removeClass("valid").addClass("invalid");
+			}
+		});
+	 	
+	 	$('#btn-save').on('click', function(evt){
+			evt.preventDefault(); 
+			var form_data=$("#save-form-category").serializeArray();
+			var error_free=true;
+			for (var input in form_data){
+				var element=$("#input-"+form_data[input]['name']);
+				var valid=element.hasClass("valid");
+				var text=element.hasClass("textonly");
+				var namaSama=element.hasClass("namaSama");
+				var error_element=$("span", element.parent());
+				if (!valid){
+					error_element.removeClass("error").addClass("error_show"); error_free=false;
+					if(text){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('Please input character only');
+						error_free=false;
+					}else if(namaSama){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('Name already used');
+						error_free=false;
+					}
+				}
+				else{error_element.removeClass("error_show").addClass("error");}
+			}
+			if (!error_free){
+				event.preventDefault(); 
+			}
+			else{
+				// save category
+				var name = $('#input-categoryName').val();
+				var category = {
+					name : name
+				}
+				console.log(category);
+					$.ajax({
+						url : '${pageContext.request.contextPath}/category/save',
+						type : 'POST',
+						data : JSON.stringify(category), //-> proses dari java object ke string
+						contentType : 'application/json',
+						success : function(data){
+							window.location = '${pageContext.request.contextPath}/category';
+							//alert('berhasil!!');
+						}, 
+						error : function(){
+							alert('save failed!!');
+						}
+					});  
+			}
+			
+			
+		});
 });
 		 
 </script>
@@ -179,9 +261,10 @@
 														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 														<h5 class="modal-title" id="exampleModalLabel">Category</h5>
 												</div>
-												<form id="target" action="${pageContext.request.contextPath }/category/save" method="POST">
+												<form id="target" id="save-form-category" action="${pageContext.request.contextPath }/category/save" method="POST">
 														<div class="modal-body">
 																<input class="col-lg-12" id="input-categoryName" type="text" placeholder="Category Name">
+																<span class="error">This field is required</span>
 														</div>
 												<div class="modal-footer">
 														<div class="col-lg-2">

@@ -55,10 +55,20 @@ public class ItemController {
 		return item;
 	}
 
-	@RequestMapping(value = "/get-one/{id}", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/get-one/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Item getOne(@PathVariable long id) {
 		return itemService.getOne(id);
+	}*/
+	
+	@RequestMapping(value="/get-one/{id}")
+	@ResponseBody
+	public List<ItemInventory> getOne (@PathVariable Long id,Model model) {
+		Item item = itemService.getOne(id);
+		List<ItemInventory> inventories = itemInventoryService.searchInventoryByItem(item);
+		model.addAttribute("item", item);
+		model.addAttribute("inventories", inventories);
+		return inventories;
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
@@ -74,6 +84,7 @@ public class ItemController {
 		item.setId(id);
 		itemService.delete(item);
 	}
+	
 	
 	
 }

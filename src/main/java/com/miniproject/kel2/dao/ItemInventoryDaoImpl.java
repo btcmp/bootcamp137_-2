@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
 
 @Repository
@@ -118,6 +119,32 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 			return null;
 		}else {
 			return iinventories;
+		}
+	}
+
+	public ItemInventory searchInventoryByVariantAndOutletId(long variantId, long outletId) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ItemInventory inv where inv.itemVariant.id =:variantId and inv.outlet.id =:outletId";
+		List <ItemInventory> itemInventory = session.createQuery(hql).setParameter("variantId", variantId).setParameter("outletId", outletId).list();
+		if (itemInventory.isEmpty()) {
+			System.out.println("Kosong");
+			return null;
+		} else {
+			System.out.println("Ada");
+			return itemInventory.get(0);
+		}
+	}
+
+	public List<ItemInventory> searchInventoryByItem(Item item) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ItemInventory inv where inv.itemVariant.item = :item";
+		List<ItemInventory> inventories = session.createQuery(hql).setParameter("item",  item).list();
+		if(inventories.isEmpty()) {
+			return null;
+		} else {
+			return inventories;
 		}
 	}
 

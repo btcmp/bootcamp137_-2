@@ -99,4 +99,17 @@ public class CategoryDaoImpl implements CategoryDao{
 		}
 	}
 
+	// untuk validasi
+	public List<Category> searchByNameValidation(String search) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Category c where lower(c.name) like lower(:cn)";
+		List<Category> cats = session.createQuery(hql).setParameter("cn", search).list();
+		if(cats.isEmpty()) {
+			return null;
+		} else {
+			return cats;
+		}
+	}
+
 }

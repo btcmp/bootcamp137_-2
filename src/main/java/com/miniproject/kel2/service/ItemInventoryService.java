@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.kel2.dao.ItemInventoryDao;
+import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
 
 @Service
@@ -55,6 +56,11 @@ public class ItemInventoryService {
 	public List<ItemInventory> searchInventoryByItemName(String search) {
 		// TODO Auto-generated method stub
 		return itemInventoryDao.searchInventoryByItemName(search);
+	}
+	
+	// untuk di item
+	public List<ItemInventory> searchInventoryByItem(Item item){
+		return itemInventoryDao.searchInventoryByItem(item);
 	}
 
 	

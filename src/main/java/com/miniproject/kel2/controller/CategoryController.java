@@ -70,5 +70,12 @@ public class CategoryController {
 		categoryService.delete(id);
 	}
 	
-	
+	//validasi category name
+	@RequestMapping(value="/search-name-valid/{search}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Category> searchNameValidation(@PathVariable String search){
+		List<Category> cats = categoryService.searchByNameValidation(search);
+		System.out.println("category valid : " +cats.size());
+		return cats;
+	}
 }
