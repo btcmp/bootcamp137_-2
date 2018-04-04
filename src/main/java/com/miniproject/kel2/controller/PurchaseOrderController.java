@@ -3,12 +3,15 @@ package com.miniproject.kel2.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.kel2.model.HistoryPurchaseOrder;
 import com.miniproject.kel2.model.HistoryPurchaseRequest;
@@ -17,10 +20,14 @@ import com.miniproject.kel2.model.OrderDetail;
 import com.miniproject.kel2.model.PurchaseOrder;
 import com.miniproject.kel2.model.PurchaseRequest;
 import com.miniproject.kel2.model.RequestDetail;
+import com.miniproject.kel2.model.Supplier;
 import com.miniproject.kel2.service.HistoryPurchaseOrderService;
 import com.miniproject.kel2.service.ItemInventoryService;
 import com.miniproject.kel2.service.PurchaseOrderDetailService;
 import com.miniproject.kel2.service.PurchaseOrderService;
+import com.miniproject.kel2.service.SupplierService;
+
+import oracle.net.ano.SupervisorService;
 
 @Controller
 @RequestMapping("/order")
@@ -39,6 +46,8 @@ public class PurchaseOrderController {
 	@Autowired
 	ItemInventoryService iiService;
 	
+	@Autowired
+	SupplierService sService;
 	
 	@RequestMapping
 	public String index (Model model, PurchaseOrder po) {
@@ -52,6 +61,9 @@ public class PurchaseOrderController {
 		
 		List<ItemInventory> items = iiService.selectAll();
 		model.addAttribute("items", items);
+		
+		List<Supplier> supp = sService.selectAll();
+		model.addAttribute("supp", supp);
 		
 		return "order";
 	}
@@ -84,5 +96,14 @@ public class PurchaseOrderController {
 		
 		return po;
 	}
+	
+	/*=================================================== UPDATE ===================================================*/
+	@RequestMapping(value="/update",  method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void save(@RequestBody PurchaseOrder po) {
+		poService.save(po);
+		
+	}
+	
 	
 }

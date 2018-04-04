@@ -62,7 +62,9 @@
       <script src="js/respond.min.js"></script>
       <script src="js/lte-ie7.js"></script>
     <![endif]-->
-<style type="text/css">
+    
+    
+ <style type="text/css">
 .jqstooltip {
 	position: absolute;
 	left: 0px;
@@ -119,8 +121,7 @@
 }
 
 .error{
-	display: none;
-	margin-left: 10px;
+	color : red;
 }		
 
 .error_show{
@@ -129,7 +130,7 @@
 }
 
 </style>
-</head>
+</head> 
 
 <!-- javascripts -->
 <script src="${resources}/js/jquery.js"></script>
@@ -160,6 +161,7 @@
 
 <!--custome script for all page-->
 <script src="${resources}/js/scripts.js"></script>
+
 <!-- custom script for this page-->
 <script src="${resources}/js/sparkline-chart.js"></script>
 <script src="${resources}/js/easy-pie-chart.js"></script>

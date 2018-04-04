@@ -97,10 +97,10 @@
                                     <c:forEach items="${pos }" var="pos">
                                     <!-- //mengambil id barang -->
                                         <tr id = "#">
-                                            <td>${pos.createdOn }</td>
+                                            <td>${pos.modifiedOn }</td>
                                             <td>${pos.supplier.name }</td>
                                             <td>${pos.poNo }</td>
-                                            <td>${pos.grandTotal }</td>
+                                            <td>Rp. ${pos.grandTotal }</td>
                                             <td>${pos.status }</td>
                                             
                                             <td>
@@ -147,16 +147,20 @@
                 <div class="form-group">
                     <label for="outlet-name" class="control-label"><span class="required">*</span> CREATE NEW PO : {isi nama outlet}</label>
                 </div>
-
+					<input type="hidden" name='input-id' class="form-control" id="id-po"/>
+					<input type="hidden" name='input-poNo' class="form-control" id="po-no" value="123"/>
+					<input type="hidden" name='input-status' class="form-control" id="po-status"/>
+					 
                  <label for="outlet-name" class="control-label"> Supplier : <span class="required">*</span></label>            
                 <div class="form-group">
                     <div class="col-lg-12">
-                        <select class="form-control" id="select-Supp">
-                            <option>Supplier 1</option>
-                            <option>Supplier 2</option>
-                            <option>Supplier 3</option>
-                            <option>Supplier 4</option>
-                        </select>
+                    <select class="form-control" id="select-Supp">
+                    <c:forEach items = "${supp }" var="sup">
+                    	
+                            <option value="${sup.id }">${sup.name }</option>
+                        
+                    </c:forEach>
+                    </select>
                     </div>
                 </div>
 
@@ -189,11 +193,11 @@
                     <div class="form-group">
                     
                     <div class="col-lg-12">
-                        <div class="col-lg-9">
+                        <div class="col-lg-7">
                             TOTAL
                         </div>
-                        <div class="col-lg-3">
-                            Rp : 
+                        <div class="col-lg-5">
+                          		Rp : <input type="text" name='input-total' class="form-control updatable-content" id="po-total" style="width : 150px;" readonly/> 
                         </div>
                     </div>
                 </div>
@@ -207,7 +211,7 @@
        
         
         <button type="button" class="btn btn-info" data-dismiss="modal" >Cancel</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-primary" id="btn-save">Save</button>
       </div>
     </div>
   </div>
@@ -222,71 +226,103 @@
 		 $('#ready-date').datepicker({
 			 dateformat : 'yy-mm-dd',
 			autoclose : true
-		}); 
-/*=======================================Search on modal add item Variant=================================================  */
-		$('#search-item-variant').on('input', function() {
-				var keyword = $(this).val();
-				console.log(keyword);
-
-				if (!keyword == "") {
-					$.ajax({
-						url : '${pageContext.request.contextPath}/request/search-item?search='+keyword,
-						type : 'GET',
-						success : function(data) {
-							$('#hasil-search-itemVar').empty();
-							$.each(data, function(index, val){
-								$('#hasil-search-itemVar').append(
-								'<tr id = "tr'+val.id+'"><td>'+ val.itemVariant.item.name +'-'+ val.itemVariant.name +'</td>'
-								+'<td id="inStock'+ val.id +'">'+ val.beginning +'</td>'
-								+'<td id="td-qty'+ val.id +'"><input class="form-control" type="number" min="0" max="'+val.beginning+'" id="jumlah-request-'+ val.id +'" value="" /></td>'
-								+'<td><button type="button" id="'+ val.id +'" class="tbl-add-brg btn btn-primary btn-add'+val.id
-								+'" key-id="'+val.itemVariant.id+'">Add</button></td></tr>');
-							});
-						},
-						error : function() {
-							$('#hasil-search-itemVar').empty()
-						}
-					});
-				}
-			});
-			
-
-	/*------------------------------------------ modal set up -------------------------------------------------------------*/
-		
-	/*======================================= Set to Create Request Modal =================================================  */
-
-	/*==================================================== DELETE ITEM IN DISPLAY ============================================ */
+		});
 	
-	/*=================================================== Save Request Modal =================================================  */
+	/* =================================== Editabel input ========================================================================*/
+	var total;
+	
+	$('#isi-tabel-po').delegate('.edit-unitcost', 'input', function(){
+		var qty =  $(this).closest('tr').find('td').eq(2).text();
+		var unitCost = $(this).val();
+		var subTotal = parseInt(qty * unitCost);
+		
+		$(this).closest('tr').find('.edit-subtotal').val(subTotal);
+		
+		var Grandtotal = 0;
+		$("#isi-tabel-po").find('.edit-subtotal').each(function(){
+			Grandtotal += parseInt($(this).val());
+		});
+		
+		$('#po-total').val(parseInt(Grandtotal));
+		
+		total = $('#po-total').val();
+		
+	});
+	/*------------------------------------------ modal set up -------------------------------------------------------------*/
+	$('#order-table').on('click', '.btn-update', function(){
+	console.log('edit');
+	$('#isi-tabel-po').empty();
+	var idEdit = $(this).attr('key-id');
+	$.ajax({
+		url : '${pageContext.request.contextPath}/order/get-one/'+idEdit,
+		type : 'GET',
+		dataType: 'json',
+		success : function(data){
+			//console.log(data);
+			$('#id-po').val(data.id);
+			$('#po-No').val(data.poNo);
+			$('#po-status').val(data.status);
+			$(data.detail).each(function(key, val){
+				$('#isi-tabel-po').append(
+					'<tr key-id="'+val.variant.id+'"><td>'+val.variant.item.name+'-'+val.variant.name+'</td>'
+					+'<td>null</td>'
+					+'<td>'+val.requestQty+'</td>'
+					+'<td> <input type="text" value="'+val.unitCost+'" class = "form-control edit-unitcost" id="unitCost"/></td>'
+					+ '<td> <input type="text" value="'+val.subTotal+'" class = "form-control edit-subtotal" id="subtotal"readonly/></td>'
+				);
+			});
+			$('#po-total').val(total);
+			$('#editPO').modal('show');
+		}, 
+		error : function(){
+			console.log('gagal');
+		}
+	});
+});
 	
 	/*=================================================== Update Request Modal =================================================  */
-	$('#order-table').on('click', '.btn-update', function(){
-		console.log('edit');
-		$('#isi-tabel-po').empty();
-		var idEdit = $(this).attr('key-id');
+	$('#btn-save').on('click', function(evt){
+		evt.preventDefault();
+		//alert('testing');
+		var listDetail = [];
+		console.log(total);
+	
 		
+		var po = {
+				id : $('#id-po').val(),
+				supplier : {
+					id : $('#select-Supp').val()
+				},
+				notes : $('#po-notes').val(),
+				poNo : $('#po-no').val(),
+				grandTotal : total
+				
+		};
+		console.log(po);
+		
+		//ajax
 		$.ajax({
-			url : '${pageContext.request.contextPath}/order/get-one/'+idEdit,
-			type : 'GET',
-			dataType: 'json',
-			success : function(data){
-				console.log(data);
-				$(data.detail).each(function(key, val){
-					$('#isi-tabel-po').append(
-						'<tr key-id="'+val.variant.id+'"><td>'+val.variant.item.name+'-'+val.variant.name+'</td>'
-						+'<td>null</td>'
-						+'<td>'+val.requestQty+'</td>'
-						+'<td> <input type="text" value="'+val.unitCost+'" class = "form-control" /></td>'
-						+ '<td>'+val.subTotal+'</td>'
-					);
-				});
-				$('#editPO').modal('show');
-			}, 
-			error : function(){
-				console.log('gagal');
+			url : '${pageContext.request.contextPath}/order/update',
+			type : 'POST',
+			contentType : 'application/json',
+			data : JSON.stringify(po),
+			
+			success : function(){
+				//console.log(po);
+				alert('save sucsess');
+				//window.location = '${pageContext.request.contextPath}/order';
+			}, error : function(){
+				alert('gagal bos');
 			}
-		});
+			
+		});  
 	});
+	
+	
+	
+	
+	
+
 })
 </script>
 

@@ -417,10 +417,10 @@
 						<tr>
 							<td>
 							<input class = "form-control" type="checkbox" class="form-control" name="update-outlet" id="${out.id }"/>
-							${out.name }
 							</td> 
+							
 							<td>
-								<textarea rows="" cols="" id="some-textarea"></textarea>
+									${out.name }
 							</td>
 						<td>
 					</tr>
@@ -628,9 +628,13 @@ $(document).ready(function(){
 			}
 			
 			//masih belum paham saya
-			if(OneEmp.outlet != null){
-				
-		   }
+			/* $.each(OneEmp.outlet, function(index, empOutlets){
+				$.each($('#list-outlet > tr > td >input[type="checkbox" '), function(){
+					if($(this).attr('id') == outlet.outlet){
+						$(this).prop('checked', true);
+					}
+				});
+			}) */
 		}
 	
 		
