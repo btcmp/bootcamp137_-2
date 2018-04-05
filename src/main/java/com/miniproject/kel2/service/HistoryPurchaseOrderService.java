@@ -22,4 +22,9 @@ public class HistoryPurchaseOrderService {
 		return hpoDao.selectByPo(po);
 	}
 
+	public void save(HistoryPurchaseOrder hpo) {
+		// TODO Auto-generated method stub
+		hpoDao.save(hpo);
+	}
+
 }

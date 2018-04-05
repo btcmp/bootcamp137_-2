@@ -53,13 +53,14 @@
                                               <input class=" form-control" id="firsts-name" name="daterange" type="text" placeholder="input daterange" />
                                           </div>
                                           <div class="col-lg-2">
-                                              <select class="form-control">
-                                                    <option>Status</option>
-                                                  <option>Role Administrator</option>
-                                                  <option>Role Bak Office</option>
-                                                  <option>Role Cashier</option>
-                                                  
-                                              </select>
+                                          <select id="change-status" class="form-control" key-id="${po.id }">
+													<option value="All">All</option>
+										    		<option value="Approved">Approved</option>
+										    		<option value="Rejected">Rejected</option>
+										    		<option value="Process">Process</option>
+										    		<option value="" class="divider"></option>
+										    		<option value="Printed">Print</option>
+											</select>
                                           </div>
                                           <div class="col-lg-3">
                                               <input class=" form-control" id="last-name" name="fullname" type="text" placeholder="search"/>
@@ -97,7 +98,7 @@
                                     <c:forEach items="${pos }" var="pos">
                                     <!-- //mengambil id barang -->
                                         <tr id = "#">
-                                            <td>${pos.modifiedOn }</td>
+                                            <td>${pos.createdOn }</td>
                                             <td>${pos.supplier.name }</td>
                                             <td>${pos.poNo }</td>
                                             <td>Rp. ${pos.grandTotal }</td>
@@ -194,11 +195,12 @@
                     
                     <div class="col-lg-12">
                         <div class="col-lg-7">
-                            TOTAL
+                            TOTAL : ${po.grandTotal }
                         </div>
                         <div class="col-lg-5">
-                          		Rp : <input type="text" name='input-total' class="form-control updatable-content" id="po-total" style="width : 150px;" readonly/> 
+                          		Rp : <input type="text" name='input-total' class="form-control updatable-content" id="po-total" style="width : 150px;"  value = "${po.grandTotal}" readonly/> 
                         </div>
+                        
                     </div>
                 </div>
             </div>            
@@ -315,10 +317,43 @@
 				alert('gagal bos');
 			}
 			
-		});  
+		}); 
 	});
+	/*------------------------------------------ search Status -------------------------------------------------------------*/
+	var goTarget = '';
+	function ajaxSearch(){
+		$.ajax({
+			url : goTarget,
+			type : 'GET',
+			dataType : 'json',
+			
+			success : function(data){
+				$('#order-table').empty();
+				$(data).each(function(key, val){
+					$('#order-table').append(
+						'<tr key-id="'+val.variant.id+'"><td>'+val.variant.item.name+'-'+val.variant.name+'</td>'
+						+'<td>null</td>'
+						+'<td>'+val.requestQty+'</td>'
+						+'<td> <input type="text" value="'+val.unitCost+'" class = "form-control edit-unitcost" id="unitCost"/></td>'
+						+ '<td> <input type="text" value="'+val.subTotal+'" class = "form-control edit-subtotal" id="subtotal"readonly/></td>'
+					);
+				});
+			}, error : function(){
+				
+			}
+		})	
+	}
 	
-	
+	$('#change-status').change(function(){
+		var status = $(this).val();
+		console.log(status);
+		
+		if(status == 'All'){
+			
+		} else {
+			
+		}
+	});
 	
 	
 	

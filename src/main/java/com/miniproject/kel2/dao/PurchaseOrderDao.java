@@ -23,4 +23,6 @@ public interface PurchaseOrderDao {
 	public void process(long id);
 
 	public void Print(long id);
+
+	public List<PurchaseOrder> searchByStatus(PurchaseOrder po);
 }

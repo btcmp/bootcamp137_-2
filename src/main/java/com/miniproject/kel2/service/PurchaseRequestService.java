@@ -52,6 +52,7 @@ public class PurchaseRequestService {
 		// TODO Auto-generated method stub
 		PurchaseRequest prq = new PurchaseRequest();
 		prq.setId(pr.getId());
+		prq.setCreatedOn(prq.getCreatedOn());
 		prq.setStatus(pr.getStatus());
 		prq.setNotes(pr.getNotes());
 		prq.setPrNo(pr.getPrNo());
@@ -98,8 +99,8 @@ public class PurchaseRequestService {
 			
 				HistoryPurchaseRequest hisPr = new HistoryPurchaseRequest();
 				
-				hisPr.setCreatedOn(pr.getCreatedOn());
-				hisPr.setStatus(pr.getStatus());
+				hisPr.setCreatedOn(prq.getCreatedOn());
+				hisPr.setStatus(prq.getStatus());
 				hisPr.setPr(prq);
 				hprDao.save(hisPr);
 			}
@@ -189,7 +190,6 @@ public class PurchaseRequestService {
 		po.setCreatedBy(pr.getCreatedBy());
 		po.setNotes(pr.getNotes());
 		po.setOutlet(pr.getOutlet());
-		po.setStatus("Created");
 		po.setGrandTotal(grandTotal);
 		po.setPr(pr);
 		
@@ -198,7 +198,7 @@ public class PurchaseRequestService {
 		if(pr.getRequestDetail() != null) {
 			for(RequestDetail rd : pr.getRequestDetail()) {
 				OrderDetail pod = new OrderDetail();
-				pod.setCreatedOn(new Date());
+				pod.setCreatedOn(rd.getCreatedOn());
 				pod.setCreatedBy(rd.getCreatedBy());
 				pod.setRequestQty(rd.getRequestQty());
 				pod.setVariant(rd.getItemvar());
@@ -208,6 +208,13 @@ public class PurchaseRequestService {
 				pod.setPo(po);
 				odpDao.save(pod);
 			}
+			
+			PurchaseOrder newPo = new PurchaseOrder();
+			newPo.setId(po.getId());
+			newPo.setGrandTotal(grandTotal);
+			newPo.setStatus("Unchecked");
+			newPo.setPr(po.getPr());
+			poDao.update(newPo);
 				
 		}
 		

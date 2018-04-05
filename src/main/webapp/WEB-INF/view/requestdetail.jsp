@@ -92,7 +92,7 @@
                                      <div class="form-group ">
                                           <label for="pr-number" class="control-label col-lg-2">Notes : </label>
                                           <div class="col-lg-10">
-                                              <textarea class="form-control" readonly=""> ${pr.notes } </textarea>
+                                              <textarea class="form-control" readonly> ${pr.notes } </textarea>
                                           </div>
                                      </div>
                                      <div class="form-group ">

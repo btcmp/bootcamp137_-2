@@ -316,7 +316,7 @@
 			
 
 	/*------------------------------------------ modal set up -------------------------------------------------------------*/
-		$('#btn-create').on('click', function(){
+	$('#btn-create').on('click', function(){
 		$('#addModal').modal('show');
 	})
 	

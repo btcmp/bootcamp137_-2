@@ -1,5 +1,7 @@
 package com.miniproject.kel2.service;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import java.util.Date;
 import java.util.List;
 
@@ -54,19 +56,36 @@ public class PurchaseOrderService {
 	public void save(PurchaseOrder po) {
 		// TODO Auto-generated method stub
 		
-		PurchaseOrder purOrd = new PurchaseOrder();
-		purOrd.setId(po.getId());
-		purOrd.setModifiedOn(new Date());
-		purOrd.setNotes(po.getNotes());
-		purOrd.setOutlet(po.getOutlet());
-		purOrd.setSupplier(po.getSupplier());
-		purOrd.setPoNo(po.getPoNo());
-		purOrd.setSupplier(po.getSupplier());
-		purOrd.setStatus("created_po");
-		purOrd.setGrandTotal(po.getGrandTotal());
-		poDao.update(purOrd);
+		PurchaseOrder ordPur = new PurchaseOrder();
+		ordPur.setId(po.getId());
+		ordPur.setModifiedBy(po.getModifiedBy());
+		ordPur.setModifiedOn(po.getModifiedOn());
+		ordPur.setOutlet(po.getOutlet());
+		ordPur.setStatus(po.getStatus());
+		ordPur.setNotes(po.getNotes());
+		
+		
+		PurchaseOrder puro = poDao.getOne(ordPur.getId());
+		ordPur.setCreatedOn(puro.getCreatedOn());
+		ordPur.setPoNo(puro.getPoNo());
+		ordPur.setSupplier(po.getSupplier());
+		ordPur.setGrandTotal(po.getGrandTotal());
+		ordPur.setPr(puro.getPr());
+		poDao.update(ordPur);
+		
+		PurchaseOrder OneordPur = poDao.getOne(ordPur.getId());
+		ordPur.setCreatedBy(OneordPur.getCreatedBy());
+		ordPur.setCreatedOn(new Date());
+		ordPur.setNotes(OneordPur.getNotes());
+		ordPur.setPoNo(OneordPur.getPoNo());
+		ordPur.setGrandTotal(po.getGrandTotal());
+		ordPur.setSupplier(po.getSupplier());
+		ordPur.setModifiedOn(po.getModifiedOn());
+		ordPur.setStatus("created po");
+		ordPur.setPr(OneordPur.getPr());
+		poDao.update(ordPur);
 
-		List<OrderDetail> ods = odpDao.selectDetailByPo(purOrd);
+		List<OrderDetail> ods = odpDao.selectDetailByPo(ordPur);
 		if(ods == null) {
 					
 				}else {
@@ -77,20 +96,73 @@ public class PurchaseOrderService {
 		
 		if(po.getDetail()!=null) {
 			for(OrderDetail od : po.getDetail()) {
-				OrderDetail purOrDet = new OrderDetail();
-				purOrDet.setId(od.getId());
-				purOrDet.setCreatedOn(purOrd.getCreatedOn());
-				purOrDet.setModifiedOn(purOrd.getModifiedOn());
-				purOrDet.setPo(purOrd);
-				purOrDet.setVariant(od.getVariant());
-				purOrDet.setRequestQty(od.getRequestQty());
-				purOrDet.setSubTotal(od.getSubTotal());
-				purOrDet.setUnitCost(od.getUnitCost());
-				odpDao.save(purOrDet);
+				OrderDetail detPurOrd = new OrderDetail();
+				detPurOrd.setId(od.getId());
+				detPurOrd.setCreatedOn(ordPur.getCreatedOn());
+				detPurOrd.setModifiedOn(ordPur.getModifiedOn());
+				detPurOrd.setPo(ordPur);
+				detPurOrd.setVariant(od.getVariant());
+				detPurOrd.setRequestQty(od.getRequestQty());
+				detPurOrd.setSubTotal(od.getSubTotal());
+				detPurOrd.setUnitCost(od.getUnitCost());
+				odpDao.save(detPurOrd);
 			}
 		}
 	}
-	
+
+
+	public void approve(long id) {
+		poDao.approve(id);
+		PurchaseOrder po = poDao.getOne(id);
+		HistoryPurchaseOrder hpo = new HistoryPurchaseOrder();
+		hpo.setCreatedOn(new Date());
+		hpo.setPo(po);
+		hpo.setStatus(po.getStatus());
+		
+		hpoDao.save(hpo);
+	}
+
+	public void printed(long id) {
+		// TODO Auto-generated method stub
+		poDao.Print(id);
+		PurchaseOrder po = poDao.getOne(id);
+		HistoryPurchaseOrder hpo = new HistoryPurchaseOrder();
+		hpo.setCreatedOn(new Date());
+		hpo.setPo(po);
+		hpo.setStatus(po.getStatus());
+		
+		hpoDao.save(hpo);
+	}
+
+
+	public void rejected(long id) {
+		// TODO Auto-generated method stub
+		poDao.rejected(id);
+		PurchaseOrder po = poDao.getOne(id);
+		HistoryPurchaseOrder hpo = new HistoryPurchaseOrder();
+		hpo.setCreatedOn(new Date());
+		hpo.setPo(po);
+		hpo.setStatus(po.getStatus());
+		
+		hpoDao.save(hpo);
+	}
+
+	public void process(long id) {
+		// TODO Auto-generated method stub
+		poDao.process(id);
+		PurchaseOrder po = poDao.getOne(id);
+		HistoryPurchaseOrder hpo = new HistoryPurchaseOrder();
+		hpo.setCreatedOn(new Date());
+		hpo.setPo(po);
+		hpo.setStatus(po.getStatus());
+		
+		hpoDao.save(hpo);
+	}
+
+	public List<PurchaseOrder> searchByStatus(PurchaseOrder po) {
+		// TODO Auto-generated method stub
+		return poDao.searchByStatus(po);
+	}
 	
 
 }

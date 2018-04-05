@@ -36,24 +36,22 @@
 							
 							<form class="form-validate form-horizontal " id="form-employee" action="${pageContext.request.contextPath }/employee/save-emp"  method="post" action="">
 								
-								
 								<div><input class=" form-control" id="id" type="hidden" /></div>
 								
 								<div class="form-group ">
 									<label for="fullname" class="control-label col-lg-2">First
 										name <span class="required">*</span>
 									</label>
-									
 									<div class="col-lg-4">
 										<input class=" form-control" id="first-name" name="fullname"
-											type="text" data-validation="length" data-validation-length="min8" />
+											type="text" minlength="4" maxlength="8" required />
 									</div>
 									<label for="fullname" class="control-label col-lg-2">Last
 										name <span class="required">*</span>
 									</label>
 									<div class="col-lg-4">
 										<input class=" form-control" id="last-name" name="fullname"
-											type="text" />
+											type="text" type="text"  minlength="4" maxlength="12"required />
 									</div>
 								</div>
 								<div class="form-group ">
@@ -61,8 +59,7 @@
 										<span class="required">*</span>
 									</label>
 									<div class="col-lg-10">
-										<input class="form-control " id="email" name="email"
-											type="email" />
+										<input id="email" type="email" class="form-control" data-smk-icon="glyphicon-asterisk" required/>
 									</div>
 								</div>
 								<div class="form-group ">
@@ -77,7 +74,7 @@
 									</div>
 
 									<label for="create-account" class="control-label col-lg-2">Create
-										Account ? <span class="required">*</span>
+										Account ? 
 									</label>
 									<div class="col-lg-2">
 										<input style="padding-left: 0px; width: 20px;"
@@ -140,11 +137,10 @@
 
 								<div class="form-group">
 									<div class="col-lg-offset-2 col-lg-10">
-										<button class=" btn btn-primary" type="button" id="btn-save">Save</button>
+										<button class=" btn btn-primary" type="submit" id="btn-save">Save</button>
 										
 										<button class="btn btn-default" type="reset" id="reset-btn" data-toggle="collapse"
-											data-target=".multi-collapse" aria-expanded="true"
-											aria-controls="multiCollapseExample1 multiCollapseExample2 multiCollapseExample3">Cancel</button>
+											data-target=".multi-collapse" aria-expanded="true" aria-controls="multiCollapseExample1 multiCollapseExample2 multiCollapseExample3">Cancel</button>
 									
 									</div>
 									
@@ -270,8 +266,8 @@
 </div>
 
 <!-- Modal for Edit Employee  -->
-<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog"
-	aria-labelledby="editModal" aria-hidden="true">
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+	
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -298,14 +294,14 @@
 									
 									<div class="col-lg-4">
 										<input class=" form-control reset" id="update-first-name" name="update-last-name"
-											type="text" />
+											type="text" minlength="4" maxlength="8" required/>
 									</div>
 									<label for="update-last-name" class="control-label col-lg-2">Last
 										name <span class="required">*</span>
 									</label>
 									<div class="col-lg-4">
 										<input class=" form-control reset" id="update-last-name" name="update-last-name"
-											type="text" />
+											type="text" minlength="4" maxlength="8" required/>
 									</div>
 								</div>
 								<div class="form-group ">
@@ -313,8 +309,8 @@
 										<span class="required">*</span>
 									</label>
 									<div class="col-lg-10">
-										<input class="form-control reset" id="update-email" name="update-email"
-											type="email" />
+										<input class="form-control" id="update-email" name="update-email"
+											type="email" data-smk-icon="glyphicon-asterisk" required/>
 									</div>
 								</div>
 								<div class="form-group ">
@@ -341,7 +337,7 @@
 
 									<div class="col-lg-2">
 										<button class="btn btn-success" type="button"
-											data-toggle="modal" data-target="#update-assign-modal">Assign
+											data-toggle="modal" data-target="#update-assign-modal" id="pilout">Assign
 											Outlet</button>
 									</div>
 								</div>
@@ -387,11 +383,12 @@
 			</div>
 			<div class="modal-footer">
 				<div class="col-lg-offset-2 col-lg-10">
-										<button class=" btn btn-primary" type="button" id="btn-update">Save</button>
+										<button class=" btn btn-primary" type="submit" id="btn-update">Update</button>
 										
 										<button class="btn btn-default" type="reset" id="update-reset-btn" data-toggle="collapse"
 											data-target=".multi-collapse" aria-expanded="true"
 											aria-controls="multiCollapseExample1 multiCollapseExample2 multiCollapseExample3">Cancel</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -442,7 +439,9 @@ $(document).ready(function(){
 		
 		//event Listener
 		//on click utk submit via ajax
-		$.validate();
+		//$.validate();
+		//$.smkValidate();
+		
 		$('#select-outlet').on('click', function(){
     	var listOutlet=[];
 	    	$('#list-outlet').find('input[type="checkbox"]:checked').each(function(){
@@ -458,83 +457,83 @@ $(document).ready(function(){
 	    	$('#assign-modal').modal('hide');
 	    });
 		
-		
+		//save
 		
 		$('#btn-save').click(function(evt){
 			evt.preventDefault();
-			alert('testing');
-			
-			var akun = $("#create-account").is(':checked') ? true : false;
-			var idRole = $('#role').val();
-			
-			var user = null;	
-			
-			try{
-	    		var listOutlet = JSON.parse($(this).attr('listOutlet'));
-	    	} catch (ex){
-	    		console.error(ex);
-	    	}
-			
-	    	
-	    	var eo = [];
-			$('#outlet:checked').each(function(){
-				var empOut = {
-						outlet : {
-							id : $(this).attr('id')
-						}
-				}
-				eo.push(empOut);
-			})
-			
-			
-			if(akun == true){
-				user = {
-						"id" : $("#user-id").val(),
-						"active" : true,
-						"username" : $('#username').val(),
-						"password" : $('#password').val(),
-						"role" : {
-							"id" : idRole
-						}
-				}
-			}
-			var employee = {
-					id : $('#id').val(),
-					firstName : $('#first-name').val(),
-					lastName : $('#last-name').val(),
-					email : $('#email').val(),
-					title : $('#title').val(),
-					haveAccount : akun,
-					active : true,
-					user : user,
-					/* empOutlets : eo,
-					 */
-					 outlet : listOutlet
+			/* validator */
+			$('#form-employee').smkValidate({
+				
+				submitHandler: function(form) {
+					var akun = $("#create-account").is(':checked') ? true : false;
+					var idRole = $('#role').val();
 					
-			
-			};
-			
-				
-			console.log(employee);
-				
-			//ajax
-				$.ajax({
-					url : '${pageContext.request.contextPath}/employee/save-emp',
-					type : 'POST',
-					contentType : 'application/json',
-					data : JSON.stringify(employee),
-					beforeSend : function(){
-						console.log("connecting to server");
-					},
-					success : function(){
-						console.log(employee);
-						alert('save sucsess');
-						window.location = '${pageContext.request.contextPath}/employee';
-					}, error : function(){
-						alert('gagal bos');
+					var user = null;	
+			    	var eo = [];
+					$('#outlet:checked').each(function(){
+						var empOut = {
+								outlet : {
+									id : $(this).attr('id')
+								}
+						}
+						eo.push(empOut);
+					})
+					
+					try{
+			    		var listOutlet = JSON.parse($(this).attr('listOutlet'));
+			    	} catch (ex){
+			    		console.log(ex);
+			    	}
+					if(akun == true){
+						user = {
+								"id" : $("#user-id").val(),
+								"active" : true,
+								"username" : $('#username').val(),
+								"password" : $('#password').val(),
+								"role" : {
+									"id" : idRole
+								}
+						}
 					}
+					var employee = {
+							id : $('#id').val(),
+							firstName : $('#first-name').val(),
+							lastName : $('#last-name').val(),
+							email : $('#email').val(),
+							title : $('#title').val(),
+							haveAccount : akun,
+							active : true,
+							user : user,
+							/* empOutlets : eo,
+							 */
+							 outlet : listOutlet
+							
 					
-				}); 
+					};
+					
+						
+					console.log(employee);
+						
+					//ajax
+						$.ajax({
+							url : '${pageContext.request.contextPath}/employee/save-emp',
+							type : 'POST',
+							contentType : 'application/json',
+							data : JSON.stringify(employee),
+							beforeSend : function(){
+								console.log("connecting to server");
+							},
+							success : function(){
+								console.log(employee);
+								alert('save sucsess');
+								window.location = '${pageContext.request.contextPath}/employee';
+							}, error : function(){
+								alert('gagal bos');
+							}
+							
+						}); 
+				}
+				});
 		});
 		/*  end save function */
 		
@@ -591,7 +590,6 @@ $(document).ready(function(){
 				
 				success : function(OneEmp){
 					setDataEditEmp(OneEmp);
-					alert('done');
 					$('#edit-modal').modal('show');
 				}, error : function(){
 					alert('failed');
@@ -613,6 +611,7 @@ $(document).ready(function(){
 			$('#update-title').val(OneEmp.title);
 			$('#update-create-account').val(OneEmp.haveAccount);
 			
+			
 			if(OneEmp.user != null ){
 				//alert("Employee Doesn`t have account")
 				
@@ -628,19 +627,20 @@ $(document).ready(function(){
 			}
 			
 			//masih belum paham saya
-			/* $.each(OneEmp.outlet, function(index, empOutlets){
-				$.each($('#list-outlet > tr > td >input[type="checkbox" '), function(){
-					if($(this).attr('id') == outlet.outlet){
+			$.each(OneEmp.outlet, function(index, isiOutlet){
+				$.each($('#update-list-outlet > tr > td >input[type="checkbox" '), function(){
+					if($(this).attr('id') == isiOutlet.id){
 						$(this).prop('checked', true);
+						$('#pilout').attr('name', isiOutlet.id);
 					}
 				});
-			}) */
+			}) 
 		}
 	
 		
 		function resetForm(){
 			$(".reset").val(" ");
-		}
+		} 
 		
 		/* update */
 		
@@ -661,75 +661,70 @@ $(document).ready(function(){
 		
 		
 		$("#btn-update").on('click', function(evt){
-			evt.preventDefault();
-			alert('testing');
-			
-			try{
-	    		var listOutlet = JSON.parse($(this).attr('listOutlet'));
-	    	} catch (ex){
-	    		console.error(ex);
-	    	}
-			
-			var akun = $("#update-create-account").is(':checked') ? true : false;
-			var idRole = $('#update-role').val();
-			
-			var user = null;	
-			
-			if(akun == true){
-				user = {
-						/* "id" : $("#update-user-id").val(), */
-						"active" : true,
-						"username" : $('#update-username').val(),
-						"password" : $('#update-password').val(),
-						"role" : {
-							"id" : idRole
-						}
-				}
-			}
-			var employee = {
-					id : $('#update-id').val(),
-					firstName : $('#update-first-name').val(),
-					lastName : $('#update-last-name').val(),
-					email : $('#update-email').val(),
-					title : $('#update-title').val(),
-					haveAccount : akun,
-					active : true,
-					user : user,
-					outlet : listOutlet
-			};
-			
-			
-			//ajax
-			$.ajax({
-				url : '${pageContext.request.contextPath}/employee/update',
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(employee),
-				beforeSend : function(){
-					console.log("connecting to server");
-				},
-				success : function(){
-					console.log(employee);
-					alert('save sucsess');
-					window.location = '${pageContext.request.contextPath}/employee';
-				}, error : function(){
-					alert('gagal bos');
-				}
+				$('#update-form-employee').smkValidate({
 				
-			}); 
-			
-			
-			
-		})
-		
-		 
-		
+					submitHandler: function(form){
+						
+						try{
+				    		var listOutlet = JSON.parse($(this).attr('listOutlet'));
+				    	} catch (ex){
+				    		console.error(ex);
+				    	};
+				    	
+				    	
+					
+						var akun = $("#update-create-account").is(':checked') ? true : false;
+						var idRole = $('#update-role').val();
+						
+						
+						
+						var user = null;	
+						
+						if(akun == true){
+							user = {
+									/* "id" : $("#update-user-id").val(), */
+									"active" : true,
+									"username" : $('#update-username').val(),
+									"password" : $('#update-password').val(),
+									"role" : {
+										"id" : idRole
+									}
+							}
+						}
+						var employee = {
+								id : $('#update-id').val(),
+								firstName : $('#update-first-name').val(),
+								lastName : $('#update-last-name').val(),
+								email : $('#update-email').val(),
+								title : $('#update-title').val(),
+								haveAccount : akun,
+								active : true,
+								user : user,
+								outlet : listOutlet
+						};
+						//ajax
+						$.ajax({
+							url : '${pageContext.request.contextPath}/employee/update',
+							type : 'POST',
+							contentType : 'application/json',
+							data : JSON.stringify(employee),
+							beforeSend : function(){
+								console.log("connecting to server");
+							},
+							success : function(){
+								console.log(employee);
+								alert('save sucsess');
+								window.location = '${pageContext.request.contextPath}/employee';
+							}, error : function(){
+								alert('gagal bos');
+							}
+						});
+						$('#update-form-employee').submit();
+					}
+				});
+				evt.preventDefault();
+		});
 		/* end edit employee */
-		
-		
-		
-		
-	
 	});
 </script>
 

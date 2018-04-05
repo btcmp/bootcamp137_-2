@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.miniproject.kel2.model.HistoryAdjustment;
 import com.miniproject.kel2.model.HistoryPurchaseOrder;
 import com.miniproject.kel2.model.HistoryPurchaseRequest;
 import com.miniproject.kel2.model.ItemInventory;
@@ -82,6 +83,8 @@ public class PurchaseOrderController {
 		List<HistoryPurchaseOrder> hpo = hpOrderService.selectByOrder(po);
 		model.addAttribute("hpo", hpo);
 		
+		System.out.println(po.getSupplier().getId());
+		
 		//System.out.println(pr);
 		return "orderdetail";
 		
@@ -105,5 +108,37 @@ public class PurchaseOrderController {
 		
 	}
 	
+	/*------------------------------------------ CHANGE STATUS  --------------------------------------------------------------*/
+	@RequestMapping(value="/Approved/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void approved(@PathVariable long id) {
+		poService.approve(id);
+	}
 	
+	@RequestMapping(value="/Rejected/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void rejected(@PathVariable long id) {
+		poService.rejected(id);
+	}
+	
+	@RequestMapping(value="/Printed/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void printed(@PathVariable long id) {
+		poService.printed(id);
+	}
+	
+	@RequestMapping(value="/process/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void created(@PathVariable long id) {
+		poService.process(id);
+	}
+	
+	/*------------------------------------------ SEARCH BY STATUS  --------------------------------------------------------------*/
+	@RequestMapping(value="/search-status/{status}", method = RequestMethod.GET)
+	@ResponseBody
+	public List<PurchaseOrder> searchByStatus(@PathVariable PurchaseOrder po){ 
+		List<PurchaseOrder> purorder = (List<PurchaseOrder>) poService.searchByStatus(po);
+		System.out.println("jumlah hasil search : "+purorder.size());
+		return purorder;
+	}
 }
