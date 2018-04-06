@@ -4,21 +4,25 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 	$(function() {
-		$('#btn-add').click(function() {
-			$('#modal-add-adjustment').modal();
-		});
-		$('#btn-add-item').click(function() {
-			$('#modal-add-item').modal();
-		});
-		$('#btn-edit').click(function() {
-			$('#modal-edit-adjustment').modal();
-		});
 
 		$("#pickup").datepicker({
 			dateFormat : 'mm-dd-yy',
 			minDate : '-12M',
 			maxDate : 0
 		});
+		
+		$('#order-table').DataTable({
+			searching : false
+		});
+		
+		$('#modal-table').DataTable({
+			searching : false
+		});
+		
+		$('#po-notes').parsley().validate();
+		
+		//$('.edit-unitcost').parsley().validate();
+
 	});
 </script>
 
@@ -82,15 +86,15 @@
 
                                 </div>
                               <div >
-                                <table class="table table-striped table-bordered text-center" cellspacing="0" id="order-table">
+                                <table class="table table-striped table-bordered text-center" id="order-table">
                                 <thead >
                                     <tr>
-                                        <th>Create Date</th>
-                                        <th>Supplier</th>
-                                        <th>PO No.</th>
-                                        <th>Total</th>
-                                        <th>Status</th>
-                                        <th>#</th>
+                                        <th><center>Create Date</center></th>
+                                        <th><center>Supplier</center></th>
+                                        <th><center>PO No.</center></th>
+                                        <th><center>Total</center></th>
+                                        <th><center>Status</center></th>
+                                        <th><center>#</center></th>
                                         
                                     </tr>
                                 </thead>
@@ -98,7 +102,17 @@
                                     <c:forEach items="${pos }" var="pos">
                                     <!-- //mengambil id barang -->
                                         <tr id = "#">
-                                            <td>${pos.createdOn }</td>
+                                            <td>
+                                            <script>
+                                            	var fullDate =' ${pos.createdOn }';
+                                            	var wkt = fullDate.split('.');
+                                            	var Tanggal = wkt[1].split(' ');
+                                            	var Time = separateDate[0].split('_');
+                                            	var Tgl = Time[2]+'-'+Time[1]+'-'+Time[0];
+                                            	
+                                            	document.write(fullDate);
+                                            </script>
+                                            </td>
                                             <td>${pos.supplier.name }</td>
                                             <td>${pos.poNo }</td>
                                             <td>Rp. ${pos.grandTotal }</td>
@@ -169,43 +183,37 @@
                 <div class="form-group">
                     
                     <div class="col-lg-12">
-                        <textarea class="form-control" id="po-notes"></textarea>
+                        <textarea class="form-control" id="po-notes" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-minlength-message="Come on! You need to enter at least a 20 character comment.." data-parsley-validation-threshold="10" ></textarea>
                     </div>
                 </div>
 
                 <label for="outlet-name" class="control-label"> Purchase Request : <span class="required">*</span></label>
                 <div class="form-group">
                     <div class="col-lg-12">
-                            <table class="table basic-table" cellspacing="0" id="order-table">
+                            <table class="table table-bordered table-striped" cellspacing="0" id="modal-table">
                                 <thead>
                                     <tr >
-                                        <th>Item</th>
-                                        <th>In Stok</th>
-                                        <th>Request. Qty</th>
-                                        <th>Unit Cost</th>
-                                        <th>Sub Total</th>
+                                        <th><center>Item</center></th>
+                                        <th><center>In Stok</center></th>
+                                        <th><center>Request. Qty</center></th>
+                                        <th><center>Unit Cost</center></th>
+                                        <th><center>Sub Total</center></th>
                                     </tr>
                                 </thead>
                                 <tbody align="center" id="isi-tabel-po">
                                 </tbody>
+                                <tfoot>
+                                	<tr>
+                                	<td colspan=4 align="center"  ><h4> <b>Total</b> </h4></td>
+                                	<td><input type="text" name='input-total' class="form-control updatable-content" id="po-total" readonly/> </td>
+                                	</tr>
+                                </tfoot>
                             </table>
                         </div>
-                    </div>
-                    <div class="form-group">
-                    
-                    <div class="col-lg-12">
-                        <div class="col-lg-7">
-                            TOTAL : ${po.grandTotal }
-                        </div>
-                        <div class="col-lg-5">
-                          		Rp : <input type="text" name='input-total' class="form-control updatable-content" id="po-total" style="width : 150px;"  value = "${po.grandTotal}" readonly/> 
-                        </div>
-                        
                     </div>
                 </div>
             </div>            
         </div>
-      </div>
       <div class="modal-footer">
         <div>
             <button type="button" class="btn btn-success col-lg-2" >Submit</button> 
@@ -249,6 +257,8 @@
 		
 		total = $('#po-total').val();
 		
+		
+		
 	});
 	/*------------------------------------------ modal set up -------------------------------------------------------------*/
 	$('#order-table').on('click', '.btn-update', function(){
@@ -260,20 +270,22 @@
 		type : 'GET',
 		dataType: 'json',
 		success : function(data){
-			//console.log(data);
+			console.log(data);
 			$('#id-po').val(data.id);
 			$('#po-No').val(data.poNo);
 			$('#po-status').val(data.status);
+			$('#po-notes').val(data.notes);
+			
 			$(data.detail).each(function(key, val){
 				$('#isi-tabel-po').append(
 					'<tr key-id="'+val.variant.id+'"><td>'+val.variant.item.name+'-'+val.variant.name+'</td>'
 					+'<td>null</td>'
 					+'<td>'+val.requestQty+'</td>'
-					+'<td> <input type="text" value="'+val.unitCost+'" class = "form-control edit-unitcost" id="unitCost"/></td>'
-					+ '<td> <input type="text" value="'+val.subTotal+'" class = "form-control edit-subtotal" id="subtotal"readonly/></td>'
+					+'<td> <input type="text" value="'+val.unitCost+'" class = "form-control edit-unitcost" id="unitCost" style="border:none;"   data-parsley-type="number"/></td>'
+					+ '<td> <input type="text" value="'+val.subTotal+'" class = "form-control edit-subtotal" id="subtotal" style="border:none;" readonly/></td>'
 				);
 			});
-			$('#po-total').val(total);
+			$('#po-total').val(data.grandTotal);
 			$('#editPO').modal('show');
 		}, 
 		error : function(){
@@ -335,7 +347,7 @@
 						+'<td>null</td>'
 						+'<td>'+val.requestQty+'</td>'
 						+'<td> <input type="text" value="'+val.unitCost+'" class = "form-control edit-unitcost" id="unitCost"/></td>'
-						+ '<td> <input type="text" value="'+val.subTotal+'" class = "form-control edit-subtotal" id="subtotal"readonly/></td>'
+						+ '<td> <input type="text" value="'+val.subTotal+'" class = "form-control edit-subtotal" id="subtotal" readonly/></td>'
 					);
 				});
 			}, error : function(){

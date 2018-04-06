@@ -105,7 +105,7 @@ public class EmpUserService {
 		emp.setOutlet(getAssignedOutlet(emp.getOutlet()));
 		User user;
 		
-		if(emp.getUser() != null) {
+		if(emp.getUser() == null) {
 			user = userDao.getUserByEmployee(emp);
 			if (user != null) {
 				//untuk set id user yang diambil dari tabel user.employee_id

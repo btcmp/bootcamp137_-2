@@ -91,7 +91,7 @@ public class UserDaoImpl implements UserDao{
 		String hql = "from User u where u.employee.id = :uid ";		
 		List<User> getUser =  session.createQuery(hql).setParameter("uid", emp.getId()).list();
 		User userLagi = getUser.get(0);
-		 
+		System.out.println(userLagi); 
 		
 		if(getUser.isEmpty()) {
 			return null;

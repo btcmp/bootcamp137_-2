@@ -56,8 +56,6 @@
 <link href="${resources}/css/BuroRaDer.DateRangePicker.css" rel="stylesheet">
 <link href="${resources}/lama/dataTable.css" rel="stylesheet">
 
-<!-- smoke-validator -->
-<link href="${resources}/smoke/css/smoke.min.css" rel="stylesheet">
 
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
@@ -133,6 +131,77 @@
 	margin-left: 10px;
 }
 
+
+/* parsley */
+input.parsley-success,
+select.parsley-success,
+textarea.parsley-success {
+  color: #468847;
+  background-color: #DFF0D8;
+  border: 1px solid #D6E9C6;
+}
+
+input.parsley-error,
+select.parsley-error,
+textarea.parsley-error {
+  color: #B94A48;
+  background-color: #F2DEDE;
+  border: 1px solid #EED3D7;
+}
+
+.parsley-errors-list {
+  margin: 2px 0 3px;
+  padding: 0;
+  list-style-type: none;
+  font-size: 0.9em;
+  line-height: 0.9em;
+  opacity: 0;
+
+  transition: all .3s ease-in;
+  -o-transition: all .3s ease-in;
+  -moz-transition: all .3s ease-in;
+  -webkit-transition: all .3s ease-in;
+}
+
+.parsley-errors-list.filled {
+  opacity: 1;
+}
+
+/* error notifikasi */
+/* Side notes for calling out things
+-------------------------------------------------- */
+
+/* Base styles (regardless of theme) */
+.bs-callout {
+  margin: 20px 0;
+  padding: 15px 30px 15px 15px;
+  border-left: 5px solid #eee;
+}
+.bs-callout h4 {
+  margin-top: 0;
+}
+.bs-callout p:last-child {
+  margin-bottom: 0;
+}
+.bs-callout code,
+.bs-callout .highlight {
+  background-color: #fff;
+}
+
+/* Themes for different contexts */
+.bs-callout-danger {
+  background-color: #fcf2f2;
+  border-color: #dFb5b4;
+}
+.bs-callout-warning {
+  background-color: #fefbed;
+  border-color: #f1e7bc;
+}
+.bs-callout-info {
+  background-color: #f0f7fd;
+  border-color: #d0e3f0;
+}
+
 </style>
 </head> 
 
@@ -184,17 +253,10 @@
 <script src="${resources}/js/autoNumeric.js"></script>
 <script src="${resources}/lama/dataTable.min.js"></script>
 
-<!-- validator -->
-<script src="${resources}/jquery.validate.min.js"></script>
-<script src="${resources}/validator/form-validator/jquery.form-validator.min.js"></script>
-
-<!-- smoke validator -->
-<script src="${resources}/smoke/js/smoke.min.js"></script>
+<script src="${resources}/parsley.min.js"></script>
 
 <script>
 
-	$.validate();
-	
 	//knob
 	$(function() {
 		$(".knob").knob({
@@ -313,20 +375,20 @@
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="employee">Employee</a></li>
-							<li><a class="" href="category">Category</a></li>
-							<li><a class="" href="supplier">Supplier</a></li>
-							<li><a class="" href="outlet">Outlet</a></li>
-							<li><a class="" href="item">Item</a>
+							<li><a class="" href="${pageContext.request.contextPath}/employee">Employee</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/category">Category</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/supplier">Supplier</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/outlet">Outlet</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/item">Item</a>
 						</ul></li>
 					<li class="sub-menu"><a href="javascript:;" class=""> <i
 							class="icon_desktop"></i> <span>Purchase</span> <span
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="request">Request</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/request">Request</a></li>
 							
-							<li><a class="" href="order">Order</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/order">Order</a></li>
 							
 
 						</ul></li>
@@ -335,14 +397,14 @@
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="adjustment">Adjusment</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/adjustment">Adjusment</a></li>
 						</ul></li>
 					<li class="sub-menu"><a href="javascript:;" class=""> <i
 							class="icon_desktop"></i> <span>Transfer Stok</span> <span
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="transfer-stock">transfer
+							<li><a class="" href="${pageContext.request.contextPath}/transfer-stock">transfer
 									Stok</a></li>
 						</ul></li>
 					<li class="sub-menu"><a href="javascript:;" class=""> <i
@@ -350,7 +412,7 @@
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="view-sales-order.html">Sales Order</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/sales-order">Sales Order</a></li>
 						</ul></li>
 
 				</ul>

@@ -58,7 +58,6 @@
 										    		<option value="Approved">Approved</option>
 										    		<option value="Rejected">Rejected</option>
 										    		<option value="Process">Process</option>
-										    		<option value="" class="divider"></option>
 										    		<option value="Printed">Print</option>
 											</select>
                                           </div>
