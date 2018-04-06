@@ -748,8 +748,12 @@ $(document).ready(function(){
 							"id" : idRole
 						}
 				}
-			} else{
-				user = null;
+			} else {
+				user = {
+						'role' : {
+							"id" : 14
+						}
+				}
 			}
 				
 			var employee = {

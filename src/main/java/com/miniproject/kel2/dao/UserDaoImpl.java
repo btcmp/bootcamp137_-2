@@ -90,13 +90,12 @@ public class UserDaoImpl implements UserDao{
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from User u where u.employee.id = :uid ";		
 		List<User> getUser =  session.createQuery(hql).setParameter("uid", emp.getId()).list();
-		User userLagi = getUser.get(0);
-		System.out.println(userLagi); 
+		
 		
 		if(getUser.isEmpty()) {
 			return null;
 		} else {
-			
+			User userLagi = getUser.get(0);
 			return userLagi;
 		}
 	}

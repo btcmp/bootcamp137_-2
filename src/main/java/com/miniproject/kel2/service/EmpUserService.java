@@ -101,11 +101,10 @@ public class EmpUserService {
 	
  
 	public void empUpdate(Employee emp) {
-	
-		emp.setOutlet(getAssignedOutlet(emp.getOutlet()));
 		User user;
+		emp.setOutlet(getAssignedOutlet(emp.getOutlet()));
 		
-		if(emp.getUser() == null) {
+		if(emp.getUser() != null) {
 			user = userDao.getUserByEmployee(emp);
 			if (user != null) {
 				//untuk set id user yang diambil dari tabel user.employee_id
@@ -117,9 +116,10 @@ public class EmpUserService {
 			user = userDao.getUserByEmployee(emp);
 			if (user != null) {
 				user.setActive(false);
+				user.setRole(emp.getUser().getRole());
 				emp.setUser(user);
 			}
-			emp.getUser().setEmployee(emp);
+
 			} 
 		
 		empDao.update(emp);
