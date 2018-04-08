@@ -79,5 +79,17 @@ public class ItemDaoImpl implements ItemDao{
 		return items;
 	}
 
+	/*public List<Item> searchByName(String search) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Item i where lower(i.name) like :in";
+		List<Item> items = session.createQuery(hql).setParameter("in", "%"+search.toLowerCase()+"%").list();
+		if(items.isEmpty()) {
+			return null;
+		} else {
+			return items;
+		}
+	}*/
+
 	
 }

@@ -89,8 +89,6 @@ public class TransferStockDaoImpl implements TransferStockDao {
 		session.createQuery(hql).setParameter("status", status).setParameter("id", id).executeUpdate();
 		session.flush();
 	}
-
-	
 	
 
 }

@@ -22,5 +22,7 @@ public interface ItemDao {
 	public List<Category> catSelectAll();
 
 	public List<Item> getItemsByCategory(Category category);
+
+	//public List<Item> searchByName(String search);
 	
 }

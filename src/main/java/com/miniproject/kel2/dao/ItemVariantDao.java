@@ -17,6 +17,8 @@ public interface ItemVariantDao {
 	public void delete(ItemVariant itemVariant);
 	
 	public void saveAtauUpdate(ItemVariant itemVariant);
+
+	//public List<ItemVariant> searchByName(String search);
 	
 	
 }

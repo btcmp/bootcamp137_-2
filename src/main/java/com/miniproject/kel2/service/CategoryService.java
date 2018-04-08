@@ -25,7 +25,7 @@ public class CategoryService {
 		categoryDao.save(category);
 	}
 	
-	/*public List<Category> selectAll(){
+	public List<Category> selectAll(){
 		List<Category> categories = categoryDao.selectAll();
 		for(Category category : categories) {
 			List<Item> items = itemDao.getItemsByCategory(category);
@@ -37,7 +37,7 @@ public class CategoryService {
 			System.out.println(category.getName() + " item=" + category.getItemStock());
 		}
 		return categories;
-	}*/
+	}
 	
 	
 	public Category getOne(long id) {
@@ -101,10 +101,11 @@ public class CategoryService {
 	}
 
 	//validasi untuk category name
-	public List<Category> searchByNameValidation(String search) {
+	/*public List<Category> searchByNameValidation(String search) {
 		// TODO Auto-generated method stub
 		return categoryDao.searchByNameValidation(search);
-	}
+	}*/
+	
 	
 	
 }

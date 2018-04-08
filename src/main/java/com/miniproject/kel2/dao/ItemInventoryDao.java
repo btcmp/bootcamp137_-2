@@ -32,4 +32,7 @@ public interface ItemInventoryDao {
 	public ItemInventory searchInventoryByVariantAndOutletId(long id, long outletId);
 
 	public List<ItemInventory> searchInventoryByItem(Item item);
+	
+	//search di item
+	public List<ItemInventory> searchItemInventoryByItemName(String search);
 }

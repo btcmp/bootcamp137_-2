@@ -56,5 +56,17 @@ public class ItemVariantDaoImpl implements ItemVariantDao{
 		session.flush();
 	}
 
+	/*public List<ItemVariant> searchByName(String search) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from ItemVariant iv where lower(iv.name) like :ivn";
+		List<ItemVariant> variants = session.createQuery(hql).setParameter("ivn", "%"+search.toLowerCase()+"%").list();
+		if(variants.isEmpty()) {
+			return null;
+		} else {
+			return variants;
+		}
+	}*/
+
 	
 }

@@ -41,5 +41,10 @@ public class ItemVariantService {
 	public void saveAtauUpdate(ItemVariant itemVariant) {
 		itemVariantDao.saveAtauUpdate(itemVariant);
 	}
+
+	/*public List<ItemVariant> searchByName(String search) {
+		// TODO Auto-generated method stub
+		return itemVariantDao.searchByName(search);
+	}*/
 	
 }

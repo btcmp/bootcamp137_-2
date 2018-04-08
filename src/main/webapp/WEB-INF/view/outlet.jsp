@@ -1,7 +1,16 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 $(document).ready(function(){
-	$.validate();
+	$.fn.dataTable.ext.classes.sPageButton = 'btn btn-primary';
+	$('#tbl-outlet').DataTable({
+		searching : false, 
+		bFilter: false, 
+		iDisplayLength: 10, // display max 10
+		oLanguage: {
+		   sLengthMenu: "",
+		}
+	});
+	
 	// CREATE NEW OUTLET
 	$('#btn-create').click(function() {
 		$('#modal-create').modal();
@@ -11,6 +20,7 @@ $(document).ready(function(){
 	$('#btn-save').on('click', function(evt){
 		evt.preventDefault();
 		var form = $('#target');
+		var valid = form.parsley().validate();
 			var outlet = {
 					name : $('#input-outletName').val(),
 					address : $('#input-address').val(),
@@ -28,23 +38,52 @@ $(document).ready(function(){
 					}
 			}
 			console.log(outlet);     
-	
-		  $.ajax({
-				url : '${pageContext.request.contextPath}/outlet/save',
-				type :'POST',
-				data : JSON.stringify(outlet),
-				contentType : 'application/json',
-				success: function(data){
-				window.location='${pageContext.request.contextPath}/outlet';
-				}, error : function(){
-					alert('saving failed')	
+		if (valid == true) {
+				$.ajax({
+				  	url : '${pageContext.request.contextPath}/outlet/get-all',
+					type : 'GET',
+					success : function(data) {
+						var sameEmail = 0;
+						var sameName = 0;
+						
+				$(data).each(function(index,data2) {
+					if (outlet.email.toLowerCase() == data2.email.toLowerCase()) {
+							sameEmail++;
+					} else if (outlet.name.toLowerCase() == data2.name.toLowerCase()) {
+							sameName++;
+					}
+				});
+				if (sameEmail > 0) {
+					alert('This email has been used');
+				} else if (sameName > 0) {
+					alert('This name has been used');
+				} else {
+					  $.ajax({
+							url : '${pageContext.request.contextPath}/outlet/save',
+							type :'POST',
+							data : JSON.stringify(outlet),
+							contentType : 'application/json',
+							success: function(data){
+							window.location='${pageContext.request.contextPath}/outlet';
+							}, error : function(){
+								alert('saving failed')	
+							}
+					  });
 				}
-		}); 
-	}); 
-	
+					},
+					error : function() {
+						alert('failed');
+					}
+				});
+			} else {
+				alert('Complete your form');
+			}
+	});
+		
 	
 	// EDIT OUTLET
-	$('.btn-edit').click(function() {
+	$('.btn-edit').click(function(evt) {
+		evt.preventDefault();
 		var id = $(this).attr('id');
 		
 		$.ajax({
@@ -75,7 +114,10 @@ $(document).ready(function(){
 	}
 	
 	// EXECUTE = SAVE-EDIT
-	$('#btn-save-edit').click(function(){
+	$('#btn-save-edit').click(function(evt){
+		evt.preventDefault();
+		var form = $('#target2');
+		var valid = form.parsley().validate();
 		var outlet = {
 				id : $('#edit-id').val(),
 				name : $('#edit-outletName').val(),
@@ -93,18 +135,46 @@ $(document).ready(function(){
 						id : $('#edit-district').val()
 				}
 		}
-		$.ajax({
-			url : '${pageContext.request.contextPath}/outlet/update',
-			type :'PUT',
-			data : JSON.stringify(outlet),
-			contentType :'application/json',
-			success: function(data){
-				window.location='${pageContext.request.contextPath}/outlet';
-			},
-			error : function(){
-				alert('update failed');	
+		if (valid == true) {
+			$.ajax({
+			  	url : '${pageContext.request.contextPath}/outlet/get-all',
+				type : 'GET',
+				success : function(data) {
+					var sameEmail = 0;
+					var sameName = 0;
+					
+			$(data).each(function(index,data2) {
+				if (outlet.email.toLowerCase() == data2.email.toLowerCase()) {
+						sameEmail++;
+				} else if (outlet.name.toLowerCase() == data2.name.toLowerCase()) {
+						sameName++;
+				}
+			});
+			if (sameEmail > 0) {
+				alert('This email has been used');
+			} else if (sameName > 0) {
+				alert('This name has been used');
+			} else {
+				  $.ajax({
+						url : '${pageContext.request.contextPath}/outlet/update',
+						type :'PUT',
+						data : JSON.stringify(outlet),
+						contentType : 'application/json',
+						success: function(data){
+						window.location='${pageContext.request.contextPath}/outlet';
+						}, error : function(){
+							alert('saving failed')	
+						}
+				  });
 			}
-		});
+				},
+				error : function() {
+					alert('failed');
+				}
+			});
+		} else {
+			alert('Complete your form ');
+		}
 	});
 
 	// SELECT PROVINCE
@@ -217,7 +287,7 @@ $(document).ready(function(){
 						</div>
 
 						<!-- ============================= TABLE ================================= -->
-								<table class="table table-bordered">
+								<table class="table table-bordered" id="tbl-outlet">
 									<thead>
 										<tr>
 											<th>Name</th>
@@ -266,14 +336,18 @@ $(document).ready(function(){
 															</button>
 															<h5 class="modal-title" id="exampleModalLabel">Input Outlet</h5>
 													</div>
-													<form id="target" action="${pageContext.request.contextPath }/outlet/save" method="POST">
+													<form id="target" data-parsley-validate >
 													<div class="modal-body" style="height: 180px;">
 															<div class="input">
 																	<input type="hidden" id="input-id" name="input-id" />
-																	<input class="col-lg-12" id="input-outletName" type="text"style="margin-bottom: 10px;" placeholder="Outlet Name"
-																	data-validation="length" data-validation-length="max20">
-																	<textarea class="col-lg-12" id="input-address" type="text" style="margin-bottom: 10px;" placeholder="Address"
-																	data-validation="length" data-validation-length="max100"></textarea>
+																	<input class="col-lg-12" id="input-outletName" data-parsley-required="true"
+																		type="text" style="margin-bottom: 10px;" placeholder="Outlet Name"
+																		pattern="([A-z0-9\s]){2,20}$">
+																		<p style = "color : red;"><small>This field is required</small></p>
+																	<textarea class="col-lg-12" id="input-address" data-parsley-required="true"
+																		type="text" style="margin-bottom: 10px;" placeholder="Address"
+																		pattern="^[0-9a-zA-Z. ]+$"></textarea>
+																		<p style = "color : red;"><small>This field is required</small></p>
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
 																	<select class="form-control" id="input-province">
@@ -297,16 +371,22 @@ $(document).ready(function(){
 																	</select>
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" id="input-postalCode" style="margin-bottom: 10px;" placeholder="Postal Code" 
-																	data-validation="length" data-validation-length="5" pattern="^([0-9)]+$" required="required">
+																	<input type="text" id="input-postalCode" data-parsley-required="true"
+																		style="margin-bottom: 10px;" placeholder="Postal Code" 
+																		placeholder="Postal Code" pattern="([0-9]){5}$">
+																		<p style = "color : red; "><small> *number only, 5 </small></p>
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" id="input-phone" style="margin-bottom: 10px;"placeholder="Phone" 
-																	data-validation="length" data-validation-length="11-13">
+																	<input type="text" id="input-phone" data-parsley-required="true"
+																		style="margin-bottom: 10px;"placeholder="Phone" 
+																		pattern="^\d{3}-\d{8,10}$">
+																		<p style = "color : red;"><small> *number only, xxx-xxxxxxxx </small></p>		
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" id="input-email" style="margin-bottom: 10px;" placeholder="Email"
-																	data-validation="email">
+																	<input type="text" id="input-email" data-parsley-required="true"
+																		style="margin-bottom: 10px;" placeholder="Email"
+																		pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+																		<p style = "color : red;"><small> *email </small></p>
 															</div>
 													</div>
 													<div class="modal-footer">
@@ -334,12 +414,20 @@ $(document).ready(function(){
 												</button>
 												<h5 class="modal-title" id="exampleModalLabel">Edit Outlet</h5>
 											</div>
-													<form>
+													<form id="target2" data-parsley-validate>
 													<div class="modal-body" style="height: 180px;">
 													<div class="edit">
 															<input type="hidden" name="edit-id" id="edit-id">
-															<input class="col-lg-12" id="edit-outletName" type="text"style="margin-bottom: 10px;" placeholder="Outlet Name">
-															<textarea class="col-lg-12" id="edit-address" type="text" style="margin-bottom: 10px;" placeholder="Address"></textarea>
+															<input data-parsley-required="true"
+																class="col-lg-12" id="edit-outletName" type="text"style="margin-bottom: 10px;" placeholder="Outlet Name"
+																pattern="([A-z0-9\s]){2,20}$">
+																<p style = "color : red;"><small>This field is required</small></p>
+																	
+															<textarea data-parsley-required="true"
+																class="col-lg-12" id="edit-address" type="text" style="margin-bottom: 10px;" placeholder="Address"
+																pattern="^[0-9a-zA-Z. ]+$"></textarea>
+																<p style = "color : red;"><small>This field is required</small></p>
+																
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
 															<select class="form-control" id="edit-province">
@@ -363,13 +451,22 @@ $(document).ready(function(){
 															</select>
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-															<input type="text" id="edit-postalCode" style="margin-bottom: 10px;" placeholder="Postal Code">
+															<input type="text" id="edit-postalCode" style="margin-bottom: 10px;" placeholder="Postal Code"
+																pattern="([0-9]){5}$">
+																<p style = "color : red; "><small> *number only, 5 </small></p>
+															
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-															<input type="text" id="edit-phone" style="margin-bottom: 10px;"placeholder="Phone">
+															<input type="text" id="edit-phone" style="margin-bottom: 10px;"placeholder="Phone"
+																pattern="^\d{3}-\d{8,10}$">
+																<p style = "color : red;"><small> *number only, xxx-xxxxxxxx </small></p>		
+															
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-															<input type="text" id="edit-email" style="margin-bottom: 10px;" placeholder="Email">
+															<input type="text" id="edit-email" style="margin-bottom: 10px;" placeholder="Email"
+																pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+																<p style = "color : red;"><small> *email </small></p>
+															
 													</div>
 													</div>
 													<div class="modal-footer">

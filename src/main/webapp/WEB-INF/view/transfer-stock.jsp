@@ -1,6 +1,16 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 $(document).ready(function(){
+	/* $.fn.dataTable.ext.classes.sPageButton = 'btn btn-primary';
+	$('#tbl-transfer-stock').DataTable({
+		searching : false, 
+		bFilter: false, 
+		iDisplayLength: 10, // display max 10
+		oLanguage: {
+		   sLengthMenu: "",
+		}
+	}); */
+
 	/* ------------------------------------------------- SEARCH ITEM (ADD)-------------------------------------------- */
 	$('#search-item-variant').on('input', function(){
 		var word = $(this).val();
@@ -43,7 +53,7 @@ $(document).ready(function(){
 						  	  "<td>"+ "<a href='#' class='cancel btn btn-danger' id='btn-X'>X</a>"+ "</td>"+
 							  "</tr>";
 					$('#tbody-transfer-stock').append(add);
-				} else if (transferQty>inStock) {
+				/* } else if (transferQty>inStock) {
 						alert("Stock Kurang");
 				} else if (transferQty<1) {
 						alert("Sisa 1");
@@ -54,7 +64,7 @@ $(document).ready(function(){
 							  "<td>"+transferQty+"</td>"+
 						  	  "<td>"+ "<a href='#' class='cancel btn btn-danger' id='btn-X'>X</a>"+ "</td>"+
 							  "</tr>";
-					$('#tbody-transfer-stock').append(add);
+					$('#tbody-transfer-stock').append(add); */
 				
 				}
 			});
@@ -68,9 +78,9 @@ $(document).ready(function(){
 
 	/* ---------------------------------------- SAVE TRANSFER STOCK ITEM -------------------------------------------- */
 	$('#btn-save').click(function(){
-		if ($('#input-from-outlet').val()==$('#input-to-outlet').val()) {
+		/* if ($('#input-from-outlet').val()==$('#input-to-outlet').val()) {
 			alert("outlet sama")
-		} else {	
+		} else { */	
 			var tsDetails = []; 	// list ts detail
 			var htStocks = []; 		// list history ts
 			
@@ -117,8 +127,8 @@ $(document).ready(function(){
 				}, error : function(){
 					alert('save failed');
 				}
-			})
-		}
+			});
+	//	} 
 
 	}); 
 	 
@@ -194,7 +204,7 @@ $(document).ready(function(){
 			} else if (word!=="empty") {
 				window.location = "${pageContext.request.contextPath}/transfer-stock/search-outlet?search="+word;
 			}
-		})
+		});
 });
 	
 
@@ -220,13 +230,15 @@ $(document).ready(function(){
 					<header class="panel-heading"> TRANSFER STOCK </header>
 					<div class="panel-body">
 						<div class="row">
-							<select class="col-lg-10" id="search-outlet" type="text" class="form-control" style="margin-bottom: 10px;">
+							<select class="col-lg-2" id="search-outlet" type="text" class="form-control" style="margin-bottom: 10px;">
 									<option value="empty"> Search Outlet </option>
 									<c:forEach var="out" items="${outs}">
 										<option value="${out.id}">${out.name}</option>
 									</c:forEach>
 									<option value="all">All Outlet</option>
-							</select>			
+							</select>	
+							<div class="col-lg-8" style="margin-bottom: 10px;">
+							</div>		
 							<div class="col-lg-1" style="margin-bottom: 10px;">
 								<button type="button" class="btn btn-primary">Export</button>
 							</div>
@@ -251,8 +263,8 @@ $(document).ready(function(){
 										<td>${ts.fromOutlet.name}</td>
 										<td>${ts.toOutlet.name}</td>
 										<td>${ts.status}</td>
-										<td><a href="#" id="${ts.id }" class="view" data-toggle="modal"
-											data-target="#modalEdit"> View </a></td>
+										<td><a href="#" id="${ts.id }" class="view" 
+											> View </a></td>
 									</tr>
 								</c:forEach>
 								</tbody>

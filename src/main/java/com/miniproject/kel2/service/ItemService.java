@@ -111,7 +111,7 @@ public class ItemService {
 						invent.setEndingQty(inventory.getEndingQty());
 						invent.setBeginning(inventory.getBeginning());
 						invent.setOutlet(out);
-						itemInventoryDao.saveAtauUpdate(invent);
+						itemInventoryDao.save(invent);
 					}
 				}
 				
@@ -131,7 +131,7 @@ public class ItemService {
 						invent.setEndingQty(inventory.getBeginning());
 						itemInventoryDao.save(invent);
 					} else {
-						itemInventoryDao.saveAtauUpdate(invent);
+						itemInventoryDao.save(invent);
 					}
 				}
 			}
@@ -151,5 +151,10 @@ public class ItemService {
 		// TODO Auto-generated method stub
 		return itemDao.catSelectAll();
 	}
+
+	/*public List<Item> searchByName(String search) {
+		// TODO Auto-generated method stub
+		return itemDao.searchByName(search);
+	}*/
 
 }

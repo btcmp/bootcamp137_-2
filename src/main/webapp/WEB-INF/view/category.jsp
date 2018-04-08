@@ -1,6 +1,16 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 	$(document).ready(function(){
+		// DATA TABLE
+		$.fn.dataTable.ext.classes.sPageButton = 'btn btn-primary';
+		$('#tbl-category').DataTable({
+			searching : false, 
+			bFilter: false, 
+			iDisplayLength: 10, // display max 10
+			oLanguage: {
+			   sLengthMenu: "",
+			}
+		});
 		
 		// CREATE NEW CATEGORY
 		$('#btn-create').click(function() {
@@ -8,27 +18,50 @@
 		});
 		
 		// EXECUTE = SAVE
-		/* $('#btn-save').on('click', function(evt){
+		$('#btn-save').on('click', function(evt){
 			evt.preventDefault();
 			var form = $('#target');
+			var valid = form.parsley().validate();
 				var cat = {
 						name : $('#input-categoryName').val()
 				}
 				console.log(cat);    
-			
-			 $.ajax({
-					url : '${pageContext.request.contextPath}/category/save',
-					type :'POST',
-					data : JSON.stringify(cat),
-					contentType : 'application/json',
-					success: function(data){
-					window.location='${pageContext.request.contextPath}/category';
-					}, error : function(){
-						alert('saving failed')	
+			if(valid==true){
+				$.ajax({
+					url : '${pageContext.request.contextPath}/category/get-all',
+					type : 'GET',
+					success : function(data) {
+						var sameName = 0;
+						$(data).each(function(index, data2) {
+								 if (cat.name.toLowerCase() == data2.name.toLowerCase()) {
+									sameName++;
+								} 
+						});  
+						if (sameName > 0) {
+							alert('This name has been used');
+						} else {	
+								 $.ajax({
+										url : '${pageContext.request.contextPath}/category/save',
+										type :'POST',
+										data : JSON.stringify(cat),
+										contentType : 'application/json',
+										success: function(data){
+										window.location='${pageContext.request.contextPath}/category';
+										}, error : function(){
+											alert('saving failed')	
+										}
+								 }); 
+						}
+					},
+					error : function() {
+						alert('failed');
 					}
-			}); 
-		});  
-			 */
+				}); 
+			} else {
+				alert('Complete your form ');
+			}
+		});
+			
 		// EDIT CATEGORY (BUTTON VIEW)
 		$('.btn-view').click(function() {
 			var id = $(this).attr('id');
@@ -55,22 +88,46 @@
 		
 		// EXECUTE = SAVE2
 		$('#btn-save2').click(function(){
+			var form = $('#target2');
+			var valid = form.parsley().validate();
 			var cat={
 				id : $('#edit-id').val(),
 				name : $('#edit-categoryName').val()
 			}
-			$.ajax({
-				url : '${pageContext.request.contextPath}/category/update',
-				type :'PUT',
-				data : JSON.stringify(cat),
-				contentType :'application/json',
-				success: function(data){
-					window.location='${pageContext.request.contextPath}/category';
-				},
-				error : function(){
-					alert('update failed');	
-				}
-			});
+			if (valid == true) {
+				$.ajax({
+					url : '${pageContext.request.contextPath}/category/get-all',
+					type : 'GET',
+					success : function(data) {
+						var sameName = 0;
+						$(data).each(function(index, data3) {
+								 if (cat.name.toLowerCase() == data3.name.toLowerCase()) {
+									sameName++;
+								} 
+						});  
+						if (sameName > 0) {
+							alert('This name has been used');
+						} else {	
+								 $.ajax({
+										url : '${pageContext.request.contextPath}/category/update',
+										type :'PUT',
+										data : JSON.stringify(cat),
+										contentType : 'application/json',
+										success: function(data){
+										window.location='${pageContext.request.contextPath}/category';
+										}, error : function(){
+											alert('update failed')	
+										}
+								 }); 
+						}
+					},
+					error : function() {
+						alert('failed');
+					}
+				}); 
+			} else {
+				alert('Complete your form ');
+			}
 		});
 		
 	
@@ -102,7 +159,7 @@
 	 	});
 	 	
 	 	// VALID NAME
-	 	$('#input-categoryName').on('input', function() {
+	 	/* $('#input-categoryName').on('input', function() {
 			var input=$(this);
 			var name = $(this).val();
 			if(name != ""){
@@ -182,7 +239,7 @@
 			}
 			
 			
-		});
+		}); */
 });
 		 
 </script>
@@ -219,7 +276,7 @@
 								</div>
 								
 								<!-- ================================================== TABLE =========================================== -->
-								<table class="table table-bordered">
+								<table class="table table-bordered" id="tbl-category">
 										<thead>
 											<tr>
 												<th>Category Name</th>
@@ -261,10 +318,13 @@
 														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 														<h5 class="modal-title" id="exampleModalLabel">Category</h5>
 												</div>
-												<form id="target" id="save-form-category" action="${pageContext.request.contextPath }/category/save" method="POST">
+												<form id="target" id="save-form-category" data-parsley-validate>
 														<div class="modal-body">
-																<input class="col-lg-12" id="input-categoryName" type="text" placeholder="Category Name">
-																<span class="error">This field is required</span>
+																<input class="col-lg-12" id="input-categoryName" type="text" placeholder="Category Name"
+																pattern="([A-z0-9\s]){2,20}$">
+																<p style="color: red;">
+																		<small>This field is required</small>
+																</p>
 														</div>
 												<div class="modal-footer">
 														<div class="col-lg-2">
@@ -289,10 +349,14 @@
 														<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
 														<h5 class="modal-title" id="exampleModalLabel">Category</h5>
 												</div>
-												<form>
+												<form id="target2" data-parsley-validate>
 												<div class="modal-body">
 														<input type="hidden" name="edit-id" id="edit-id">
-														<input id="edit-categoryName" class="col-lg-12"  type="text" placeholder="Category Name">
+														<input id="edit-categoryName" class="col-lg-12"  type="text" placeholder="Category Name"
+														pattern="([A-z0-9\s]){2,20}$">
+																<p style="color: red;">
+																		<small>This field is required</small>
+																</p>
 												</div>
 												<div class="modal-footer">
 														<div class="col-lg-1">

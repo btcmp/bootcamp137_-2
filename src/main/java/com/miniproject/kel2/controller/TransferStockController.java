@@ -84,6 +84,14 @@ public class TransferStockController {
 		transferStockService.saveUpdate(tStock);
 	}
 	
+	@RequestMapping(value = "/update-status-and-stock/{id}", method = RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.OK)
+	public void updateStatusAndStock(@RequestBody String newStatus, @PathVariable long id) {
+		TransferStock transferStock = transferStockService.getOne(id);
+		transferStock.setStatus(newStatus);
+		transferStockService.saveUpdateStatusAndStock(transferStock);
+	}
+	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	public void update(@RequestBody TransferStock tStock) {
@@ -147,7 +155,7 @@ public class TransferStockController {
 		return "detail-transfer-stock";
 	}
 	
-	// button edit 
+	// button done 
 	@RequestMapping(value="/detail/done/{id}", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public void done(@PathVariable long id) {
@@ -165,14 +173,5 @@ public class TransferStockController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void saveHistory(@RequestBody HistoryTransferStock htStock) {
 		htStockService.save(htStock);
-	}
-	
-	// untuk update stock
-	@RequestMapping(value = "/update-stock/{id}", method = RequestMethod.PUT)
-	@ResponseStatus(HttpStatus.OK)
-	public void updateStatusAndStock(@RequestBody String newStatus, @PathVariable long id) {
-		TransferStock transferStock = transferStockService.getOne(id);
-		transferStock.setStatus(newStatus);
-		transferStockService.saveUpdateStock(transferStock);
 	}
 }

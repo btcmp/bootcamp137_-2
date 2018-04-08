@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -85,6 +86,29 @@ public class ItemController {
 		itemService.delete(item);
 	}
 	
+	@RequestMapping(value = "/delete-inventory/{id}", method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteInventory(@PathVariable long id) {
+		ItemInventory itemInventory = new ItemInventory();
+		itemInventory.setId(id);
+		itemInventoryService.delete(itemInventory);
+	}
 	
+	/*@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String indexBySearch(@RequestParam(value="search", defaultValue="") String search, Model model){
+		List<Item> items = itemService.searchByName(search);
+		List<ItemVariant> variants = itemVariantService.searchByName(search);
+		model.addAttribute("items", items);
+		model.addAttribute("variants", variants);
+		System.out.println("search item : " + items.size());
+		System.out.println("search variant : " + variants.size());
+		return "item";
+	}*/
 	
+	@RequestMapping(value="/search",method=RequestMethod.GET)
+	@ResponseBody
+	public List<ItemInventory> searchItem(@RequestParam(value="search", defaultValue="") String search){
+		List<ItemInventory > itemInventories = itemInventoryService.searchItemInventoryByItemName(search);
+		return itemInventories;
+	}
 }

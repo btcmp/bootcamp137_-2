@@ -71,7 +71,7 @@ public class HistoryTransferStockDaoImpl implements HistoryTransferStockDao{
 	public HistoryTransferStock searchByIdTransferStock(long id) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from HistoryTransferStock hts where hts.transferStock.id = :id order by hts.createdOn asc";
+		String hql = "from HistoryTransferStock hts where hts.transferStock.id = :id order by hts.createdOn desc";
 		List <HistoryTransferStock> his = session.createQuery(hql).setParameter("id", id).list();
 		HistoryTransferStock ht = his.get(0);
 		if(his.isEmpty()) {

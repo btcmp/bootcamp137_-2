@@ -86,4 +86,9 @@ public class OutletController {
 		return "outlet";
 	}
 	
+	@RequestMapping(value="/get-all", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Outlet> getAll(){
+		return outletService.selectAll(); 
+	}
 }

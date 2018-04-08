@@ -1,7 +1,18 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 	$(function() {
+		$.fn.dataTable.ext.classes.sPageButton = 'btn btn-primary';
+		$('#tbl-item').DataTable({
+			searching : false, 
+			bFilter: false, 
+			iDisplayLength: 10, // display max 10
+			oLanguage: {
+			   sLengthMenu: "",
+			}
+		});
+		
 		index = 0;
+		var idDelete = [];
 		
 		// menampilkan pop up create
 		$('#btn-create').click(function() {
@@ -10,6 +21,13 @@
 
 	/* -------------------------------------------------------------- ADD VARIANT (CREATE) -------------------------------------------------------------------- */
 		// ADD NEW VARIANT DARI ADD VARIANT 
+		$('#add-var').click(function(){
+			 $('#input-varname').val('');
+			 $('#input-uprice').val('');
+			 $('#input-sku').val('');
+			 $('#input-beginning').val('');
+			 $('#input-alertat').val('');
+		});
 		$('#btn-add').click(function(){
 			var varname  = $('#input-varname').val();
 			var uprice  = $('#input-uprice').val();
@@ -121,6 +139,15 @@
 		 	alert('save ok');
  			}); 
 	
+	 /* -------------------------------------------------------------- CANCEL (CREATE) -------------------------------------------------------------------- */
+		 $("#btn-cancel").on('click',function(){
+			 clearForm();
+		 });
+			function clearForm() {
+				$('#input-item-name').val('');
+				$('#input-category').val('');
+				$('#tbody-addvar').empty();	
+			}  
 
 	
 	
@@ -130,8 +157,8 @@
 	
 	/*---------------------------------------------------- EDIT DATA UTAMA -----------------------------------------------*/
 	  	 // EDIT PADATABLE UTAMA
-		 $('.btn-edit-utama').on('click', function(evt) {  
-		 // $('body').on('click', '.btn-edit-utama', function(evt){
+		// $('.btn-edit-utama').on('click', function(evt) {  
+		  $('#data-utama').on('click', '.btn-edit-utama', function(evt){
 			evt.preventDefault();
 	    	var id=$(this).attr('id');	
 			
@@ -151,8 +178,8 @@
 						$('#tbody-edit-utama').append('<tr id=tr-var3'+index+'><td id='+index+'>' + invent.itemVariant.name +'</td><td>'+
 								invent.itemVariant.price +'</td><td>'+invent.itemVariant.sku
 								+'</td><td>'+invent.beginning+'</td><td style="display:none">'+invent.alertAtQty+'</td>'
-								+'<td style="display:none">'+invent.itemVariant.id+'</td>'
-								+'<td style="display:none">'+invent.id+'</td>'
+								+'<td style="display:none;">'+invent.itemVariant.id+'</td>'
+								+'<td style="display:none;">'+invent.id+'</td>'
 							//	+'<td>'+invent.outlet.name+'</td>'
 								+'<td> <a href="#" class="btn-edit-variant-utama" data-toggle="modal" data-target="#modalEdit3"> Edit </a> <a href="#" id="btn-X-utama" class="btn btn-danger"> X </a>'
 								+'</tr>');
@@ -192,8 +219,10 @@
 			
 			$('#tr-var' + index).remove();
 			$('#tbody-edit-utama').empty();
-			$('#tbody-edit-utama').append("<tr id=tr-var3 " + index + "><p style='display:none;'>" + $('#id-hidden-variant-utama').val() + "</p><td>" + $('#edit-varname-utama').val() + "</td><td>" + $('#edit-uprice-utama').val() + "</td><td>" 
+			$('#tbody-edit-utama').append("<tr id=tr-var " + index + "><td>" + $('#edit-varname-utama').val() + "</td><td>" + $('#edit-uprice-utama').val() + "</td><td>" 
 					+ $('#edit-sku-utama').val() + "</td><td>" + $('#edit-beginning-utama').val() + "</td><td style='display:none;'>" + $('#edit-alert-utama').val() +
+					 "</td><td>" + $('#id-variant-utama').val() +
+					 "</td><td>" + $('#id-inventory-utama').val() +
 					"</td><td><a 'btn-edit-variant-utama' href='#' data-toggle='modal' data-target='#modalEdit3'> Edit</a><button type='button' id='btn-X-utama' class='btn btn-danger'> X </button></td></tr>");
 		 	index++;
 		 
@@ -203,9 +232,12 @@
 	
   /* -------------------------------------------------------------- ADD VARIANT (UTAMA) -------------------------------------------------------------------- */
 		// ADD NEW VARIANT DARI ADD VARIANT 
-		 $('#btn-addvar-utama').click(function(evt){
+			/* $('#btn-addvar-utama').on('click', function(evt) {
 			 evt.preventDefault;
-			 
+			 reloadTableEdit();
+			}); */
+		  $('#btn-add-utama').click(function(evt){
+			 evt.preventDefault;
 			var varname  = $('#input-varname-utama').val();
 			var uprice  = $('#input-uprice-utama').val();
 			var sku  = $('#input-sku-utama').val();
@@ -228,9 +260,7 @@
 			index++;
 			console.log(index);
 			
-			$('#modal-edit-utama').modal('hide');
-			 $('#modalAddVariant3').modal('show');
-		});	 
+				});	 
 
 	
 	/* ------------------------------------------------------------------ SAVE (UTAMA) -------------------------------------------------------------------- */
@@ -243,7 +273,7 @@
 			
 		  $('#tbl-edit-utama > #tbody-edit-utama > tr').each(function(index,data){
 		    	var inventory = {
-		    			id : $(data).find('td').eq(6).text(),
+		    			id : $(data).find('td').eq(6).val(),
 						beginning :$(data).find('td').eq(3).text(),
 					    alertAtQty :$(data).find('td').eq(4).text(),
 					    itemVariant : {
@@ -259,7 +289,7 @@
 						active : 0,
 						itemInventories : [inventory],
 						item : {
-					    	id : $(data).find('td').eq(5).text()
+					    	id : $(data).find('td').eq(5).val()
 					     }
 		    	}
 		    	
@@ -269,7 +299,7 @@
 		  
 		  
 		  var item = {
-		    	id : $('#edit-id-utama').val(),
+		    	id : $('#edit-id-utama2').val(),
 		    	name : $('#edit-name-utama').val(),
 		    	active : 0,
 		    	category:{
@@ -278,8 +308,6 @@
 		    	itemVariants : itemVariants
 		    }
 		  console.log(item);
-		  if(item.name!==""){
-		    	console.log(item.name)
 		    	 $.ajax({
 				    	url:'${pageContext.request.contextPath}/item/update',
 				    	type : 'PUT',
@@ -293,9 +321,9 @@
 				    		alert('save failed')
 				    	}
 				    });
-		    } 	
  
-		  });
+		 
+	    	});
 	
 	/* -------------------------------------------------------------- DELETE VARIANT (UTAMA) ------------------------------------------------------------------- */
 		//DELETE
@@ -303,11 +331,44 @@
 				$(this).parent().parent().remove();
 			});
 
-	
-	
-	
-	
-	
+		
+	/* --------------------------------------------------------------  CANCEL (UTAMA) ------------------------------------------------------------------- */
+		 $("#btn-cancel-utama").on('click',function(){
+			 clearFormUtama();
+		 });
+			function clearFormUtama() {
+				$('#edit-name-utama').val('');
+				$('#edit-category-utama').val('');
+				$('#tbody-edit-utama').empty();	
+			}  
+		
+		 $('#btn-search').on('click', function(){
+			var word =$('#search').val();
+			console.log(word);
+			
+			$.ajax({
+				type : 'GET',
+				url : "${pageContext.request.contextPath}/item/search?search="+word,
+				dataType : 'json',
+				success : function (data){
+					$('#data-utama').empty();
+					$.each(data,function(key,invent){
+					$('#data-utama').append('<tr><td>'+invent.itemVariant.item.name+'-'+invent.itemVariant.name+'</td>'
+							+ '<td>'+invent.itemVariant.item.category.name+'</td>'
+							+ '<td>'+invent.itemVariant.price+'</td>'
+							+ '<td>'+invent.endingQty+'</td>'
+							+ '<td>'+invent.alertAtQty+'</td>'
+							+ '<td> <a  href="#" id="'+invent.itemVariant.item.id+'" class="btn-edit-utama" data-toggle="modal" data-target="#modal-edit-utama">Edit</a></td>'
+							+ '</tr>');
+					});
+				},
+				error : function (){
+					$('#data-utama').empty();
+				}
+			});
+			
+	 	}); 
+	 
 	
 	});	
 	
@@ -330,14 +391,19 @@
 						<div class="panel-body">
 							<div class="row">
 							<!-- ========================== Search ================================= -->
-								<div class="col-lg-10" style="margin-bottom: 10px;">
+								<div class="col-lg-3" style="margin-bottom: 10px;">
 									<ul class="nav top-menu">
 										<li>
 											<form class="navbar-form">
-												<input class="form-control" placeholder="Search" type="text">
+												<input class="form-control" id="search" placeholder="Search" type="text">
 											</form>
 										</li>
 									</ul>
+								</div>
+								<div class="col-lg-1" style="margin-bottom: 10px;">
+									<button type="button" class="btn btn-primary" id="btn-search" >Search</button>
+								</div>
+								<div class="col-lg-6" style="margin-bottom: 10px;">
 								</div>
 								
 								<!-- ======================= Button Export ======================= -->
@@ -378,8 +444,8 @@
 														<h5><b>Variant</b></h5>
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-														<button type="button" class="btn btn-primary"
-															data-toggle="modal" data-target="#modalAddVariant">Add Variant</button>
+														<button type="button" class="btn btn-primary" id="add-var"
+															data-toggle="modal" data-target="#modalAddVariant">Add Variant s</button>
 
 													</div>
 													
@@ -404,10 +470,10 @@
 
 												<div class="modal-footer">
 													<div class="col-lg-2">
-														<button type="button" class="btn btn-primary">Back</button>
+														<button type="button" class="btn btn-primary" data-dismiss="modal">Back</button>
 													</div>
 													<div class="col-lg-5">
-														<button type="button" class="btn btn-primary">Cancel</button>
+														<button type="button" class="btn btn-primary" id="btn-cancel">Cancel</button>
 													</div>
 													<div class="col-lg-5">
 														<button type="button" id="btn-save" class="btn btn-primary">Save</button>
@@ -491,7 +557,7 @@
 											<th>#</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="data-utama">
 										<c:forEach items ="${inventories}" var="inv">
 										<tr>
 											<td>${inv.itemVariant.item.name}-${inv.itemVariant.name}</td>
@@ -567,7 +633,7 @@
 
 
 								<!-- ================= Modal EDIT UTAMA =================== -->
-								<div class="modal fade" id="modal-edit-utama" tabindex="-1"
+								<div style="z-index:9999;"class="modal fade" id="modal-edit-utama" tabindex="-1"
 									role="dialog" aria-labelledby="exampleModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog" role="document">
@@ -600,8 +666,8 @@
 												</div>
 												<div class="col-lg-4" style="margin-bottom: 10px;">
 													<button type="button" class="btn btn-primary" id="btn-addvar-utama"
-														>Add
-														Variant</button>
+													data-toggle="modal" data-target="#modalAddVariant3">Add Variant</button>
+													
 												</div>
 
 												<table class="table table-bordered" id="tbl-edit-utama">
@@ -631,10 +697,10 @@
 
 											<div class="modal-footer">
 												<div class="col-lg-2">
-													<button type="button" class="btn btn-primary">Back</button>
+													<button type="button" class="btn btn-primary" data-dismiss="modal">Back</button>
 												</div>
 												<div class="col-lg-5">
-													<button type="button" class="btn btn-primary">Cancel</button>
+													<button type="button" class="btn btn-primary" id="btn-cancel-utama" >Cancel</button>
 												</div>
 												<div class="col-lg-5">
 													<button type="button" id="btn-save-utama" class="btn btn-primary">Save</button>
@@ -668,8 +734,11 @@
 											</div>
 											<form>
 											<div class="modal-body" style="height: 110px">
-												<input type="hidden" name="edit-id-utama2" id="edit-id-utama2">
-													<p id="id-hidden-variant-utama"></p>
+												
+												<input type="hidden" name="id-variant-utama" id="id-variant-utama">
+												<input type="hidden" name="id-inventory-utama" id="id-inventory-utama">
+												<input type="hidden" name="id-item-hidden-utama" id="id-item-hidden-utama">
+													
 												<div class="col-lg-4" style="margin-bottom: 10px;">
 													<input type="text" id="edit-varname-utama" placeholder="Variant Name">
 												</div>
@@ -711,7 +780,7 @@
 
 
 	<!-- ===================================== Modal Add Variant UTAMA==============================-->
-									<div class="modal fade" id="modalAddVariant3" tabindex="-1"
+									<div style="z-index:99999;" class="modal fade" id="modalAddVariant3" tabindex="-1"
 										role="dialog" aria-labelledby="modalEditLabel"
 										aria-hidden="true">
 										<div class="modal-dialog" role="document">

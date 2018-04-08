@@ -71,11 +71,17 @@ public class CategoryController {
 	}
 	
 	//validasi category name
-	@RequestMapping(value="/search-name-valid/{search}", method=RequestMethod.GET)
+	/*@RequestMapping(value="/search-name-valid/{search}", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Category> searchNameValidation(@PathVariable String search){
 		List<Category> cats = categoryService.searchByNameValidation(search);
 		System.out.println("category valid : " +cats.size());
 		return cats;
+	}*/
+	
+	@RequestMapping(value="/get-all", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Category> getAll(){
+		return categoryService.selectAll(); 
 	}
 }

@@ -1,6 +1,16 @@
 <%@ include file="topping/top.jsp"%>
 <script>
  $(function(){
+	 /* var option = [];
+		if (data.status=="Submitted") {
+			option.push("<option value=\"Kosong\">Action</option>");
+			option.push("<option value=\"Approved\">Approve</option>");
+			option.push("<option value=\"Rejected\">Reject</option>");
+			option.push("<option value=\"Print\">Print</option>");
+		} else {
+			option.push("<option value=\"Kosong\">Action</option>");
+			option.push("<option value=\"Print\">Print</option>");
+		} */
 	$('#change-status').change(function(){
 		var status = $(this).val();
 		var modifiedOn = new Date();
@@ -28,6 +38,8 @@
 				}
 			});
 		}
+		
+		
 	}); 
 
 	$('#btn-done').click(function(){
@@ -109,8 +121,6 @@
                               </tbody>
                           </table> <!--  table end --> 
 							
-							  
-							 
 								  <div class="footer">
 								  <div class="col-lg-10">
 									
