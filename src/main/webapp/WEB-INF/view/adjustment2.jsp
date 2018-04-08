@@ -1,6 +1,15 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 	$(function() {
+		$.fn.dataTable.ext.classes.sPageButton = 'btn btn-primary';
+		$('#table-adj').DataTable({
+			searching : false,
+			bFilter: false,
+			iDisplayLength: 10,
+			oLanguage: {
+			   sLengthMenu: "",
+			}
+		});
 		$('#btn-add').click(function() {
 			$('#modal-add-adjustment').modal();
 		});
@@ -25,6 +34,17 @@
 			if($('#return').val() != "" && $('#pickup').val() != ""){
 				var tglFrom = $('#pickup').val();
 				var tglTo = $('#return').val();
+				var date = tglFrom.split("-"); 
+			    console.log(date[0]);
+			    console.log(date[1]);
+			    console.log(date[2]);
+			    var late = new Date(date[0],date[1]-1,date[2]);//Date object
+			   // console.log(NewDate);
+
+				//var f = new Date(dsplit[0],dsplit[1]-1,dsplit[2]);
+				var t = new Date(tglTo);
+				//console.log("from : "+f);
+				console.log("to : "+t);
 				
 				$.ajax({
 					url : '${pageContext.request.contextPath}/adjustment/search/'+tglFrom+'/'+tglTo,
@@ -49,6 +69,8 @@
 						alert('failed search data adjustment');
 					}
 				});
+			}else{
+				alert("gak kedeteksi");
 			}
 		});
 		
@@ -208,7 +230,7 @@
 					</div>
 					<br>
 
-					<table class="table table-striped table-advance table-hover">
+					<table class="table table-striped table-advance table-hover" id="table-adj">
 						<thead>
 							<tr>
 								<th><i class="icon_calendar"></i> Adjustment Date</th>

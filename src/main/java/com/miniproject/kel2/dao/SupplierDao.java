@@ -22,5 +22,9 @@ public interface SupplierDao {
 	public List<Supplier> searchByNameValidation(String nama);
 
 	public String searchByEmailValidation(String email);
+
+	public List<Supplier> searchByNameValidationEdit(String name, long id);
+
+	public String searchByEmailValidationEdit(String email, long id);
 	
 }

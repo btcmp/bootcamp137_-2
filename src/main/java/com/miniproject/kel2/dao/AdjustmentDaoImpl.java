@@ -1,6 +1,7 @@
 package com.miniproject.kel2.dao;
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -57,7 +58,7 @@ public class AdjustmentDaoImpl implements AdjustmentDao{
 		session.flush();
 	}
 
-	public List<Adjustment> searchByDateRange(long tglFrom, long tglTo) {
+	public List<Adjustment> searchByDateRange(Date tglFrom, Date tglTo) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from Adjustment a where a.createdOn between :from and :to";

@@ -80,48 +80,53 @@
 			</div>
 			<form action="#" method="post" id="save-form-supplier">
 				<div class="modal-body" style="height: 400px;">
-					<div class="form-group">
+					<!-- <div class="form-group">
 					  <label class="control-label">Text</label>
 					  <input type="text" class="form-control" placeholder="Enter text" required>
 					</div>
-					
+					 -->
 					
 					<div class="form-group">
 						<label for="input-supplier-name">Supplier Name</label> <input
-							type="text" class="form-control" id="input-supplier-name"  name="supplier-name"	aria-describedby="emailHelp" placeholder="Supplier Name" required />
-						<!-- <span class="error">This field is required</span> -->
+							type="text" class="form-control" id="input-supplier-name"  data-smk-pattern="[a-zA-Z]" name="supplier-name"	aria-describedby="emailHelp" placeholder="Supplier Name" required />
+						<span class="error">This field is required</span>
 					</div>
 					<div class="form-group ">
 						<label for="input-address">Address</label>
-						<textarea class="form-control " id="input-address" name="address"
-							name="input-address" data-validation="length" data-validation-length="5-200"></textarea>
-							<!-- <span class="error">This field is required</span> -->
+						<textarea class="form-control " id="input-address" name="address" minlength="5" maxlength="255" required></textarea>
+						<span class="error">This field is required</span>
 							<!-- <span class="required">*</span> -->
 					</div>
+					<div style="width:67%; float:left; height:5px"><hr></div>
 					<div class="form-group">
+						<div class="form-group">
 						<div class="col-lg-4">
 							<label for="input-province">Province</label> <select
-								class="form-control" id="input-province" name="province">
+								class="form-control" id="input-province" name="province" required>
 								<option value="" selected="selected">-- Choose--</option>
 								<c:forEach items="${listProvince }" var="prov">
 									<option value="${prov.id }">${prov.name }</option>
 								</c:forEach> 
 							</select>
-							<!-- <span class="error">This field is required</span> -->
+							<span class="error">This field is required</span>
 				 		</div>
+				 		</div>
+				 		<div class="form-group">
 						<div class="col-lg-4">
 							<label for="input-region">Region</label> <select
-								class="form-control" id="input-region" name="region">
+								class="form-control" id="input-region" name="region" required>
 								<option value="" selected="selected">-- Choose--</option>
 								<%-- <c:forEach items="${listRegion }" var="reg">
 									<option value="${reg.id }">${reg.name }</option>
 								</c:forEach> --%>
 							</select>
-							<!-- <span class="error">This field is required</span> -->
+							<span class="error">This field is required</span>
 						</div>
+						</div>
+						<div class="form-group">
 						<div class="col-lg-4">
 							<label for="input-district">District</label> <select
-								class="form-control" id="input-district" name="district">
+								class="form-control" id="input-district" name="district" required>
 								<option value="" selected="selected">-- Choose--</option>
 								<%-- <c:forEach items="${listDistrict }" var="dis">
 									<option value="${dis.id }">${dis.name }</option>
@@ -129,26 +134,35 @@
 							</select>
 							<span class="error">This field is required</span>
 						</div>
+						</div>
 					</div>
 					<div style="height: 100px;"></div>
-					<div class="form-group">
+					<div class="inline">
+						<div class="form-group">
 						<div class="col-lg-4">
-							<label for="input-postal-code">Postal Code</label> <input
-								type="text" class="form-control" id="input-postal-code" name="postal-code"
-								aria-describedby="emailHelp" placeholder="Supplier Name" data-parsley-required="true">
+							<label for="input-postal-code">Postal Code</label> 
+							<input type="text" class="form-control" id="input-postal-code" name="postal-code"
+								maxlength="5" placeholder="Input 5 digits postal code" data-smk-type="number" required>
 								<span class="error">This field is required</span>
 						</div>
+						</div>
+						<div class="form-group">
 						<div class="col-lg-4">
-							<label for="input-phone">Phone</label> <input type="text"
-								class="form-control" id="input-phone" name="phone"
-								aria-describedby="emailHelp" placeholder="Supplier Name" data-parsley-required="true">
+							<label for="input-phone">Phone</label>
+							<input type="tel" class="form-control" id="input-phone" name="phone"
+										placeholder="ex. 081xxxxxxxxx" required>
+										<span class="error">This
+										field is required</span>
+							</div>
+						</div>
+						<div class="form-group">
+						<div class="col-lg-4">
+							<label for="input-email">Email</label>
+							<input type="email"
+								class="form-control" id="input-email" name="email"
+								aria-describedby="emailHelp" placeholder="Use valid email" required>
 								<span class="error">This field is required</span>
 						</div>
-						<div class="col-lg-4">
-							<label for="input-email">Email</label> <input type="text"
-								class="form-control" id="input-email" data-parsley-type="email"  name="email"
-								aria-describedby="emailHelp" placeholder="Supplier Name" data-parsley-required="true">
-								<span class="error">This field is required</span>
 						</div>
 					</div>
 
@@ -157,7 +171,6 @@
 				<div class="modal-footer">
 					<button type="reset" class="btn btn-primary">Cancel</button>
 					<button type="submit" id="add" class="btn btn-primary">Save</button>
-					<button type="submit" class="btn btn-default" id="btnEmpty">Submit</button>
 				</div>
 			</form>
 		</div>
@@ -178,74 +191,71 @@
 					type="button">X</button>
 				<h4 class="modal-title">Supplier Detail</h4>
 			</div>
-			<form id="edit-form" data-parsley-validation>
+			<form id="edit-form">
 				<div class="modal-body" style="height: 350px;">
-				
-				
-				
 					<input type="hidden" id="input-id">
 					<div class="form-group">
 						<label for="edit-supplier-name">Supplier Name</label> <input
-							type="text" class="form-control" id="edit-supplier-name"
-							aria-describedby="emailHelp" placeholder="Supplier Name">
-					</div>
-					<div class="form-group">
-					  <label class="control-label">Text</label>
-					  <input type="text" class="form-control" placeholder="Enter text" required>
+							type="text" class="form-control" id="edit-supplier-name" name="supplier-name" required>
+							<span class="error">This field is required</span>
 					</div>
 					<div class="form-group ">
 						<label for="edit-address">Address</label>
 						<textarea class="form-control " id="edit-address"
-							name="input-address" ></textarea>
+							name="address" required></textarea>
+							<span class="error">This field is required</span>
 					</div>
 					<div class="form-group">
 						<div class="col-lg-4">
 							<label for="edit-province">Province</label>
-							<select class="form-control" id="edit-province">
+							<select class="form-control" id="edit-province" name="province" required>
 								<option value="" selected="selected">-- Choose
 									--</option>
 								<c:forEach items="${listProvince }" var="prov">
 									<option value="${prov.id }">${prov.name }</option>
 								</c:forEach>
 							</select>
+							<span class="error">This field is required</span>
 						</div>
 						<div class="col-lg-4">
 							<label for="input-region">Region</label> 
-							<select class="form-control" id="edit-region">
+							<select class="form-control" id="edit-region" name="region" required>
 								<option value="" selected="selected">-- Choose
 									--</option>
 								<c:forEach items="${listRegion }" var="reg">
 									<option value="${reg.id }">${reg.name }</option>
 								</c:forEach>
 							</select>
+							<span class="error">This field is required</span>
 						</div>
 						<div class="col-lg-4">
 							<label for="input-district">District</label> 
-							<select class="form-control" id="edit-district">
+							<select class="form-control" id="edit-district" name="district" required>
 								<option value="" selected="selected">-- Choose
 									--</option>
 								<c:forEach items="${listDistrict }" var="dis">
 									<option value="${dis.id }">${dis.name }</option>
 								</c:forEach>
 							</select>
+							<span class="error">This field is required</span>
 						</div>
 					</div>
 					<div style="height: 70px;"></div>
 					<div class="form-group">
 						<div class="col-lg-4">
 							<label for="input-postal-code">Postal Code</label> <input
-								type="text" class="form-control" id="edit-postal-code"
-								aria-describedby="emailHelp" placeholder="Supplier Name">
+								type="text" class="form-control" id="edit-postal-code" name="postal-code" maxlength="5" required>
+							<span class="error">This field is required</span>
 						</div>
 						<div class="col-lg-4">
 							<label for="input-phone">Phone</label> <input type="text"
-								class="form-control" id="edit-phone"
-								aria-describedby="emailHelp" placeholder="Supplier Name">
+								class="form-control" id="edit-phone" name="phone" required>
+								<span class="error">This field is required</span>
 						</div>
 						<div class="col-lg-4">
 							<label for="input-email">Email</label> <input type="text"
-								class="form-control" id="edit-email"
-								aria-describedby="emailHelp" placeholder="Supplier Name">
+								class="form-control" id="edit-email" name="email" required>
+								<span class="error">This field is required</span>
 						</div>
 					</div>
 
@@ -265,19 +275,12 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-	$('#btnEmpty').click(function(evt) {
-		evt.preventDefault();
-		 $('#save-form-supplier').smkValidate();
-		    // Code here
-		    /* $.smkAlert({
-		      text: 'Validate!',
-		      type: 'success'
-		    }); */
-		  
-		});
-	
-	
-	
+	$('#btn-add').click(function(){
+		$('#modal-add-supplier').modal();
+	});
+	$('#btn-export').click(function(){
+		window.open('${pageContext.request.contextPath}/generate/supplier');
+	});
 	$('#input-supplier-name').on('input', function() {
 		var input=$(this);
 		var name = $(this).val();
@@ -307,19 +310,146 @@ $(document).ready(function(){
 			input.removeClass("valid").addClass("invalid");
 		}
 	});
-	
-	//validasi address
-	$('#input-address').on('input', function() {
+	//validasi edit
+	$('#edit-supplier-name').on('input', function() {
 		var input=$(this);
-		var address = $(this).val();
-		var re = /[a-zA-Z]/;
-		var is_valid=re.test(name);
-		if(is_valid){
-			input.removeClass("invalid").addClass("valid");
+		var name = $(this).val();
+		var id = $('#input-id').val();
+		console.log("id edit : "+id);
+		if(name != ""){
+			$.ajax({
+				url : '${pageContext.request.contextPath}/supplier/edit-name-valid/'+name+'/'+id,
+				type : 'GET',
+				success : function(data){
+					if(data.length != 0){
+						input.removeClass("valid").addClass("namaSama");
+						console.log(data.length);
+					}else{
+						var re = /[a-zA-Z]/;
+						var is_valid=re.test(name);
+						if(is_valid){
+							input.removeClass("invalid").addClass("valid");
+						}
+						else{
+							input.removeClass("valid").addClass("textonly");
+						}
+					}
+					
+				},
+				error : function(){}
+			});
 		}else{
-			input.removeClass("valid").addClass("textonly");
+			input.removeClass("valid").addClass("invalid");
 		}
 	});
+	
+	//validasi address
+	$('#input-address', '#edit-address').on('input', function() {
+		var input=$(this);
+		var address = $(this).val();
+		if(address != ""){
+			if(address.toString().length <= 5 || address.toString().length >= 255){
+				input.removeClass("valid").addClass("batas-karakter");
+			}else{
+				input.removeClass("invalid").addClass("valid");
+			}
+		}else{
+			input.removeClass("valid").addClass("invalid");
+		}
+	});
+	
+	//validasi province
+	$('#input-province', '#edit-province').on('input', function() {
+		var input=$(this);
+		var province = $(this).val();
+		if(province != ""){
+			input.removeClass("invalid").addClass("valid");
+		}else{
+			input.removeClass("valid").addClass("invalid");
+		}
+	});
+	
+	//validasi region
+	$('#input-region', '#edit-region').on('input', function() {
+		var input=$(this);
+		var region = $(this).val();
+		if(region != ""){
+			input.removeClass("invalid").addClass("valid");
+		}else{
+			input.removeClass("valid").addClass("invalid");
+		}
+	});
+	
+	//validasi district
+	$('#input-district', '#edit-district').on('input', function() {
+		var input=$(this);
+		var district = $(this).val();
+		if(district != ""){
+			input.removeClass("invalid").addClass("valid");
+		}else{
+			input.removeClass("valid").addClass("invalid");
+		}
+	});
+	
+	//validasi postalcode
+	$('#input-postal-code', '#edit-postal-code').on('input', function() {
+		var input=$(this);
+		var postal = $(this).val();
+		var re = /^(([0-9]*)|(([0-9]*)\.([0-9]*)))$/;
+		var is_valid=re.test(postal);
+		if(!is_valid){
+			input.removeClass("valid").addClass("numbering");
+		}else{
+			if(postal.toString().length != 5){
+				input.removeClass("valid").addClass("postal-code");
+			}else{
+				input.removeClass("invalid").addClass("valid");
+			}
+		}
+	});
+	
+	//validasi phone
+	$('#input-phone', '#edit-phone').on('input', function() {
+		var input=$(this);
+		var phone = $(this).val();
+		var re = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
+		//var re = /^\d{10}$/;
+		var is_valid=re.test(phone);
+		if(!is_valid){
+			input.removeClass("valid").addClass("numbering");
+		}else{
+			if(phone.toString().length < 8 || phone.toString().length >= 15){
+				input.removeClass("valid").addClass("phone-length");
+			}else{
+				input.removeClass("invalid").addClass("valid");
+			}
+		}
+	});
+	
+	/***phone number format***/
+	  $("#input-phone", "#edit-phone").keypress(function (e) {
+	    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	      return false;
+	    }
+	    var curchr = this.value.length;
+	    var curval = $(this).val();
+	    if (curchr == 4 && curval.indexOf("(") <= -1) {
+	      $(this).val(curval + "-");
+	    } else if (curchr == 4 && curval.indexOf("(") > -1) {
+	      $(this).val(curval + ")-");
+	    } else if (curchr == 6 && curval.indexOf(")") > -1) {
+	      $(this).val(curval + "-");
+	    } else if (curchr == 9) {
+	      $(this).val(curval + "-");
+	      $(this).attr('maxlength', '14');
+	    }
+	  });
+	
+	  $("#input-postal-code","#edit-postal-code").keypress(function (e) {
+		  if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+		      return false;
+		    }
+	  });
 	
 	//validasi email
 	$('#input-email').on('input', function() {
@@ -329,6 +459,39 @@ $(document).ready(function(){
 		if(email != ""){
 			$.ajax({
 				url : '${pageContext.request.contextPath}/supplier/search-email-valid/'+email,
+				type : 'GET',
+				success : function(data){
+					if(data == "ada"){
+						input.removeClass("valid").addClass("emailSama");
+						console.log(data);
+					}else{
+						var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+						var is_valid=re.test(email);
+						if(is_valid){
+							input.removeClass("invalid").addClass("valid");
+						}
+						else{
+							input.removeClass("valid").addClass("emailValid");
+						}
+					}
+					
+				},
+				error : function(){}
+			});
+		}else{
+			input.removeClass("valid").addClass("invalid");
+		}
+	});
+	
+	//validasi email edit
+	$('#edit-email').on('input', function() {
+		var input=$(this);
+		var email = $(this).val().toString();
+		var id = $('#input-id').val();
+		//console.log("email : "+email);
+		if(email != ""){
+			$.ajax({
+				url : '${pageContext.request.contextPath}/supplier/edit-email-valid/'+email+'/'+id,
 				type : 'GET',
 				success : function(data){
 					if(data == "ada"){
@@ -364,9 +527,7 @@ $(document).ready(function(){
 		}
 	});
 	//tambah data supplier
-	$('#btn-add').click(function() {
-		$('#modal-add-supplier').modal();
-	});
+	
 	
 	$('#add').on('click', function(evt){
 		evt.preventDefault(); //ini biar gak ngeload terus setelah di klik
@@ -384,6 +545,10 @@ $(document).ready(function(){
 			var namaSama=element.hasClass("namaSama");
 			var emailSama=element.hasClass("emailSama");
 			var emailValid=element.hasClass("emailValid");
+			var panjangKarakter=element.hasClass("batas-karakter");
+			var postalCode=element.hasClass("postal-code");
+			var number=element.hasClass("numbering");
+			var phone=element.hasClass("phone-length");
 			var error_element=$("span", element.parent());
 			if (!valid){
 				error_element.removeClass("error").addClass("error_show"); error_free=false;
@@ -403,6 +568,22 @@ $(document).ready(function(){
 					error_element.removeClass("error").addClass("error_show"); 
 					error_element.text('This is not email format');
 					error_free=false;
+				}else if(panjangKarakter){
+					error_element.removeClass("error").addClass("error_show"); 
+					error_element.text('This length must more than 4 and less than 255');
+					error_free=false;
+				}else if(postalCode){
+					error_element.removeClass("error").addClass("error_show"); 
+					error_element.text('This length must 5 digits');
+					error_free=false;
+				}else if(number){
+					error_element.removeClass("error").addClass("error_show"); 
+					error_element.text('Please input number postive only');
+					error_free=false;
+				}else if(phone){
+					error_element.removeClass("error").addClass("error_show"); 
+					error_element.text('This length must between 7 and 13 digits');
+					error_free=false;
 				}
 			}
 			else{error_element.removeClass("error_show").addClass("error");}
@@ -419,7 +600,8 @@ $(document).ready(function(){
 			var region = $('#input-region').val();
 			var district = $('#input-district').val();
 			var postal = $('#input-postal-code').val();
-			var phone = $('#input-phone').val();
+			var phoneStrip = $('#input-phone').val();
+			var phone = phoneStrip.replace('-','');
 			var email = $('#input-email').val();
 			var supplier = {
 				name : name,
@@ -539,41 +721,123 @@ $(document).ready(function(){
 		$('#edit-postal-code').val(supplier.postalCode);
 		$('#edit-phone').val(supplier.phone);
 		$('#edit-email').val(supplier.email);
+		/* $("span", $('#edit-supplier-name')).addClass("error");
+		$("span", $('#edit-address')).addClass("error");
+		$("span", $('#edit-province')).addClass("error");
+		$("span", $('#edit-region')).addClass("error");
+		$("span", $('#edit-district')).addClass("error");
+		$("span", $('#edit-postal-code')).addClass("error");
+		$("span", $('#edit-phone')).addClass("error");
+		$("span", $('#edit-email')).addClass("error"); */
 	}
 	
 	//execute update
 	$('#btn-update').click(function(){
-		var supplier = {
-				id : $('#input-id').val(),
-				name : $('#edit-supplier-name').val(),
-				address : $('#edit-address').val(),
-				provinceId : {
-					id : $('#edit-province').val()
-				},
-				regionId : {
-					id : $('#edit-region').val()
-				},
-				districtId : {
-					id : $('#edit-district').val()
-				},
-				postalCode : $('#edit-postal-code').val(),
-				phone : $('#edit-phone').val(),
-				email : $('#edit-email').val()
+		var name = $('#edit-supplier-name').val();
+		var address = $('#edit-address').val(); 
+		var province = $('#edit-province').val();
+		var region = $('#edit-region').val();
+		var district = $('#edit-district').val();
+		var postal = $('#edit-postal-code').val();
+		var phone = $('#edit-phone').val();
+		var email = $('#edit-email').val();
+		if(name != ""){$("span", $('#edit-supplier-name')).addClass("error");}
+		if(address != ""){$("span", $('#edit-address')).removeClass("error_show").addClass("error");}
+		if(province != ""){$("span", $('#edit-province')).removeClass("error_show").addClass("error");}
+		if(region != ""){$("span", $('#edit-region')).removeClass("error_show").addClass("error");}
+		if(district != ""){$("span", $('#edit-district')).removeClass("error_show").addClass("error");}
+		if(postal != ""){$("span", $('#edit-postal-code')).removeClass("error_show").addClass("error");}
+		if(phone != ""){$("span", $('#edit-phone')).removeClass("error_show").addClass("error");}
+		if(email != ""){$("span", $('#edit-email')).removeClass("error_show").addClass("error");}
+		//cobavalidasi
+		var form_data=$("#edit-form").serializeArray();
+		var error_free=true;
+			for (var input in form_data){
+				var element=$("#edit-"+form_data[input]['name']);
+				var valid=element.hasClass("valid");
+				var text=element.hasClass("textonly");
+				var namaSama=element.hasClass("namaSama");
+				var emailSama=element.hasClass("emailSama");
+				var emailValid=element.hasClass("emailValid");
+				var panjangKarakter=element.hasClass("batas-karakter");
+				var postalCode=element.hasClass("postal-code");
+				var number=element.hasClass("numbering");
+				var phone=element.hasClass("phone-length");
+				var error_element=$("span", element.parent());
+				if (!valid){
+					error_element.removeClass("error").addClass("error_show"); error_free=false;
+					if(text){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('Please input character only');
+						error_free=false;
+					}else if(namaSama){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('Name already used');
+						error_free=false;
+					}else if(emailSama){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('Email already used');
+						error_free=false;
+					}else if(emailValid){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('This is not email format');
+						error_free=false;
+					}else if(panjangKarakter){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('This length must more than 4 and less than 255');
+						error_free=false;
+					}else if(postalCode){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('This length must 5 digits');
+						error_free=false;
+					}else if(number){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('Please input number postive only');
+						error_free=false;
+					}else if(phone){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('This length must between 7 and 13 digits');
+						error_free=false;
+					}
+				}
+				else{error_element.removeClass("error_show").addClass("error");}
 			}
-		console.log(supplier);
-		$.ajax({
-			url : '${pageContext.request.contextPath}/supplier/update',
-			type : 'PUT',
-			data : JSON.stringify(supplier),
-			contentType : 'application/json',
-			success : function(supplier){
-				//alert('success');
-				window.location = '${pageContext.request.contextPath}/supplier';
-			},
-			error : function(){
-				alert('failed update!!');
-			}
-		});
+		if (!error_free){
+			event.preventDefault(); 
+		}
+		else{
+			var supplier = {
+					id : $('#input-id').val(),
+					name : $('#edit-supplier-name').val(),
+					address : $('#edit-address').val(),
+					provinceId : {
+						id : $('#edit-province').val()
+					},
+					regionId : {
+						id : $('#edit-region').val()
+					},
+					districtId : {
+						id : $('#edit-district').val()
+					},
+					postalCode : $('#edit-postal-code').val(),
+					phone : $('#edit-phone').val(),
+					email : $('#edit-email').val()
+				}
+			console.log(supplier);
+			$.ajax({
+				url : '${pageContext.request.contextPath}/supplier/update',
+				type : 'PUT',
+				data : JSON.stringify(supplier),
+				contentType : 'application/json',
+				success : function(supplier){
+					//alert('success');
+					window.location = '${pageContext.request.contextPath}/supplier';
+				},
+				error : function(){
+					alert('failed update!!');
+				}
+			});
+		}
 	});
 	
 	$('#field-search').on('input', function(){

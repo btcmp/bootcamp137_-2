@@ -104,10 +104,26 @@ public class SupplierController {
 		return sups;
 	}
 	
+	@RequestMapping(value="/edit-name-valid/{name}/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Supplier> editNameValidation(@PathVariable String name,@PathVariable long id){
+		List<Supplier> sups = supplierService.searchByNameValidationEdit(name, id);
+		System.out.println("supplier valid : "+sups.size());
+		return sups;
+	}
+	
 	@RequestMapping(value="/search-email-valid/{email:.+}", method=RequestMethod.GET)
 	@ResponseBody
 	public String searchEmailValidation(@PathVariable("email") String email){
 		String sups = supplierService.searchByEmailValidation(email);
+		System.out.println("email valid : "+sups);
+		return sups;
+	}
+	
+	@RequestMapping(value="/edit-email-valid/{email:.+}/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public String searchEmailValidationEdit(@PathVariable("email") String email,@PathVariable long id){
+		String sups = supplierService.searchByEmailValidationEdit(email, id);
 		System.out.println("email valid : "+sups);
 		return sups;
 	}

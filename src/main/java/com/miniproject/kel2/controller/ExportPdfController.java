@@ -34,8 +34,8 @@ public class ExportPdfController {
 		//user data
 		
 		//ini untuk download langsung
-		response.setHeader("Content-Disposition", "attachment; filename=\"suppliers.pdf\"");
-		response.setContentType("application/pdf");
+		/*response.setHeader("Content-Disposition", "attachment; filename=\"suppliers.pdf\"");
+		response.setContentType("application/pdf");*/
 		List<Supplier> suppliers = supplierService.selectAll();
 		
 		return new ModelAndView("pdfView","suppliers",suppliers);

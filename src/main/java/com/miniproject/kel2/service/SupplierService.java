@@ -49,4 +49,14 @@ public class SupplierService {
 		// TODO Auto-generated method stub
 		return supplierDao.searchByEmailValidation(email);
 	}
+
+	public List<Supplier> searchByNameValidationEdit(String name, long id) {
+		// TODO Auto-generated method stub
+		return supplierDao.searchByNameValidationEdit(name, id);
+	}
+
+	public String searchByEmailValidationEdit(String email, long id) {
+		// TODO Auto-generated method stub
+		return supplierDao.searchByEmailValidationEdit(email, id);
+	}
 }

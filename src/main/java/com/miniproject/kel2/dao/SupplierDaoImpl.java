@@ -89,4 +89,32 @@ public class SupplierDaoImpl implements SupplierDao{
 		}
 	}
 
+	public List<Supplier> searchByNameValidationEdit(String name, long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Supplier s where lower(s.name) like lower(:namanya) and s.id <>:idnya";
+		List<Supplier> sups = session.createQuery(hql).setParameter("namanya", name).setParameter("idnya", id).list();
+		if(sups == null) {
+			Supplier s = new Supplier();
+			sups.set(0, s);
+			return sups;
+		}else {
+			return sups;
+		}
+	}
+
+	public String searchByEmailValidationEdit(String email, long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "select s.email from Supplier s where lower(s.email) like lower(:emailnya) and s.id <>:idnya";
+		List<Object[]> sups = session.createQuery(hql).setParameter("emailnya", email).setParameter("idnya", id).list();
+		if(sups.isEmpty()) {
+			String none = "";
+			return none;
+		}else {
+			String ada = "ada";
+			return ada;
+		}
+	}
+
 }

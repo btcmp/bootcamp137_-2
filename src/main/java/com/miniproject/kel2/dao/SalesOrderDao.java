@@ -10,4 +10,6 @@ public interface SalesOrderDao {
 
 	public void save(SalesOrder so);
 
+	public long getIdSalesOrder(long idSalesOrder);
+
 }

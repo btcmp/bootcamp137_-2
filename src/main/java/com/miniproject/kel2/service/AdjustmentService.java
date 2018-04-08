@@ -108,7 +108,7 @@ public class AdjustmentService {
 		}
 	}
 
-	public List<Adjustment> searchByDateRange(long tglFrom, long tglTo) {
+	public List<Adjustment> searchByDateRange(Date tglFrom, Date tglTo) {
 		// TODO Auto-generated method stub
 		return adjustmentDao.searchByDateRange(tglFrom, tglTo);
 	}

@@ -1,5 +1,6 @@
 package com.miniproject.kel2.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class AdjustmentController {
 	
 	@RequestMapping(value="/search/{tglFrom}/{tglTo}", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Adjustment> search(@PathVariable long tglFrom, long tglTo){
+	public List<Adjustment> search(@PathVariable Date tglFrom,@PathVariable Date tglTo){
 		List<Adjustment> adjustments = adjustmentService.searchByDateRange(tglFrom, tglTo);
 		System.out.println("jumlah search daterange : "+adjustments.size());
 		return adjustments;
