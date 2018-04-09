@@ -107,7 +107,7 @@
 
                                    
                                           <div class="col-lg-12">
-                                             <table class="table table-striped table-bordered text-center" cellspacing="0" id="order-table">
+                                             <table class="table table-striped table-bordered text-center" id="order-table">
                                                 <thead >
                                                     <tr>
                                                         <th>Item</th>
@@ -127,10 +127,9 @@
                                                 </tbody>
                                             </table>
                                           </div>
-                                     </div>
                                   </form>
                                   <div>
-                                      <button class="form-control btn btn-primary">Done</button>
+                                      <a  type ="btn" class="form-control btn btn-primary" href="${pageContext.request.contextPath}/request/">Done</a>
                                   </div>
                               </div>
                           </div>

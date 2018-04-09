@@ -50,22 +50,75 @@ public class PurchaseRequestService {
 
 	public void save(PurchaseRequest pr) {
 		// TODO Auto-generated method stub
+		
+		
 		PurchaseRequest prq = new PurchaseRequest();
 		prq.setId(pr.getId());
-		prq.setCreatedOn(prq.getCreatedOn());
+		//prq.setCreatedOn(prq.getCreatedOn());
 		prq.setStatus(pr.getStatus());
 		prq.setNotes(pr.getNotes());
-		prq.setPrNo(pr.getPrNo());
+		
+		Calendar calender = Calendar.getInstance(); // get calender
+		int tahun = calender.get(Calendar.YEAR);
+		int bulan = calender.get(Calendar.MONTH);
+		int hari = calender.get(Calendar.DATE);
+		
+		String month = null;
+		if(bulan < 10) {
+			month = "0"+ bulan;
+		} 
+		else {
+			month = Integer.toString(bulan)+1;
+		}
+		
+		//set number
+		int no = prDao.CountPRByMonth(bulan, tahun)+1;
+ 		String nomor;
+ 		
+ 		if(no < 10) {
+ 			nomor = "00"+no;
+ 		} else if(no < 100) {
+ 			nomor = "0"+no;
+ 		} else {
+ 			nomor = Integer.toString(no);
+ 		}
+		
+		
+		String prNo = "PR_" +tahun+month+nomor;
+		
+		
+		int unique = 0;
+		while(unique == 0) {
+		prNo = "PR_" +tahun+month+nomor;
+		int jmlPr = prDao.CountPrByPrNo(prNo);
+			if(jmlPr == 0) {
+				unique = 1;
+			}else {
+			int noTambah = Integer.parseInt(nomor);
+			 noTambah++;
+			if( noTambah < 10) {
+				nomor = "00"+ noTambah;
+				} else if( noTambah < 100) {
+				nomor = "0"+ noTambah;
+				} else {
+				nomor = Integer.toString(no);
+					}
+				}
+		}
+		
 		prq.setReadyTime(pr.getReadyTime());
 		prq.setOutlet(pr.getOutlet());
+		
 		
 		
 		if(prq.getId() != 0) {
 			prq.setModifiedOn(new Date());
 			PurchaseRequest request = prDao.getOne(prq.getId());
 			prq.setCreatedOn(request.getCreatedOn());
+			prq.setPrNo(request.getPrNo());
 		}else {
 			prq.setCreatedOn(new Date());
+			prq.setPrNo(prNo);
 		}
 		
 		prDao.save(prq);
@@ -185,14 +238,46 @@ public class PurchaseRequestService {
 		//save to po
 		float grandTotal = 0;
 		
+		
+		
 		PurchaseOrder po = new PurchaseOrder();
 		po.setCreatedOn(hpr.getCreatedOn());
 		po.setCreatedBy(pr.getCreatedBy());
 		po.setNotes(pr.getNotes());
+		
+		Calendar calender = Calendar.getInstance(); // get calender
+		int tahun = calender.get(Calendar.YEAR);
+		int bulan = calender.get(Calendar.MONTH);
+		
+		String month = null;
+		if(bulan < 10) {
+			month = "0"+ bulan;
+		} 
+		else {
+			month = Integer.toString(bulan)+1;
+		}
+		
+		//set number
+		int no = poDao.CountPRByMonth(bulan, tahun)+1;
+ 		String nomor;
+ 		
+ 		if(no < 10) {
+ 			nomor = "00"+no;
+ 		} else if(no < 100) {
+ 			nomor = "0"+no;
+ 		} else {
+ 			nomor = Integer.toString(no);
+ 		}
+		
+		
+		String poNo = "PO_" +tahun+month+nomor;
+		
+		System.out.println(poNo);
+		
+		po.setPoNo(poNo);
 		po.setOutlet(pr.getOutlet());
 		po.setGrandTotal(grandTotal);
 		po.setPr(pr);
-		
 		poDao.save(po);
 		
 		if(pr.getRequestDetail() != null) {
@@ -212,6 +297,7 @@ public class PurchaseRequestService {
 			PurchaseOrder newPo = new PurchaseOrder();
 			newPo.setId(po.getId());
 			newPo.setGrandTotal(grandTotal);
+			newPo.setPoNo(poNo);
 			newPo.setStatus("Unchecked");
 			newPo.setPr(po.getPr());
 			poDao.update(newPo);
@@ -223,7 +309,7 @@ public class PurchaseRequestService {
 		HistoryPurchaseOrder hpo = new HistoryPurchaseOrder();
 		hpo.setCreatedOn(po.getCreatedOn());
 		hpo.setCreatedBy(po.getCreatedBy());
-		hpo.setStatus(po.getStatus());
+		hpo.setStatus("Created Po");
 		hpo.setPo(po);
 		hpoDao.save(hpo);
 		

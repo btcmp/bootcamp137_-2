@@ -177,7 +177,7 @@
                                      </div>
                                   </form>
                                   <div>
-                                      <button class="form-control btn btn-primary">Done</button>
+                                      <a  type ="btn" class="form-control btn btn-primary" href="${pageContext.request.contextPath}/order/">Done</a>
                                   </div>
                               </div>
                           </div>

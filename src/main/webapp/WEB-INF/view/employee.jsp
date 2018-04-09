@@ -75,7 +75,7 @@
 									</label>
 									<div class="col-lg-10">
 										<input class="form-control " id="email" name="email"
-											type="email" data-parsley-type-message="must be a valid email address please" />
+											type="email" data-parsley-type-message="must be a valid email address please" required="" />
 									</div>
 								</div>
 								<div class="form-group ">

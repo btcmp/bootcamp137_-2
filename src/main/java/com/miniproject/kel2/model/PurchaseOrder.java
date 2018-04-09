@@ -41,7 +41,7 @@ public class PurchaseOrder {
 	private Supplier supplier;
 	
 	
-	@Column(name="pr_No")
+	@Column(name="po_No")
 	private String poNo;
 	
 	@Column(name="notes")

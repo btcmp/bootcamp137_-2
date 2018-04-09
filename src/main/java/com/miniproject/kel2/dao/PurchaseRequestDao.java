@@ -23,4 +23,10 @@ public interface PurchaseRequestDao {
 	public void created(long id);
 
 	public void rejected(long id);
+
+	public int jumlahPr(PurchaseRequest pr);
+
+	public int CountPRByMonth(int bulan, int tahun);
+
+	public int CountPrByPrNo(String prNo);
 }

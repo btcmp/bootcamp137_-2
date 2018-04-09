@@ -166,7 +166,7 @@
 						<div class="form-group">
 
 							<div class="col-lg-12">
-								<textarea class="form-control" id="prNo"></textarea>
+								<textarea class="form-control" id="prNo" style="display:none;"></textarea>
 								<textarea class="form-control" id="request-notes"></textarea>
 							</div>
 						</div>

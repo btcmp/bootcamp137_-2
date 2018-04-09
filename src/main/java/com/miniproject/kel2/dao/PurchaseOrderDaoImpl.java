@@ -96,4 +96,26 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
 		}
 	}
 
+	public int CountPRByMonth(int bulan, int tahun) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseOrder where MONTH(createdOn) = :month and YEAR(createdOn) = :year";
+		List<PurchaseRequest> pos = session.createQuery(hql).setParameter("month", bulan).setParameter("year", tahun).list();
+		if(pos.isEmpty()) {
+			return 0;
+		}
+		return pos.size();
+	}
+
+	public int CountPrByPrNo(String poNo) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseOrder where poNo = :poNo";
+		List<PurchaseRequest> pos = session.createQuery(hql).setParameter("poNo", poNo).list();
+		if(pos.isEmpty()) {
+			return 0;
+		}
+		return pos.size();
+	}
+
 }

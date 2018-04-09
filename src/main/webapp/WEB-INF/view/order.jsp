@@ -103,15 +103,7 @@
                                     <!-- //mengambil id barang -->
                                         <tr id = "#">
                                             <td>
-                                            <script>
-                                            	var fullDate =' ${pos.createdOn }';
-                                            	var wkt = fullDate.split('.');
-                                            	var Tanggal = wkt[1].split(' ');
-                                            	var Time = separateDate[0].split('_');
-                                            	var Tgl = Time[2]+'-'+Time[1]+'-'+Time[0];
-                                            	
-                                            	document.write(fullDate);
-                                            </script>
+                                            	${pos.createdOn }
                                             </td>
                                             <td>${pos.supplier.name }</td>
                                             <td>${pos.poNo }</td>
@@ -163,7 +155,7 @@
                     <label for="outlet-name" class="control-label"><span class="required">*</span> CREATE NEW PO : {isi nama outlet}</label>
                 </div>
 					<input type="hidden" name='input-id' class="form-control" id="id-po"/>
-					<input type="hidden" name='input-poNo' class="form-control" id="po-no" value="123"/>
+					<input type="hidden" name='input-poNo' class="form-control" id="po-no"/>
 					<input type="hidden" name='input-status' class="form-control" id="po-status"/>
 					 
                  <label for="outlet-name" class="control-label"> Supplier : <span class="required">*</span></label>            
