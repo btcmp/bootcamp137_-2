@@ -20,6 +20,7 @@ import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.Province;
 import com.miniproject.kel2.model.Region;
 import com.miniproject.kel2.model.SalesOrder;
+import com.miniproject.kel2.model.Supplier;
 import com.miniproject.kel2.service.CustomerService;
 import com.miniproject.kel2.service.DistrictService;
 import com.miniproject.kel2.service.ItemInventoryService;
@@ -59,6 +60,22 @@ public class SalesOrderController {
 		model.addAttribute("listRegion", regions);
 		model.addAttribute("listDistrict", districts);
 		return "sales-order2";
+	}
+	
+	@RequestMapping(value="/search-name-valid/{name}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Customer> searchNameValidation(@PathVariable String name){
+		List<Customer> custs = customerService.searchByNameValidation(name);
+		System.out.println("customer valid : "+custs.size());
+		return custs;
+	}
+	
+	@RequestMapping(value="/search-email-valid/{email:.+}", method=RequestMethod.GET)
+	@ResponseBody
+	public String searchEmailValidation(@PathVariable("email") String email){
+		String custs = customerService.searchByEmailValidation(email);
+		System.out.println("email valid : "+custs);
+		return custs;
 	}
 	
 	@RequestMapping(value="/save-customer", method=RequestMethod.POST)

@@ -16,6 +16,7 @@ import org.hibernate.validator.constraints.Email;
 @Entity
 @Table(name="CUSTOMER_MP")
 public class Customer {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="cust")
 	@SequenceGenerator(initialValue=3333, name="cust", sequenceName="cust")

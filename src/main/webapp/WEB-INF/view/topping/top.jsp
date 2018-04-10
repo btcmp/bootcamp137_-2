@@ -124,6 +124,7 @@
 
 .error{
 	color : red;
+	display : none;
 }		
 
 .error_show{

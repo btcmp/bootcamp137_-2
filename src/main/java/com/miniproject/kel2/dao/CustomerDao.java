@@ -15,5 +15,9 @@ public interface CustomerDao {
 	public void update(Customer customer);
 
 	public List<Customer> searchByName(String word);
+
+	public List<Customer> searchByNameValidation(String name);
+
+	public String searchByEmailValidation(String email);
 	
 }

@@ -37,4 +37,14 @@ public class CustomerService {
 		// TODO Auto-generated method stub
 		return customerDao.searchByName(word);
 	}
+
+	public List<Customer> searchByNameValidation(String name) {
+		// TODO Auto-generated method stub
+		return customerDao.searchByNameValidation(name);
+	}
+
+	public String searchByEmailValidation(String email) {
+		// TODO Auto-generated method stub
+		return customerDao.searchByEmailValidation(email);
+	}
 }

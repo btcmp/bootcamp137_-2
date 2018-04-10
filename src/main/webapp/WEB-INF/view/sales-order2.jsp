@@ -1,6 +1,112 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 	$(function() {
+		$('#form-add-cust').parsley().on('field:validated', function() {
+		    /* var ok = $('.parsley-error').length === 0;
+		    $('.bs-callout-info').toggleClass('hidden', !ok);
+		    $('.bs-callout-warning').toggleClass('hidden', ok); */
+		  })
+		  .on('form:submit', function() {
+		    return false; // Don't submit form for this demo
+		  });
+		
+		$('#input-cust-name').on('input', function() {
+			var input=$(this);
+			var name = $(this).val();
+			if(name != ""){
+				$.ajax({
+					url : '${pageContext.request.contextPath}/sales-order/search-name-valid/'+name,
+					type : 'GET',
+					success : function(data){
+						if(data.length != 0){
+							input.removeClass("valid").addClass("namaSama");
+							console.log(data.length);
+						}else{
+							var re = /[a-zA-Z]/;
+							var is_valid=re.test(name);
+							if(is_valid){
+								input.removeClass("invalid").addClass("valid");
+							}
+							else{
+								input.removeClass("valid").addClass("textonly");
+							}
+						}
+						
+					},
+					error : function(){}
+				});
+			}else{
+				input.removeClass("valid").addClass("invalid");
+			}
+		});
+		
+		//validasi email
+		$('#input-cust-email').on('input', function() {
+			var input=$(this);
+			var email = $(this).val().toString();
+			console.log("email : "+email);
+			if(email != ""){
+				$.ajax({
+					url : '${pageContext.request.contextPath}/sales-order/search-email-valid/'+email,
+					type : 'GET',
+					success : function(data){
+						if(data == "ada"){
+							input.removeClass("valid").addClass("emailSama");
+							console.log(data);
+						}else{
+							var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+							var is_valid=re.test(email);
+							if(is_valid){
+								input.removeClass("invalid").addClass("valid");
+							}
+							else{
+								input.removeClass("valid").addClass("emailValid");
+							}
+						}
+						
+					},
+					error : function(){}
+				});
+			}else{
+				input.removeClass("valid").addClass("invalid");
+			}
+		});
+		
+		//validasi phone
+		$('#input-cust-phone').on('input', function() {
+			var input=$(this);
+			var phone = $(this).val();
+			var re = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
+			//var re = /^\d{10}$/;
+			var is_valid=re.test(phone);
+			if(!is_valid){
+				input.removeClass("valid").addClass("numbering");
+			}else{
+				if(phone.toString().length < 8 || phone.toString().length >= 15){
+					input.removeClass("valid").addClass("phone-length");
+				}else{
+					input.removeClass("invalid").addClass("valid");
+				}
+			}
+		});
+		
+		$("#input-cust-phone").keypress(function (e) {
+		    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+		      return false;
+		    }
+		    var curchr = this.value.length;
+		    var curval = $(this).val();
+		    if (curchr == 4 && curval.indexOf("(") <= -1) {
+		      $(this).val(curval + "-");
+		    } else if (curchr == 4 && curval.indexOf("(") > -1) {
+		      $(this).val(curval + ")-");
+		    } else if (curchr == 6 && curval.indexOf(")") > -1) {
+		      $(this).val(curval + "-");
+		    } else if (curchr == 9) {
+		      $(this).val(curval + "-");
+		      $(this).attr('maxlength', '14');
+		    }
+		  });
 		
 		$('#btn-search-customer').click(function() {
 			$('#modal-search-customer').modal();
@@ -17,7 +123,8 @@
 		}); */
 
 		$("#input-cust-dob").datepicker({
-			dateFormat : 'yy-mm-dd'
+			dateFormat : 'yy-mm-dd',
+			maxDate : 0
 		});
 		
 		//input region dan district
@@ -77,49 +184,108 @@
 
 		//input customer
 		$('#add-cust').click(function() {
-			var name = $('#input-cust-name').val();
-			var email = $('#input-cust-email').val();
-			var phone = $('#input-cust-phone').val();
-			var dob = $('#input-cust-dob').val();
-			var address = $('#input-address').val();
-			var province = $('#input-province').val();
-			var region = $('#input-region').val();
-			var district = $('#input-district').val();
-			
-			var customer = {
-				name : name,
-				email : email,
-				phone : phone,
-				dob : dob,
-				address : address,
-				provinceId :{
-					id : province
-				},
-				regionId : {
-					id : region
-				},
-				districtId : {
-					id : district
-				},
-				modifiedOn : new Date(),
-				createdOn : new Date(),
-				active : 0
-			}
-			
-			$.ajax({
-				url : '${pageContext.request.contextPath}/sales-order/save-customer',
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(customer),
-				success : function(data){
-					//alert('success save new customer');
-					$('#form-add-cust').trigger('reset');
-					$('#modal-add-cust').modal('hide');
-				},
-				error : function(){
-					alert('failed save new customer');
+			//cobavalidasi
+			var form_data=$("#form-add-cust").serializeArray();
+			var error_free=true;
+			for (var input in form_data){
+				var element=$("#input-"+form_data[input]['name']);
+				var valid=element.hasClass("valid");
+				var text=element.hasClass("textonly");
+				var namaSama=element.hasClass("namaSama");
+				var emailSama=element.hasClass("emailSama");
+				var emailValid=element.hasClass("emailValid");
+				var panjangKarakter=element.hasClass("batas-karakter");
+				var postalCode=element.hasClass("postal-code");
+				var number=element.hasClass("numbering");
+				var phone=element.hasClass("phone-length");
+				var error_element=$("span", element.parent());
+				if (!valid){
+					error_element.removeClass("error").addClass("error_show"); error_free=false;
+					if(text){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('Please input character only');
+						error_free=false;
+					}else if(namaSama){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('Name already used');
+						error_free=false;
+					}else if(emailSama){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('Email already used');
+						error_free=false;
+					}else if(emailValid){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('This is not email format');
+						error_free=false;
+					}else if(panjangKarakter){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('This length must more than 4 and less than 255');
+						error_free=false;
+					}else if(postalCode){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('This length must 5 digits');
+						error_free=false;
+					}else if(number){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('Please input number postive only');
+						error_free=false;
+					}else if(phone){
+						error_element.removeClass("error").addClass("error_show"); 
+						error_element.text('This length must between 7 and 13 digits');
+						error_free=false;
+					}
 				}
-			});
+				else{error_element.removeClass("error_show").addClass("error");}
+			}
+			if (!error_free){
+				event.preventDefault(); 
+			}
+			if ($("#form-add-cust").parsley().isValid()) {
+				var name = $('#input-cust-name').val();
+				var email = $('#input-cust-email').val();
+				var phoneStrip = $('#input-cust-phone').val();
+				var phone = phoneStrip.replace('-','');
+				var dob = $('#input-cust-dob').val();
+				var address = $('#input-address').val();
+				var province = $('#input-province').val();
+				var region = $('#input-region').val();
+				var district = $('#input-district').val();
+				
+				var customer = {
+					name : name,
+					email : email,
+					phone : phone,
+					dob : dob,
+					address : address,
+					provinceId :{
+						id : province
+					},
+					regionId : {
+						id : region
+					},
+					districtId : {
+						id : district
+					},
+					modifiedOn : new Date(),
+					createdOn : new Date(),
+					active : 0
+				}
+				
+				$.ajax({
+					url : '${pageContext.request.contextPath}/sales-order/save-customer',
+					type : 'POST',
+					contentType : 'application/json',
+					data : JSON.stringify(customer),
+					success : function(data){
+						//alert('success save new customer');
+						$('#form-add-cust').trigger('reset');
+						$('#modal-add-cust').modal('hide');
+					},
+					error : function(){
+						alert('failed save new customer');
+					}
+				});
+			}
 		});
 		
 		//search customer 
@@ -538,23 +704,26 @@
 			</div>
 			<form id="save-form" data-parsley-validation>
 				<div class="modal-body">
-					<div class="form-group">
-						<div class="col-lg-9">
-							<input class="form-control" placeholder="Search Customer..." id="input-search-cust"
-								type="text">
-						</div>
-						<div class="col-lg-3">
-							<button type="button" id="btn-add-cust" class="btn btn-primary">Add
-								New</button>
-						</div>
-						<p></p>
-						<br> <br>
-						<p></p>
-						<div class="col-lg-12">
-							<table class="table table-striped table-advance table-hover" id="table-customer">
-								<tbody id="isi-customer" style="cursor:pointer">
-								</tbody>
-							</table>
+					<div class="form">
+						<div class="form-group">
+							<div class="col-lg-9">
+								<input class="form-control" placeholder="Search Customer..."
+									id="input-search-cust" type="text">
+							</div>
+							<div class="col-lg-3">
+								<button type="button" id="btn-add-cust" class="btn btn-primary">Add
+									New</button>
+							</div>
+							<p></p>
+							<br> <br>
+							<p></p>
+							<div class="col-lg-12">
+								<table class="table table-striped table-advance table-hover"
+									id="table-customer">
+									<tbody id="isi-customer" style="cursor: pointer">
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -576,45 +745,65 @@
 					type="button">X</button>
 				<h4 class="modal-title">NEW CUSTOMER</h4>
 			</div>
-			<form id="form-add-cust" data-parsley-validation>
-				<div class="modal-body">
+			<form id="form-add-cust" data-parsley-validate="true">
+				<div class="modal-body" style="height:480px;">
+				<div class="form">
 					<div class="form-group">
 						<label for="input-supplier-name"><b>PROFILE </b></label> <input
-							type="text" class="form-control" id="input-cust-name"
-							aria-describedby="emailHelp" placeholder="Customer Name">
-						<input type="text" class="form-control" id="input-cust-email"
-							aria-describedby="emailHelp" placeholder="Email"> <input
-							type="text" class="form-control" id="input-cust-phone"
-							aria-describedby="emailHelp" placeholder="Phone">
+							type="text" class="form-control" id="input-cust-name" data-parsley-pattern="/[a-zA-Z]/" name="cust-name"
+							required="" placeholder="Customer Name">
+							<span class="error">This field is required</span>
+					</div>
+					<div class="form-group">
+						<input data-parsley-trigger="change" required="" type="email" name="cust-email"
+						class="form-control" id="input-cust-email"
+							placeholder="Email"> 
+							<span class="error">This field is required</span>
+					</div>
+					<div class="form-group">
+							<input type="text" class="form-control" id="input-cust-phone" name="cust-phone"
+							aria-describedby="emailHelp" placeholder="Phone" data-parsley-pattern="/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g" required="">
+						<span class="error">This field is required</span>
 					</div>
 					<br>
 					<div class="form-group">
 						<label for="input-supplier-name"><b>DAY OF BIRTH </b></label> <input
-							type="text" class="form-control" id="input-cust-dob"
-							aria-describedby="emailHelp" placeholder="Day of birth">
+							type="text" class="form-control" id="input-cust-dob" name="cust-dob" placeholder="Day of birth" required="">
 					</div>
 					<br>
-					<div class="form-group ">
+					<div class="gabungan ">
+						<div class="form-group">
 						<label for="input-address">ADDRESS</label>
-						<textarea class="form-control " id="input-address"
-							name="input-address" required></textarea>
-						<select class="form-control" id="input-province" style="width:34%; float:left;">
+						<textarea class="form-control " id="input-address" name="address" data-parsley-trigger="keyup" data-parsley-minlength="5" data-parsley-maxlength="250"
+							name="input-address" required=""></textarea>
+						</div>
+						<div class="form-group" style="width:34%; float:left;">
+						<select class="form-control" id="input-province" name="province" required="">
 							<option value="" selected="selected">-- Choose --</option>
 							<c:forEach items="${listProvince }" var="prov">
 								<option value="${prov.id }">${prov.name }</option>
 							</c:forEach>
-						</select> <select class="form-control" id="input-region" style="width:33%; float:left;">
+						</select> 
+						</div>
+						<div class="form-group" style="width:33%; float:left;">
+						<select class="form-control" id="input-region" name="region" required="">
 							<option value="" selected="selected">-- Choose --</option>
-						</select> <select class="form-control" id="input-district" style="width:33%; float:left;">
+						</select> 
+						</div>
+						<div class="form-group" style="width:33%; float:left;">
+						<select class="form-control" id="input-district" name="district" required="">
 							<option value="" selected="selected">-- Choose --</option>
 						</select>
+						</div>
 					</div>
 				</div>
-				<div class="modal-footer">
-					<button type="button" id="add-cust" class="btn btn-primary">Done</button>
 				</div>
+				<div class="modal-footer" style="width:100%;">
+					<button type="submit" id="add-cust" class="btn btn-primary">Done</button>
+				</div>
+				
 			</form>
-		</div>
+			</div>
 	</div>
 </div>
 

@@ -52,6 +52,6 @@ public class ExportPdfController {
 		response.setContentType("application/pdf");
 		List<SalesOrderDetail> receipts = salesOrderDetailService.getReceiptBySalesOrder(id);
 		System.out.println("mau ngeprint");
-		return new ModelAndView("pdfView","receipts", receipts);
+		return new ModelAndView("pdfViewSalesOrder","receipts", receipts);
  	}
 }
