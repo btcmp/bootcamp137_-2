@@ -314,4 +314,16 @@ public class PurchaseRequestService {
 		hpoDao.save(hpo);
 		
 	}
+
+	public void submit(long id) {
+		// TODO Auto-generated method stub
+		prDao.submit(id);
+		PurchaseRequest pr = prDao.getOne(id);
+		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
+		hpr.setCreatedOn(new Date());
+		hpr.setPr(pr);
+		hpr.setStatus(pr.getStatus());
+		
+		hprDao.save(hpr);
+	}
 }

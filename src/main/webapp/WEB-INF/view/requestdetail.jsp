@@ -53,15 +53,33 @@
                                           <label for="cname" class="control-label col-lg-3">Purchase Request Detail </label>
                                           <div class="col-lg-9">
                                           	<div class="col-lg-3">
-                                              
-                                            <select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${pr.id }">
-													<option value="All">More</option>
-										    		<option value="Approved">Approved</option>
-										    		<option value="Rejected">Rejected</option>
-										    		<option value="Printed">Printed</option>
-										    		<option value="" class="divider"></option>
-										    		<option value="CreatePo">Create PO</option>
-												</select>
+                                              <script>
+												if('${po.status}' == 'Approved'){
+													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${po.id }">'
+													+'<option value="Approved">Approved</option>'
+													+'<option value="Process">Process</option>'
+													+'<option value="Printed">Print</option>'
+													+'</select>');
+													
+												} else if ('${po.status}' == 'Rejected'){
+													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${pr.id }">'
+															+'<option value="Rejected">Rejected</option>'
+												    		+'<option value="Printed">Printed</option>'
+												    		+'<option value="" class="divider"></option>'
+														+'</select>');
+												} else {
+													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${pr.id }">'
+															+'<option value="All">More</option>'
+												    		+'<option value="Approved">Approved</option>'
+												    		+'<option value="Rejected">Rejected</option>'
+												    		+'<option value="Printed">Printed</option>'
+												    		+'<option value="" class="divider"></option>'
+												    		+'<option value="CreatePo">Create PO</option>'
+														+'</select>');
+												}
+											</script>
+                                            
+											
                                             </div><!-- /btn-group -->
                                           </div>
                                       </div>
@@ -100,7 +118,7 @@
                                           <div class="divider"></div>
                                           <div class="col-lg-10">
                                              <c:forEach items="${hpr }" var="hpr">
-											<p><label for="input-notes">${hpr.createdOn } - ${hpr.status }</label></p>
+											<p><label for="input-notes">${hpr.createdOn } - ${hpr.pr.prNo } is ${hpr.status }</label></p>
 											</c:forEach>
                                           </div>
                                      </div>

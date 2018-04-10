@@ -595,23 +595,9 @@ $(document).ready(function(){
 		$(".btn-set").click(function(evt){
 			evt.preventDefault();
 			var id = $(this).attr('id');
-			$('#update-id').val(id);
-		
+			$('#input-id').val(id);
+			$('#setModal').modal('show');
 			console.log(id);
-			
-			$.ajax({
-				url : '${pageContext.request.contextPath}/employee/get-one/'+id,
-				type : 'GET',
-				contentType : 'application/json',
-				
-				success : function(OneEmp){
-					//setDataEditEmp(OneEmp);
-					$('#setModal').modal('show');
-				}, error : function(){
-					alert('failed');
-				}
-				
-			})
 		});
 		
 		/* set to inactive */

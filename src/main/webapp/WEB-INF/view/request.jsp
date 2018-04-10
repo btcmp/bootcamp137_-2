@@ -102,10 +102,12 @@
 											<td>${pr.notes }</td>
 											<td>${pr.status }</td>
 											<td><script>
-												if('${pr.status}' != 'Submitted'){
-													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id }"> |');
+												if('${pr.status}' == 'Approved'){
+													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id } disabled"> |');
+												}else if('${pr.status}' == 'Rejected'){
+													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id } disabled"> |');
 												}else {
-													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id }" disabled> |');
+													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id }" > |');
 												}
 											</script> 
 											<a href='${pageContext.request.contextPath}/request/detail/${pr.id}' class="btn-view-pr btn btn-info" key-id="${pr.id }">View</a>
@@ -157,7 +159,7 @@
 						<div class="form-group">
 							<div class="col-lg-12">
 							<input class="form-control" type="hidden" name="" id="id-request"/>
-								<input class="form-control" type="text" name="" id="ready-date"/>
+								<input class="form-control" type="date" name="" id="ready-date"/>
 							</div>
 						</div>
 
@@ -204,7 +206,7 @@
 			</div>
 			<div class="modal-footer">
 				<div>
-					<button type="button" class="btn btn-success col-lg-2">Submit</button>
+					<button type="button" class="btn btn-success col-lg-2" id="btn-submit" >Submit</button>
 				</div>
 
 
@@ -283,8 +285,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		 $('#ready-date').datepicker({
-			 dateformat : 'yy-mm-dd',
+		 $('#ready-date1').datepicker({
 			autoclose : true
 		}); 
 /*=======================================Search on modal add item Variant=================================================  */
@@ -393,30 +394,12 @@
 			listHistoryRequest.push(history);
 		});
 		
-		//sementara menggunakan random code
-		function makeid() {
-			  var kode = "";
-			  var possible = "0123456789";
-
-			  for (var i = 0; i < 3; i++)
-			    kode += possible.charAt(Math.floor(Math.random() * possible.length));
-			   
-			  return kode;
-		}
-		
-		
-		console.log(makeid());
-		//set date format fot suitable in oracle database
-		var date = $('#ready-date').val().split('/');
-		var inputDate = date[2]+'-'+date[0]+'-'+date[1];
-		
-		
 		
 		var request = {
 				id : $('#id-request').val(),
 				status : "Created",
 				notes : $('#request-notes').val(),
-				readyTime : inputDate,
+				readyTime : $('#ready-date').val(),
 				prNo : $('#prNo').val(),
 				requestDetail : listDetailRequest,
 				historyPr : listHistoryRequest
@@ -430,7 +413,7 @@
 			contentType : 'application/json',
 			data : JSON.stringify(request),
 			success : function(data){
-				alert('save success');
+				//alert('save success');
 				window.location='${pageContext.request.contextPath}/request';
 			}, error : function(){
 				alert('save request failed');
@@ -453,9 +436,9 @@
 				$('#id-request').val(data.id);
 				$('#request-notes').val(data.notes);
 				$('#prNo').val(data.prNo);
-				var date = data.readyTime.split('-');
-				var tanggal = date[1]+'/'+date[2]+'/'+date[0];
-				$('#ready-date').val(tanggal);
+				/* var date = data.readyTime.split('-');
+				var tanggal = date[1]+'/'+date[2]+'/'+date[0]; */
+				$('#ready-date').val(data.readyTime);
 				$(data.requestDetail).each(function(key, val){
 					$('#isi-tabel-request').append(
 						'<tr key-id="'+val.itemvar.id+'"><td>'+val.itemvar.item.name+'-'+val.itemvar.name+'</td>'
@@ -468,6 +451,35 @@
 			}, 
 			error : function(){
 				console.log('gagal');
+			}
+		});
+	});
+	
+	/*=================================================== Set SUBMIT =================================================  */
+	$('#btn-submit').on('click', function(evt){
+		var id = $('#id-request').val();
+
+		var newDateForStatus = new Date();
+		console.log(id);
+		
+		var history = {
+				pr : {
+					id : '${pr.id}'
+				},
+				createdOn : newDateForStatus,
+				status : 'Submitted'
+			}
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/request/Submitted/"+id,
+			type : 'POST',
+			contentType : 'application/json',
+			data : JSON.stringify(history),
+			
+			success : function(data){
+				window.location = '${pageContext.request.contextPath}/request/';
+			}, error : function(){
+				alert ('failed change status');
 			}
 		});
 	});

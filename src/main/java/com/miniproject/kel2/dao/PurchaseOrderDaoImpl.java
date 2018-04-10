@@ -52,6 +52,14 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
 		session.flush();
 	}
 
+	public void submit(long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update PurchaseOrder po set po.status = 'Submitted' where po.id.id =:poid";
+		
+		session.createQuery(hql).setParameter("poid", id).executeUpdate();
+	}
+	
 	public void approve(long id) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
@@ -83,6 +91,7 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
 		
 		session.createQuery(hql).setParameter("poid", id).executeUpdate();
 	}
+	
 
 	public List<PurchaseOrder> searchByStatus(PurchaseOrder po) {
 		// TODO Auto-generated method stub
@@ -117,5 +126,7 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
 		}
 		return pos.size();
 	}
+
+	
 
 }

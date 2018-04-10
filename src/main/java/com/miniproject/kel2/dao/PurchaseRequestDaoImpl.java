@@ -73,7 +73,7 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao {
 	public void created(long id) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "update PurchaseRequest pr set pr.status = 'Created' where pr.id.id =:prid";
+		String hql = "update PurchaseRequest pr set pr.status = 'Created PO' where pr.id.id =:prid";
 		
 		session.createQuery(hql).setParameter("prid", id).executeUpdate();
 	}
@@ -85,6 +85,15 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao {
 		
 		session.createQuery(hql).setParameter("prid", id).executeUpdate();
 	}
+	
+	public void submit(long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "update PurchaseRequest pr set pr.status = 'Submitted' where pr.id.id =:prid";
+		
+		session.createQuery(hql).setParameter("prid", id).executeUpdate();
+	}
+
 
 	public int jumlahPr(PurchaseRequest pr) {
 		// TODO Auto-generated method stub
@@ -97,6 +106,7 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao {
 		return prs.size();
 	}
 
+	
 	public int CountPRByMonth(int bulan, int tahun) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
@@ -119,4 +129,5 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao {
 		return prs.size();
 	}
 
+	
 }

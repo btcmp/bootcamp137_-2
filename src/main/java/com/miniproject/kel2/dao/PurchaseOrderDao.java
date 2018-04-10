@@ -29,4 +29,6 @@ public interface PurchaseOrderDao {
 	public int CountPRByMonth(int bulan, int tahun);
 
 	public int CountPrByPrNo(String poNo);
+
+	public void submit(long id);
 }

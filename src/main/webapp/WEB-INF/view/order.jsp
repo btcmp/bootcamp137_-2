@@ -112,10 +112,12 @@
                                             
                                             <td>
                                             <script>
-												if('${pos.status}' != 'Process'){
-													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pos.id }"> |');
-												}else {
+												if('${pos.status}' == 'Rejected'){
 													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pos.id }" disabled> |');
+												} else if ('${pos.status}' == 'Process'){
+													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pos.id }" disabled> |');
+												} else {
+													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pos.id }"> |');
 												}
 											</script>
 											<a href='${pageContext.request.contextPath}/order/detail/${pos.id}' class="btn-view-pr btn btn-info" key-id="${pos.id }">View</a> 
@@ -208,7 +210,7 @@
         </div>
       <div class="modal-footer">
         <div>
-            <button type="button" class="btn btn-success col-lg-2" >Submit</button> 
+            <button type="button" class="btn btn-success col-lg-2" id="btn-submit">Submit</button> 
         </div>
        
         
@@ -359,7 +361,34 @@
 		}
 	});
 	
-	
+	/*=================================================== Set SUBMIT =================================================  */
+	$('#btn-submit').on('click', function(evt){
+		var id = $('#id-po').val();
+
+		var newDateForStatus = new Date();
+		console.log(id);
+		
+		var history = {
+				po : {
+					id : '${po.id}'
+				},
+				createdOn : newDateForStatus,
+				status : 'Submitted'
+			}
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/order/Submitted/"+id,
+			type : 'POST',
+			contentType : 'application/json',
+			data : JSON.stringify(history),
+			
+			success : function(data){
+				window.location = '${pageContext.request.contextPath}/order/';
+			}, error : function(){
+				alert ('failed change status');
+			}
+		});
+	});
 	
 
 })

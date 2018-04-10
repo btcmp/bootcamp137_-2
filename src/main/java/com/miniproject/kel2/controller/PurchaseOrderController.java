@@ -109,6 +109,12 @@ public class PurchaseOrderController {
 	}
 	
 	/*------------------------------------------ CHANGE STATUS  --------------------------------------------------------------*/
+	@RequestMapping(value="/Submitted/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void submitted(@PathVariable long id) {
+		poService.submit(id);
+	}
+	
 	@RequestMapping(value="/Approved/{id}", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public void approved(@PathVariable long id) {
@@ -127,7 +133,7 @@ public class PurchaseOrderController {
 		poService.printed(id);
 	}
 	
-	@RequestMapping(value="/process/{id}", method=RequestMethod.POST)
+	@RequestMapping(value="/Process/{id}", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public void created(@PathVariable long id) {
 		poService.process(id);

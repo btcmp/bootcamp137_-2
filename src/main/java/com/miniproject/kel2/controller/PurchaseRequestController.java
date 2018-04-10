@@ -113,6 +113,12 @@ public class PurchaseRequestController {
 		
 	}
 	
+	@RequestMapping(value="/Submitted/{id}", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void submitted(@PathVariable long id) {
+		prService.submit(id);
+	}
+	
 	@RequestMapping(value="/Approved/{id}", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public void approved(@PathVariable long id) {

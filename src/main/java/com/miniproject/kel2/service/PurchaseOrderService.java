@@ -163,6 +163,18 @@ public class PurchaseOrderService {
 		// TODO Auto-generated method stub
 		return poDao.searchByStatus(po);
 	}
+
+	public void submit(long id) {
+		// TODO Auto-generated method stub
+		poDao.submit(id);
+		PurchaseOrder po = poDao.getOne(id);
+		HistoryPurchaseOrder hpo = new HistoryPurchaseOrder();
+		hpo.setCreatedOn(new Date());
+		hpo.setPo(po);
+		hpo.setStatus(po.getStatus());
+		
+		hpoDao.save(hpo);
+	}
 	
 
 }

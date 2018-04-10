@@ -53,13 +53,30 @@
                                           <label for="cname" class="control-label col-lg-3">Purchase Order Detail </label>
                                           <div class="col-lg-9"></div>
                                           <div class="col-lg-3">
-                                            <select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${po.id }">
-													<option value="All">More</option>
-										    		<option value="Approved">Approved</option>
-										    		<option value="Rejected">Rejected</option>
-										    		<option value="Process">Process</option>
-										    		<option value="Printed">Print</option>
-											</select>
+                                           <script>
+												if('${po.status}' == 'Approved'){
+													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${po.id }">'
+													+'<option value="Approved">Approved</option>'
+													+'<option value="Rejected">Rejected</option>'
+													+'<option value="Process">Process</option>'
+													+'<option value="Printed">Print</option>'
+													+'</select>');
+													
+												} else if ('${po.status}' == 'Rejected'){
+													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${po.id }">'
+															+'<option value="Rejected">Rejected</option>'
+															+'<option value="Printed">Print</option>'
+															+'</select>');
+												} else {
+													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${po.id }">'
+													+'<option value="All">More</option>'
+													+'<option value="Approved">Approved</option>'
+													+'<option value="Rejected">Rejected</option>'
+													+'<option value="Process">Process</option>'
+													+'<option value="Printed">Print</option>'
+													+'</select>');
+												}
+											</script>                                         
                                           </div>
                                       </div>
                                       <div class="form-group ">
@@ -143,7 +160,7 @@
                                           <div class="divider"></div>
                                           <div class="col-lg-10">
                                           	<c:forEach items="${po.history}" var="hpo">
-                                          			<p><label for="input-notes">${hpo.createdOn } - ${hpo.status }</label></p> 
+                                          			<p><label for="input-notes">${hpo.createdOn } - ${hpo.po.poNo } is ${hpo.status }</label></p> 
                                           	</c:forEach>
                                              
                                           </div>
@@ -207,7 +224,7 @@ $(document).ready(function() {
 		if(status != ""){
 			var history = {
 				pr : {
-					id : '${pr.id}'
+					id : '${po.id}'
 				},
 				createdOn : newDateForStatus,
 				status : status
