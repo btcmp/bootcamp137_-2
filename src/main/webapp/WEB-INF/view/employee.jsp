@@ -263,16 +263,17 @@
 				<div class="table">
 					<h4 align="center"> List Outlet </h4>
 					<table class="table table-striped">
-					<tbody id="update-list-outlet">
+					<tbody id="list-outlet">
 					<c:forEach items = "${outlet }" var="out">
 							<tr>
 								<td>
-								<input type="checkbox" class="form-control" name="update-outlet" id="${out.id }"/>
+								<input type="checkbox" class="form-control" name="outlet" id="${out.id }"/>
 								</td>
 								<td>
 								<label for="nameOutlet" class="control-label col-lg-2">${out.name }</label>
 								</td>
-							</tr>					</c:forEach>
+							</tr>					
+					</c:forEach>
 					</tbody>
 					</table>
 				</div>
@@ -682,7 +683,9 @@ $(document).ready(function(){
 						$(this).prop('checked', true);
 					}
 					});
-				});		}
+				});		
+
+		}
 	
 		
 		function resetForm(){

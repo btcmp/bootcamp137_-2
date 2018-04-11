@@ -19,5 +19,7 @@ public interface EmployeeDao {
 	
 	public List<Employee> showActive(Employee emp);
 	
+	public List<Employee> getEmpByusername(String username);
+	
 	
 }

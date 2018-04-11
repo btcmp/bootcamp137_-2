@@ -341,7 +341,7 @@ textarea.parsley-error {
 					<li class="dropdown"><a data-toggle="dropdown"
 						class="dropdown-toggle" href="#"> <span class="profile-ava">
 								<img alt="" src="${resources}/img/avatar1_small.jpg">
-						</span> <span class="username">MiniProjectCeria</span> <b class="caret"></b>
+						</span> <span class="ikilohjenenge">${employee.firstName }</span> <b class="caret"></b>
 					</a>
 						<ul class="dropdown-menu extended logout">
 							<div class="log-arrow-up"></div>

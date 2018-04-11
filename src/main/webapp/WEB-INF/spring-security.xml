@@ -15,31 +15,27 @@
 
 	<http auto-config="true" use-expressions="true">
 		<!-- ROLE USER -> nanti kita login sebagai apa -->
-		<!-- <intercept-url pattern="/employee**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" />
-		 -->
+		<intercept-url pattern="/employee**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" />
 		 <intercept-url pattern="/category**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" />
 		<intercept-url pattern="/outlet**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" />
 		<intercept-url pattern="/item**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" />
-		<!-- <intercept-url pattern="/supplier**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" /> -->
+		<intercept-url pattern="/supplier**" access="hasAnyRole('ROLE_ADMINISTRATOR','ROLE_BACK_OFFICE')" />
 		
 		
 
 		<form-login login-page="/login" default-target-url="/employee"
-			authentication-failure-url="/login?error" username-parameter="username"
-			password-parameter="password" />
+			authentication-failure-url="/login?error" 
+			username-parameter="username"
+			password-parameter="password" 
+			authentication-success-handler-ref="MySuccessAuthController" />
 			
-			
-			
-		
-			
-		
 		<logout logout-success-url="/login?logout" />
 		<!-- access denied page -->
 		<access-denied-handler error-page="/403" />
 		<!-- <csrf/> -->
 
 	</http>
-
+	<beans:bean id="MySuccessAuthController" class="com.miniproject.kel2.controller.MySuccessAuthController" />
 
 	<!-- <authentication-manager> <authentication-provider> <user-service> <user 
 		name="fikkywirita" password="1234" authorities="ROLE_ADMIN" /> <user name="operator" 

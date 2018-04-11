@@ -162,6 +162,14 @@ public class EmpUserService {
 		return empDao.getAll();
 	}
 	
+	public List<Employee> getOneByUsername(String username) {
+		// TODO Auto-generated method stub
+		User user = new User();
+		user.setUsername(username);
+		return empDao.getEmpByusername(username);
+	}
+	
+	
 	public void userUpdate(User user) {
 		userDao.update(user);
 	}
@@ -189,4 +197,11 @@ public class EmpUserService {
 		// TODO Auto-generated method stub
 		return userDao.getOutletAll();
 	}
+
+	public User getUserByEmp(Employee empl) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }
