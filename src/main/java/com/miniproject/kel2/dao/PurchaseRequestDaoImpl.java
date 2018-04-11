@@ -129,5 +129,29 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao {
 		return prs.size();
 	}
 
+	public List<PurchaseRequest> searchByStatus(String status) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseRequest pr where lower(pr.status) = lower(:status)";
+		List<PurchaseRequest> pr = session.createQuery(hql).setParameter("status", status).list();
+		if(pr.isEmpty()) {
+			return null;
+		}else {
+			return pr;
+		}
+	}
+
+	public List<PurchaseRequest> searchByAll(String word) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseRequest pr where lower(pr.status) like lower(:input) or lower(pr.createdOn) like lower(:input) or lower(pr.prNo) like lower(:input) or lower(pr.notes) like lower(:input) ";
+		List<PurchaseRequest> pr = session.createQuery(hql).setParameter("input", "%"+word+"%").list();
+		if(pr.isEmpty()) {
+			return null;
+		}else {
+			return pr;
+		}
+	}
+
 	
 }

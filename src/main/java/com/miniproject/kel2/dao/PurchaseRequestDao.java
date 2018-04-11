@@ -31,4 +31,8 @@ public interface PurchaseRequestDao {
 	public int CountPrByPrNo(String prNo);
 
 	public void submit(long id);
+
+	public List<PurchaseRequest> searchByStatus(String status);
+
+	public List<PurchaseRequest> searchByAll(String word);
 }

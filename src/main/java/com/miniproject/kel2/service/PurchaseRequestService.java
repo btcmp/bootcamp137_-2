@@ -326,4 +326,16 @@ public class PurchaseRequestService {
 		
 		hprDao.save(hpr);
 	}
+
+	public List<PurchaseRequest> searchByStatus(String status) {
+		// TODO Auto-generated method stub
+		List<PurchaseRequest> pr = prDao.searchByStatus(status);
+		return pr;
+	}
+
+	public List<PurchaseRequest> searchByAll(String word) {
+		// TODO Auto-generated method stub
+		List<PurchaseRequest> pr = prDao.searchByAll(word);
+		return pr;
+	}
 }

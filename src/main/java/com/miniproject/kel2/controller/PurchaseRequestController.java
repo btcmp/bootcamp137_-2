@@ -68,6 +68,24 @@ public class PurchaseRequestController {
 		
 	}
 	
+	// search by status
+	@RequestMapping(value="/search-status/{status}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<PurchaseRequest> searchByStatus(@PathVariable String status) {
+		List<PurchaseRequest> pr = prService.searchByStatus(status);
+		System.out.println("Search by status : "+pr.size());
+		return pr;
+		
+	}
+	
+	@RequestMapping(value="/search-all/{word}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<PurchaseRequest> searchByAll(@PathVariable String word){
+		List<PurchaseRequest> pr = prService.searchByAll(word);
+		System.out.println("Search by status : "+pr.size());
+		return pr;
+	}
+	
 	@RequestMapping(value="/search-item", method=RequestMethod.GET)
 	@ResponseBody
 	public List<ItemInventory> searchItemInventoriesByName(@RequestParam(value="search", defaultValue="")String search){

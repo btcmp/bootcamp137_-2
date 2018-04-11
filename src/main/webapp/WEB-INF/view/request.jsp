@@ -54,8 +54,8 @@
 									name="daterange" type="text" placeholder="input daterange" />
 							</div>
 							<div class="col-lg-2">
-								<select class="form-control">
-									<option value="All">All</option>
+								<select class="form-control" id="search-by-status">
+									<option value="">All</option>
 						    		<option value="Created">Created</option>
 						    		<option value="Submitted">Submitted</option>
 						    		<option value="Approved">Approved</option>
@@ -93,7 +93,7 @@
 										<th>#</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="isi-pr">
 									<c:forEach items="${prs }" var="pr">
 										<!-- //mengambil id barang -->
 										<tr id="#">
@@ -288,6 +288,89 @@
 		 $('#ready-date1').datepicker({
 			autoclose : true
 		}); 
+		 
+/*====================================== Search By Status ===========================================*/
+ 	$('#search-by-status').on('change', function(){
+ 		var id = $(this).val();
+ 		
+ 		if(id != ""){
+	 		$.ajax({
+	 			url : '${pageContext.request.contextPath}/request/search-status/'+id,
+	 			type : 'GET',
+	 			success : function(data){
+	 				console.log(data);
+	 				$('#isi-pr').empty();
+	 				$(data).each(function(index, value){
+	 					var tanggal = $.datepicker.formatDate('yy-mm-dd', new Date(value.createdOn));
+	 					var isi = "<tr id='"+value.id+"'>"+
+						"<td>"+tanggal+"</td>"+
+						"<td>"+value.prNo+"</td>"+
+						"<td>"+value.notes+"</td>"+
+						"<td>"+value.status+"</td>"+
+						"<td><script>"+
+							"if("+value.status+" == 'Approved'){"+
+								"document.write('<input type='button' class='btn-update btn btn-default' value='Edit' key-id='"+value.id+" disabled'> |');"+
+							"}else if("+value.status+" == 'Rejected'){"+
+								"document.write('<input type='button' class='btn-update btn btn-default' value='Edit' key-id='"+value.id+" disabled'> |');"+
+							"}else {"+
+								"document.write('<input type='button' class='btn-update btn btn-default' value='Edit' key-id='"+value.id+"' > |');"+
+							"}"+
+						"<\/script>"+
+						"<a href='${pageContext.request.contextPath}/request/detail/${pr.id}' class='btn-view-pr btn btn-info' key-id='"+value.id+"'>View</a>"+
+						"</td></tr>";
+						
+						$("#isi-pr").append(isi);
+	 				});
+	 			},
+	 			error : function(){
+	 				alert('gagal get data');
+	 			},
+	 			dataType : 'json'
+	 		});
+ 		}else{
+ 			window.location = "${pageContext.request.contextPath}/request";
+ 		}
+ 	});
+ 	
+/*======================================= Search By All ===============================================*/
+ 	$('#string-name').on('input', function(){
+		var id = $(this).val();
+ 		
+ 		if(id != ""){
+	 		$.ajax({
+	 			url : '${pageContext.request.contextPath}/request/search-all/'+id,
+	 			type : 'GET',
+	 			success : function(data){
+	 				$('#isi-pr').empty();
+	 				$(data).each(function(index, value){
+	 					var tanggal = $.datepicker.formatDate('yy-mm-dd', new Date(value.createdOn));
+	 					var isi = "<tr id='"+value.id+"'>"+
+						"<td>"+tanggal+"</td>"+
+						"<td>"+value.prNo+"</td>"+
+						"<td>"+value.notes+"</td>"+
+						"<td>"+value.status+"</td>"+
+						"<td><script>"+
+							"if("+value.status+" == 'Approved'){"+
+								"document.write('<input type='button' class='btn-update btn btn-default' value='Edit' key-id='"+value.id+" disabled'> |');"+
+							"}else if("+value.status+" == 'Rejected'){"+
+								"document.write('<input type='button' class='btn-update btn btn-default' value='Edit' key-id='"+value.id+" disabled'> |');"+
+							"}else {"+
+								"document.write('<input type='button' class='btn-update btn btn-default' value='Edit' key-id='"+value.id+"' > |');"+
+							"}"+
+						"<\/script>"+
+						"<a href='${pageContext.request.contextPath}/request/detail/${pr.id}' class='btn-view-pr btn btn-info' key-id='"+value.id+"'>View</a>"+
+						"</td></tr>";
+						
+						$("#isi-pr").append(isi);
+	 				});
+	 			},
+	 			error : function(){}
+	 		});
+ 		}else{
+ 			window.location = "${pageContext.request.contextPath}/request";
+ 		}
+ 	});
+		 
 /*=======================================Search on modal add item Variant=================================================  */
 		$('#search-item-variant').on('input', function() {
 				var keyword = $(this).val();
