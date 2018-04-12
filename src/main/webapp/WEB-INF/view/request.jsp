@@ -60,6 +60,7 @@
 						    		<option value="Submitted">Submitted</option>
 						    		<option value="Approved">Approved</option>
 						    		<option value="Rejected">Rejected</option>
+						    		
 
 								</select>
 							</div>
@@ -72,7 +73,7 @@
 
 							<!-- button -->
 							<div class="col-lg-1">
-								<button class="btn btn-primary">Export</button>
+								<button class="btn btn-primary" id="btn-export">Export</button>
 
 							</div>
 							<div class="col-lg-1">
@@ -150,7 +151,9 @@
 					<div class="form-validate form-horizontal" id="PR-form">
 						<div class="form-group">
 							<label for="outlet-name" class="control-label"><span
-								class="required">*</span> CREATE NEW PR : {isi nama outlet}</label>
+								class="required">*</span> CREATE NEW PR : ${outlet.name }, ${employee.user.username }</label><span>
+								<input type="hidden" name="outlet" id="outlet-select" value="${outlet.id }" style="border:none;"  readonly/></span>
+								
 						</div>
 
 						<label for="outlet-name" class="control-label"> Target
@@ -158,8 +161,9 @@
 						</label>
 						<div class="form-group">
 							<div class="col-lg-12">
-							<input class="form-control" type="hidden" name="" id="id-request"/>
-								<input class="form-control" type="date" name="" id="ready-date"/>
+							<input class="form-control reset" type="hidden" name="" id="id-request"/>
+							
+								<input class="form-control reset" type="date" name="" id="ready-date"/>
 							</div>
 						</div>
 
@@ -168,8 +172,8 @@
 						<div class="form-group">
 
 							<div class="col-lg-12">
-								<textarea class="form-control" id="prNo" style="display:none;"></textarea>
-								<textarea class="form-control" id="request-notes"></textarea>
+								<textarea class="form-control reset" id="prNo" style="display:none;"></textarea>
+								<textarea class="form-control reset" id="request-notes"></textarea>
 							</div>
 						</div>
 
@@ -210,7 +214,7 @@
 				</div>
 
 
-				<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+				<button type="button" type="reset" class="btn btn-info" data-dismiss="modal">Cancel</button>
 				<button type="button" class="btn btn-primary" id="btn-save">Save</button>
 			</div>
 		</div>
@@ -235,7 +239,7 @@
 			<div class="modal-body">
 				<!-- modal body -->
 				<div class="form">
-					<div class="form-validate form-horizontal" id="PR-form">
+					<div class="form-validate form-horizontal" id="form">
 						<div class="form-group">
 							<div class="col-lg-1"></div>
 							<!-- search item -->
@@ -288,6 +292,21 @@
 		 $('#ready-date1').datepicker({
 			autoclose : true
 		}); 
+		 
+		 /*====================================== make Aplhanumeric currency ===========================================*/
+		 /* const currencyRupiah = {
+				 digitGroupSeparator	: '.',
+				 decimalCharacter		: ',',
+				 decimalplaces			: 2,
+				 currencySymbol			: 'Rp ',
+				 currencySymbolPlacement	: AutoNumeric.options.currencySymbolPlacement.prefix,
+				 roundingMethod			: 'U',
+				 minimumValue			: 0,
+				 formatOnPageLoad		: true
+		 };
+		 
+		 new AutoNumeric('#input-cash', currencyRupiah); */
+		 
 		 
 /*====================================== Search By Status ===========================================*/
  	$('#search-by-status').on('change', function(){
@@ -401,6 +420,8 @@
 
 	/*------------------------------------------ modal set up -------------------------------------------------------------*/
 	$('#btn-create').on('click', function(){
+		$(".reset").val(" ");
+		$('#isi-tabel-request').empty();
 		$('#addModal').modal('show');
 	})
 	
@@ -462,20 +483,33 @@
 		evt.preventDefault();
 		var listDetailRequest = [];
 		var listHistoryRequest = [];
+		var idUser = "${employee.user.id}";
+		
+		var createdBy = {
+				id : idUser
+		}
+		
 		$('#table-result-add-item > tbody > tr ').each(function(index, data){
 			var detailRequest = {
 				itemvar : {
 					id : $(data).attr('key-id')
 				},
 				requestQty : $(data).find('td').eq(2).text(),
+				createdBy : createdBy,
 			};
 			
 			listDetailRequest.push(detailRequest);
 			var history = {
-					status : "waiting"
+					status : "waiting",
+					createdBy : createdBy
 			};
 			listHistoryRequest.push(history);
 		});
+		
+		var outlet = {
+				id : $('#outlet-select').val()
+		}
+		
 		
 		
 		var request = {
@@ -484,11 +518,14 @@
 				notes : $('#request-notes').val(),
 				readyTime : $('#ready-date').val(),
 				prNo : $('#prNo').val(),
+				outlet : outlet,
+				createdBy : createdBy,
 				requestDetail : listDetailRequest,
 				historyPr : listHistoryRequest
 		};
 		
 		console.log(request);
+		console.log(createdBy);
 		/* ajax to save */
 		 $.ajax({
 			url : '${pageContext.request.contextPath}/request/save',

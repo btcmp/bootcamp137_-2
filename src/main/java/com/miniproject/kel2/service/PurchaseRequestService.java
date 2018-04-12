@@ -108,7 +108,7 @@ public class PurchaseRequestService {
 		
 		prq.setReadyTime(pr.getReadyTime());
 		prq.setOutlet(pr.getOutlet());
-		
+		prq.setCreatedBy(pr.getCreatedBy());
 		
 		
 		if(prq.getId() != 0) {
@@ -137,6 +137,7 @@ public class PurchaseRequestService {
 				RequestDetail prds = new RequestDetail();
 				prds.setId(rd.getId());
 				prds.setCreatedOn(rd.getCreatedOn());
+				prds.setCreatedBy(rd.getCreatedBy());
 				prds.setModifiedOn(rd.getModifiedOn());
 				prds.setPr(prq);
 				prds.setItemvar(rd.getItemvar());
@@ -153,6 +154,7 @@ public class PurchaseRequestService {
 				HistoryPurchaseRequest hisPr = new HistoryPurchaseRequest();
 				
 				hisPr.setCreatedOn(prq.getCreatedOn());
+				hisPr.setCreatedBy(prq.getCreatedBy());
 				hisPr.setStatus(prq.getStatus());
 				hisPr.setPr(prq);
 				hprDao.save(hisPr);

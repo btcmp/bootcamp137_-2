@@ -115,13 +115,17 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		
 	}
 
+	//punya purchase Request
 	public List<ItemInventory> searchInventoryByItemName(String search) {
 		// TODO Auto-generated method stub
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		long outId = outlet.getId();
+		System.out.println("id OUtlet : " + outId);
+		
 		Session session = sessionFactory.getCurrentSession();
-		String hql ="from ItemInventory ii where lower(ii.itemVariant.item.name) like :itemName or "
-				+ "lower(ii.itemVariant.name) like :itemName or "
-				+ "lower(concat(ii.itemVariant.item.name, '-', ii.itemVariant.name)) like :itemName ";
-		List<ItemInventory> iinventories = session.createQuery(hql).setParameter("itemName", "%"+search.toLowerCase()+"%").list();
+		String hql ="from ItemInventory ii where lower(concat(ii.itemVariant.item.name, '-', ii.itemVariant.name)) like :itemName and "
+				+ "ii.outlet.id = :outId";
+		List<ItemInventory> iinventories = session.createQuery(hql).setParameter("itemName", "%"+search.toLowerCase()+"%").setParameter("outId", outId).list();
 		if(iinventories.isEmpty()) {
 			return null;
 		}else {

@@ -2,6 +2,8 @@ package com.miniproject.kel2.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -14,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.miniproject.kel2.model.Employee;
 import com.miniproject.kel2.model.HistoryPurchaseRequest;
 import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
+import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.PurchaseRequest;
 import com.miniproject.kel2.model.RequestDetail;
+import com.miniproject.kel2.model.User;
 import com.miniproject.kel2.service.PurchaseRequestHistoryService;
 import com.miniproject.kel2.service.PurchaseRequestService;
 import com.miniproject.kel2.service.ItemInventoryService;
@@ -41,6 +46,9 @@ public class PurchaseRequestController {
 	@Autowired
 	ItemInventoryService iiService;
 	
+	@Autowired
+	HttpSession httpSession;
+	
 	
 	
 	
@@ -50,12 +58,23 @@ public class PurchaseRequestController {
 		List<PurchaseRequest> prs = prService.selectAll();
 		model.addAttribute("prs", prs);
 		
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		model.addAttribute("outlet", outlet);
 		
+		Employee employee = (Employee) httpSession.getAttribute("employee");
+		model.addAttribute("employee", employee);
+		
+		System.out.println(employee);
+		
+		System.out.println(outlet);
+		/*
 		List<RequestDetail> prd = rdService.selectAll();
-		model.addAttribute("prd", prd);
+		model.addAttribute("prd", prd);*/
 		
-		List<ItemInventory> items = iiService.selectAll();
-		model.addAttribute("items", items);
+		/*List<ItemInventory> items = iiService.selectAll();
+		model.addAttribute("items", items);*/
+		
+		
 		
 		return "request";
 	}
@@ -89,6 +108,7 @@ public class PurchaseRequestController {
 	@RequestMapping(value="/search-item", method=RequestMethod.GET)
 	@ResponseBody
 	public List<ItemInventory> searchItemInventoriesByName(@RequestParam(value="search", defaultValue="")String search){
+		
 		List<ItemInventory> iinventories = iiService.searchInventoryByItemName(search);
 		System.out.println("Query result : " +iinventories.size());
 		
@@ -96,14 +116,6 @@ public class PurchaseRequestController {
 		
 	}
 	
-	@RequestMapping(value="/search-item-variant/{keyword}", method=RequestMethod.GET)
-	@ResponseBody
-	public List<Object[]> searchByItem(@PathVariable String keyword){
-		List<Object[]> iinventories = iiService.searchByItemAndVariant(keyword);
-		System.out.println("hasil search inventory : "+iinventories.size());
-		return iinventories;
-		
-	}
 	
 	@RequestMapping(value="/get-one/{id}", method=RequestMethod.GET)
 	@ResponseBody
@@ -117,6 +129,7 @@ public class PurchaseRequestController {
 	@RequestMapping(value="/detail/{id}", method=RequestMethod.GET)
 	//@ResponseStatus(HttpStatus.FOUND)
 	public String toDetail(@PathVariable long id, Model model ) {
+		
 		PurchaseRequest pr = prService.getOne(id);
 		model.addAttribute("pr", pr);
 		
