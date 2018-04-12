@@ -481,6 +481,7 @@
 	/*=================================================== Save Request Modal =================================================  */
 	$('#btn-save').on('click', function(evt){
 		evt.preventDefault();
+		
 		var listDetailRequest = [];
 		var listHistoryRequest = [];
 		var idUser = "${employee.user.id}";
