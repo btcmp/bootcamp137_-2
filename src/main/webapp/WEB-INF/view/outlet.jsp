@@ -54,9 +54,9 @@ $(document).ready(function(){
 					}
 				});
 				if (sameEmail > 0) {
-					alert('This email has been used');
+					alert('Email already exists');
 				} else if (sameName > 0) {
-					alert('This name has been used');
+					alert('Name already exists');
 				} else {
 					  $.ajax({
 							url : '${pageContext.request.contextPath}/outlet/save',
@@ -144,16 +144,18 @@ $(document).ready(function(){
 					var sameName = 0;
 					
 			$(data).each(function(index,data2) {
-				if (outlet.email.toLowerCase() == data2.email.toLowerCase()) {
-						sameEmail++;
-				} else if (outlet.name.toLowerCase() == data2.name.toLowerCase()) {
-						sameName++;
+				if (parseInt(data2.id)!==parseInt(outlet.id)) {
+						if (outlet.email.toLowerCase() == data2.email.toLowerCase()) {
+								sameEmail++;
+						} else if (outlet.name.toLowerCase() == data2.name.toLowerCase()) {
+								sameName++;
+						}
 				}
 			});
 			if (sameEmail > 0) {
-				alert('This email has been used');
+				alert('Email already exists');
 			} else if (sameName > 0) {
-				alert('This name has been used');
+				alert('Name already exists');
 			} else {
 				  $.ajax({
 						url : '${pageContext.request.contextPath}/outlet/update',
@@ -173,7 +175,7 @@ $(document).ready(function(){
 				}
 			});
 		} else {
-			alert('Complete your form ');
+			alert('Complete your form');
 		}
 	});
 
@@ -235,6 +237,59 @@ $(document).ready(function(){
 		}
 	});
 	
+	// EDIT REGION DAN DISTRICT
+	$('#edit-province').change(function(){
+		var id = $(this).val();
+		console.log(id);
+		if(!id==""){
+			$.ajax({
+				url : '${pageContext.request.contextPath}/province/get-region/'+id,
+				type : 'GET',
+				success : function(data){
+					var listRegion = [];
+					var choose = "<option value=''>-- Choose --</option>";
+					listRegion.push(choose);
+					$(data).each(function(index, value){
+						var isi = "<option value='"+value.id+"'>"+value.name+"</option>";
+						listRegion.push(isi);
+					});
+				
+					$('#edit-region').html(listRegion);
+				},
+				error : function(){
+					alert('failed to get data region');
+				}
+			});
+		}
+	});
+	
+	$('#edit-region').change(function(){
+		var id = $(this).val();
+		console.log(id);
+		if(!id==""){
+			$.ajax({
+				url : '${pageContext.request.contextPath}/province/get-district/'+id,
+				type : 'GET',
+				success : function(data){
+					var listDistrict = [];
+					var choose = "<option value=''>-- Choose --</option>";
+					listDistrict.push(choose);
+					$(data).each(function(index, value){
+						var isi = "<option value='"+value.id+"'>"+value.name+"</option>";
+						listDistrict.push(isi);
+					});
+				
+					$('#edit-district').html(listDistrict);
+					
+				},
+				error : function(){
+					alert('failed to get data district');
+				}
+				
+			});
+		}
+	});
+	
  	// SEARCH
  	$('#btn-search').on('click', function(){
 		var word =$('#search').val();
@@ -242,14 +297,10 @@ $(document).ready(function(){
 		window.location="${pageContext.request.contextPath}/outlet/search?search="+word;
  	});
  	
- 	// VALID POSTAL CODE
- 	/* $('#form').validate({
- 	    rules: { 
- 	        ktp: { 
- 	            digits: true, minlength:10, maxlength:10  
- 	        }  
- 	    }  
- 	}); */
+ 	// EXPORT
+ 	$('#btn-export').click(function(){
+		window.open('${pageContext.request.contextPath}/generate/outlet');
+	});
 });
 		
 </script>
@@ -279,8 +330,11 @@ $(document).ready(function(){
 										</li>
 								</ul>
 						</div>
-						<div class="col-lg-8" style="margin-bottom: 10px;">
+						<div class="col-lg-7" style="margin-bottom: 10px;">
 								<button type="button" class="btn btn-primary" id="btn-search"> Search</button>
+						</div>
+						<div class="col-lg-1" style="margin-bottom: 10px;">
+								<button type="button" class="btn btn-primary" id="btn-export">Export</button>
 						</div>
 						<div class="col-lg-1" style="margin-bottom: 10px;">
 								<button type="button" class="btn btn-primary" id="btn-create">Create</button>
@@ -342,17 +396,18 @@ $(document).ready(function(){
 																	<input type="hidden" id="input-id" name="input-id" />
 																	<input class="col-lg-12" id="input-outletName" data-parsley-required="true"
 																		type="text" style="margin-bottom: 10px;" placeholder="Outlet Name"
+																		data-parsley-required
 																		pattern="([A-z0-9\s]){2,20}$">
-																		<p style = "color : red;"><small>This field is required</small></p>
 																	<textarea class="col-lg-12" id="input-address" data-parsley-required="true"
 																		type="text" style="margin-bottom: 10px;" placeholder="Address"
 																		pattern="^[0-9a-zA-Z. ]+$"></textarea>
-																		<p style = "color : red;"><small>This field is required</small></p>
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<select class="form-control" id="input-province">
-																	<c:forEach var="prov" items= "${provs}">
-																			<option value="${prov.id}">${prov.name}</option>
+																	<select class="form-control" id="input-province" data-parsley-required="true">
+																	<c:forEach var="prov" items= "${provs}" >
+																			<option 
+																					value="${prov.id}">${prov.name}		
+																			</option>
 																	</c:forEach>
 																	</select>
 															</div>
@@ -372,21 +427,18 @@ $(document).ready(function(){
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
 																	<input type="text" id="input-postalCode" data-parsley-required="true"
-																		style="margin-bottom: 10px;" placeholder="Postal Code" 
+																		style="margin-bottom: 10px;" placeholder="Max 5" 
 																		placeholder="Postal Code" pattern="([0-9]){5}$">
-																		<p style = "color : red; "><small> *number only, 5 </small></p>
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
 																	<input type="text" id="input-phone" data-parsley-required="true"
-																		style="margin-bottom: 10px;"placeholder="Phone" 
+																		style="margin-bottom: 10px;"placeholder="XXX-XXXXXXXX" 
 																		pattern="^\d{3}-\d{8,10}$">
-																		<p style = "color : red;"><small> *number only, xxx-xxxxxxxx </small></p>		
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
 																	<input type="text" id="input-email" data-parsley-required="true"
 																		style="margin-bottom: 10px;" placeholder="Email"
 																		pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
-																		<p style = "color : red;"><small> *email </small></p>
 															</div>
 													</div>
 													<div class="modal-footer">
@@ -419,18 +471,18 @@ $(document).ready(function(){
 													<div class="edit">
 															<input type="hidden" name="edit-id" id="edit-id">
 															<input data-parsley-required="true"
-																class="col-lg-12" id="edit-outletName" type="text"style="margin-bottom: 10px;" placeholder="Outlet Name"
+																class="col-lg-12" id="edit-outletName" type="text"style="margin-bottom: 10px;" 
+																data-parsley-required="true" placeholder="Outlet Name"
 																pattern="([A-z0-9\s]){2,20}$">
-																<p style = "color : red;"><small>This field is required</small></p>
 																	
 															<textarea data-parsley-required="true"
-																class="col-lg-12" id="edit-address" type="text" style="margin-bottom: 10px;" placeholder="Address"
+																class="col-lg-12" id="edit-address" type="text" style="margin-bottom: 10px;" 
+																data-parsley-required="true" placeholder="Address"
 																pattern="^[0-9a-zA-Z. ]+$"></textarea>
-																<p style = "color : red;"><small>This field is required</small></p>
 																
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-															<select class="form-control" id="edit-province">
+															<select class="form-control" id="edit-province" data-parsley-required="true">
 															<c:forEach var="prov" items= "${provs}">
 																	<option value="${prov.id}">${prov.name}</option>
 															</c:forEach>
@@ -451,21 +503,19 @@ $(document).ready(function(){
 															</select>
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-															<input type="text" id="edit-postalCode" style="margin-bottom: 10px;" placeholder="Postal Code"
+															<input type="text" id="edit-postalCode" style="margin-bottom: 10px;" 
+																data-parsley-required="true"placeholder="Max 5"
 																pattern="([0-9]){5}$">
-																<p style = "color : red; "><small> *number only, 5 </small></p>
-															
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-															<input type="text" id="edit-phone" style="margin-bottom: 10px;"placeholder="Phone"
-																pattern="^\d{3}-\d{8,10}$">
-																<p style = "color : red;"><small> *number only, xxx-xxxxxxxx </small></p>		
-															
+															<input type="text" id="edit-phone" style="margin-bottom: 10px;"
+																data-parsley-required="true" placeholder="XXX-XXXXXXXX"
+																pattern="^\d{3}-\d{8,10}$">		
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-															<input type="text" id="edit-email" style="margin-bottom: 10px;" placeholder="Email"
+															<input type="text" id="edit-email" style="margin-bottom: 10px;" 
+																data-parsley-required="true" placeholder="Email"
 																pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
-																<p style = "color : red;"><small> *email </small></p>
 															
 													</div>
 													</div>

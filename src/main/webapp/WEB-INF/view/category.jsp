@@ -38,7 +38,7 @@
 								} 
 						});  
 						if (sameName > 0) {
-							alert('This name has been used');
+							alert('Name already exists');
 						} else {	
 								 $.ajax({
 										url : '${pageContext.request.contextPath}/category/save',
@@ -58,7 +58,7 @@
 					}
 				}); 
 			} else {
-				alert('Complete your form ');
+				alert('Complete your form');
 			}
 		});
 			
@@ -74,7 +74,7 @@
 					$('#modal-view').modal();
 				},
 				error : function(){
-					alert('failed update')	
+					alert('update failed')	
 				},
 				dataType :'json'
 			});
@@ -101,12 +101,14 @@
 					success : function(data) {
 						var sameName = 0;
 						$(data).each(function(index, data3) {
+							if (parseInt(data3.id)!==parseInt(cat.id)) {
 								 if (cat.name.toLowerCase() == data3.name.toLowerCase()) {
 									sameName++;
 								} 
+							}
 						});  
 						if (sameName > 0) {
-							alert('This name has been used');
+							alert('Name already exists');
 						} else {	
 								 $.ajax({
 										url : '${pageContext.request.contextPath}/category/update',
@@ -321,10 +323,8 @@
 												<form id="target" id="save-form-category" data-parsley-validate>
 														<div class="modal-body">
 																<input class="col-lg-12" id="input-categoryName" type="text" placeholder="Category Name"
-																pattern="([A-z0-9\s]){2,20}$">
-																<p style="color: red;">
-																		<small>This field is required</small>
-																</p>
+																	data-parsley-required="true"
+																	pattern="([A-z0-9\s]){2,20}$">
 														</div>
 												<div class="modal-footer">
 														<div class="col-lg-2">
@@ -353,10 +353,8 @@
 												<div class="modal-body">
 														<input type="hidden" name="edit-id" id="edit-id">
 														<input id="edit-categoryName" class="col-lg-12"  type="text" placeholder="Category Name"
-														pattern="([A-z0-9\s]){2,20}$">
-																<p style="color: red;">
-																		<small>This field is required</small>
-																</p>
+																data-parsley-required="true"
+																pattern="([A-z0-9\s]){2,20}$">
 												</div>
 												<div class="modal-footer">
 														<div class="col-lg-1">

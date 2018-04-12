@@ -51,7 +51,7 @@ public class ItemService {
 				invent.setOutlet(out);
 				invent.setItemVariant(variant);
 				invent.setBeginning(inventory.getBeginning());
-				invent.setEndingQty(inventory.getEndingQty());
+				invent.setEndingQty(inventory.getBeginning());
 				invent.setAlertAtQty(inventory.getAlertAtQty());
 				itemInventoryDao.save(invent);
 			}

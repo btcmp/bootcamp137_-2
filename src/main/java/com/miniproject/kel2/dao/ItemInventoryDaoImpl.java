@@ -2,6 +2,8 @@ package com.miniproject.kel2.dao;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
+import com.miniproject.kel2.model.Outlet;
 
 @Repository
 public class ItemInventoryDaoImpl implements ItemInventoryDao{
@@ -16,6 +19,9 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 	@Autowired
 	SessionFactory sessionFactory;
 
+	@Autowired
+	HttpSession httpSession;
+	
 	public void save(ItemInventory itemInventory) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
@@ -67,8 +73,9 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		}else {
 			return inventories;
 		}
-		
 	}
+	
+	
 
 	public void updateInStock(int inStock, long id) {
 		// TODO Auto-generated method stub
@@ -163,5 +170,19 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		}
 	}
 	
+	// search item dan variant pada transfer stock
+	public List<Object[]> searchByItemAndVariantTS(String word) {
+		// TODO Auto-generated method stub
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		long outId = outlet.getId();
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "select i.endingQty, i.itemVariant.name, i.itemVariant.id, i.itemVariant.item.name from ItemInventory i where lower(i.itemVariant.item.name) like lower(:name) and i.outlet.id = :outId";
+		List<Object[]> inventories = session.createQuery(hql).setParameter("name", "%"+word+"%").setParameter("outId", outId).list();
+		if(inventories.isEmpty()) {
+			return null;
+		}else {
+			return inventories;
+		}
+	}
 
 }

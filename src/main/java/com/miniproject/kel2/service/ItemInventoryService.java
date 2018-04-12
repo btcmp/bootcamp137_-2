@@ -68,5 +68,8 @@ public class ItemInventoryService {
 		return itemInventoryDao.searchItemInventoryByItemName(search);
 	}
 
-	
+	//search item di TS
+	public List<Object[]> searchByItemAndVariantTS(String word){
+		return itemInventoryDao.searchByItemAndVariantTS(word);
+	}
 }

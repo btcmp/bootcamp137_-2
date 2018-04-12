@@ -2,6 +2,8 @@ package com.miniproject.kel2.controller;
  
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -39,6 +41,8 @@ public class TransferStockController {
 	
 	@Autowired
 	HistoryTransferStockService htStockService;
+	
+	
 	
 	@RequestMapping
 	public String index(Model model) {
@@ -110,7 +114,7 @@ public class TransferStockController {
 	@RequestMapping(value="/search-item/{word}", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Object[]> searchByItem(@PathVariable String word){ 
-		List<Object[]> inventories = itemInvetoryService.searchByItemAndVariant(word);
+		List<Object[]> inventories = itemInvetoryService.searchByItemAndVariantTS(word);
 		System.out.println("search : "+inventories.size());
 		return inventories;
 	}

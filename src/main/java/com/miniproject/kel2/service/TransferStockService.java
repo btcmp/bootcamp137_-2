@@ -101,7 +101,7 @@ public class TransferStockService {
 			tsDetail.setTransferStock(ts);
 			tsDetailDao.save(tsDetail);
 			
-			ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(tsd.getItemVariant().getId());
+		/*	ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(tsd.getItemVariant().getId());
 
 			ItemInventory ii = new ItemInventory();
 			ii.setItemVariant(tsd.getItemVariant());
@@ -115,7 +115,7 @@ public class TransferStockService {
 				ii.setAlertAtQty(5);
 				ii.setBeginning(50);
 			}
-			itemInventoryDao.save(ii);
+			itemInventoryDao.save(ii);*/
 		}
 		
 		for(HistoryTransferStock hts : transferStock.getHistoryTransferStock()) {
@@ -186,12 +186,19 @@ public class TransferStockService {
 		List<TransferStockDetail> tsd = tsDetailDao.getTransferStockById(transferStock.getId());
 		for (TransferStockDetail tsDetail : tsd) {
 			long variantId = tsDetail.getItemVariant().getId();
+			System.out.println(variantId+" "+idFromOutlet);
 			ItemInventory invent = itemInventoryDao.searchInventoryByVariantAndOutletId(variantId, idFromOutlet);
+			System.out.println("invent : "+invent);
+			System.out.println("get ending qty : "+invent.getEndingQty());
+			System.out.println("get trans qty : "+tsDetail.getTransferQty());
 			invent.setEndingQty(invent.getEndingQty() - tsDetail.getTransferQty());
-
+			invent.setTransferStockQty(invent.getTransferStockQty() + tsDetail.getTransferQty());
+			invent.setModifiedOn(tsDetail.getModifiedOn());
+			
 			ItemInventory iv = itemInventoryDao.searchInventoryByVariantAndOutletId(variantId, idToOutlet);
 			if (iv != null) {
 				iv.setEndingQty(iv.getEndingQty() + tsDetail.getTransferQty());
+				iv.setAdjustmentQty(iv.getAdjustmentQty() + tsDetail.getTransferQty());
 			} else {
 				ItemInventory ivNew = new ItemInventory();
 				ivNew.setAdjustmentQty(0);

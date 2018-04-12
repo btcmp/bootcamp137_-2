@@ -19,12 +19,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
- 
 @Entity
 @Table(name="employee_mp")
 public class Employee {
 	
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="idEmp")
 	@SequenceGenerator(initialValue=100, name="idEmp", sequenceName="idEmp")

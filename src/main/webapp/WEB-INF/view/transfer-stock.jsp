@@ -11,6 +11,23 @@ $(document).ready(function(){
 		}
 	}); */
 
+	//BTN ADD TRANSFER STOCK ITEM 
+	
+	//BTN ADD ITEM-VARIANT
+	/*$('.btn-add').on('click', function(){
+		alert("bisa");
+		$('#modal-add').modal('hide');
+		$('#modal-create').modal('show'); 
+	}); */
+	// BTN CREATE
+		 $('#btn-create').on('click', function(){
+			 if (document.getElementById("tbody-transfer-stock").rows.length>0) {
+					document.getElementById("btn-save").disabled = false;
+				}else {
+					document.getElementById("btn-save").disabled = true;
+				}
+		 });
+	
 	/* ------------------------------------------------- SEARCH ITEM (ADD)-------------------------------------------- */
 	$('#search-item-variant').on('input', function(){
 		var word = $(this).val();
@@ -25,10 +42,11 @@ $(document).ready(function(){
 					$('#tbody-item').empty();
 					$(data).each(function(index, value){
 						//console.log(value.beginning);
-						var add = "<tr id='"+value[2]+"'>"+
+						var add = "<tr id='tr-add"+value[2]+"'>"+
 								  "<td>"+value[3]+" - "+value[1]+"</td>"+
 								  "<td>"+value[0]+"</td>"+
 								  "<td><div contenteditable='true'><input type='text' id='input-trans-qty"+value[2]+"'></div></td>"+
+								  "<td>"+"<button type='button' id='"+value[2]+"' class='btn-add btn btn-primary'> Add </button>"+"</td>"+
 								  "</tr>";
 						$('#tbody-item').append(add);
 					});
@@ -39,48 +57,59 @@ $(document).ready(function(){
 	});
 	
 	/* ---------------------------------------- ADD ITEM KE FORM -------------------------------------------------------- */
-	$('#btn-add').click(function(){
-			$('#tbl-add-item > tbody > tr').each(function(index, data){
-				var idVar = $(data).attr('id');
+	$('body').on('click', 'button.btn-add', function(){
+		var idVar = $(this).attr('id');
+		$('#tr-add'+idVar).each(function(index, data){
 				var itemVariant = $(data).find('td').eq(0).text();
-				var inStock = $(data).find('td').eq(1).text();
-				var transferQty = $('#input-trans-qty'+idVar+'').val();
-				if(!transferQty == ""){
-					var add = "<tr id='"+idVar+"'>"+
-							  "<td>"+itemVariant+"</td>"+
-							  "<td>"+inStock+"</td>"+
-							  "<td>"+transferQty+"</td>"+
-						  	  "<td>"+ "<a href='#' class='cancel btn btn-danger' id='btn-X'>X</a>"+ "</td>"+
-							  "</tr>";
-					$('#tbody-transfer-stock').append(add);
-				/* } else if (transferQty>inStock) {
+				var inStock = parseInt($(data).find('td').eq(1).text());
+				var transferQty = parseInt($('#input-trans-qty'+idVar+'').val());
+				if (transferQty>inStock) {
 						alert("Stock Kurang");
 				} else if (transferQty<1) {
-						alert("Sisa 1");
-				}else {
-					var add = "<tr id='"+idVar+"'>"+
-							  "<td>"+itemVariant+"</td>"+
-							  "<td>"+inStock+"</td>"+
-							  "<td>"+transferQty+"</td>"+
-						  	  "<td>"+ "<a href='#' class='cancel btn btn-danger' id='btn-X'>X</a>"+ "</td>"+
-							  "</tr>";
-					$('#tbody-transfer-stock').append(add); */
-				
-				}
-			});
+						alert("Minimal 1");
+				} else{ 	//jika trans !=0
+						var add = "<tr id='"+idVar+"'>"+
+								  "<td>"+itemVariant+"</td>"+
+								  "<td>"+inStock+"</td>"+
+								  "<td>"+transferQty+"</td>"+
+							  	  "<td>"+ "<a href='#' class='btn-X cancel btn btn-danger' id="+idVar+">X</a>"+ "</td>"+
+								  "</tr>";
+						$('#tbody-transfer-stock').append(add);
+					} 
+				});
 			$('#list-item').removeAttr('hidden');
+			
+			
+			var baris =document.getElementById("tbody-transfer-stock").rows.length;
+			$(this).prop('disabled',true); // prop=property, bisa id atau button
+			console.log(idVar);
+			console.log(baris);
+			if (baris>0) {
+				document.getElementById("btn-save").disabled = false;
+			}else {
+				document.getElementById("btn-save").disabled = true;
+			}
 	});
 	
 	/* ----------------------------------------------- BTN-X -------------------------------------------------------- */
-	$('#tbody-transfer-stock').on('click', '#btn-X', function(){
+	$('#tbody-transfer-stock').on('click', '.btn-X', function(){
+			var idVar = $(this).attr('id');
 			$(this).parent().parent().remove();
+			$('#'+idVar).prop('disabled',false); // prop=property, bisa id atau button
+		 	/* if (document.getElementById("tbody-transfer-stock").rows.length>0) {
+				document.getElementById("btn-save").disabled = true;
+			}else {
+				document.getElementById("btn-save").disabled = false;
+			}  */
 		});
 
 	/* ---------------------------------------- SAVE TRANSFER STOCK ITEM -------------------------------------------- */
 	$('#btn-save').click(function(){
-		/* if ($('#input-from-outlet').val()==$('#input-to-outlet').val()) {
+		 if ("${outlet.id}"==$('#input-to-outlet').val()) {
 			alert("outlet sama")
-		} else { */	
+		 } else { 
+			var form = $('#target');
+			var valid = form.parsley().validate();
 			var tsDetails = []; 	// list ts detail
 			var htStocks = []; 		// list history ts
 			
@@ -89,7 +118,7 @@ $(document).ready(function(){
 						itemVariant : {
 								id : $(data).attr('id')
 						},
-						inStock : $(data).find('td').eq(1).text() - $(data).find('td').eq(2).text(),
+						inStock : $(data).find('td').eq(1).text(), // - $(data).find('td').eq(2).text(),
 						transferQty :  $(data).find('td').eq(2).text()
 				};
 				tsDetails.push(tsDetail);
@@ -104,7 +133,7 @@ $(document).ready(function(){
 			var transferStock = {
 				status : "Submitted",
 				fromOutlet : {
-					id :$('#input-from-outlet').val()
+					id :"${outlet.id}"
 				},
 				toOutlet : {
 					id : $('#input-to-outlet').val()
@@ -115,20 +144,23 @@ $(document).ready(function(){
 			};
 			
 			console.log(transferStock);
-			
-			$.ajax({
-				url : '${pageContext.request.contextPath }/transfer-stock/save',
-				type : 'POST',
-				data : JSON.stringify(transferStock),
-				contentType : 'application/json',
-				success : function(){
-					alert('save successfully');
-					window.location='${pageContext.request.contextPath}/transfer-stock';
-				}, error : function(){
-					alert('save failed');
-				}
-			});
-	//	} 
+			if(valid==true){
+				$.ajax({
+					url : '${pageContext.request.contextPath }/transfer-stock/save',
+					type : 'POST',
+					data : JSON.stringify(transferStock),
+					contentType : 'application/json',
+					success : function(){
+						alert('save successfully');
+						window.location='${pageContext.request.contextPath}/transfer-stock';
+					}, error : function(){
+						alert('save failed');
+					}
+				});
+			} else {
+					alert('Complete your form');
+			}
+		} 
 
 	}); 
 	 
@@ -205,6 +237,12 @@ $(document).ready(function(){
 				window.location = "${pageContext.request.contextPath}/transfer-stock/search-outlet?search="+word;
 			}
 		});
+ 
+	// EXPORT
+	 	$('#btn-export').click(function(){
+			window.open('${pageContext.request.contextPath}/generate/transfer-stock');
+		});
+ 
 });
 	
 
@@ -240,11 +278,11 @@ $(document).ready(function(){
 							<div class="col-lg-8" style="margin-bottom: 10px;">
 							</div>		
 							<div class="col-lg-1" style="margin-bottom: 10px;">
-								<button type="button" class="btn btn-primary">Export</button>
+								<button type="button" class="btn btn-primary" id="btn-export" >Export</button>
 							</div>
 							<div class="col-lg-1" style="margin-bottom: 10px;">
-								<button type="button" class="btn btn-primary"
-									data-toggle="modal" data-target="#exampleModal">Create</button>
+								<button type="button" id="btn-create" class="btn btn-primary"
+									data-toggle="modal" data-target="#modal-create">Create</button>
 							</div>
 							<table id="tbl-transfer-stock" class="table table-bordered">
 								<thead>
@@ -284,7 +322,7 @@ $(document).ready(function(){
 <!--main content end-->
 
 	<!------------------------------------------------ MODAL CREATE ------------------------------------------------------------------>
-								<div class="modal fade" id="exampleModal" tabindex="-1"
+								<div class="modal fade" id="modal-create" tabindex="-1"
 									role="dialog" aria-labelledby="exampleModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog" role="document">
@@ -296,19 +334,18 @@ $(document).ready(function(){
 													<span aria-hidden="true">&times;</span>
 												</button>
 												<h5 class="modal-title" id="exampleModalLabel">
-													TRANSFER STOCK</h5>
+													<b>TRANSFER STOCK</b></h5>
 											</div>
-											<form id="target" action="${pageContext.request.contextPath }/transfer-stock/save" method="POST">	
+											<form id="target" data-parsley-validate>	
 											<div class="modal-body">
-												<h5>CREATE NEW TRANSFER STOCK FROM : [Diisi Outlet
-													Login]</h5>
+												<h5>CREATE NEW TRANSFER STOCK FROM : ${outlet.name}</h5>
 												</br>
-												<h5>From</h5> 
+												<%-- <h5>From</h5> 
 												<select class="col-lg-12" id="input-from-outlet" type="text" class="form-control" style="margin-bottom: 10px;">
 													<c:forEach var="out" items="${outs}">
 														<option value="${out.id}">${out.name}</option>
 													</c:forEach>
-												</select>
+												</select> --%>
 												<h5>To</h5> 
 												<select class="col-lg-12" id="input-to-outlet" type="text" class="form-control" style="margin-bottom: 10px;">
 													<c:forEach var="out" items="${outs}">
@@ -317,7 +354,9 @@ $(document).ready(function(){
 												</select>
 												<h5>Notes</h5>
 												<textarea id="input-notes" class="col-lg-12" type="text"
-													style="margin-bottom: 10px;"></textarea>
+													data-parsley-required="true"
+													style="margin-bottom: 10px;"
+													pattern="^[0-9a-zA-Z. ]+$"></textarea>
 												<h5>Transfer Item</h5>
 												
 											<div class="col-lg-12"  id="list-item">
@@ -354,7 +393,7 @@ $(document).ready(function(){
 								
 								
 		<!-------------------------------------------------- MODAL ADD -------------------------------------------------------------------->
-							<div class="modal fade" id="modal-add" tabindex="-1" role="dialog"
+							<div class="modal fade" id="modal-add" style="z-index:9999;" tabindex="-1" role="dialog"
 								aria-labelledby="modalEditLabel" aria-hidden="true">
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
@@ -374,10 +413,11 @@ $(document).ready(function(){
 						<!--------------------------------------- TABLE ---------------------------------->
 											<table id="tbl-add-item" class="table table-bordered">
 												<thead>
-													<tr>
+													<tr id="tr-add">
 														<th>Item</th>
 														<th>In Stock</th>
 														<th>Trans. Qty.</th>
+														<th> # </th>
 													</tr>
 												</thead>
 												<tbody id="tbody-item">
@@ -391,8 +431,6 @@ $(document).ready(function(){
 												<button type="button" id="btn-reset" class="btn btn-primary">Cancel</button>
 											</div>
 											<div class="col-lg-10">
-												<button type="button" class="btn btn-primary" id="btn-add"
-													data-toggle="modal" data-target="#modalAddItem">Add</button>
 											</div>
 										</div>
 									</div>

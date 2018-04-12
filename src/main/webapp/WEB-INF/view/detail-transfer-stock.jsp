@@ -1,7 +1,12 @@
 <%@ include file="topping/top.jsp"%>
 <script>
  $(function(){
-	 /* var option = [];
+	
+	$('#change-status').change(function(){
+		var status = $(this).val();
+		var modifiedOn = new Date();
+		
+		/* var option = [];
 		if (data.status=="Submitted") {
 			option.push("<option value=\"Kosong\">Action</option>");
 			option.push("<option value=\"Approved\">Approve</option>");
@@ -10,12 +15,8 @@
 		} else {
 			option.push("<option value=\"Kosong\">Action</option>");
 			option.push("<option value=\"Print\">Print</option>");
-		} */
-	$('#change-status').change(function(){
-		var status = $(this).val();
-		var modifiedOn = new Date();
-		
-		if(status != ""){
+		}  */
+		  if(status != ""){
 			var history = {
 				transferStock : {
 					id : "${transferStock.id}"
@@ -37,8 +38,40 @@
 					alert ('failed save history');
 				}
 			});
+		  if(status=="Approved"){
+			var idtransferStock = "${transferStock.id}";
+			console.log(idtransferStock);
+			$.ajax({
+				url : '${pageContext.request.contextPath }/transfer-stock/update-status-and-stock/'+idtransferStock,
+				type : 'PUT',
+				data : JSON.stringify(status),
+				contentType : 'application/json',
+				success : function(){
+					alert('update status successfully');
+					window.location='${pageContext.request.contextPath}/transfer-stock/get-detail/'+"${transferStock.id}";
+				}, error : function(){
+					alert('update status failed');
+				}
+			});
+		} else if(status=="Rejected"){
+			var idtransferStock = "${transferStock.id}";
+			console.log(idtransferStock);
+			$.ajax({
+				url : '${pageContext.request.contextPath }/transfer-stock/update-status/'+idtransferStock,
+				type : 'PUT',
+				data : JSON.stringify(status),
+				contentType : 'application/json',
+				success : function(){
+					alert('update status successfully');
+					window.location='${pageContext.request.contextPath}/transfer-stock/get-detail/'+"${transferStock.id}";
+				}, error : function(){
+					alert('update status failed');
+				}
+			});
+		} else if(status =="Print"){
+			window.print();
 		}
-		
+	}
 		
 	}); 
 
@@ -81,16 +114,32 @@
 									<h5><b>Transfer Stock Detail</b></h5>
 					   		  </div>
 							<div class="col-sm-2">
-								<select class="btn btn-primary" id="change-status">
-									<option value="" selected="selected">More</option>
-									<option value="Approved">Approve</option>
-									<option value="Rejected">Reject</option>
-									<option value="print">Print</option>
-								</select>
+							<script>
+							if('${transferStock.status}'=='Submitted'){
+								document.write('<select class="btn btn-primary" id="change-status">'
+									+'<option value="" selected="selected">More</option>'
+									+'<option value="Approved">Approve</option>'
+									+'<option value="Rejected">Reject</option>'
+									+'<option value="Print">Print</option></select>');
+							} else if('${transferStock.status}'=='Approved'){
+								document.write('<select class="btn btn-primary" id="change-status">'
+										+'<option value="" selected="selected">More</option>'
+										+'<option value="Approved" disabled>Approve</option>'
+										+'<option value="Rejected" disabled>Reject</option>'
+										+'<option value="Print">Print</option></select>');
+							} else if('${transferStock.status}'=='Rejected'){
+								document.write('<select class="btn btn-primary" id="change-status">'
+										+'<option value="" selected="selected">More</option>'
+										+'<option value="Approved" disabled>Approve</option>'
+										+'<option value="Rejected" disabled>Reject</option>'
+										+'<option value="Print">Print</option></select>');
+							}
+							</script>
+							
 							</div>
 							<div style = "clear:both;"></div>
 							<div class="col-lg-12"> 
-							<p><label for="input-notes">Created By : [User]</label></p>
+							<p><label for="input-notes">Created By :[user]</label></p>
 							<p><label for="input-notes">Transfer Stock Status : ${transferStock.status}</label></p>
 							<label for="input-notes">Notes</label>
 							  <textarea class="col-lg-12" type="text"  id="notes" style="margin-bottom:10px;" name="input-notes">  ${transferStock.notes} </textarea>

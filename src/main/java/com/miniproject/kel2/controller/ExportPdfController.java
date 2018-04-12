@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.SalesOrderDetail;
 import com.miniproject.kel2.model.Supplier;
+import com.miniproject.kel2.model.TransferStock;
+import com.miniproject.kel2.service.OutletService;
 import com.miniproject.kel2.service.SalesOrderDetailService;
 import com.miniproject.kel2.service.SupplierService;
+import com.miniproject.kel2.service.TransferStockService;
 
 @Controller
 public class ExportPdfController {
@@ -26,6 +30,12 @@ public class ExportPdfController {
 	
 	@Autowired
 	SalesOrderDetailService salesOrderDetailService;
+	
+	@Autowired
+	OutletService outletService;
+	
+	@Autowired
+	TransferStockService transferStockService;
 	
 	@RequestMapping(value = "/generate/supplier", method = RequestMethod.GET)
 	ModelAndView generatePdf(HttpServletRequest request,
@@ -53,5 +63,27 @@ public class ExportPdfController {
 		List<SalesOrderDetail> receipts = salesOrderDetailService.getReceiptBySalesOrder(id);
 		System.out.println("mau ngeprint");
 		return new ModelAndView("pdfViewSalesOrder","receipts", receipts);
+ 	}
+	
+	// PDF OUTLET
+	@RequestMapping(value = "/generate/outlet", method = RequestMethod.GET)
+	ModelAndView generatePdfOutlet(HttpServletRequest request,
+	HttpServletResponse response) throws Exception {
+		System.out.println("Calling generatePdfOutlet()...");
+		
+		List<Outlet> outs = outletService.selectAll();
+		
+		return new ModelAndView("pdfViewOutlet","outs",outs);
+ 	}
+	
+	// PDF TRANSFER STOCK
+	@RequestMapping(value = "/generate/transfer-stock", method = RequestMethod.GET)
+	ModelAndView generatePdfTransferStock(HttpServletRequest request,
+	HttpServletResponse response) throws Exception {
+		System.out.println("Calling generatePdfTransferStock()...");
+		
+		List<TransferStock> tStocks = transferStockService.selectAll();
+		
+		return new ModelAndView("pdfViewTransferStock","tStocks",tStocks);
  	}
 }
