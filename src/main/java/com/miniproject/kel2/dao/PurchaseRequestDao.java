@@ -35,4 +35,6 @@ public interface PurchaseRequestDao {
 	public List<PurchaseRequest> searchByStatus(String status);
 
 	public List<PurchaseRequest> searchByAll(String word);
+
+	public List<PurchaseRequest> getAllByOutletId(long outId);
 }

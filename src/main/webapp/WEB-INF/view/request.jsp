@@ -95,7 +95,7 @@
 									</tr>
 								</thead>
 								<tbody id="isi-pr">
-									<c:forEach items="${prs }" var="pr">
+									<c:forEach items="${allPrByOut }" var="pr">
 										<!-- //mengambil id barang -->
 										<tr id="#">
 											<td>${pr.createdOn }</td>
@@ -106,6 +106,8 @@
 												if('${pr.status}' == 'Approved'){
 													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id } disabled"> |');
 												}else if('${pr.status}' == 'Rejected'){
+													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id } disabled"> |');
+												}else if('${pr.status}' == 'Submitted'){
 													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id } disabled"> |');
 												}else {
 													document.write('<input type="button" class="btn-update btn btn-default" value="Edit" key-id="${pr.id }" > |');
@@ -186,7 +188,6 @@
 									id="table-result-add-item">
 									<thead>
 										<tr>
-
 											<th><center>Item</center></th>
 											<th><center>In Stock</center></th>
 											<th><center>Request Qty</center></th>
@@ -496,7 +497,10 @@
 					id : $(data).attr('key-id')
 				},
 				requestQty : $(data).find('td').eq(2).text(),
+				createdOn : new Date(),
 				createdBy : createdBy,
+				modifiedBy : createdBy,
+				modifiedOn : new Date(),
 			};
 			
 			listDetailRequest.push(detailRequest);

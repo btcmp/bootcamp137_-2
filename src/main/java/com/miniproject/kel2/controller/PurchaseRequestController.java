@@ -44,7 +44,7 @@ public class PurchaseRequestController {
 	PurchaseRequestHistoryService hisProReqService;
 	
 	@Autowired
-	ItemInventoryService iiService;
+	ItemInventoryService iiService; 
 	
 	@Autowired
 	HttpSession httpSession;
@@ -53,28 +53,23 @@ public class PurchaseRequestController {
 	
 	
 	@RequestMapping
-	public String index (Model model, PurchaseRequest pr) {
-		
-		List<PurchaseRequest> prs = prService.selectAll();
-		model.addAttribute("prs", prs);
-		
+	public String index (Model model) {
 		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
 		model.addAttribute("outlet", outlet);
+		
+		 long idOut;
+		 
+		 idOut = outlet.getId();
+		
+		 System.out.println("id outlet : "+idOut);
+		
+		List<PurchaseRequest> allPrByOut = prService.getAllByOutletId(idOut);
+		model.addAttribute("allPrByOut", allPrByOut);
 		
 		Employee employee = (Employee) httpSession.getAttribute("employee");
 		model.addAttribute("employee", employee);
 		
-		System.out.println(employee);
-		
-		System.out.println(outlet);
-		/*
-		List<RequestDetail> prd = rdService.selectAll();
-		model.addAttribute("prd", prd);*/
-		
-		/*List<ItemInventory> items = iiService.selectAll();
-		model.addAttribute("items", items);*/
-		
-		
+		System.out.println("employee has found : " +employee);
 		
 		return "request";
 	}

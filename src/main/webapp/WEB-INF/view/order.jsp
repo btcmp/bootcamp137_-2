@@ -159,6 +159,9 @@
 					<input type="hidden" name='input-id' class="form-control" id="id-po"/>
 					<input type="hidden" name='input-poNo' class="form-control" id="po-no"/>
 					<input type="hidden" name='input-status' class="form-control" id="po-status"/>
+					<input type="hidden" name='input-id-outlet' class="form-control" id="po-status"/>
+					
+					
 					 
                  <label for="outlet-name" class="control-label"> Supplier : <span class="required">*</span></label>            
                 <div class="form-group">

@@ -378,7 +378,7 @@ textarea.parsley-error {
 						<ul class="sub">
 							<li><a class="" href="${pageContext.request.contextPath}/employee">Employee</a></li>
 							<li><a class="" href="${pageContext.request.contextPath}/category">Category</a></li>
-							<li><a class="" href="${pageContext.request.contextPath}/supplier/${outlet.id}">Supplier</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/supplier">Supplier</a></li>
 							<li><a class="" href="${pageContext.request.contextPath}/outlet">Outlet</a></li>
 							<li><a class="" href="${pageContext.request.contextPath}/item">Item</a>
 						</ul></li>
@@ -387,7 +387,7 @@ textarea.parsley-error {
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="${pageContext.request.contextPath}/request">Request</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/request ">Request</a></li>
 							
 							<li><a class="" href="${pageContext.request.contextPath}/order">Order</a></li>
 							
@@ -398,7 +398,7 @@ textarea.parsley-error {
 							class="menu-arrow arrow_carrot-down"></span>
 					</a>
 						<ul class="sub">
-							<li><a class="" href="${pageContext.request.contextPath}/adjustment/${outlet.id}">Adjustment</a></li>
+							<li><a class="" href="${pageContext.request.contextPath}/adjustment ">Adjustment</a></li>
 						</ul></li>
 					<li class="sub-menu"><a href="javascript:;" class=""> <i
 							class="icon_desktop"></i> <span>Transfer Stok</span> <span

@@ -153,5 +153,17 @@ public class PurchaseRequestDaoImpl implements PurchaseRequestDao {
 		}
 	}
 
+	public List<PurchaseRequest> getAllByOutletId(long outId) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseRequest pr where pr.outlet.id = :outId ";
+		List<PurchaseRequest> pr = session.createQuery(hql).setParameter("outId", outId).list();
+		if(pr.isEmpty()) {
+			return null;
+		}else {
+			return pr;
+		}
+	}
+
 	
 }

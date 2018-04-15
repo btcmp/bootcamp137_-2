@@ -1,4 +1,5 @@
 <%@ include file="topping/top.jsp"%>
+
 <script type="text/javascript">
 	$(function() {
 		$('#btn-add').click(function() {
@@ -50,7 +51,7 @@
 								  <p>Everything seems to be ok :)</p>
 								</div>
 								
-								<div><input class=" form-control" id="id" type="hidden" /></div>
+								<div><input class=" form-control" id="id-emp" type="hidden" /></div>
 								
 								<div class="form-group ">
 									<label for="fullname" class="control-label col-lg-2">First
@@ -551,7 +552,7 @@ $(document).ready(function(){
 				}
 			}
 			var employee = {
-					id : $('#id').val(),
+					id : $('#id-emp').val(),
 					firstName : $('#first-name').val(),
 					lastName : $('#last-name').val(),
 					email : $('#email').val(),

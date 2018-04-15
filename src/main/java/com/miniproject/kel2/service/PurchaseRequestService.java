@@ -188,6 +188,7 @@ public class PurchaseRequestService {
 		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
 		hpr.setCreatedOn(new Date());
 		hpr.setPr(pr);
+		hpr.setCreatedBy(pr.getCreatedBy());
 		hpr.setStatus(pr.getStatus());
 		
 		hprDao.save(hpr);
@@ -200,6 +201,7 @@ public class PurchaseRequestService {
 		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
 		hpr.setCreatedOn(new Date());
 		hpr.setPr(pr);
+		hpr.setCreatedBy(pr.getCreatedBy());
 		hpr.setStatus(pr.getStatus());
 		
 		hprDao.save(hpr);
@@ -213,6 +215,7 @@ public class PurchaseRequestService {
 		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
 		hpr.setCreatedOn(new Date());
 		hpr.setPr(pr);
+		hpr.setCreatedBy(pr.getCreatedBy());
 		hpr.setStatus(pr.getStatus());
 		
 		hprDao.save(hpr);
@@ -234,6 +237,7 @@ public class PurchaseRequestService {
 		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
 		hpr.setCreatedOn(new Date());
 		hpr.setPr(pr);
+		hpr.setCreatedBy(pr.getCreatedBy());
 		hpr.setStatus(pr.getStatus());
 		hprDao.save(hpr);
 		
@@ -277,7 +281,6 @@ public class PurchaseRequestService {
 		System.out.println(poNo);
 		
 		po.setPoNo(poNo);
-		po.setOutlet(pr.getOutlet());
 		po.setGrandTotal(grandTotal);
 		po.setPr(pr);
 		poDao.save(po);
@@ -287,6 +290,8 @@ public class PurchaseRequestService {
 				OrderDetail pod = new OrderDetail();
 				pod.setCreatedOn(rd.getCreatedOn());
 				pod.setCreatedBy(rd.getCreatedBy());
+				pod.setModifiedBy(rd.getModifiedBy());
+				pod.setModifiedOn(rd.getModifiedOn());
 				pod.setRequestQty(rd.getRequestQty());
 				pod.setVariant(rd.getItemvar());
 				pod.setUnitCost(rd.getItemvar().getPrice());
@@ -302,6 +307,8 @@ public class PurchaseRequestService {
 			newPo.setPoNo(poNo);
 			newPo.setStatus("Unchecked");
 			newPo.setPr(po.getPr());
+			po.setOutlet(pr.getOutlet());
+			po.setCreatedBy(pr.getCreatedBy());
 			poDao.update(newPo);
 				
 		}
@@ -324,6 +331,7 @@ public class PurchaseRequestService {
 		HistoryPurchaseRequest hpr = new HistoryPurchaseRequest();
 		hpr.setCreatedOn(new Date());
 		hpr.setPr(pr);
+		hpr.setCreatedBy(pr.getCreatedBy());
 		hpr.setStatus(pr.getStatus());
 		
 		hprDao.save(hpr);
@@ -339,5 +347,11 @@ public class PurchaseRequestService {
 		// TODO Auto-generated method stub
 		List<PurchaseRequest> pr = prDao.searchByAll(word);
 		return pr;
+	}
+
+	public List<PurchaseRequest> getAllByOutletId(long outId) {
+		// TODO Auto-generated method stub
+		List<PurchaseRequest> allPrByOut = prDao.getAllByOutletId(outId);
+		return allPrByOut;
 	}
 }

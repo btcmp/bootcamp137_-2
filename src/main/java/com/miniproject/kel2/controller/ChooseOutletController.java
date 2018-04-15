@@ -56,9 +56,11 @@ public String choseOutlet(Model model, Principal principal) {
 	httpSession.setAttribute("employee", empl);
 	//httpSession.setAttribute("username", empl.getUser().getUsername());
 	
-	List<Outlet> outlets = empl.getOutlet();
-	System.out.println(outlets.size());
-	model.addAttribute("outlets", outlets);
+	List<Outlet> outlet = empl.getOutlet();
+	System.out.println("jumlha outlet : "+outlet.size());
+	model.addAttribute("outlets", outlet);
+	httpSession.setAttribute("outlets",outlet);
+	
 	return "security/choose-outlet";
 	
 	/*httpSession.setAttribute("userLogin", user);

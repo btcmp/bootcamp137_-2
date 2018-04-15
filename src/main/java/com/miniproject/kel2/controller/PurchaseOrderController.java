@@ -2,6 +2,8 @@ package com.miniproject.kel2.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import com.miniproject.kel2.model.HistoryPurchaseOrder;
 import com.miniproject.kel2.model.HistoryPurchaseRequest;
 import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.OrderDetail;
+import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.PurchaseOrder;
 import com.miniproject.kel2.model.PurchaseRequest;
 import com.miniproject.kel2.model.RequestDetail;
@@ -50,18 +53,23 @@ public class PurchaseOrderController {
 	@Autowired
 	SupplierService sService;
 	
+	@Autowired
+	HttpSession httpSession;
+	
 	@RequestMapping
 	public String index (Model model, PurchaseOrder po) {
 		
 		List<PurchaseOrder> pos = poService.selectAll();
 		model.addAttribute("pos", pos);
 		
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		model.addAttribute("outlet", outlet);
 		
-		List<OrderDetail> pods = podService.selectAll();
+		/*List<OrderDetail> pods = podService.selectAll();
 		model.addAttribute("pods", pods);
 		
 		List<ItemInventory> items = iiService.selectAll();
-		model.addAttribute("items", items);
+		model.addAttribute("items", items);*/
 		
 		List<Supplier> supp = sService.selectAll();
 		model.addAttribute("supp", supp);

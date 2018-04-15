@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.miniproject.kel2.model.Outlet;
+import com.miniproject.kel2.model.PurchaseRequest;
 import com.miniproject.kel2.model.SalesOrderDetail;
 import com.miniproject.kel2.model.Supplier;
 import com.miniproject.kel2.model.TransferStock;
 import com.miniproject.kel2.service.OutletService;
+import com.miniproject.kel2.service.PurchaseRequestService;
 import com.miniproject.kel2.service.SalesOrderDetailService;
 import com.miniproject.kel2.service.SupplierService;
 import com.miniproject.kel2.service.TransferStockService;
@@ -36,6 +38,10 @@ public class ExportPdfController {
 	
 	@Autowired
 	TransferStockService transferStockService;
+	
+	@Autowired
+	PurchaseRequestService prService;
+	
 	
 	@RequestMapping(value = "/generate/supplier", method = RequestMethod.GET)
 	ModelAndView generatePdf(HttpServletRequest request,
@@ -86,4 +92,13 @@ public class ExportPdfController {
 		
 		return new ModelAndView("pdfViewTransferStock","tStocks",tStocks);
  	}
+	
+	//PDF REQUEST
+	@RequestMapping(value="/generate/request", method=RequestMethod.GET)
+	ModelAndView generetaPdfPurchaseRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("Process generate begin, call this function  ..");
+		List<PurchaseRequest> pr = prService.selectAll();
+		
+		return new ModelAndView("pdfViewPr","pr", pr);
+	}
 }
