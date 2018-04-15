@@ -1,6 +1,12 @@
 package com.miniproject.kel2.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.miniproject.kel2.model.Category;
 import com.miniproject.kel2.model.Item;
@@ -34,6 +41,9 @@ public class ItemController {
 	
 	@Autowired
 	ItemInventoryService itemInventoryService;
+	
+	@Autowired 
+	ServletContext servletContext;
 	
 	@RequestMapping
 	public String index (Model model) {
@@ -111,4 +121,25 @@ public class ItemController {
 		List<ItemInventory > itemInventories = itemInventoryService.searchItemInventoryByItemName(search);
 		return itemInventories;
 	}
+	
+	
+	// untuk upload gambar
+	@RequestMapping(value="/upload", method=RequestMethod.POST)
+	@ResponseBody
+	public String upload(@RequestParam("image") MultipartFile file) {
+			String name="";
+			try {
+				String fName = file.getOriginalFilename().toString();
+				String[] type = fName.split("\\.");
+				int len = type.length;
+				name = (System.currentTimeMillis())+"."+type[len-1];
+				BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
+			    File destination = new File(servletContext.getRealPath("/resources/img/"+name));
+			    ImageIO.write(src, type[len-1], destination);
+			    
+			    } catch(Exception e) {
+			        e.printStackTrace();
+			    }
+			return name;
+		}
 }

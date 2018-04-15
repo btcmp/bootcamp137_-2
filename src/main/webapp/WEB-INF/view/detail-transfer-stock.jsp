@@ -5,6 +5,7 @@
 	$('#change-status').change(function(){
 		var status = $(this).val();
 		var modifiedOn = new Date();
+		var idUser = "${employee.user.id}";
 		
 		/* var option = [];
 		if (data.status=="Submitted") {
@@ -22,7 +23,10 @@
 					id : "${transferStock.id}"
 				},
 				createdOn : new Date(),
-				status : status
+				status : status,
+				createdBy : {
+					id :  idUser
+				}
 			}
 			
 			$.ajax({
@@ -139,7 +143,7 @@
 							</div>
 							<div style = "clear:both;"></div>
 							<div class="col-lg-12"> 
-							<p><label for="input-notes">Created By :[user]</label></p>
+							<p><label for="input-notes">Created By :${transferStock.createdBy.username}<label></p>
 							<p><label for="input-notes">Transfer Stock Status : ${transferStock.status}</label></p>
 							<label for="input-notes">Notes</label>
 							  <textarea class="col-lg-12" type="text"  id="notes" style="margin-bottom:10px;" name="input-notes">  ${transferStock.notes} </textarea>

@@ -2,19 +2,19 @@
 <script type="text/javascript">
 	$(function() {
 		$.fn.dataTable.ext.classes.sPageButton = 'btn btn-primary';
-		$('#tbl-item').DataTable({
+		/* $('#tbl-item').DataTable({
 			searching : false, 
 			bFilter: false, 
 			iDisplayLength: 10, // display max 10
 			oLanguage: {
 			   sLengthMenu: "",
 			}
-		});
+		}); */
 		
 		index = 0;
 		var idDelete = [];
 		
-		// menampilkan pop up create
+		// menampilkan pop up createA
 		$('#btn-create').click(function() {
 			$('#modal-create').modal();
 		});
@@ -56,6 +56,12 @@
 	/* ------------------------------------------------------------------ SAVE (CREATE) -------------------------------------------------------------------- */
 		// SAVE ITEM + VARIANT
 		$('#btn-save').on('click', function(evt){
+			
+			// UPLOAD IMAGE
+			var formData = new FormData();
+			formData.append('image',$('#input-image')[0].files[0]); //untum membaca filenya
+			//console.log(image);
+			
 			evt.preventDefault();
 			var itemVariants =[];
 			var itemInventories = [];
@@ -73,25 +79,42 @@
 					itemVariants.push(variant);
 			});
 			
-			var item = {
-					name : $('#input-item-name').val(),
-					category : {
-							id : $('#input-category').val(),
-					},
-					itemVariants : itemVariants
-			};
-			console.log(item);
+		
 			
 			   $.ajax({
-				url : '${pageContext.request.contextPath}/item/save',
-				type :'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(item),
-				success: function(data){
-					alert('save')
-					window.location='${pageContext.request.contextPath}/item';
-				}, error : function(){
-					alert('saving failed')	
+					url : '${pageContext.request.contextPath}/item/upload',
+					type :'POST',
+					data : formData,
+					contentType : false,
+					processData : false,
+					cache : false,
+					success: function(data){
+						console.log(data);
+						var item = {
+								name : $('#input-item-name').val(),
+								image : data,
+								category : {
+										id : $('#input-category').val(),
+								},
+								itemVariants : itemVariants
+						};
+						console.log(item);
+				
+					$.ajax({
+					 	url : '${pageContext.request.contextPath}/item/save',
+						type :'POST',
+						contentType : 'application/json',
+						data : JSON.stringify(item),
+						success: function(data){
+							alert('save')
+							window.location='${pageContext.request.contextPath}/item';
+						}, error : function(){
+							alert('saving failed')	
+						} 
+					});
+				},
+				error : function(){
+					alert('error')
 				}
 			});  
 		});  
@@ -172,6 +195,8 @@
 					$('#edit-id-utama').val(parseInt(id));
 				 	var index = 0;
 					$.each(dt,function(key,invent){
+						var image = invent.itemVariant.item.image;
+						$('#edit-image').attr('src','${pageContext.request.contextPath}/resources/img/'+image);
 						$('#edit-name-utama').val(invent.itemVariant.item.name);
 						$('#edit-category-utama').val(invent.itemVariant.item.category.id);
 						$('#tbody-edit-utama').empty();
@@ -341,7 +366,9 @@
 				$('#edit-category-utama').val('');
 				$('#tbody-edit-utama').empty();	
 			}  
-		
+			
+			
+	/* -----------------------------------------------------------------  SEARCH ------------------------------------------------------------------- */
 		 $('#btn-search').on('click', function(){
 			var word =$('#search').val();
 			console.log(word);
@@ -368,9 +395,47 @@
 			});
 			
 	 	}); 
+	
+	
+	/* --------------------------------------------------------------  UPLOAD IMAGE ------------------------------------------------------------------- */
+	// INPUT IMAGE	
+	function readURL(input) {
+		        if (input.files && input.files[0]) {
+		            var reader = new FileReader();
+
+		            reader.onload = function (e) {
+		                $('#preview-image').attr('src', e.target.result);
+		            }
+
+		            reader.readAsDataURL(input.files[0]);
+		        }
+		    }
+
+		    $("#input-image").change(function () {
+		        readURL(this);
+		    });	
 	 
 	
 	});	
+	
+	// EDIT IMAGE
+	function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#edit-image1').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#input-image-edit").change(function () {
+        readURL(this);
+    });	
+
+
 	
 </script>
 
@@ -429,8 +494,10 @@
 											<form id="target" action="${pageContext.request.contextPath }/item/save" method="POST">									
 												<div class="modal-body">
 													<div id="input">
-														<input class="col-lg-4" type="image" id="myimage"
-															src="resources/gambar-item/gambar-hp.jpg" style="width: 100px; height: 60px;">
+														<div class="row">
+															<input class="col-lg-12" type="file" id="input-image" style="margin-bottom:10px;"/>
+														</div>
+														<img id="preview-image" class="col-lg-4" style="width: 100px; height: 60px;"/>
 														<input class="col-lg-8" type="text" style="margin-bottom: 10px;" id="input-item-name" placeholder="Item Name">
 														<select class="col-lg-8" type="text" path="category.id" class="form-control" id="input-category" >
 															<c:forEach var="cat" items="${cats}">
@@ -445,7 +512,7 @@
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
 														<button type="button" class="btn btn-primary" id="add-var"
-															data-toggle="modal" data-target="#modalAddVariant">Add Variant s</button>
+															data-toggle="modal" data-target="#modalAddVariant">Add Variant</button>
 
 													</div>
 													
@@ -633,7 +700,7 @@
 
 
 								<!-- ================= Modal EDIT UTAMA =================== -->
-								<div style="z-index:9999;"class="modal fade" id="modal-edit-utama" tabindex="-1"
+								<div class="modal fade" id="modal-edit-utama" tabindex="-1"
 									role="dialog" aria-labelledby="exampleModalLabel"
 									aria-hidden="true">
 									<div class="modal-dialog" role="document">
@@ -649,8 +716,11 @@
 											<div class="modal-body">
 												<div id="input">
 												<input type="hidden" id="edit-id-utama" class="form-control">	
-													<input class="col-lg-4" type="image" id="myimage"
-															src="resources/gambar-item/gambar-hp.jpg" style="width: 100px; height: 60px;">
+													<div class="row">
+															<input class="col-lg-12" type="file" id="input-image-edit" style="margin-bottom:10px;"/>
+														</div>
+														<img id="edit-image" class="col-lg-4" style="width: 100px; height: 60px;" src=""/>
+														<img id="edit-image1" class="col-lg-4" style="width: 100px; height: 60px;" />
 													<input class="col-lg-8" type="text"
 														style="margin-bottom: 10px;" id="edit-name-utama" placeholder="Item Name">
 													<select class="col-lg-8" type="text" path="category.id" class="form-control" id="edit-category-utama" >
@@ -773,15 +843,15 @@
 											</div>
 											</form>
 										</div>
-
+</div>
 									</div>
 									<!-- modal EDIT end -->
 
 
 
 	<!-- ===================================== Modal Add Variant UTAMA==============================-->
-									<div style="z-index:99999;" class="modal fade" id="modalAddVariant3" tabindex="-1"
-										role="dialog" aria-labelledby="modalEditLabel"
+									<div class="modal fade" id="modalAddVariant3" tabindex="-1"
+										role="dialog" aria-labelledby="modalEditVariant"
 										aria-hidden="true">
 										<div class="modal-dialog" role="document">
 											<div class="modal-content">

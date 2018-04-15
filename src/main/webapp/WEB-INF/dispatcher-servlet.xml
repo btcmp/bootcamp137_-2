@@ -24,6 +24,13 @@
 		<property name="order" value="1"></property>
 		<property name="basename" value="views"></property>
 	</bean>
+	
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		 <property name="maxUploadSize" value="268435456"/>
+	</bean>
+	
+	
 	<!-- untuk mengaktifkan spring mvc -->
 	<mvc:annotation-driven />
 

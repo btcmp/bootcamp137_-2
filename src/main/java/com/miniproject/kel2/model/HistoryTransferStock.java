@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,8 +23,9 @@ public class HistoryTransferStock {
 	private long id;
 	@Column(length=20, nullable=false)
 	private String status;
-	@Column(name="create_by")
-	private long createdBy;
+	@ManyToOne
+	@JoinColumn(name="created_by")
+	private User createdBy;
 	
 	@Column(name="create_on")
 	private Date createdOn;
@@ -47,11 +49,11 @@ public class HistoryTransferStock {
 		this.status = status;
 	}
 
-	public long getCreatedBy() {
+	public User getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(long createdBy) {
+	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
 

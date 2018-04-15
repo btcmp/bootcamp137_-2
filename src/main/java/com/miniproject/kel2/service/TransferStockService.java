@@ -87,6 +87,8 @@ public class TransferStockService {
 		ts.setToOutlet(transferStock.getToOutlet());
 		ts.setNotes(transferStock.getNotes());
 		ts.setStatus(transferStock.getStatus());
+		ts.setCreatedBy(transferStock.getCreatedBy());
+		ts.setModifiedBy(transferStock.getModifiedBy());
 		transferStockDao.save(ts);
 		
 		for(TransferStockDetail tsd : transferStock.getTsDetails()) {
@@ -98,6 +100,8 @@ public class TransferStockService {
 		//	tsDetail.setCreatedOn(new Date());
 			tsDetail.setInStock(tsd.getInStock());
 			tsDetail.setTransferQty(tsd.getTransferQty());
+			tsDetail.setCreatedBy(tsd.getCreatedBy());
+			tsDetail.setModifiedBy(tsd.getModifiedBy());
 			tsDetail.setTransferStock(ts);
 			tsDetailDao.save(tsDetail);
 			
@@ -193,12 +197,13 @@ public class TransferStockService {
 			System.out.println("get trans qty : "+tsDetail.getTransferQty());
 			invent.setEndingQty(invent.getEndingQty() - tsDetail.getTransferQty());
 			invent.setTransferStockQty(invent.getTransferStockQty() + tsDetail.getTransferQty());
-			invent.setModifiedOn(tsDetail.getModifiedOn());
+			invent.setModifiedOn(new Date());
 			
 			ItemInventory iv = itemInventoryDao.searchInventoryByVariantAndOutletId(variantId, idToOutlet);
 			if (iv != null) {
 				iv.setEndingQty(iv.getEndingQty() + tsDetail.getTransferQty());
 				iv.setAdjustmentQty(iv.getAdjustmentQty() + tsDetail.getTransferQty());
+				iv.setModifiedOn(new Date());
 			} else {
 				ItemInventory ivNew = new ItemInventory();
 				ivNew.setAdjustmentQty(0);
@@ -214,6 +219,14 @@ public class TransferStockService {
 				ivNew.setTransferStockQty(0);
 				itemInventoryDao.save(ivNew);
 			}
+			/*for(HistoryTransferStock hts : transferStock.getHistoryTransferStock()) {
+				HistoryTransferStock htStock = new HistoryTransferStock ();
+				htStock.setTransferStock(transferStock);
+				htStock.setCreatedOn(hts.getCreatedOn());
+				htStock.setStatus(hts.getStatus());
+				htStock.setCreatedBy(hts.getCreatedBy());
+				htStockDao.save(htStock);
+			}*/
 		}
 	}
 	

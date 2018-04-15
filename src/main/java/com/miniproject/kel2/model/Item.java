@@ -42,6 +42,7 @@ public class Item {
 	private Date modifiedOn;
 	@Column(nullable=false)
 	private boolean active;
+	private String image;
 	
 	@ManyToOne
 	public Category category;
@@ -105,6 +106,12 @@ public class Item {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
 
 }

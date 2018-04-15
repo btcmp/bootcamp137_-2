@@ -141,7 +141,22 @@ public class User {
 		@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
 		private List<OrderDetail> orderDetailsModified;
 		
-	
+	// TRANSFER STOCK
+		@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+		private List<TransferStock> tStocksCreated;
+		
+		@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+		private List<TransferStockDetail> tsDetailsCreated;
+		
+		@OneToMany(fetch=FetchType.LAZY, mappedBy="createdBy", cascade=CascadeType.ALL, orphanRemoval=true)
+		private List<HistoryTransferStock> htStocksCreated;
+		
+		@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+		private List<TransferStock> tStocksModified;
+		
+		@OneToMany(fetch=FetchType.LAZY, mappedBy="modifiedBy", cascade=CascadeType.ALL, orphanRemoval=true)
+		private List<TransferStockDetail> tsDetailsModified;
+		
 	public long getId() {
 		return id;
 	}
@@ -375,6 +390,87 @@ public class User {
 		this.requestDetailsModified = requestDetailsModified;
 	}
 
+	public List<PurchaseOrder> getPurchaseOrderCreated() {
+		return purchaseOrderCreated;
+	}
+
+	public void setPurchaseOrderCreated(List<PurchaseOrder> purchaseOrderCreated) {
+		this.purchaseOrderCreated = purchaseOrderCreated;
+	}
+
+	public List<OrderDetail> getOrderDetailsCreated() {
+		return orderDetailsCreated;
+	}
+
+	public void setOrderDetailsCreated(List<OrderDetail> orderDetailsCreated) {
+		this.orderDetailsCreated = orderDetailsCreated;
+	}
+
+	public List<HistoryPurchaseOrder> getHistoryPurchaseOrderCreated() {
+		return historyPurchaseOrderCreated;
+	}
+
+	public void setHistoryPurchaseOrderCreated(List<HistoryPurchaseOrder> historyPurchaseOrderCreated) {
+		this.historyPurchaseOrderCreated = historyPurchaseOrderCreated;
+	}
+
+	public List<PurchaseOrder> getPurchaseOrderModified() {
+		return purchaseOrderModified;
+	}
+
+	public void setPurchaseOrderModified(List<PurchaseOrder> purchaseOrderModified) {
+		this.purchaseOrderModified = purchaseOrderModified;
+	}
+
+	public List<OrderDetail> getOrderDetailsModified() {
+		return orderDetailsModified;
+	}
+
+	public void setOrderDetailsModified(List<OrderDetail> orderDetailsModified) {
+		this.orderDetailsModified = orderDetailsModified;
+	}
+
+	public List<TransferStock> gettStocksCreated() {
+		return tStocksCreated;
+	}
+
+	public void settStocksCreated(List<TransferStock> tStocksCreated) {
+		this.tStocksCreated = tStocksCreated;
+	}
+
+	public List<TransferStockDetail> getTsDetailsCreated() {
+		return tsDetailsCreated;
+	}
+
+	public void setTsDetailsCreated(List<TransferStockDetail> tsDetailsCreated) {
+		this.tsDetailsCreated = tsDetailsCreated;
+	}
+
+	public List<HistoryTransferStock> getHtStocksCreated() {
+		return htStocksCreated;
+	}
+
+	public void setHtStocksCreated(List<HistoryTransferStock> htStocksCreated) {
+		this.htStocksCreated = htStocksCreated;
+	}
+
+	public List<TransferStock> gettStocksModified() {
+		return tStocksModified;
+	}
+
+	public void settStocksModified(List<TransferStock> tStocksModified) {
+		this.tStocksModified = tStocksModified;
+	}
+
+	public List<TransferStockDetail> getTsDetailsModified() {
+		return tsDetailsModified;
+	}
+
+	public void setTsDetailsModified(List<TransferStockDetail> tsDetailsModified) {
+		this.tsDetailsModified = tsDetailsModified;
+	}
+
+	
 	
 	
 	

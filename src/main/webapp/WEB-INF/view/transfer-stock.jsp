@@ -105,6 +105,7 @@ $(document).ready(function(){
 
 	/* ---------------------------------------- SAVE TRANSFER STOCK ITEM -------------------------------------------- */
 	$('#btn-save').click(function(){
+		var idUser = "${employee.user.id}";
 		 if ("${outlet.id}"==$('#input-to-outlet').val()) {
 			alert("outlet sama")
 		 } else { 
@@ -119,13 +120,22 @@ $(document).ready(function(){
 								id : $(data).attr('id')
 						},
 						inStock : $(data).find('td').eq(1).text(), // - $(data).find('td').eq(2).text(),
-						transferQty :  $(data).find('td').eq(2).text()
+						transferQty :  $(data).find('td').eq(2).text(),
+						createdBy : {
+								id :  idUser
+						},
+						modifiedBy : {
+							id :  idUser
+						}
 				};
 				tsDetails.push(tsDetail);
 				
 				var htStock = {
 						status : "Submitted",
-						createdOn : new Date()
+						createdOn : new Date(),
+						createdBy : {
+								id :  idUser
+						}
 				};
 				htStocks.push(htStock);
 			});
@@ -140,7 +150,13 @@ $(document).ready(function(){
 				},
 				notes : $('#input-notes').val(),
 				historyTransferStock : htStocks,
-				tsDetails : tsDetails
+				tsDetails : tsDetails,
+				createdBy : {
+					id :  idUser
+				},
+				modifiedBy : {
+					id :  idUser
+				}
 			};
 			
 			console.log(transferStock);
