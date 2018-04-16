@@ -131,6 +131,19 @@ public class AdjustmentController {
 		return "detail-adjustment";
 	}
 	
+	@RequestMapping(value="/print-detail/{id}", method=RequestMethod.GET)
+	public String printDetail(@PathVariable long id, Model model) {
+		Adjustment adjustment = adjustmentService.getOne(id);
+		List<DetailAdjustment> detAdjustments = detAdjustmentService.searchById(id);
+		List<HistoryAdjustment> hisAdjustments = hisAdjustmentService.searchById(id);
+		System.out.println("jumlah detail adjustment : "+detAdjustments.size());
+		System.out.println("jumlah history adjustment : "+hisAdjustments.size());
+		model.addAttribute("adjustment", adjustment);
+		model.addAttribute("listDetailAdjustment", detAdjustments);
+		model.addAttribute("listHistory", hisAdjustments);
+		return "view-detail-adjustment";
+	}
+	
 	//save history adjustment in detail adjustment view
 	@RequestMapping(value="/detail/save-history")
 	@ResponseStatus(HttpStatus.CREATED)

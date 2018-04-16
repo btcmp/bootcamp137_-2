@@ -23,30 +23,35 @@
 			var createdOn = new Date();
 			console.log(status);
 			if(status != ""){
-				var history = {
-					adjustmentId : {
-						id : "${adjustment.id}"
-					},
-					createdOn : new Date(),
-					createdBy : {
-						id : "${employee.user.id }"
-					},
-					status : status
-				}
-				
-				$.ajax({
-					url : '${pageContext.request.contextPath}/adjustment/detail/save-history',
-					type : 'POST',
-					contentType : 'application/json',
-					data : JSON.stringify(history),
-					success : function(data){
-						//alert('save history success');
-						window.location = '${pageContext.request.contextPath}/adjustment/get-detail/'+"${adjustment.id}";
-					},
-					error : function(){
-						alert ('failed save history');
+				if(status == "print"){
+					var id = "${adjustment.id }";
+					window.open("${pageContext.request.contextPath}/adjustment/print-detail/"+id);
+				}else{
+					var history = {
+						adjustmentId : {
+							id : "${adjustment.id}"
+						},
+						createdOn : new Date(),
+						createdBy : {
+							id : "${employee.user.id }"
+						},
+						status : status
 					}
-				});
+					
+					$.ajax({
+						url : '${pageContext.request.contextPath}/adjustment/detail/save-history',
+						type : 'POST',
+						contentType : 'application/json',
+						data : JSON.stringify(history),
+						success : function(data){
+							//alert('save history success');
+							window.location = '${pageContext.request.contextPath}/adjustment/get-detail/'+"${adjustment.id}";
+						},
+						error : function(){
+							alert ('failed save history');
+						}
+					});
+				}
 			}
 		});
 	});
