@@ -3,6 +3,8 @@ package com.miniproject.kel2.service;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import com.miniproject.kel2.dao.HistoryAdjustmentDao;
 import com.miniproject.kel2.dao.ItemInventoryDao;
 import com.miniproject.kel2.model.Adjustment;
 import com.miniproject.kel2.model.DetailAdjustment;
+import com.miniproject.kel2.model.Employee;
 import com.miniproject.kel2.model.HistoryAdjustment;
 import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.ItemVariant;
@@ -34,6 +37,9 @@ public class AdjustmentService {
 	@Autowired
 	HistoryAdjustmentDao hisAdjustmentDao;
 	
+	@Autowired
+	HttpSession httpSession;
+	
 	public List<Adjustment> selectAll(){
 		return adjustmentDao.selectAll();
 	}
@@ -47,6 +53,8 @@ public class AdjustmentService {
 		adj.setCreatedOn(new Date());
 		adj.setNotes(adjustment.getNotes());
 		adj.setStatus(adjustment.getStatus());
+		adj.setCreatedBy(adjustment.getCreatedBy());
+		adj.setOutletId(adjustment.getOutletId());
 		adjustmentDao.save(adj);
 		
 		for(HistoryAdjustment ha : adjustment.getHisAdjustments()) {
@@ -54,6 +62,7 @@ public class AdjustmentService {
 			hisAdj.setAdjustmentId(adj);
 			hisAdj.setCreatedOn(new Date());
 			hisAdj.setStatus(ha.getStatus());
+			hisAdj.setCreatedBy(ha.getCreatedBy());
 			hisAdjustmentDao.save(hisAdj);
 		}
 		
@@ -64,6 +73,7 @@ public class AdjustmentService {
 			detAdj.setInStock(da.getInStock());
 			detAdj.setCreatedOn(new Date());
 			detAdj.setVariantId(da.getVariantId());
+			detAdj.setCreatedBy(da.getCreatedBy());
 			detAdjustmentDao.save(detAdj);
 			
 		}
@@ -89,21 +99,16 @@ public class AdjustmentService {
 		if(status.equals("Approved")) {
 			List<DetailAdjustment> detAdjustments = detAdjustmentDao.searchById(id);
 			for(DetailAdjustment detAdj : detAdjustments) {
-				ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(detAdj.getVariantId().getId());
+				Employee employee = (Employee) httpSession.getAttribute("employee");
+				ItemInventory inv = itemInventoryDao.searchEndingQtyByLastModifiedVariant(detAdj.getVariantId().getId(), detAdj.getAdjustmentId().getOutletId().getId());
 				
 				ItemInventory ii = new ItemInventory();
 				ii.setItemVariant(detAdj.getVariantId());
 				ii.setEndingQty(detAdj.getActualStock());
-				ii.setAdjustmentQty(detAdj.getActualStock());
+				ii.setAdjustmentQty(detAdj.getActualStock() - detAdj.getInStock());
 				ii.setModifiedOn(new Date());
-				if(inv != null) {
-					ii.setAlertAtQty(inv.getAlertAtQty());
-					ii.setBeginning(inv.getEndingQty());
-				}else {
-					ii.setAlertAtQty(5);
-					ii.setBeginning(50);
-				}
-				itemInventoryDao.save(ii);
+				ii.setModifiedBy(employee.getUser().getId());
+				itemInventoryDao.update(ii);
 			}
 		}
 	}
@@ -111,6 +116,11 @@ public class AdjustmentService {
 	public List<Adjustment> searchByDateRange(Date tglFrom, Date tglTo) {
 		// TODO Auto-generated method stub
 		return adjustmentDao.searchByDateRange(tglFrom, tglTo);
+	}
+
+	public List<Adjustment> selectAllByOutlet(long idOutlet) {
+		// TODO Auto-generated method stub
+		return adjustmentDao.selectAllByOutlet(idOutlet);
 	}
 	
 }

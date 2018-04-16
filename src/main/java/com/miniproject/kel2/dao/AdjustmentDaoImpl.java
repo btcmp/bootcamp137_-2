@@ -70,4 +70,17 @@ public class AdjustmentDaoImpl implements AdjustmentDao{
 		}
 	}
 
+	public List<Adjustment> selectAllByOutlet(long i) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Adjustment a where a.outletId.id = :idOutlet";
+		List<Adjustment> adj = session.createQuery(hql).setParameter("idOutlet", i).list();
+		if(adj.isEmpty()) {
+			return null;
+		}else {
+			return adj;
+		}
+		
+	}
+
 }

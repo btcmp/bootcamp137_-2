@@ -2,6 +2,8 @@ package com.miniproject.kel2.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import com.miniproject.kel2.dao.CustomerDao;
 import com.miniproject.kel2.model.Customer;
 import com.miniproject.kel2.model.District;
 import com.miniproject.kel2.model.ItemInventory;
+import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.Province;
 import com.miniproject.kel2.model.Region;
 import com.miniproject.kel2.model.SalesOrder;
@@ -49,6 +52,9 @@ public class SalesOrderController {
 	
 	@Autowired
 	ItemInventoryService itemInventoryService;
+	
+	@Autowired
+	HttpSession httpSession;
 
 	@RequestMapping
 	public String index(Model model) {
@@ -96,7 +102,8 @@ public class SalesOrderController {
 	@RequestMapping(value="/search-item-variant/{word}", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Object[]> searchItemInventoryByName(@PathVariable String word){
-		List<Object[]> inventories = itemInventoryService.searchItemInventoryByName(word);
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		List<Object[]> inventories = itemInventoryService.searchItemInventoryByName(word, outlet.getId());
 		System.out.println("jumlah search inventories : "+inventories.size());
 		return inventories;
 	}

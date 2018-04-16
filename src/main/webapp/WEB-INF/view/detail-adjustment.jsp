@@ -28,6 +28,9 @@
 						id : "${adjustment.id}"
 					},
 					createdOn : new Date(),
+					createdBy : {
+						id : "${employee.user.id }"
+					},
 					status : status
 				}
 				
@@ -72,7 +75,8 @@
 						  
 						  <div class="col-lg-12" style="margin-bottom:30px;">
 							<p></p>
-							<p><label for="input-notes">Created By : [User]</label></p>
+							<p><label for="input-notes">Created By : ${employee.user.username }
+							</label></p>
 							<p><label for="input-notes">Adjustment Status : ${adjustment.status }</label></p>
 							<label for="input-notes">Notes</label>
 							<textarea class="form-control " id="notes" name="input-notes" disabled>${adjustment.notes }</textarea>

@@ -1,6 +1,7 @@
 <%@ include file="topping/top.jsp"%>
 <script type="text/javascript">
 	$(function() {
+		var idOutlet = "${outlet.id}";
 		$.fn.dataTable.ext.classes.sPageButton = 'btn btn-primary';
 		$('#table-adj').DataTable({
 			searching : false,
@@ -81,11 +82,12 @@
 		//search item in add item
 		$('#search-item').on('input', function(){
 			var word = $(this).val();
-			console.log(word);
+			var idOutlet = "${outlet.id}";
+			console.log("id outlet : "+idOutlet);
 			
 			if(!word==""){
 				$.ajax({
-					url : '${pageContext.request.contextPath}/adjustment/search-item/'+word,
+					url : '${pageContext.request.contextPath}/adjustment/search-item/'+word+"/"+idOutlet,
 					type : 'GET',
 					success : function(data){
 						$('#isi-item').empty();
@@ -144,26 +146,40 @@
 		$('#save-adjustment').click(function(){
 			var listDetAdjustment = [];
 			var listHistory = [];
+			var idUser = "${employee.user.id}";
 			$('#table-adjustment > tbody > tr').each(function(index, data){
 				var detAdjustment = {
 					variantId :{
 						id : $(data).attr('id')
 					},
 					inStock : $(data).find('td').eq(1).text(),
-					actualStock : $(data).find('td').eq(2).text()
+					actualStock : $(data).find('td').eq(2).text(),
+					createdBy : {
+						id : idUser
+					}
 				};
 				listDetAdjustment.push(detAdjustment);
 				var history = {
-					status : "Submitted"
+					status : "Submitted",
+					createdBy : {
+						id : idUser
+					}
 				};
 				listHistory.push(history);
 			});
+			var idOutlet = "${outlet.id}";
 			
 			var adjustment = {
 				status : "Submitted",
 				notes : $('#input-notes').val(),
 				hisAdjustments : listHistory,
-				detAdjustments : listDetAdjustment
+				detAdjustments : listDetAdjustment,
+				outletId : {
+					id : idOutlet
+				},
+				createdBy : {
+					id : idUser
+				}
 			};
 			
 			console.log(adjustment);
@@ -202,7 +218,8 @@
 			<div class="col-lg-12">
 				<section class="panel">
 					<header class="panel-heading"> ADJUSTMENT </header>
-
+					<input type="hidden" id="id-user" val="${employee.user.id }">
+					<input type="hidden" id="id-outlet" val="${outlet.id }"> 
 					<div class="col-sm-9">
 						<div class="nav search-row" id="top_menu"
 							style="margin-bottom: 30px;">
@@ -280,7 +297,7 @@
 
 					<div class="form-group">
 						<label for="input-adjustment" style="line-height: 4px;"><u><b>CREATE
-									NEW ADJUSTMENT : </b></u></label>
+									NEW ADJUSTMENT : ${employee.user.username }</b></u></label>
 						<hr style="line-height: 4px;">
 					</div>
 					<div class="form-group ">

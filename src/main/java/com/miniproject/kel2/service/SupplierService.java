@@ -59,4 +59,5 @@ public class SupplierService {
 		// TODO Auto-generated method stub
 		return supplierDao.searchByEmailValidationEdit(email, id);
 	}
+
 }

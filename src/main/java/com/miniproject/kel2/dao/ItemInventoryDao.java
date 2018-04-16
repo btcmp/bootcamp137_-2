@@ -19,13 +19,13 @@ public interface ItemInventoryDao {
 	
 	public void saveAtauUpdate(ItemInventory itemInventory);
 
-	public List<Object[]> searchByItemAndVariant(String word);
+	public List<Object[]> searchByItemAndVariant(String word, long idOutlet);
 	
 	public void updateInStock(int inStock, long idVar);
 
-	public ItemInventory searchEndingQtyByLastModifiedVariant(long id);
+	public ItemInventory searchEndingQtyByLastModifiedVariant(long id, long l);
 
-	public List<Object[]> searchItemInventoryByName(String word);
+	public List<Object[]> searchItemInventoryByName(String word, long idOutlet);
 
 	public List<ItemInventory> searchInventoryByItemName(String search);
 	

@@ -448,7 +448,31 @@ $(document).ready(function(){
 	    }
 	  });
 	
+	  $("#edit-phone").keypress(function (e) {
+		    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+		      return false;
+		    }
+		    var curchr = this.value.length;
+		    var curval = $(this).val();
+		    if (curchr == 4 && curval.indexOf("(") <= -1) {
+		      $(this).val(curval + "-");
+		    } else if (curchr == 4 && curval.indexOf("(") > -1) {
+		      $(this).val(curval + ")-");
+		    } else if (curchr == 6 && curval.indexOf(")") > -1) {
+		      $(this).val(curval + "-");
+		    } else if (curchr == 9) {
+		      $(this).val(curval + "-");
+		      $(this).attr('maxlength', '14');
+		    }
+		  });
+	
 	  $("#input-postal-code").keypress(function (e) {
+		  if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+		      return false;
+		    }
+	  });
+	  
+	  $("#edit-postal-code").keypress(function (e) {
 		  if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
 		      return false;
 		    }
@@ -572,8 +596,7 @@ $(document).ready(function(){
 			var region = $('#input-region').val();
 			var district = $('#input-district').val();
 			var postal = $('#input-postal-code').val();
-			var phoneStrip = $('#input-phone').val();
-			var phone = phoneStrip.replace('-','');
+			var phone = $('#input-phone').val(); 
 			var email = $('#input-email').val();
 			var supplier = {
 				name : name,
@@ -589,7 +612,10 @@ $(document).ready(function(){
 				},
 				postalCode : postal,
 				phone : phone,
-				email : email
+				email : email,
+				createdBy : {
+					id : "${employee.user.id}"
+				}
 			}
 			console.log(supplier);
 			//if(valid == true){
@@ -613,7 +639,7 @@ $(document).ready(function(){
 	});
 	
 	//end tambah data supplier
-	$('.update').on('click', function(){
+	$(document).on('click', '.update', function(){
 		var id = $(this).attr('id');
 		//console.log(id);
 		
@@ -800,7 +826,11 @@ $(document).ready(function(){
 					},
 					postalCode : $('#edit-postal-code').val(),
 					phone : $('#edit-phone').val(),
-					email : $('#edit-email').val()
+					email : $('#edit-email').val(),
+					modifiedBy : {
+						id : "${employee.user.id}"
+					},
+					modifiedOn : new Date()
 				}
 			console.log(supplier);
 			$.ajax({
@@ -835,7 +865,7 @@ $(document).ready(function(){
 						"<td>"+value.phone+"</td>"+
 						"<td>"+value.email+"</td>"+
 						"<td><div class='"+"btn-group"+"'>"+
-						"<a class='"+"update btn btn-primary"+"' id="+value.id+">"+
+						"<a class='update btn btn-primary' id="+value.id+">"+
 						"<i class='"+"icon_pencil-edit"+"'></i></a>"+
 						"</div></td>"+
 						"</tr>";

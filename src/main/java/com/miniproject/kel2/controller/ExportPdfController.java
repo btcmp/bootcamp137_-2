@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.miniproject.kel2.model.Adjustment;
 import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.Outlet;
@@ -20,6 +22,7 @@ import com.miniproject.kel2.model.PurchaseRequest;
 import com.miniproject.kel2.model.SalesOrderDetail;
 import com.miniproject.kel2.model.Supplier;
 import com.miniproject.kel2.model.TransferStock;
+import com.miniproject.kel2.service.AdjustmentService;
 import com.miniproject.kel2.service.ItemInventoryService;
 import com.miniproject.kel2.service.ItemService;
 import com.miniproject.kel2.service.OutletService;
@@ -49,6 +52,12 @@ public class ExportPdfController {
 	@Autowired
 	ItemInventoryService itemInventoryService;
 	
+	@Autowired
+	AdjustmentService adjustmentService;
+	
+	@Autowired
+	HttpSession httpSession;
+	
 	
 	@RequestMapping(value = "/generate/supplier", method = RequestMethod.GET)
 	ModelAndView generatePdf(HttpServletRequest request,
@@ -62,6 +71,21 @@ public class ExportPdfController {
 		List<Supplier> suppliers = supplierService.selectAll();
 		
 		return new ModelAndView("pdfView","suppliers",suppliers);
+ 	}
+	
+	@RequestMapping(value = "/generate/adjustment", method = RequestMethod.GET)
+	ModelAndView generateAdjustment(HttpServletRequest request,
+	HttpServletResponse response) throws Exception {
+		System.out.println("Calling generatePdf() for adjustment...");
+		//user data
+		
+		//ini untuk download langsung
+		/*response.setHeader("Content-Disposition", "attachment; filename=\"suppliers.pdf\"");
+		response.setContentType("application/pdf");*/
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		List<Adjustment> adjustments = adjustmentService.selectAllByOutlet(outlet.getId());
+		
+		return new ModelAndView("pdfViewAdjustment","adjustments",adjustments);
  	}
 	
 	@RequestMapping(value = "/generate/receipt/{id}", method = RequestMethod.GET)

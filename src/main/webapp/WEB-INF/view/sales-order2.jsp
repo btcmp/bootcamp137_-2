@@ -243,8 +243,7 @@
 			if ($("#form-add-cust").parsley().isValid()) {
 				var name = $('#input-cust-name').val();
 				var email = $('#input-cust-email').val();
-				var phoneStrip = $('#input-cust-phone').val();
-				var phone = phoneStrip.replace('-','');
+				var phone = $('#input-cust-phone').val();
 				var dob = $('#input-cust-dob').val();
 				var address = $('#input-address').val();
 				var province = $('#input-province').val();
@@ -268,7 +267,13 @@
 					},
 					modifiedOn : new Date(),
 					createdOn : new Date(),
-					active : 0
+					active : 0,
+					createdBy : {
+						id : "${employee.user.id}"
+					},
+					modifiedBy : {
+						id : "${employee.user.id}"
+					}
 				}
 				
 				$.ajax({
@@ -379,7 +384,7 @@
 						//console.log("id bawah : "+id);
 						var isi = "<tr id='"+id+"' class='"+jmlStock+"'>"+
 							"<td style='width: 40%'>"+item+"</td>"+
-							"<td style='width: 20%'><button id='btn-minus' class='icon_minus-06' style='height:25px;' /><input type='text' value='"+qty+"' id='quantity' style='width:30px; height:26px;'/><button id='btn-plus' class='icon_plus' style='height:25px;'/></td>"+
+							"<td style='width: 20%'><button id='btn-minus' class='icon_minus-06' style='height:25px;' /><input type='text' value='"+qty+"' id='quantity' style='width:30px; height:26px;' disabled='disabled'/><button id='btn-plus' class='icon_plus' style='height:25px;'/></td>"+
 							"<td style='width: 30%' class='price'>"+price+"</td>"+
 							"<td><div class='btn-group'>"+
 							"<a class='btn btn-danger' id='btn-delete-receipt'>X</a>"+
@@ -396,7 +401,7 @@
 				var qty = 1;
 				var isi = "<tr id='"+id+"' class='"+jmlStock+"'>"+
 				"<td style='width: 40%'>"+item+"</td>"+
-				"<td style='width: 20%'><button id='btn-minus' class='icon_minus-06' style='height:25px;' /><input type='text' value='"+qty+"' style='width:30px; height:26px;'/><button id='btn-plus' class='icon_plus' style='height:25px;'/></td>"+
+				"<td style='width: 20%'><button id='btn-minus' class='icon_minus-06' style='height:25px;' /><input type='text' value='"+qty+"' style='width:30px; height:26px;' disabled='disabled'/><button id='btn-plus' class='icon_plus' style='height:25px;'/></td>"+
 				"<td style='width: 30%' class='price'>"+price+"</td>"+
 				"<td><div class='btn-group'>"+
 				"<a class='btn btn-danger' id='btn-delete-receipt'>X</a>"+
@@ -523,6 +528,9 @@
 					subTotal : total,
 					unitPrice : price,
 					createdOn : new Date(),
+					createdBy : {
+						id : "${employee.user.id}"
+					},
 					modifiedOn : new Date()
 				}
 				listDetailSO.push(detailSO);
@@ -535,6 +543,9 @@
 				},
 				grandTotal : bayar1,
 				createdOn : new Date(),
+				createdBy : {
+					id : "${employee.user.id}"
+				},
 				modifiedOn : new Date(),
 				sods : listDetailSO
 			}

@@ -3,6 +3,8 @@ package com.miniproject.kel2.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -19,10 +21,14 @@ import com.miniproject.kel2.model.Adjustment;
 import com.miniproject.kel2.model.DetailAdjustment;
 import com.miniproject.kel2.model.HistoryAdjustment;
 import com.miniproject.kel2.model.ItemInventory;
+import com.miniproject.kel2.model.Outlet;
+import com.miniproject.kel2.model.User;
 import com.miniproject.kel2.service.AdjustmentService;
 import com.miniproject.kel2.service.DetailAdjustmentService;
 import com.miniproject.kel2.service.HistoryAdjustmentService;
 import com.miniproject.kel2.service.ItemInventoryService;
+import com.miniproject.kel2.service.OutletService;
+import com.miniproject.kel2.service.UserService;
 
 import jdk.internal.instrumentation.InstrumentationMethod;
 
@@ -42,12 +48,29 @@ public class AdjustmentController {
 	
 	@Autowired
 	HistoryAdjustmentService hisAdjustmentService;
+	
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	OutletService outletService;
+	
+	@Autowired
+	HttpSession httpSession;
 
 	@RequestMapping
 	public String index(Model model) {
-		List<Adjustment> adjustments = adjustmentService.selectAll();
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		//model.addAttribute("outlet", outlet);
+		List<Adjustment> adjustments = adjustmentService.selectAllByOutlet(outlet.getId());
+//		long idUser = 3284;
+//		long idOutlet = 1;
+//		User user = userService.getOne(idUser);
+//		Outlet outlet = outletService.getOne(idOutlet);
 //		List<ItemInventory> inventories = itemInvetoryService.selectAll();
 		model.addAttribute("listAdjustment", adjustments);
+//		model.addAttribute("user", user);
+//		model.addAttribute("outlet", outlet);
 //		model.addAttribute("listInventory", inventories);
 		return "adjustment2";
 	}
@@ -67,10 +90,10 @@ public class AdjustmentController {
 		return adjustments;
 	}
 	
-	@RequestMapping(value="/search-item/{word}", method = RequestMethod.GET)
+	@RequestMapping(value="/search-item/{word}/{idOutlet}", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Object[]> searchByItem(@PathVariable String word){ 
-		List<Object[]> inventories = itemInvetoryService.searchByItemAndVariant(word);
+	public List<Object[]> searchByItem(@PathVariable String word, @PathVariable long idOutlet){ 
+		List<Object[]> inventories = itemInvetoryService.searchByItemAndVariant(word, idOutlet);
 		System.out.println("jumlah search inventory : "+inventories.size());
 		return inventories;
 	}

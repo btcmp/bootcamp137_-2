@@ -63,11 +63,11 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		session.flush();
 	}
 
-	public List<Object[]> searchByItemAndVariant(String word) {
+	public List<Object[]> searchByItemAndVariant(String word, long idOutlet) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "select min(i.endingQty), i.itemVariant.name, i.itemVariant.id, i.itemVariant.item.name from ItemInventory i where lower(i.itemVariant.item.name) like lower(:name) group by i.itemVariant.name, i.itemVariant.id, i.itemVariant.item.name";
-		List<Object[]> inventories = session.createQuery(hql).setParameter("name", "%"+word+"%").list();
+		String hql = "select i.endingQty, i.itemVariant.name, i.itemVariant.id, i.itemVariant.item.name from ItemInventory i where lower(i.itemVariant.item.name) like lower(:name) and i.outlet.id = :idOutlet";
+		List<Object[]> inventories = session.createQuery(hql).setParameter("idOutlet", idOutlet).setParameter("name", "%"+word+"%").list();
 		if(inventories.isEmpty()) {
 			return null;
 		}else {
@@ -85,11 +85,11 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		session.flush();
 	}
 
-	public ItemInventory searchEndingQtyByLastModifiedVariant(long id) {
+	public ItemInventory searchEndingQtyByLastModifiedVariant(long id, long l) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from ItemInventory i where i.itemVariant.id = :id and i.modifiedOn is not null order by i.modifiedOn desc";
-		List<ItemInventory> inventories = session.createQuery(hql).setParameter("id", id).list();
+		String hql = "from ItemInventory i where i.itemVariant.id = :id and i.outlet.id = :idOutlet order by i.modifiedOn desc";
+		List<ItemInventory> inventories = session.createQuery(hql).setParameter("id", id).setParameter("idOutlet", l).list();
 		ItemInventory inv = inventories.get(0);
 		if(inventories.isEmpty()) {
 			return null;
@@ -99,14 +99,13 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		
 	}
 
-	public List<Object[]> searchItemInventoryByName(String word) {
+	public List<Object[]> searchItemInventoryByName(String word, long idOutlet) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "select i.itemVariant.item.name, i.itemVariant.id, i.itemVariant.name, i.itemVariant.price, min(i.endingQty) "
+		String hql = "select i.itemVariant.item.name, i.itemVariant.id, i.itemVariant.name, i.itemVariant.price, i.endingQty "
 				+ "from ItemInventory i "
-				+ "where lower(i.itemVariant.item.name) like lower(:item) or lower(i.itemVariant.name) like lower(:variant)"
-				+ "group by i.itemVariant.item.name, i.itemVariant.id, i.itemVariant.name, i.itemVariant.price";
-		List<Object[]> inventories = session.createQuery(hql).setParameter("item", "%"+word+"%").setParameter("variant", "%"+word+"%").list();
+				+ "where i.outlet.id = :idOutlet and lower(i.itemVariant.item.name) like lower(:item) or lower(i.itemVariant.name) like lower(:variant)";
+		List<Object[]> inventories = session.createQuery(hql).setParameter("idOutlet", idOutlet).setParameter("item", "%"+word+"%").setParameter("variant", "%"+word+"%").list();
 		if(inventories.isEmpty()) {
 			return null;
 		}else {

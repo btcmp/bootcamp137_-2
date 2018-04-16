@@ -21,4 +21,6 @@ public interface AdjustmentDao {
 	public void updateStatusAdjustment(String status, long id);
 
 	public List<Adjustment> searchByDateRange(Date tglFrom, Date tglTo);
+
+	public List<Adjustment> selectAllByOutlet(long idOutlet);
 }

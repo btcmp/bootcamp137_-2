@@ -45,13 +45,13 @@ public class ItemInventoryService {
 	}
 	
 	//search item inventory by item-variant
-	public List<Object[]> searchByItemAndVariant(String word){
-		return itemInventoryDao.searchByItemAndVariant(word);
+	public List<Object[]> searchByItemAndVariant(String word, long idOutlet){
+		return itemInventoryDao.searchByItemAndVariant(word, idOutlet);
 	}
 
-	public List<Object[]> searchItemInventoryByName(String word) {
+	public List<Object[]> searchItemInventoryByName(String word, long idOutlet) {
 		// TODO Auto-generated method stub
-		return itemInventoryDao.searchItemInventoryByName(word);
+		return itemInventoryDao.searchItemInventoryByName(word, idOutlet);
 	}
 
 	public List<ItemInventory> searchInventoryByItemName(String search) {
