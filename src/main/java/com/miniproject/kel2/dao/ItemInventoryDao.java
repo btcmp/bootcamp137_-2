@@ -39,4 +39,6 @@ public interface ItemInventoryDao {
 	//search item di transfer stock
 	public List<Object[]> searchByItemAndVariantTS(String word);
 
+	public List<ItemInventory> getItemInventoryByOutlet(long outId);
+
 }

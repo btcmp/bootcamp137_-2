@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.miniproject.kel2.dao.ItemInventoryDao;
 import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
+import com.miniproject.kel2.model.Outlet;
 
 @Service
 @Transactional
@@ -72,4 +73,11 @@ public class ItemInventoryService {
 	public List<Object[]> searchByItemAndVariantTS(String word){
 		return itemInventoryDao.searchByItemAndVariantTS(word);
 	}
+
+	public List<ItemInventory> getItemInventoryByOutlet(long outId) {
+		// TODO Auto-generated method stub
+		return itemInventoryDao.getItemInventoryByOutlet(outId);
+	}
+
+	
 }

@@ -112,7 +112,6 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		}else {
 			return inventories;
 		}
-		
 	}
 
 	//punya purchase Request
@@ -147,11 +146,13 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		}
 	}
 
+	// List di item
 	public List<ItemInventory> searchInventoryByItem(Item item) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from ItemInventory inv where inv.itemVariant.item = :item";
 		List<ItemInventory> inventories = session.createQuery(hql).setParameter("item",  item).list();
+		
 		if(inventories.isEmpty()) {
 			return null;
 		} else {
@@ -174,7 +175,7 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		}
 	}
 	
-	// search item dan variant pada transfer stock
+	// search item dan variant pada transfer stock berdasarkan outlet
 	public List<Object[]> searchByItemAndVariantTS(String word) {
 		// TODO Auto-generated method stub
 		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
@@ -182,6 +183,18 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "select i.endingQty, i.itemVariant.name, i.itemVariant.id, i.itemVariant.item.name from ItemInventory i where lower(i.itemVariant.item.name) like lower(:name) and i.outlet.id = :outId";
 		List<Object[]> inventories = session.createQuery(hql).setParameter("name", "%"+word+"%").setParameter("outId", outId).list();
+		if(inventories.isEmpty()) {
+			return null;
+		}else {
+			return inventories;
+		}
+	}
+
+	public List<ItemInventory> getItemInventoryByOutlet(long outId) {
+		// TODO Auto-generated method stub
+		Session session=sessionFactory.getCurrentSession();
+		String hql="from ItemInventory i where i.outlet.id = :outId";
+		List<ItemInventory> inventories=session.createQuery(hql).setParameter("outId", outId).list();
 		if(inventories.isEmpty()) {
 			return null;
 		}else {

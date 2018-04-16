@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.miniproject.kel2.model.Item;
+import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.PurchaseRequest;
 import com.miniproject.kel2.model.SalesOrderDetail;
 import com.miniproject.kel2.model.Supplier;
 import com.miniproject.kel2.model.TransferStock;
+import com.miniproject.kel2.service.ItemInventoryService;
+import com.miniproject.kel2.service.ItemService;
 import com.miniproject.kel2.service.OutletService;
 import com.miniproject.kel2.service.PurchaseRequestService;
 import com.miniproject.kel2.service.SalesOrderDetailService;
@@ -41,6 +45,9 @@ public class ExportPdfController {
 	
 	@Autowired
 	PurchaseRequestService prService;
+	
+	@Autowired
+	ItemInventoryService itemInventoryService;
 	
 	
 	@RequestMapping(value = "/generate/supplier", method = RequestMethod.GET)
@@ -93,7 +100,20 @@ public class ExportPdfController {
 		return new ModelAndView("pdfViewTransferStock","tStocks",tStocks);
  	}
 	
-	//PDF REQUEST
+	
+	// PDF ITEM
+	@RequestMapping(value = "/generate/item", method = RequestMethod.GET)
+	ModelAndView generatePdfItem(HttpServletRequest request,
+	HttpServletResponse response) throws Exception {
+		System.out.println("Calling generatePdfItem()...");
+		
+		List<ItemInventory> inventories = itemInventoryService.selectAll();
+		
+		return new ModelAndView("pdfViewItem","inventories", inventories);
+ 	}
+	
+	
+	// PDF REQUEST
 	@RequestMapping(value="/generate/request", method=RequestMethod.GET)
 	ModelAndView generetaPdfPurchaseRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("Process generate begin, call this function  ..");

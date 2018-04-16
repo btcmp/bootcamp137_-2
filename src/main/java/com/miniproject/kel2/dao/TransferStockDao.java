@@ -30,5 +30,4 @@ public interface TransferStockDao {
 	// untuk update status
 	public void updateStatus(String status, long id);
 	
-	
 }

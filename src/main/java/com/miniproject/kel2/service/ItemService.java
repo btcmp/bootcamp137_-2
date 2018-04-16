@@ -2,6 +2,8 @@ package com.miniproject.kel2.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,19 +33,25 @@ public class ItemService {
 
 	@Autowired
 	OutletDao outletDao;
+	
+	@Autowired
+	HttpSession httpSession;
 
 	public void save(Item item) {
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
 		List<ItemVariant> itemVariants = item.getItemVariants();
 		List<Outlet> outlets = outletDao.selectAll();
 		item.setItemVariants(null);
+		item.setCreatedBy(outlet.getId());
 		itemDao.save(item);
-
+		
 		// object itemVariant
 		ItemInventory inventory;
 		for (ItemVariant variant : itemVariants) {
 			inventory = variant.getItemInventories().get(0);
 			variant.setItemInventories(null);
 			variant.setItem(item);
+			variant.setCreatedBy(outlet.getId());
 			itemVariantDao.save(variant);
 
 			for (Outlet out : outlets) {
@@ -53,6 +61,7 @@ public class ItemService {
 				invent.setBeginning(inventory.getBeginning());
 				invent.setEndingQty(inventory.getBeginning());
 				invent.setAlertAtQty(inventory.getAlertAtQty());
+				invent.setCreatedBy(outlet.getId());
 				itemInventoryDao.save(invent);
 			}
 		}
@@ -152,9 +161,13 @@ public class ItemService {
 		return itemDao.catSelectAll();
 	}
 
+	public List<Outlet> getItemsByOutlet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	/*public List<Item> searchByName(String search) {
 		// TODO Auto-generated method stub
 		return itemDao.searchByName(search);
 	}*/
-
 }

@@ -3,10 +3,12 @@ package com.miniproject.kel2.controller;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ import com.miniproject.kel2.model.Category;
 import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
 import com.miniproject.kel2.model.ItemVariant;
+import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.service.ItemInventoryService;
 import com.miniproject.kel2.service.ItemService;
 import com.miniproject.kel2.service.ItemVariantService;
@@ -45,16 +48,23 @@ public class ItemController {
 	@Autowired 
 	ServletContext servletContext;
 	
+	@Autowired
+	HttpSession httpSession;
+	
 	@RequestMapping
 	public String index (Model model) {
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		long outId = outlet.getId();
 		List<Item> items = itemService.selectAll();
 		List<Category> cats = itemService.catSelectAll();
 		List<ItemVariant> variants = itemVariantService.selectAll();
-		List<ItemInventory> inventories = itemInventoryService.selectAll();
+	//	List<ItemInventory> inventories = itemInventoryService.selectAll();
+		List<ItemInventory> inventories = itemInventoryService.getItemInventoryByOutlet(outId);
 		model.addAttribute("items", items);
 		model.addAttribute("cats", cats);
 		model.addAttribute("variants", variants);
 		model.addAttribute("inventories", inventories);
+		model.addAttribute("outlet", outlet);
 		return "item";
 	}
 	
@@ -118,8 +128,19 @@ public class ItemController {
 	@RequestMapping(value="/search",method=RequestMethod.GET)
 	@ResponseBody
 	public List<ItemInventory> searchItem(@RequestParam(value="search", defaultValue="") String search){
-		List<ItemInventory > itemInventories = itemInventoryService.searchItemInventoryByItemName(search);
-		return itemInventories;
+		List<ItemInventory> itemInventories = itemInventoryService.searchItemInventoryByItemName(search);
+		List<ItemInventory> invent = new ArrayList<ItemInventory>();
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		long outId = outlet.getId();
+		if(itemInventories != null) {
+			for (ItemInventory ivt : itemInventories) {
+				if(ivt.getOutlet().getId() == outId) {
+					invent.add(ivt);
+				}
+			}
+		}
+		
+		return invent;
 	}
 	
 	
@@ -141,5 +162,5 @@ public class ItemController {
 			        e.printStackTrace();
 			    }
 			return name;
-		}
+	}
 }

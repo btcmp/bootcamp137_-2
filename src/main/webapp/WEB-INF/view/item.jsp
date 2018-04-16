@@ -397,6 +397,15 @@
 	 	}); 
 	
 	
+	
+		// EXPORT
+		 	$('#btn-export').click(function(){
+				window.open('${pageContext.request.contextPath}/generate/item');
+			});
+	
+	
+	
+	
 	/* --------------------------------------------------------------  UPLOAD IMAGE ------------------------------------------------------------------- */
 	// INPUT IMAGE	
 	function readURL(input) {
@@ -436,6 +445,7 @@
     });	
 
 
+ 	
 	
 </script>
 
@@ -473,7 +483,7 @@
 								
 								<!-- ======================= Button Export ======================= -->
 								<div class="col-lg-1" style="margin-bottom: 10px;">
-									<button type="button" class="btn btn-primary">Export</button>
+									<button type="button" id="btn-export" class="btn btn-primary">Export</button>
 								</div>
 								<!--  ======================= Create ============================= -->
 								<div class="col-lg-1" style="margin-bottom: 10px;">
@@ -630,7 +640,7 @@
 											<td>${inv.itemVariant.item.name}-${inv.itemVariant.name}</td>
 											<td>${inv.itemVariant.item.category.name}</td>
 											<td>${inv.itemVariant.price}</td>
-											<td>${inv.beginning}</td>
+											<td>${inv.endingQty}</td>
 											<td>${inv.alertAtQty}</td>
 											<td>
 												<a id="${inv.itemVariant.item.id}" href="#" class="btn-edit-utama" data-toggle="modal"data-target="#modal-edit-utama"> Edit </a> 

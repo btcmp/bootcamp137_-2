@@ -90,5 +90,4 @@ public class TransferStockDaoImpl implements TransferStockDao {
 		session.flush();
 	}
 	
-
 }

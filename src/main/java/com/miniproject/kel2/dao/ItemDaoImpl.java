@@ -78,7 +78,7 @@ public class ItemDaoImpl implements ItemDao{
 		}
 		return items;
 	}
-
+	
 	/*public List<Item> searchByName(String search) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
