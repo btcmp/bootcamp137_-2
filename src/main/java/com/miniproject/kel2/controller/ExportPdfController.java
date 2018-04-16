@@ -112,8 +112,8 @@ public class ExportPdfController {
 		//user data
 		
 		//ini untuk download langsung
-		response.setHeader("Content-Disposition", "attachment; filename=\"receipt.pdf\"");
-		response.setContentType("application/pdf");
+//		response.setHeader("Content-Disposition", "attachment; filename=\"receipt.pdf\"");
+//		response.setContentType("application/pdf");
 		List<SalesOrderDetail> receipts = salesOrderDetailService.getReceiptBySalesOrder(id);
 		System.out.println("mau ngeprint");
 		return new ModelAndView("pdfViewSalesOrder","receipts", receipts);

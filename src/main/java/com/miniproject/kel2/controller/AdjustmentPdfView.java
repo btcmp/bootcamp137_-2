@@ -19,35 +19,34 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Table;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.miniproject.kel2.model.Adjustment;
 import com.miniproject.kel2.model.SalesOrderDetail;
 import com.miniproject.kel2.model.Supplier;
 
-public class SalesOrderPdfView extends AbstractPdfView{
+public class AdjustmentPdfView extends AbstractPdfView{
 
 
 	@Override
 	protected void buildPdfDocument(Map<String, Object> arg0, com.lowagie.text.Document arg1,
 			com.lowagie.text.pdf.PdfWriter arg2, HttpServletRequest arg3, HttpServletResponse arg4) throws Exception {
 		// TODO Auto-generated method stub
-		List<SalesOrderDetail> salesOrderDetails = (List<SalesOrderDetail>) arg0.get("receipts");
+		List<Adjustment> adjustment = (List<Adjustment>) arg0.get("adjustments");
 		   
 		   PdfPTable table = new PdfPTable(3);
 			table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
 
-			table.addCell("Item");
-			table.addCell("Qty");
-			table.addCell("Subtotal");
+			table.addCell("Created Date");
+			table.addCell("Notes");
+			table.addCell("Status");
 
-			for (SalesOrderDetail sod : salesOrderDetails) {
-				table.addCell(sod.getVariantId().getItem().getName() +" - "+sod.getVariantId().getName());
-				table.addCell(sod.getQty()+"");
-				table.addCell(sod.getSubTotal()+"");
+			for (Adjustment adj : adjustment) {
+				table.addCell(adj.getCreatedOn()+"");
+				table.addCell(adj.getNotes());
+				table.addCell(adj.getStatus());
 				
 			}
-			arg1.add(new Paragraph("Receipt Sales Order for : "+salesOrderDetails.get(0).getSoId().getCustomer().getName().toUpperCase()));
-			arg1.add(new Paragraph("Address : "+salesOrderDetails.get(0).getSoId().getCustomer().getAddress()));
-			arg1.add(new Paragraph("Email : "+salesOrderDetails.get(0).getSoId().getCustomer().getEmail()));
+			arg1.add(new Paragraph("Report Adjustment in Outlet : "+adjustment.get(0).getOutletId().getName()));
 			arg1.add(new Paragraph(" "));
 			arg1.add(table);
 	}

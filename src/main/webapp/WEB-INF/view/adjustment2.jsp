@@ -17,6 +17,11 @@
 		$('#btn-add-item').click(function() {
 			$('#modal-add-item').modal();
 		});
+		
+		$('#btn-export').click(function(){
+			window.open("${pageContext.request.contextPath}/generate/adjustment");
+		});
+		
 		$('.update').click(function() {
 			var id = $(this).attr('id');
 			

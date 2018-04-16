@@ -605,12 +605,13 @@
 			//buat controller untuk print struk
 			var idCust = $('#btn-search-customer').attr('name');
 			console.log("idCustomer : "+idCust);
-			$.ajax({
+			window.open('${pageContext.request.contextPath}/generate/receipt/'+idCust);
+			/* $.ajax({
 				url : '${pageContext.request.contextPath}/generate/receipt/'+idCust,
 				type : 'GET',
 				success : function(data){},
 				error : function(){}
-			});
+			}); */
 			//window.location = "${pageContext.request.contextPath}/generate/receipt/"+idCust;
 		});
 	});
