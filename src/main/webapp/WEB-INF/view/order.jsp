@@ -76,7 +76,7 @@
                                           
                                         <!-- button -->                                          
                                         <div class="col-lg-1">
-                                            <button class="btn btn-primary">Export</button>
+                                            <button class="btn btn-primary" id="btn-export">Export</button>
                                             
                                         </div>
                                         <!-- <div class="col-lg-1">
@@ -154,7 +154,7 @@
         <div class="form">
             <div class="form-validate form-horizontal" id="PR-form">
                 <div class="form-group">
-                    <label for="outlet-name" class="control-label"><span class="required">*</span> CREATE NEW PO : {isi nama outlet}</label>
+                    <label for="outlet-name" class="control-label"><span class="required">*</span> CREATE NEW PO : ${outlet.name }</label>
                 </div>
 					<input type="hidden" name='input-id' class="form-control" id="id-po"/>
 					<input type="hidden" name='input-poNo' class="form-control" id="po-no"/>
@@ -298,6 +298,17 @@
 		var listDetail = [];
 		console.log(total);
 	
+		var idUser = "${employee.user.id}";
+		console.log(idUser);
+		var createdBy = {
+				id : idUser
+		}
+		
+		var idOut = "${outlet.id}";
+		var outlet = {
+				id : idOut
+		}
+		//console.log('halo emp : '+createdBy)
 		
 		var po = {
 				id : $('#id-po').val(),
@@ -306,6 +317,8 @@
 				},
 				notes : $('#po-notes').val(),
 				poNo : $('#po-no').val(),
+				createdBy : createdBy,
+				outlet : outlet,
 				grandTotal : total
 				
 		};
@@ -392,8 +405,11 @@
 			}
 		});
 	});
-	
 
+	/* ============================================== EXPORT ======================= */
+	$('#btn-export').on('click', function(){
+		window.open('${pageContext.request.contextPath}/generate/order');
+	})
 })
 </script>
 

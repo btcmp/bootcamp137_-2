@@ -2,6 +2,9 @@ package com.miniproject.kel2.service;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import com.miniproject.kel2.dao.RequestPurchaseDetailDao;
 import com.miniproject.kel2.model.HistoryPurchaseOrder;
 import com.miniproject.kel2.model.HistoryPurchaseRequest;
 import com.miniproject.kel2.model.OrderDetail;
+import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.PurchaseOrder;
 import com.miniproject.kel2.model.PurchaseRequest;
 import com.miniproject.kel2.model.RequestDetail;
@@ -24,6 +28,8 @@ import com.miniproject.kel2.model.RequestDetail;
 @Service
 @Transactional
 public class PurchaseRequestService {
+	@Autowired
+	HttpSession httpSession;
 
 	@Autowired
 	PurchaseRequestDao prDao;
@@ -226,6 +232,7 @@ public class PurchaseRequestService {
 		prDao.created(id);
 		PurchaseRequest pr = prDao.getOne(id);
 		//cari prd by pr
+		
 		List<RequestDetail> prd = rpdDao.selectDetailByPr(pr);
 		
 		if(prd.isEmpty()) {
@@ -242,14 +249,13 @@ public class PurchaseRequestService {
 		hprDao.save(hpr);
 		
 		//save to po
+		Outlet outs = (Outlet) httpSession.getAttribute("outlet");
+		
+		
 		float grandTotal = 0;
-		
-		
-		
 		PurchaseOrder po = new PurchaseOrder();
 		po.setCreatedOn(hpr.getCreatedOn());
-		po.setCreatedBy(pr.getCreatedBy());
-		po.setNotes(pr.getNotes());
+		po.setCreatedBy(hpr.getCreatedBy());
 		
 		Calendar calender = Calendar.getInstance(); // get calender
 		int tahun = calender.get(Calendar.YEAR);
@@ -283,6 +289,8 @@ public class PurchaseRequestService {
 		po.setPoNo(poNo);
 		po.setGrandTotal(grandTotal);
 		po.setPr(pr);
+		po.setOutlet(outs);
+		po.setNotes(pr.getNotes());
 		poDao.save(po);
 		
 		if(pr.getRequestDetail() != null) {
@@ -305,10 +313,11 @@ public class PurchaseRequestService {
 			newPo.setId(po.getId());
 			newPo.setGrandTotal(grandTotal);
 			newPo.setPoNo(poNo);
+			newPo.setOutlet(po.getOutlet());
+			newPo.setCreatedBy(po.getCreatedBy());
 			newPo.setStatus("Unchecked");
 			newPo.setPr(po.getPr());
-			po.setOutlet(pr.getOutlet());
-			po.setCreatedBy(pr.getCreatedBy());
+			
 			poDao.update(newPo);
 				
 		}

@@ -127,6 +127,18 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao{
 		return pos.size();
 	}
 
+	public List<PurchaseOrder> getAllByOutletId(long idOut) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from PurchaseOrder po where po.outlet.id = :outId ";
+		List<PurchaseOrder> po = session.createQuery(hql).setParameter("outId", idOut).list();
+		if(po.isEmpty()) {
+			return null;
+		}else {
+			return po;
+		}
+	}
+
 	
 
 }

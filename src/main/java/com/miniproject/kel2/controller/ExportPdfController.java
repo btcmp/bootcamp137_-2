@@ -1,6 +1,6 @@
 package com.miniproject.kel2.controller;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,23 +9,28 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.miniproject.kel2.model.Adjustment;
-import com.miniproject.kel2.model.Item;
 import com.miniproject.kel2.model.ItemInventory;
+import com.miniproject.kel2.model.OrderDetail;
 import com.miniproject.kel2.model.Outlet;
+import com.miniproject.kel2.model.PurchaseOrder;
 import com.miniproject.kel2.model.PurchaseRequest;
+import com.miniproject.kel2.model.RequestDetail;
 import com.miniproject.kel2.model.SalesOrderDetail;
 import com.miniproject.kel2.model.Supplier;
 import com.miniproject.kel2.model.TransferStock;
 import com.miniproject.kel2.service.AdjustmentService;
 import com.miniproject.kel2.service.ItemInventoryService;
-import com.miniproject.kel2.service.ItemService;
 import com.miniproject.kel2.service.OutletService;
+import com.miniproject.kel2.service.PurchaseOrderDetailService;
+import com.miniproject.kel2.service.PurchaseOrderService;
+import com.miniproject.kel2.service.PurchaseRequestDetailService;
 import com.miniproject.kel2.service.PurchaseRequestService;
 import com.miniproject.kel2.service.SalesOrderDetailService;
 import com.miniproject.kel2.service.SupplierService;
@@ -46,14 +51,26 @@ public class ExportPdfController {
 	@Autowired
 	TransferStockService transferStockService;
 	
-	@Autowired
-	PurchaseRequestService prService;
+	
 	
 	@Autowired
 	ItemInventoryService itemInventoryService;
 	
 	@Autowired
 	AdjustmentService adjustmentService;
+	
+	@Autowired
+	PurchaseRequestService prService;
+	
+	@Autowired
+	PurchaseRequestDetailService prdService;
+	
+	@Autowired
+	PurchaseOrderDetailService podService;
+	
+	@Autowired
+	PurchaseOrderService poService;
+	
 	
 	@Autowired
 	HttpSession httpSession;
@@ -137,12 +154,56 @@ public class ExportPdfController {
  	}
 	
 	
-	// PDF REQUEST
-	@RequestMapping(value="/generate/request", method=RequestMethod.GET)
-	ModelAndView generetaPdfPurchaseRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("Process generate begin, call this function  ..");
-		List<PurchaseRequest> pr = prService.selectAll();
+	//PDF REQUEST
+			@RequestMapping(value="/generate/request", method=RequestMethod.GET)
+			ModelAndView generetaPdfPurchaseRequest(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+				System.out.println("Process generate begin, call this function  ..");
+				Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+				model.addAttribute("outlet", outlet);
+				
+				 long idOut;
+				 
+				 idOut = outlet.getId();
+				
+				 System.out.println("id outlet : "+idOut);
+				List<PurchaseRequest> pr = prService.getAllByOutletId(idOut);
+				
+				return new ModelAndView("pdfViewPr","pr", pr);
+			}
+			
+			//PDF REQUEST DETAIL
+			@RequestMapping(value="/generate/request-detail", method=RequestMethod.GET)
+			ModelAndView generetaPdfPurchaseRequestDetail(PurchaseRequest pr, HttpServletRequest request, HttpServletResponse response) throws Exception {
+				System.out.println("Process generate begin, call this function  ..");
+				List<RequestDetail> rd = prdService.selectByRequest(pr);
+				
+				return new ModelAndView("pdfViewPrDetail","rd", rd);
+			}
 		
-		return new ModelAndView("pdfViewPr","pr", pr);
-	}
+			//PDF Order
+					@RequestMapping(value="/generate/order", method=RequestMethod.GET)
+					ModelAndView generetaPdfPurchaseOrder(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+						System.out.println("Process generate begin, call this function  ..");
+						Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+						model.addAttribute("outlet", outlet);
+						
+						 long idOut;
+						 
+						 idOut = outlet.getId();
+						
+						 System.out.println("id outlet : "+idOut);
+						List<PurchaseOrder> po = poService.getAllByOutletId(idOut);
+						
+						return new ModelAndView("pdfViewPo","po", po);
+					}
+					//PDF ORDER DETAIL
+					@RequestMapping(value="/generate/order-detail", method=RequestMethod.GET)
+					ModelAndView generetaPdfPurchaseOrderDetail(PurchaseOrder po, HttpServletRequest request, HttpServletResponse response) throws Exception {
+						System.out.println("Process generate begin, call this function po detail ..");
+						System.out.println("dapat po : "+po);
+						List<OrderDetail> od = podService.selectByOrder(po);
+						System.out.println(od);
+						return new ModelAndView("pdfViewPoDetail","od", od);
+					}
+	
 }

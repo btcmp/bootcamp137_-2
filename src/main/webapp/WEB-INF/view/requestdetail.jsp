@@ -54,14 +54,7 @@
                                           <div class="col-lg-9">
                                           	<div class="col-lg-3">
                                               <script>
-												if('${po.status}' == 'Approved'){
-													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${po.id }">'
-													+'<option value="Approved">Approved</option>'
-													+'<option value="Process">Process</option>'
-													+'<option value="Printed">Print</option>'
-													+'</select>');
-													
-												} else if ('${po.status}' == 'Rejected'){
+                                              if ('${pr.status}' == 'Rejected'){
 													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${pr.id }">'
 															+'<option value="Rejected">Rejected</option>'
 												    		+'<option value="Printed">Printed</option>'
@@ -181,6 +174,9 @@
 					},
 					createdOn : newDateForStatus,
 					status : status
+				}
+				if(status == 'Printed'){
+					window.open('${pageContext.request.contextPath}/generate/request');
 				}
 			}
 			

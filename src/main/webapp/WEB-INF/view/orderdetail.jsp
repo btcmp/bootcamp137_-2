@@ -121,7 +121,7 @@
                                      <div class="form-group ">
                                           <label for="pr-number" class="control-label col-lg-2"> Created By : </label>
                                           <div class="col-lg-10">
-                                               ${po.createdBy }
+                                               ${po.createdBy.username }
                                           </div>
                                       </div>
                                       <div class="form-group ">
@@ -228,6 +228,10 @@ $(document).ready(function() {
 				},
 				createdOn : newDateForStatus,
 				status : status
+			}
+			
+			if(status == 'Printed'){
+				window.open('${pageContext.request.contextPath}/generate/order-detail');
 			}
 		}
 		

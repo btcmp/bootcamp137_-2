@@ -15,6 +15,7 @@ import com.miniproject.kel2.dao.PurchaseOrderDao;
 import com.miniproject.kel2.model.HistoryPurchaseOrder;
 import com.miniproject.kel2.model.OrderDetail;
 import com.miniproject.kel2.model.PurchaseOrder;
+import com.miniproject.kel2.model.PurchaseRequest;
 
 @Service
 @Transactional
@@ -60,10 +61,10 @@ public class PurchaseOrderService {
 		ordPur.setId(po.getId());
 		ordPur.setModifiedBy(po.getModifiedBy());
 		ordPur.setModifiedOn(po.getModifiedOn());
+		ordPur.setCreatedBy(po.getCreatedBy());
 		ordPur.setOutlet(po.getOutlet());
 		ordPur.setStatus(po.getStatus());
 		ordPur.setNotes(po.getNotes());
-		
 		
 		PurchaseOrder puro = poDao.getOne(ordPur.getId());
 		ordPur.setCreatedOn(puro.getCreatedOn());
@@ -174,6 +175,12 @@ public class PurchaseOrderService {
 		hpo.setStatus(po.getStatus());
 		
 		hpoDao.save(hpo);
+	}
+
+	public List<PurchaseOrder> getAllByOutletId(long idOut) {
+		// TODO Auto-generated method stub
+		List<PurchaseOrder> allPrByOut = poDao.getAllByOutletId(idOut);
+		return allPrByOut;
 	}
 	
 

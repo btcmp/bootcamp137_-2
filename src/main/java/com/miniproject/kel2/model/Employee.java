@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 public class Employee {
 	
 	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="idEmp")
 	@SequenceGenerator(initialValue=100, name="idEmp", sequenceName="idEmp")

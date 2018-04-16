@@ -608,6 +608,11 @@
 			}
 		});
 	});
+	
+	/* ============================================== EXPORT ======================= */
+	$('#btn-export').on('click', function(){
+		window.open('${pageContext.request.contextPath}/generate/request');
+	})
 })
 </script>
 

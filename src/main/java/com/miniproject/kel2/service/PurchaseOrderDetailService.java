@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.miniproject.kel2.dao.OrderDetailDao;
 import com.miniproject.kel2.model.OrderDetail;
 import com.miniproject.kel2.model.PurchaseOrder;
+import com.miniproject.kel2.model.RequestDetail;
 
 @Service
 @Transactional
@@ -26,4 +27,6 @@ public class PurchaseOrderDetailService {
 		// TODO Auto-generated method stub
 		return odpDao.selectByOrder(po);
 	}
+
+
 }

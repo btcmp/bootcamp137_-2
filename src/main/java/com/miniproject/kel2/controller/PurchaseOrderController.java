@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.miniproject.kel2.model.Employee;
 import com.miniproject.kel2.model.HistoryAdjustment;
 import com.miniproject.kel2.model.HistoryPurchaseOrder;
 import com.miniproject.kel2.model.HistoryPurchaseRequest;
@@ -59,17 +60,24 @@ public class PurchaseOrderController {
 	@RequestMapping
 	public String index (Model model, PurchaseOrder po) {
 		
-		List<PurchaseOrder> pos = poService.selectAll();
-		model.addAttribute("pos", pos);
-		
+		//get session
 		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
 		model.addAttribute("outlet", outlet);
 		
-		/*List<OrderDetail> pods = podService.selectAll();
-		model.addAttribute("pods", pods);
+		 long idOut;
+		 
+		 idOut = outlet.getId();
 		
-		List<ItemInventory> items = iiService.selectAll();
-		model.addAttribute("items", items);*/
+		 System.out.println("id outlet : "+idOut);
+		
+		//employee >> user
+		Employee employee = (Employee) httpSession.getAttribute("employee");
+		model.addAttribute("employee", employee);
+		
+		
+		//show po by Outlet
+		List<PurchaseOrder> pos = poService.getAllByOutletId(idOut);
+		model.addAttribute("pos", pos);
 		
 		List<Supplier> supp = sService.selectAll();
 		model.addAttribute("supp", supp);

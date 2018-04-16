@@ -161,6 +161,8 @@ public class PurchaseRequestController {
 	@ResponseStatus(HttpStatus.OK)
 	public void printed(@PathVariable long id) {
 		prService.printed(id);
+		
+		
 	}
 	
 	@RequestMapping(value="/CreatePo/{id}", method=RequestMethod.POST)

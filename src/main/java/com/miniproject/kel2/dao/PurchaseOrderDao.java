@@ -31,4 +31,6 @@ public interface PurchaseOrderDao {
 	public int CountPrByPrNo(String poNo);
 
 	public void submit(long id);
+
+	public List<PurchaseOrder> getAllByOutletId(long idOut);
 }
