@@ -163,4 +163,19 @@ public class ItemController {
 			    }
 			return name;
 	}
+	
+	//update status
+	@RequestMapping(value="/update-status/{idItem}", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.OK)
+	public void updateStatus(@PathVariable long idItem) {
+		itemService.updateStatus(idItem); 
+	}
+	
+	@RequestMapping(value="/getOne/{id}", method=RequestMethod.PUT)
+	@ResponseBody
+	public List<ItemInventory> getOneItem(@PathVariable long id,Model model, Item item) {
+		List<ItemInventory> inventories = itemInventoryService.searchInventoryByItem(item);
+		model.addAttribute("inventories", inventories);
+		return inventories;
+	}
 }

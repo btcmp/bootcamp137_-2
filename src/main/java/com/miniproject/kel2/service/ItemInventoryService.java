@@ -79,5 +79,6 @@ public class ItemInventoryService {
 		return itemInventoryDao.getItemInventoryByOutlet(outId);
 	}
 
+
 	
 }

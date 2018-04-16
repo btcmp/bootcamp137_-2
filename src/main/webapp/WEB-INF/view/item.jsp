@@ -12,7 +12,6 @@
 		}); */
 		
 		index = 0;
-		var idDelete = [];
 		
 		// menampilkan pop up createA
 		$('#btn-create').click(function() {
@@ -132,6 +131,7 @@
 				$('#edit-beginning').val(element.find('td').eq(3).text());
 				$('#edit-alert').val(element.find('td').eq(4).text());
 				$('#id-hidden-variant').val(element.find('td').eq(0).attr('id'));
+			
 				//console.log(element.find('td').eq(0).attr('id'));
 				
 				console.log(element.attr('id'));
@@ -185,31 +185,38 @@
 			evt.preventDefault();
 	    	var id=$(this).attr('id');	
 			
-	    	console.log(id)
+	    //	console.log(id)
     		$.ajax({
-				url :'${pageContext.request.contextPath}/item/get-one/'+id,
+				url :'${pageContext.request.contextPath}/item/get-one?id=id'+id+"&outlet=outId"+outId,
 				type :'GET',
 				dataType:'json',
 				success : function(dt){	
 					$('#modal-edit-utama').modal();
 					$('#edit-id-utama').val(parseInt(id));
 				 	var index = 0;
-					$.each(dt,function(key,invent){
+					$.each(dt, function(key,invent){
+						console.log("bisa");
 						var image = invent.itemVariant.item.image;
 						$('#edit-image').attr('src','${pageContext.request.contextPath}/resources/img/'+image);
 						$('#edit-name-utama').val(invent.itemVariant.item.name);
 						$('#edit-category-utama').val(invent.itemVariant.item.category.id);
+						$('.btn-del').val(id);
 						$('#tbody-edit-utama').empty();
-						$('#tbody-edit-utama').append('<tr id=tr-var3'+index+'><td id='+index+'>' + invent.itemVariant.name +'</td><td>'+
-								invent.itemVariant.price +'</td><td>'+invent.itemVariant.sku
-								+'</td><td>'+invent.beginning+'</td><td style="display:none">'+invent.alertAtQty+'</td>'
-								+'<td style="display:none;">'+invent.itemVariant.id+'</td>'
-								+'<td style="display:none;">'+invent.id+'</td>'
-							//	+'<td>'+invent.outlet.name+'</td>'
-								+'<td> <a href="#" class="btn-edit-variant-utama" data-toggle="modal" data-target="#modalEdit3"> Edit </a> <a href="#" id="btn-X-utama" class="btn btn-danger"> X </a>'
-								+'</tr>');
-						index++;
+					//	$.each(dt2, function(){
+							 $('#tbody-edit-utama').append('<tr id=tr-var3'+index+'><td id='+index+'>' + invent.itemVariant.name +'</td><td>'+
+									invent.itemVariant.price +'</td><td>'+invent.itemVariant.sku
+									+'</td><td>'+invent.beginning+'</td><td style="display:none">'+invent.alertAtQty+'</td>'
+									+'<td style="display:none;">'+invent.itemVariant.id+'</td>'
+									+'<td style="display:none;">'+invent.id+'</td>'
+								//	+'<td>'+invent.outlet.name+'</td>'
+									+'<td> <a href="#" class="btn-edit-variant-utama" data-toggle="modal" data-target="#modalEdit3"> Edit </a> <a href="#" id="btn-X-utama" class="btn btn-danger"> X </a>'
+									+'</tr>');
+							index++; 
+						//	console.log("coba");
+					//	})
+							
 					})
+					//console.log("coba");
 				}, 				
 				error:function() {
 					alert('failed getting data')
@@ -256,11 +263,6 @@
 	
 	
   /* -------------------------------------------------------------- ADD VARIANT (UTAMA) -------------------------------------------------------------------- */
-		// ADD NEW VARIANT DARI ADD VARIANT 
-			/* $('#btn-addvar-utama').on('click', function(evt) {
-			 evt.preventDefault;
-			 reloadTableEdit();
-			}); */
 		  $('#btn-add-utama').click(function(evt){
 			 evt.preventDefault;
 			var varname  = $('#input-varname-utama').val();
@@ -356,6 +358,49 @@
 				$(this).parent().parent().remove();
 			});
 
+	
+	/* -------------------------------------------------------------- DELETE ITEM GANTI STATUS (UTAMA) ------------------------------------------------------------------- */
+		//DELETE GANTI STATUS
+		$('.btn-del').on('click', function(){
+			idItem=$(".btn-del").val();
+			//console.log(idItem);
+			
+			var jumlahEndingQty=[];
+			$.ajax({
+				url:'${pageContext.request.contextPath}/item/get-one/'+idItem,
+				type:'PUT',
+				contentType:'application/json',
+				success : function(result){
+					var item={};
+					$.each(result,function(keyword,val){
+						jumlahEndingQty.push(val.endingQty)
+				//	console.log(val.endingQty);
+					});
+				//	console.log(jumlahEndingQty);
+		
+					var total=jumlahEndingQty.reduce(function(a,b){return a+b},0);
+					console.log(total);
+					 if(total==0){
+						 $.ajax({
+								type : 'PUT',
+								url : '${pageContext.request.contextPath}/item/update-status/'+idItem,
+								data: JSON.stringify(item),
+								contentType : 'application/json',
+								success : function(item){
+									alert("delete sukses");
+									
+								}, error : function(){
+									alert('delete failed');
+								} 
+						 });
+					};
+					if(total!=0){
+						alert("stock ada");
+					}; 
+				} 
+			}); 
+			
+		});
 		
 	/* --------------------------------------------------------------  CANCEL (UTAMA) ------------------------------------------------------------------- */
 		 $("#btn-cancel-utama").on('click',function(){
@@ -640,7 +685,7 @@
 											<td>${inv.itemVariant.item.name}-${inv.itemVariant.name}</td>
 											<td>${inv.itemVariant.item.category.name}</td>
 											<td>${inv.itemVariant.price}</td>
-											<td>${inv.endingQty}</td>
+											<td>${inv.beginning}</td>
 											<td>${inv.alertAtQty}</td>
 											<td>
 												<a id="${inv.itemVariant.item.id}" href="#" class="btn-edit-utama" data-toggle="modal"data-target="#modal-edit-utama"> Edit </a> 
@@ -729,8 +774,7 @@
 													<div class="row">
 															<input class="col-lg-12" type="file" id="input-image-edit" style="margin-bottom:10px;"/>
 														</div>
-														<img id="edit-image" class="col-lg-4" style="width: 100px; height: 60px;" src=""/>
-														<img id="edit-image1" class="col-lg-4" style="width: 100px; height: 60px;" />
+														<img id="edit-image" class="col-lg-4" style="width: 100px; height: 60px;" src=" "/>
 													<input class="col-lg-8" type="text"
 														style="margin-bottom: 10px;" id="edit-name-utama" placeholder="Item Name">
 													<select class="col-lg-8" type="text" path="category.id" class="form-control" id="edit-category-utama" >
@@ -772,7 +816,7 @@
 											</div>
 
 											<div class="col-lg-12">
-												<button type="button" class="btn btn-danger">Del</button>
+												<button type="button" class="btn btn-danger btn-del" >Del</button>
 											</div>
 
 											<div class="modal-footer">

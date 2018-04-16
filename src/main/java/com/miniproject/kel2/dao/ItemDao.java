@@ -23,6 +23,8 @@ public interface ItemDao {
 
 	public List<Item> getItemsByCategory(Category category);
 
+	public void updateStatus(long idItem);
+
 	//public List<Item> searchByName(String search);
 	
 }

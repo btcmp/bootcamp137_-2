@@ -78,6 +78,15 @@ public class ItemDaoImpl implements ItemDao{
 		}
 		return items;
 	}
+
+	public void updateStatus(long idItem) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql= "update Item set active=1 where id=:iditem";
+		System.out.println(idItem);
+		session.createQuery(hql).setParameter("iditem", idItem).executeUpdate(); 
+		session.flush();
+	}
 	
 	/*public List<Item> searchByName(String search) {
 		// TODO Auto-generated method stub

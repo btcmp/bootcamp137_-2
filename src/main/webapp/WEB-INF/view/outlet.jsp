@@ -403,7 +403,7 @@ $(document).ready(function(){
 																		pattern="^[0-9a-zA-Z. ]+$"></textarea>
 															</div>
 															<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<select class="form-control" id="input-province" data-parsley-required="true">
+																	<select class="form-control" id="input-province" required>
 																	<c:forEach var="prov" items= "${provs}" >
 																			<option 
 																					value="${prov.id}">${prov.name}		

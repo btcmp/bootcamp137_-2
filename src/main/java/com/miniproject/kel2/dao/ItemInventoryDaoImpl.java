@@ -192,7 +192,7 @@ public class ItemInventoryDaoImpl implements ItemInventoryDao{
 	public List<ItemInventory> getItemInventoryByOutlet(long outId) {
 		// TODO Auto-generated method stub
 		Session session=sessionFactory.getCurrentSession();
-		String hql="from ItemInventory i where i.outlet.id = :outId";
+		String hql="from ItemInventory i where i.outlet.id = :outId and i.itemVariant.item.active=0";
 		List<ItemInventory> inventories=session.createQuery(hql).setParameter("outId", outId).list();
 		if(inventories.isEmpty()) {
 			return null;

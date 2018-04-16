@@ -30,15 +30,16 @@ public class ItemPdfView extends AbstractPdfView {
 			table.addCell("Stock Alert");
 
 			for (ItemInventory inventory : inventories) {
-				table.addCell(inventory.getItemVariant().getName());
+				table.addCell(inventory.getItemVariant().getItem().getName()+"-"+inventory.getItemVariant().getName());
 				table.addCell(inventory.getItemVariant().getItem().getCategory().getName());
 				table.addCell(String.valueOf(inventory.getItemVariant().getPrice()));
 				table.addCell(String.valueOf(inventory.getEndingQty()));
-				if(inventory.getEndingQty() < inventory.getAlertAtQty()) {
+				table.addCell(String.valueOf(inventory.getAlertAtQty()));
+				/*if(inventory.getEndingQty() < inventory.getAlertAtQty()) {
 					table.addCell("LOW");
 				} else {
 					table.addCell("HIGHT");
-				}
+				}*/
 				
 			}
 			arg1.add(table);

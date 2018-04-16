@@ -165,6 +165,11 @@ public class ItemService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void updateStatus(long idItem) {
+		// TODO Auto-generated method stub
+		itemDao.updateStatus(idItem);
+	}
 	
 	/*public List<Item> searchByName(String search) {
 		// TODO Auto-generated method stub
