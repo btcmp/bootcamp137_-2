@@ -1,24 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
-<%@ include file="topping/top.jsp"%>
+<%@ include file="topping/top2.jsp"%>
 <script type="text/javascript">
 	$(function() {
-		$('#btn-add').click(function() {
-			$('#modal-add-adjustment').modal();
-		});
-		$('#btn-add-item').click(function() {
-			$('#modal-add-item').modal();
-		});
-		$('#btn-edit').click(function() {
-			$('#modal-edit-adjustment').modal();
-		});
-
-		$("#pickup").datepicker({
-			dateFormat : 'mm-dd-yy',
-			minDate : '-12M',
-			maxDate : 0
-		});
+		$('#main-content').attr('onload', window.print());
 	});
 </script>
 
@@ -27,7 +13,7 @@
       <section id="main-content">
           <section class="wrapper">
 		  <div class="row">
-				<div class="col-lg-12">
+				 <!-- <div class="col-lg-12">
 					<h3 class="page-header"><i class="fa fa-files-o"></i> Form Validation</h3>
 					<ol class="breadcrumb">
 						<li><i class="fa fa-home"></i><a href="index.html">Index</a></li>
@@ -36,7 +22,7 @@
                         <li><i class="fa fa-files-o"></i>Detail</li>
                         
 					</ol>
-				</div>
+				</div> -->
 			</div>
               <!-- Form validations -->              
               <div class="row">
@@ -44,12 +30,12 @@
                       <!-- Start Table Employee -->
                       <section class="panel">
                           <header class="panel-heading">
-                              Form validations
+                              PURCHASE REQUEST
                           </header>
                           <div class="panel-body">
                               <div class="form">
                                   <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
-                                      <div class="form-group ">
+                                      <!-- <div class="form-group ">
                                           <label for="cname" class="control-label col-lg-3">Purchase Request Detail </label>
                                           <div class="col-lg-9">
                                           	<div class="col-lg-3">
@@ -73,9 +59,9 @@
 											</script>
                                             
 											
-                                            </div><!-- /btn-group -->
+                                            </div>/btn-group
                                           </div>
-                                      </div>
+                                      </div> -->
                                       <div class="form-group ">
                                           <label for="pr-number" class="control-label col-lg-2">PR Number : </label>
                                           <div class="col-lg-10">
@@ -139,9 +125,9 @@
                                             </table>
                                           </div>
                                   </form>
-                                  <div>
+                                  <%-- <div>
                                       <a  type ="btn" class="form-control btn btn-primary" href="${pageContext.request.contextPath}/request/">Done</a>
-                                  </div>
+                                  </div> --%>
                               </div>
                           </div>
                           <!-- End Panel Body -->
@@ -157,48 +143,6 @@
 
 <!-- JavaScript for Product Request -->
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		
-	/*======================================= SCRIPT FOR CHANGE STATUS=================================================  */
-		$('#change-status').change(function(){
-			var status = $(this).val();
-			var newDateForStatus = new Date();
-			var id = $(this).attr('key-id');
-			console.log(status);
-			
-			if(status != ""){
-				var history = {
-					pr : {
-						id : '${pr.id}'
-					},
-					createdOn : newDateForStatus,
-					status : status
-				}
-				if(status == 'Printed'){
-					var id = '${pr.id}';
-					window.open('${pageContext.request.contextPath}/request/print-view/'+id);
-				} 
-			}
-			
-			$.ajax({
-				url : "${pageContext.request.contextPath}/request/"+status+"/"+id,
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(history),
-				
-				success : function(data){
-					window.location = '${pageContext.request.contextPath}/request/detail/'+id;
-				}, error : function(){
-					alert ('failed change status');
-				}
-			});
-		});
-	/*------------------------------------------ modal set up -------------------------------------------------------------*/
-		
-	/*==================================================== DELETE ITEM IN DISPLAY ============================================ */
-	
-})
-</script>
+
 
 <%@ include file="topping/bottom.jsp"%>

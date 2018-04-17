@@ -57,7 +57,10 @@ public class OrderDetailDaoImpl implements  OrderDetailDao{
 		String hql = "from OrderDetail od where od.po.id = :poid";
 		List<OrderDetail> od = session.createQuery(hql).setParameter("poid", po.getId()).list();
 		if(od.isEmpty()) {
- 			return null;
+			OrderDetail orDet = new OrderDetail();
+			orDet.setId(0);
+			od.add(orDet);
+ 			return od;
  		}else {
  			return od;
  		}

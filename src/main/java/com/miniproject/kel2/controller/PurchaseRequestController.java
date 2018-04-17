@@ -171,5 +171,23 @@ public class PurchaseRequestController {
 		prService.created(id);
 	}
 	
+	
+	//print
+	@RequestMapping(value="/print-view/{id}", method=RequestMethod.GET)
+	public String printed(@PathVariable long id, Model model) {
+	
+		
+		PurchaseRequest pr = prService.getOne(id);
+		model.addAttribute("pr", pr);
+		
+		List<RequestDetail>rd = rdService.selectByRequest(pr);
+		model.addAttribute("rd", rd);
+		
+		List<HistoryPurchaseRequest> hpr = hisProReqService.selectByRequest(pr);
+		model.addAttribute("hpr", hpr);
+		
+		return "print-detail-request";
+	}
+	
 }
 

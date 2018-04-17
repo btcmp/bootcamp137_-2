@@ -1,29 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
-<%@ include file="topping/top.jsp"%>
+<%@ include file="topping/top2.jsp"%>
 <script type="text/javascript">
 	$(function() {
-		$('#btn-add').click(function() {
-			$('#modal-add-adjustment').modal();
-		});
-		$('#btn-add-item').click(function() {
-			$('#modal-add-item').modal();
-		});
-		$('#btn-edit').click(function() {
-			$('#modal-edit-adjustment').modal();
-		});
-
-		$("#pickup").datepicker({
-			dateFormat : 'mm-dd-yy',
-			minDate : '-12M',
-			maxDate : 0
-		});
+		$('#main-content').attr('onload', window.print());
 	});
 </script>
 
 <!--------------------------------------------------------------------- ISI ------------------------------------------------------------->
-    <!--main content start-->
+      <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
 		  <div class="row">
@@ -49,36 +35,6 @@
                           <div class="panel-body">
                               <div class="form">
                                   <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
-                                      <div class="form-group ">
-                                          <label for="cname" class="control-label col-lg-3">Purchase Order Detail </label>
-                                          <div class="col-lg-9"></div>
-                                          <div class="col-lg-3">
-                                           <script>
-												if('${po.status}' == 'Approved'){
-													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${po.id }">'
-													+'<option value="Approved">Approved</option>'
-													+'<option value="Rejected">Rejected</option>'
-													+'<option value="Process">Process</option>'
-													+'<option value="Printed">Print</option>'
-													+'</select>');
-													
-												} else if ('${po.status}' == 'Rejected'){
-													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${po.id }">'
-															+'<option value="Rejected">Rejected</option>'
-															+'<option value="Printed">Print</option>'
-															+'</select>');
-												} else {
-													document.write('<select id="change-status" class="btn-primary form-control" style = "padding-left: 12px; margin-left: 450px;" key-id="${po.id }">'
-													+'<option value="All">More</option>'
-													+'<option value="Approved">Approved</option>'
-													+'<option value="Rejected">Rejected</option>'
-													+'<option value="Process">Process</option>'
-													+'<option value="Printed">Print</option>'
-													+'</select>');
-												}
-											</script>                                         
-                                          </div>
-                                      </div>
                                       <div class="form-group ">
                                           <div class="col-lg-12">
                                           			<h4>Supplier Name : ${po.supplier.name }</h4>
@@ -208,49 +164,10 @@
         </section>
         <!-- ENd Main Content -->
                
-<!--------------------------------------------------------------------- MODAL ------------------------------------------------------------->
+<!--------------------------------------------------------------------- END ISI ------------------------------------------------------------->
 
 <!-- JavaScript for Product Request -->
 
-<script type="text/javascript">
-$(document).ready(function() {
-	/*======================================= SCRIPT FOR CHANGE STATUS=================================================  */
-	$('#change-status').change(function(){
-		var status = $(this).val();
-		var newDateForStatus = new Date();
-		var id = $(this).attr('key-id');
-		console.log(status);
-		
-		if(status != ""){
-			var history = {
-				pr : {
-					id : '${po.id}'
-				},
-				createdOn : newDateForStatus,
-				status : status
-			}
-			
-			if(status == 'Printed'){
-				var id = '${po.id}';
-				window.open('${pageContext.request.contextPath}/order/print-view/'+id);
-			} 
-		}
-		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/order/"+status+"/"+id,
-			type : 'POST',
-			contentType : 'application/json',
-			data : JSON.stringify(history),
-			
-			success : function(data){
-				//alert('sukses');
-				window.location = '${pageContext.request.contextPath}/order/detail/'+id;
-			}, error : function(){
-				alert ('failed change status');
-			}
-		});
-	});
-})
-</script>
+
 
 <%@ include file="topping/bottom.jsp"%>

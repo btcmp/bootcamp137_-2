@@ -163,4 +163,25 @@ public class PurchaseOrderController {
 		System.out.println("jumlah hasil search : "+purorder.size());
 		return purorder;
 	}
+	
+	/*--------------------------------------------------PRINT DETAIL--------------------------------------------------------------*/
+	//print
+	@RequestMapping(value="/print-view/{id}", method=RequestMethod.GET)
+	public String printed(@PathVariable long id, Model model) {
+	
+		
+		PurchaseOrder po = poService.getOne(id);
+		model.addAttribute("po", po);
+		
+		List<OrderDetail>pod = podService.selectByOrder(po);
+		model.addAttribute("pod", pod);
+		
+		List<HistoryPurchaseOrder> hpo = hpOrderService.selectByOrder(po);
+		model.addAttribute("hpo", hpo);
+		
+		System.out.println(po.getSupplier().getId());
+		
+		
+		return "print-detail-order";
+	}
 }

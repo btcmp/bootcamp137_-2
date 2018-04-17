@@ -19,6 +19,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import util.Currency;
+
 @Entity
 @Table(name="purchase_order_mp")
 public class PurchaseOrder {
@@ -141,6 +143,9 @@ public class PurchaseOrder {
 		return grandTotal;
 	}
 
+	public String getGrandTotalFormatted() {
+		return Currency.currency((double) grandTotal);
+	}
 
 	public void setGrandTotal(float grandTotal) {
 		this.grandTotal = grandTotal;

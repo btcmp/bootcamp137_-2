@@ -155,8 +155,38 @@ public class ExportPdfController {
 	
 	
 	//PDF REQUEST
-			@RequestMapping(value="/generate/request", method=RequestMethod.GET)
-			ModelAndView generetaPdfPurchaseRequest(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping(value="/generate/request", method=RequestMethod.GET)
+	ModelAndView generetaPdfPurchaseRequest(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("Process generate begin, call this function  ..");
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
+		model.addAttribute("outlet", outlet);
+		
+		 long idOut;
+		 
+		 idOut = outlet.getId();
+		
+		 System.out.println("id outlet : "+idOut);
+		List<PurchaseRequest> pr = prService.getAllByOutletId(idOut);
+		
+		return new ModelAndView("pdfViewPr","pr", pr);
+	}
+	
+	//PDF REQUEST DETAIL
+	@RequestMapping(value="/generate/request-detail/{idRequest}", method=RequestMethod.GET)
+	ModelAndView generetaPdfPurchaseRequestDetail(@PathVariable long idRequest, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("Process generate begin, call this function  ..");
+
+		PurchaseRequest pr = new PurchaseRequest();
+		pr.setId(idRequest);
+		
+		List<RequestDetail> rd = prdService.selectByRequest(pr);
+		System.out.println("id pr untuk cetak : "+pr.getId());
+		return new ModelAndView("pdfViewPrDetail","rd", rd);
+	}
+
+	//PDF Order
+			@RequestMapping(value="/generate/order", method=RequestMethod.GET)
+			ModelAndView generetaPdfPurchaseOrder(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 				System.out.println("Process generate begin, call this function  ..");
 				Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
 				model.addAttribute("outlet", outlet);
@@ -166,44 +196,22 @@ public class ExportPdfController {
 				 idOut = outlet.getId();
 				
 				 System.out.println("id outlet : "+idOut);
-				List<PurchaseRequest> pr = prService.getAllByOutletId(idOut);
+				List<PurchaseOrder> po = poService.getAllByOutletId(idOut);
 				
-				return new ModelAndView("pdfViewPr","pr", pr);
+				return new ModelAndView("pdfViewPo","po", po);
 			}
-			
-			//PDF REQUEST DETAIL
-			@RequestMapping(value="/generate/request-detail", method=RequestMethod.GET)
-			ModelAndView generetaPdfPurchaseRequestDetail(PurchaseRequest pr, HttpServletRequest request, HttpServletResponse response) throws Exception {
-				System.out.println("Process generate begin, call this function  ..");
-				List<RequestDetail> rd = prdService.selectByRequest(pr);
+			//PDF ORDER DETAIL
+			@RequestMapping(value="/generate/order-detail/{idOrder}", method=RequestMethod.GET)
+			ModelAndView generetaPdfPurchaseOrderDetail(@PathVariable long idOrder, HttpServletRequest request, HttpServletResponse response) throws Exception {
+				System.out.println("Process generate begin, call this function po detail ..");
 				
-				return new ModelAndView("pdfViewPrDetail","rd", rd);
+				PurchaseOrder po = new PurchaseOrder();
+				po.setId(idOrder);
+				
+				List<OrderDetail> od = podService.selectByOrder(po);
+				System.out.println(od);
+				
+				return new ModelAndView("pdfViewPoDetail","od", od);
 			}
-		
-			//PDF Order
-					@RequestMapping(value="/generate/order", method=RequestMethod.GET)
-					ModelAndView generetaPdfPurchaseOrder(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-						System.out.println("Process generate begin, call this function  ..");
-						Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
-						model.addAttribute("outlet", outlet);
-						
-						 long idOut;
-						 
-						 idOut = outlet.getId();
-						
-						 System.out.println("id outlet : "+idOut);
-						List<PurchaseOrder> po = poService.getAllByOutletId(idOut);
-						
-						return new ModelAndView("pdfViewPo","po", po);
-					}
-					//PDF ORDER DETAIL
-					@RequestMapping(value="/generate/order-detail", method=RequestMethod.GET)
-					ModelAndView generetaPdfPurchaseOrderDetail(PurchaseOrder po, HttpServletRequest request, HttpServletResponse response) throws Exception {
-						System.out.println("Process generate begin, call this function po detail ..");
-						System.out.println("dapat po : "+po);
-						List<OrderDetail> od = podService.selectByOrder(po);
-						System.out.println(od);
-						return new ModelAndView("pdfViewPoDetail","od", od);
-					}
 	
 }

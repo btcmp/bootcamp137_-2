@@ -20,12 +20,13 @@ public class OrderDetailPdfView extends AbstractPdfView {
 		// TODO Auto-generated method stub
 		List<OrderDetail> odCetak = (List<OrderDetail>) arg0.get("od");
 		
-		PdfPTable table = new PdfPTable(3);
+		PdfPTable table = new PdfPTable(5);
 			table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
 			
 			table.addCell("Item");
 			table.addCell("req Qty");
+			table.addCell("price");
 			table.addCell("Sub Total");
 			table.addCell("Grand Total");
 			
@@ -34,6 +35,7 @@ public class OrderDetailPdfView extends AbstractPdfView {
 		for (OrderDetail pod: odCetak) {
 			table.addCell(pod.getVariant().getItem().getName()+"-"+pod.getVariant().getName());
 			table.addCell(pod.getRequestQty()+"");
+			table.addCell(pod.getUnitCost()+"");
 			table.addCell(pod.getSubTotal()+"");
 			table.addCell(pod.getPo().getGrandTotal()+"");
 		}

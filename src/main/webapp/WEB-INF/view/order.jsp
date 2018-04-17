@@ -102,13 +102,13 @@
                                     <c:forEach items="${pos }" var="pos">
                                     <!-- //mengambil id barang -->
                                         <tr id = "#">
-                                            <td>
+                                            <td style="width:15%;">
                                             	${pos.createdOn }
                                             </td>
-                                            <td>${pos.supplier.name }</td>
-                                            <td>${pos.poNo }</td>
-                                            <td>Rp. ${pos.grandTotal }</td>
-                                            <td>${pos.status }</td>
+                                            <td style="width:10%;">${pos.supplier.name }</td>
+                                            <td style="width:15%;">${pos.poNo }</td>
+                                            <td style="width:30%;">${pos.grandTotalFormatted }</td>
+                                            <td style="width:15%;">${pos.status }</td>
                                             
                                             <td>
                                             <script>
@@ -202,7 +202,7 @@
                                 <tfoot>
                                 	<tr>
                                 	<td colspan=4 align="center"  ><h4> <b>Total</b> </h4></td>
-                                	<td><input type="text" name='input-total' class="form-control updatable-content" id="po-total" readonly/> </td>
+                                	<td><input type="text" name='input-total' class="form-control updatable-content" id="po-total" required readonly /> </td>
                                 	</tr>
                                 </tfoot>
                             </table>

@@ -20,19 +20,26 @@ public class pdfViewPo extends AbstractPdfView{
 		// TODO Auto-generated method stub
 		List<PurchaseOrder> poCetak = (List<PurchaseOrder>) arg0.get("po");
 				
-				PdfPTable table = new PdfPTable(3);
+				PdfPTable table = new PdfPTable(5);
 					table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
 					table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
-					
+					table.addCell("Create Date");
+					table.addCell("Supplier");
 					table.addCell("poNo");
-					table.addCell("notes");
+					table.addCell("Total");
 					table.addCell("status");
 				
 				for (PurchaseOrder pos: poCetak) {
+					table.addCell(pos.getCreatedOn()+"");
+					table.addCell(pos.getSupplier().getName());
 					table.addCell(pos.getPoNo());
-					table.addCell(pos.getNotes());
+					table.addCell(pos.getGrandTotalFormatted()+"");
 					table.addCell(pos.getStatus());
 				}
+				
+				float[] columnWidths = new float[]{20f, 20f, 15f, 20f, 15f};
+	            table.setWidths(columnWidths);
+	            
 				arg1.add(table);
 	}
 
