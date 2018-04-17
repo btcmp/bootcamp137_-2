@@ -20,9 +20,9 @@ public class SalesOrderDetailService {
 	@Autowired
 	SalesOrderDao salesOrderDao;
 
-	public List<SalesOrderDetail> getReceiptBySalesOrder(long idSalesOrder) {
+	public List<SalesOrderDetail> getReceiptBySalesOrder(long idCust) {
 		// TODO Auto-generated method stub
-		long idSales = salesOrderDao.getIdSalesOrder(idSalesOrder);
+		long idSales = salesOrderDao.getIdSalesOrder(idCust);
 		System.out.println("id Sales Order : "+idSales);
 		if(idSales != 0) {
 			return salesOrderDetailDao.getReceiptBySalesOrder(idSales);

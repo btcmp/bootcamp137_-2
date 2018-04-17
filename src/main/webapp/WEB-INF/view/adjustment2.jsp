@@ -33,13 +33,17 @@
 		$("#pickup").datepicker({
 			dateFormat : 'yy-mm-dd',
 			minDate : '-12M',
-			maxDate : 0
+			maxDate : 0,
+			changeMonth : true,
+			changeYear : true
 		});
 		//seacrh date range
-		$(document).on('click', '#pickup', function(){
+		$(document).on('live', '#pickup', function(){
 			if($('#return').val() != "" && $('#pickup').val() != ""){
 				var tglFrom = $('#pickup').val();
 				var tglTo = $('#return').val();
+				var from = moment(new Date(tglFrom)).format("DD-MMM-YYYY");
+				var to = moment(new Date(tglTo)).format("DD-MMM-YYYY");
 				var date = tglFrom.split("-"); 
 			    console.log(date[0]);
 			    console.log(date[1]);
@@ -49,17 +53,18 @@
 
 				//var f = new Date(dsplit[0],dsplit[1]-1,dsplit[2]);
 				var t = new Date(tglTo);
-				//console.log("from : "+f);
-				console.log("to : "+t);
+				console.log("from : "+from);
+				console.log("to : "+to);
 				
 				$.ajax({
-					url : '${pageContext.request.contextPath}/adjustment/search/'+tglFrom+'/'+tglTo,
+					url : '${pageContext.request.contextPath}/adjustment/search/'+from+'/'+to,
 					type : 'GET',
 					success : function(data){
 						$('#data-adjustment').empty();
 						$(data).each(function(index, value){
 							console.log(value.id);
 							var dataAdj = "<tr id='"+value.createdOn+"'>"+
+							"<td>"+value.createdOn+"</td>"+
 							"<td>"+value.notes+"</td>"+
 							"<td>"+value.status+"</td>"+
 							"<td><div class='btn-group'>"+
@@ -71,12 +76,8 @@
 							$('#data-adjustment').append(dataAdj);
 						});
 					},
-					error : function(){
-						alert('failed search data adjustment');
-					}
+					error : function(){}
 				});
-			}else{
-				alert("gak kedeteksi");
 			}
 		});
 		
@@ -85,6 +86,11 @@
 		$('#list-item').attr('hidden', 'hidden');
 		
 		//search item in add item
+		$(document).on('keypress', '.adj-qty', function (e) {
+		    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+		      return false;
+		    }
+		  });
 		$('#search-item').on('input', function(){
 			var word = $(this).val();
 			var idOutlet = "${outlet.id}";
@@ -101,7 +107,7 @@
 							var isi = "<tr id='"+value[2]+"'>"+
 							"<td>"+value[3]+" - "+value[1]+"</td>"+
 							"<td>"+value[0]+"</td>"+
-							"<td><div contenteditable='true'><input type='text' id='input-adj-qty-"+value[2]+"'></div></td>"+
+							"<td><div contenteditable='true'><input type='text' class='adj-qty' id='input-adj-qty-"+value[2]+"' min='1'></div></td>"+
 							"</tr>";
 							
 							$('#isi-item').append(isi);
@@ -152,6 +158,10 @@
 			var listDetAdjustment = [];
 			var listHistory = [];
 			var idUser = "${employee.user.id}";
+			var isitable = $('#table-adjustment > tbody > tr').length;
+			console.log("banyak kolom : "+isitable);
+			$('#input-notes').parsley().validate();
+			if(isitable != 0){
 			$('#table-adjustment > tbody > tr').each(function(index, data){
 				var detAdjustment = {
 					variantId :{
@@ -188,21 +198,29 @@
 			};
 			
 			console.log(adjustment);
-			$.ajax({
-				url : '${pageContext.request.contextPath}/adjustment/save',
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(adjustment),
-				success : function(data){
-					console.log(data);
-					window.location="${pageContext.request.contextPath}/adjustment";
-					//alert('save success!!');
-					//window.location = '${pageContext.request.contextPath}/adjustment';
-				},
-				error : function(){
-					alert('save adjustment failed');
-				}
-			});
+			
+				$.ajax({
+					url : '${pageContext.request.contextPath}/adjustment/save',
+					type : 'POST',
+					contentType : 'application/json',
+					data : JSON.stringify(adjustment),
+					success : function(data){
+						console.log(data);
+						window.location="${pageContext.request.contextPath}/adjustment";
+						//alert('save success!!');
+						//window.location = '${pageContext.request.contextPath}/adjustment';
+					},
+					error : function(){
+						alert('save adjustment failed');
+					}
+				});
+			}else{
+				var ok = 0;
+			    $('.bs-callout-danger').toggleClass('hidden', ok);
+			    setTimeout(function(){
+			    	$('.bs-callout-danger').toggleClass('hidden', !ok);
+			    }, 5000);
+			}
 		});
 		
 		//reset
@@ -299,7 +317,10 @@
 			</div>
 			<form id="save-form" data-parsley-validation>
 				<div class="modal-body">
-
+					<div class="bs-callout bs-callout-danger hidden">
+									  <h4>Warning!</h4>
+									  <p>Please add item first</p>
+									</div>
 					<div class="form-group">
 						<label for="input-adjustment" style="line-height: 4px;"><u><b>CREATE
 									NEW ADJUSTMENT : ${employee.user.username }</b></u></label>
@@ -308,7 +329,7 @@
 					<div class="form-group ">
 						<label for="input-notes">Notes</label>
 						<textarea class="form-control " id="input-notes"
-							name="input-notes" required></textarea>
+							name="input-notes" required=""></textarea>
 					</div>
 					<div class="form-group">
 						<label for="input-adjustment" style="line-height: 5px;"><u><b>ADJUSTMENT

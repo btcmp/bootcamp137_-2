@@ -255,6 +255,7 @@ textarea.parsley-error {
 <script src="${resources}/lama/dataTable.min.js"></script>
 
 <script src="${resources}/parsley.min.js"></script>
+<script src="${resources}/js/moment.min.js"></script>
 
 <script>
 

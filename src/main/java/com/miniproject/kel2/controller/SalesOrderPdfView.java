@@ -42,7 +42,9 @@ public class SalesOrderPdfView extends AbstractPdfView{
 			for (SalesOrderDetail sod : salesOrderDetails) {
 				table.addCell(sod.getVariantId().getItem().getName() +" - "+sod.getVariantId().getName());
 				table.addCell(sod.getQty()+"");
-				table.addCell(sod.getSubTotal()+"");
+				Double angka = sod.getSubTotal();
+				String rupiah = String.format("Rp %,.0f", angka).replaceAll(",", ".")+",00";
+				table.addCell(rupiah);
 				
 			}
 			arg1.add(new Paragraph("Receipt Sales Order for : "+salesOrderDetails.get(0).getSoId().getCustomer().getName().toUpperCase()));

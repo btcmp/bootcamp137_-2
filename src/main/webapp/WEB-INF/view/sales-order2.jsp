@@ -124,7 +124,10 @@
 
 		$("#input-cust-dob").datepicker({
 			dateFormat : 'yy-mm-dd',
-			maxDate : 0
+			maxDate : 0,
+			changeMonth : true,
+			changeYear : true,
+			yearRange: '1950:2018'
 		});
 		
 		//input region dan district
