@@ -8,7 +8,7 @@
 }
 
 .hero{
-  background:url(../../assets/img/city_bg.jpg) no-repeat center;
+   background:url(../../assets-index/img/bg-2.jpg) no-repeat center center fixed;
   background-size:cover;
   border:none;
 }
@@ -34,7 +34,7 @@
 }
 
 .hero .get-it h1, .hero .get-it p{
-  color:#fff;
+  color:#000000;
   text-shadow:2px 2px 3px rgba(0,0,0,0.3);
   margin-bottom:40px;
 }

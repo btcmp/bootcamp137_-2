@@ -31,7 +31,7 @@
     <div class="jumbotron hero">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 col-md-push-7 phone-preview">
+                <div class="col-md-4 col-md-push-7">
                 	<div class="iphone-mockup">
                 		<img class="device" src="${resources }/img/iconPOS.png">
                 		
