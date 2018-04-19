@@ -220,7 +220,8 @@
 				}
 			});
 		}); 
-	
+		  
+		  
 	
 	/* ----------------------------------------------------- EDIT VARIANT (UTAMA) ----------------------------------------*/
 		 $("#tbody-edit-utama").on('click','.btn-edit-variant-utama',function(evt){
