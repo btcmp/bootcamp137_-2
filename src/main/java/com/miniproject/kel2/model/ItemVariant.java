@@ -152,6 +152,7 @@ public class ItemVariant {
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
+	
 	public boolean isActive() {
 		return active;
 	}
@@ -164,6 +165,5 @@ public class ItemVariant {
 	public void setSalesOrders(List<SalesOrderDetail> salesOrderDetails) {
 		this.salesOrderDetails = salesOrderDetails;
 	}
-	
 	
 }

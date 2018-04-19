@@ -178,4 +178,20 @@ public class TransferStockController {
 	public void saveHistory(@RequestBody HistoryTransferStock htStock) {
 		htStockService.save(htStock);
 	}
+	
+	// print
+	@RequestMapping(value="/print-ts/{id}", method=RequestMethod.GET)
+	public String printDetail(@PathVariable long id, Model model) {
+		TransferStock transferStock = transferStockService.getOne(id);
+		List<TransferStockDetail> tsDetails = tsDetailService.searchById(id);
+		List<HistoryTransferStock> htStocks = htStockService.getByTsId(id);
+		System.out.println("detail ts : "+tsDetails.size());
+		System.out.println("history ts : "+htStocks.size());
+		model.addAttribute("transferStock", transferStock);
+		model.addAttribute("tsDetails", tsDetails);
+		model.addAttribute("htStocks", htStocks);
+		return "print-detail-ts";
+	}	
+	
+	
 }

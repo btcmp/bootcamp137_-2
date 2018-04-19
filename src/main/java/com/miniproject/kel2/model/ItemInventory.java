@@ -20,6 +20,7 @@ public class ItemInventory {
 		this.createdOn = new Date();
 		this.modifiedOn = new Date();
 	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(nullable=false)

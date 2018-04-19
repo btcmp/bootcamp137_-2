@@ -73,7 +73,8 @@
 				}
 			});
 		} else if(status =="Print"){
-			window.print();
+			var idtransferStock = "${transferStock.id}";
+			window.open('${pageContext.request.contextPath}/transfer-stock/print-ts/'+idtransferStock);
 		}
 	}
 		

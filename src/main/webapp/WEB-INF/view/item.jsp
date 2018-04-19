@@ -11,9 +11,9 @@
 			}
 		}); */
 		
-		index = 0;
+		var index = 0;
 		
-		// menampilkan pop up createA
+		// menampilkan pop up create
 		$('#btn-create').click(function() {
 			$('#modal-create').modal();
 		});
@@ -34,18 +34,8 @@
 			var beginning = $('#input-beginning').val();
 			var alert = $('#input-alertat').val();
 			
-			var variant = {
-				name : varname,
-				price : uprice,
-				sku : sku
-			};
-			var inventory = {
-				beginning : $('#input-beginning').val(),
-				alertAtQty : $('#input-alertat').val()
-			};
-			
-			var add = "<tr id=tr-var "+ index + " ><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
-					  "</td><td><a class='btn-edit' href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
+			var add = "<tr id=tr-var"+ index + " ><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert + 
+					  "</td><td><a class='btn-edit' data-id="+index+"  href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
 			$("#tbody-addvar").append(add);
 			index++;
 			console.log(index);
@@ -78,7 +68,6 @@
 					itemVariants.push(variant);
 			});
 			
-		
 			
 			   $.ajax({
 					url : '${pageContext.request.contextPath}/item/upload',
@@ -122,7 +111,8 @@
  	/* ------------------------------------------------------------------ EDIT VARIANT (CREATE) ---------------------------------------------------------------- */	
 		// EDIT VARIANT
 	 	$('#tbody-addvar').on('click', '.btn-edit', function(evt){
-			evt.preventDefault();
+	 		evt.preventDefault();
+	 		
 			var element = $(this).parent().parent();
 				$('#modal-edit').modal();
 				$('#edit-varname').val(element.find('td').eq(0).text());	
@@ -130,12 +120,13 @@
 				$('#edit-sku').val(element.find('td').eq(2).text());
 				$('#edit-beginning').val(element.find('td').eq(3).text());
 				$('#edit-alert').val(element.find('td').eq(4).text());
-				$('#id-hidden-variant').val(element.find('td').eq(0).attr('id'));
-			
-				//console.log(element.find('td').eq(0).attr('id'));
+				$('#id-hidden-variant').val($(this).attr('data-id'));
 				
-				console.log(element.attr('id'));
-				console.log(element)
+		//		element.remove();
+				console.log(element);
+				
+		//		console.log(element.attr('id'));
+		//	console.log(element)
 	 	});
 	 	
  	
@@ -150,15 +141,15 @@
 		// ADD dari modal edit pada CREATE
 		 $('#btn-add-from-edit').click(function(evt){
 			evt.preventDefault;
+			$('#modal-edit').modal();
 			var index =$('#id-hidden-variant').val();
 			console.log(index)
 			
-			$('#tr-var' + index).remove();
-			$('#tbody-addvar').append("<tr id=tr-var2 " + index + "><p style='display:none;'>" + $('#id-hidden-variant').val() + "</p><td>" + $('#edit-varname').val() + "</td><td>" + $('#edit-uprice').val() + "</td><td>" 
+		 	$('#tr-var' + index).remove();
+			$('#tbody-addvar').append("<tr id='tr-var" + index + "'><td>" + $('#edit-varname').val() + "</td><td>" + $('#edit-uprice').val() + "</td><td>" 
 					+ $('#edit-sku').val() + "</td><td>" + $('#edit-beginning').val() + "</td><td style='display:none;'>" + $('#edit-alert').val() +
 					"</td><td><a class='btn-edit' href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>");
-		 	index++;
-		 	
+		 //	index++;
 		 	alert('save ok');
  			}); 
 	
@@ -183,17 +174,21 @@
 		// $('.btn-edit-utama').on('click', function(evt) {  
 		  $('#data-utama').on('click', '.btn-edit-utama', function(evt){
 			evt.preventDefault();
+			$('#tbody-edit-utama').empty();
 	    	var id=$(this).attr('id');	
-			
-	    //	console.log(id)
+
+			$('#edit-id-utama2').val(id);
+	    	
+	    	console.log($('#edit-id-utama2').val(id))
     		$.ajax({
-				url :'${pageContext.request.contextPath}/item/get-one?id=id'+id+"&outlet=outId"+outId,
+				url :'${pageContext.request.contextPath}/item/get-one/'+id,
 				type :'GET',
 				dataType:'json',
 				success : function(dt){	
 					$('#modal-edit-utama').modal();
-					$('#edit-id-utama').val(parseInt(id));
-				 	var index = 0;
+				//	$('#edit-id-utama').val(parseInt(id));
+				
+				 	var index =$('#id-variant-utama').val();
 					$.each(dt, function(key,invent){
 						console.log("bisa");
 						var image = invent.itemVariant.item.image;
@@ -201,17 +196,19 @@
 						$('#edit-name-utama').val(invent.itemVariant.item.name);
 						$('#edit-category-utama').val(invent.itemVariant.item.category.id);
 						$('.btn-del').val(id);
-						$('#tbody-edit-utama').empty();
+					//	$('#tbody-edit-utama').empty();
 					//	$.each(dt2, function(){
-							 $('#tbody-edit-utama').append('<tr id=tr-var3'+index+'><td id='+index+'>' + invent.itemVariant.name +'</td><td>'+
+						if(invent.outlet.id=="${outlet.id}"){
+							 $('#tbody-edit-utama').append('<tr id=tr-var'+ invent.itemVariant.id +'><td id='+index+'>' + invent.itemVariant.name +'</td><td>'+
 									invent.itemVariant.price +'</td><td>'+invent.itemVariant.sku
-									+'</td><td>'+invent.beginning+'</td><td style="display:none">'+invent.alertAtQty+'</td>'
+									+'</td><td>'+invent.beginning+'</td><td style="display:none;">'+invent.alertAtQty+'</td>'
 									+'<td style="display:none;">'+invent.itemVariant.id+'</td>'
 									+'<td style="display:none;">'+invent.id+'</td>'
 								//	+'<td>'+invent.outlet.name+'</td>'
-									+'<td> <a href="#" class="btn-edit-variant-utama" data-toggle="modal" data-target="#modalEdit3"> Edit </a> <a href="#" id="btn-X-utama" class="btn btn-danger"> X </a>'
+									+'<td> <a href="#" data-id="'+ invent.itemVariant.id +'" class="btn-edit-variant-utama" data-toggle="modal" data-target="#modalEdit3"> Edit </a> <a href="#" id="btn-X-utama" class="btn btn-danger"> X </a>'
 									+'</tr>');
 							index++; 
+						}
 						//	console.log("coba");
 					//	})
 							
@@ -237,7 +234,7 @@
 	   	   	$('#edit-alert-utama').val(element.find('td').eq(4).text());
 	   		$('#id-variant-utama').val(element.find('td').eq(5).text());
 	   		$('#id-inventory-utama').val(element.find('td').eq(6).text());
-	   		$('#id-item-hidden-utama').val(element.find('td').eq(0).attr('id'));
+	   		$('#id-item-hidden-utama').val($(this).attr('data-id'));
 	    });
 	
 			
@@ -246,15 +243,15 @@
 		  $('#btn-add-from-edit-utama').click(function(evt){
 			evt.preventDefault;
 			 $('#modalEdit3').modal();
-			var index =$('#id-hidden-variant-utama').val();
+			var index =$('#id-item-hidden-utama').val();
 			console.log(index)
 			
 			$('#tr-var' + index).remove();
-			$('#tbody-edit-utama').empty();
-			$('#tbody-edit-utama').append("<tr id=tr-var " + index + "><td>" + $('#edit-varname-utama').val() + "</td><td>" + $('#edit-uprice-utama').val() + "</td><td>" 
+		//	$('#tbody-edit-utama').empty();
+			$('#tbody-edit-utama').append("<tr id='tr-var" + index + "'><td>" + $('#edit-varname-utama').val() + "</td><td>" + $('#edit-uprice-utama').val() + "</td><td>" 
 					+ $('#edit-sku-utama').val() + "</td><td>" + $('#edit-beginning-utama').val() + "</td><td style='display:none;'>" + $('#edit-alert-utama').val() +
-					 "</td><td>" + $('#id-variant-utama').val() +
-					 "</td><td>" + $('#id-inventory-utama').val() +
+					 "</td><td style='display:none;'>" + $('#id-variant-utama').val() +
+					 "</td><td style='display:none;'>" + $('#id-inventory-utama').val() +
 					"</td><td><a 'btn-edit-variant-utama' href='#' data-toggle='modal' data-target='#modalEdit3'> Edit</a><button type='button' id='btn-X-utama' class='btn btn-danger'> X </button></td></tr>");
 		 	index++;
 		 
@@ -262,7 +259,7 @@
  			});  
 	
 	
-  /* -------------------------------------------------------------- ADD VARIANT (UTAMA) -------------------------------------------------------------------- */
+  /* -------------------------------------------------------------- ADD PADA ADD VARIANT (UTAMA) -------------------------------------------------------------------- */
 		  $('#btn-add-utama').click(function(evt){
 			 evt.preventDefault;
 			var varname  = $('#input-varname-utama').val();
@@ -270,22 +267,17 @@
 			var sku  = $('#input-sku-utama').val();
 			var beginning = $('#input-beginning-utama').val();
 			var alert = $('#input-alertat-utama').val();
+			var idVar = $('#id-variant-utama').val();
+			var idInvent = $('#id-inventory-utama').val();
+
 			
-			var variant = {
-				name : varname,
-				price : uprice,
-				sku : sku
-			};
-			var inventory = {
-				beginning : $('#input-beginning-utama').val(),
-				alertAtQty : $('#input-alertat-utama').val()
-			};
-			
-			var add = "<tr id=tr-var4 "+ index + " ><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
-					  "</td><td><a class='btn-edit-variant-utama' href='#' data-toggle='modal' data-target='#modalEdit3'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
+			var add = "<tr id=tr-var "+ index + " ><td>" + varname + "</td><td>" + uprice + "</td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
+			 "</td><td style='display:none;'>" + $('#id-variant-utama').val() +
+			 "</td><td style='display:none;'>" + $('#id-inventory-utama').val() +		  
+			"</td><td><a class='btn-edit-variant-utama' href='#' data-toggle='modal' data-target='#modalEdit3'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
 			$("#tbody-edit-utama").append(add);
 			index++;
-			console.log(index);
+		//	console.log(index);
 			
 				});	 
 
@@ -296,17 +288,19 @@
 			evt.preventDefault();
 			
 			var itemVariants =[];
-			var itemInventories = [];
-			
+			var itemInventories = [];/* 
+			var element = $(this).parent().parent();
+			var idItem = element.find('td').eq() */
 		  $('#tbl-edit-utama > #tbody-edit-utama > tr').each(function(index,data){
 		    	var inventory = {
-		    			id : $(data).find('td').eq(6).val(),
+		    			id : $(data).find('td').eq(6).text(),
 						beginning :$(data).find('td').eq(3).text(),
 					    alertAtQty :$(data).find('td').eq(4).text(),
 					    itemVariant : {
 					    	 id : $(data).find('td').eq(5).text()
 					    }
 				 }
+		  //  	console.log(inventory);
 		    	
 		    	var variant = {
 		    			id : $(data).find('td').eq(5).text(),
@@ -316,13 +310,13 @@
 						active : 0,
 						itemInventories : [inventory],
 						item : {
-					    	id : $(data).find('td').eq(5).val()
+					    	id : $('#edit-id-utama2').val()
 					     }
 		    	}
 		    	
 		    	itemVariants.push(variant)
 		  });
-		  console.log(itemVariants)
+		 // console.log(itemVariants)
 		  
 		  
 		  var item = {
@@ -332,17 +326,17 @@
 		    	category:{
 		    		id :  $('#edit-category-utama').val()
 		    	},
-		    	itemVariants : itemVariants
+		    	itemVariants : itemVariants	
 		    }
 		  console.log(item);
 		    	 $.ajax({
 				    	url:'${pageContext.request.contextPath}/item/update',
 				    	type : 'PUT',
-				    	data : JSON.stringify(item),
+				    	data: JSON.stringify(item),
 				    	contentType : 'application/JSON',
 				    	success : function(){
 				    		alert('save success')
-				    		window.location = '${pageContext.request.contextPath}/item';
+				    	//	window.location = '${pageContext.request.contextPath}/item';
 				    	},
 				    	error : function(){
 				    		alert('save failed')
@@ -355,7 +349,28 @@
 	/* -------------------------------------------------------------- DELETE VARIANT (UTAMA) ------------------------------------------------------------------- */
 		//DELETE
 		$('#tbody-edit-utama').on('click', '#btn-X-utama', function(){
-				$(this).parent().parent().remove();
+			//	$(this).parent().parent().remove();
+				var element = $(this).parent().parent();
+				var idVar = element.find('td').eq(5).text();
+			console.log(idVar); 
+				
+				
+				if(confirm("Are you sure to update status variant?")){
+					$(this).parent().parent().remove();
+				  $.ajax({
+				    	url:'${pageContext.request.contextPath}/item/update-status-variant/'+idVar,
+				    	type : 'PUT',
+				    	success : function(){
+				    		alert('update success')
+				    	},
+				    	error : function(){
+				    		alert('update failed')
+				    	}
+				    }); 
+				} else {
+					
+				}
+				
 			});
 
 	
@@ -706,8 +721,8 @@
 															</div>
 															<form>
 															<div class="modal-body" style="height: 110px">
-																<input type="hidden" name="edit-id" id="edit-id">
-																<p id="id-hidden-variant"></p>
+																<input type="hidden" name="id-hidden-variant" id="id-hidden-variant">
+																<input type="hidden" name="id-item-hidden" id="id-item-hidden">
 																<div class="col-lg-4" style="margin-bottom: 10px;">
 																	<input type="text" id="edit-varname" placeholder="Variant Name">
 																</div>
@@ -770,7 +785,7 @@
 											</div>
 											<div class="modal-body">
 												<div id="input">
-												<input type="hidden" id="edit-id-utama" class="form-control">	
+														<input type="hidden" name="edit-id-utama2" id="edit-id-utama2">
 													<div class="row">
 															<input class="col-lg-12" type="file" id="input-image-edit" style="margin-bottom:10px;"/>
 														</div>

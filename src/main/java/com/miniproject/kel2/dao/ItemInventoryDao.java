@@ -41,4 +41,6 @@ public interface ItemInventoryDao {
 
 	public List<ItemInventory> getItemInventoryByOutlet(long outId);
 
+	public List<ItemInventory> getItemInventoryByVariant(long varId);
+
 }

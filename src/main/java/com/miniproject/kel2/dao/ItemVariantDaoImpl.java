@@ -38,6 +38,7 @@ public class ItemVariantDaoImpl implements ItemVariantDao{
 	public void update(ItemVariant itemVariant) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
+		session.clear();
 		session.update(itemVariant);
 		session.flush();
 	}

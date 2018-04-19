@@ -25,6 +25,8 @@ public interface ItemDao {
 
 	public void updateStatus(long idItem);
 
+	public void updateStatuVar(long idVar);
+
 	//public List<Item> searchByName(String search);
 	
 }

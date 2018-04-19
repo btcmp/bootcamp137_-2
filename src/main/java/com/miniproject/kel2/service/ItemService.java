@@ -33,7 +33,7 @@ public class ItemService {
 
 	@Autowired
 	OutletDao outletDao;
-	
+
 	@Autowired
 	HttpSession httpSession;
 
@@ -44,7 +44,7 @@ public class ItemService {
 		item.setItemVariants(null);
 		item.setCreatedBy(outlet.getId());
 		itemDao.save(item);
-		
+
 		// object itemVariant
 		ItemInventory inventory;
 		for (ItemVariant variant : itemVariants) {
@@ -95,52 +95,70 @@ public class ItemService {
 	}
 
 	public void update(Item item) {
+		Outlet outlet = (Outlet) httpSession.getAttribute("outlet");
 		List<ItemVariant> itemVariants = item.getItemVariants();
 		List<Outlet> outlets = outletDao.selectAll();
-
+		ItemInventory invent;
+	//	System.out.println(outlets.size());
 		item.setItemVariants(null);
-		itemDao.saveAtauUpdate(item);
+		itemDao.update(item);
 
 		ItemInventory inventory;
-		System.out.println(itemVariants.size());
+	//	System.out.println(itemVariants.size());
 		for (ItemVariant variant : itemVariants) {
+
+			List <ItemInventory> inv = itemInventoryDao.getItemInventoryByVariant(variant.getId());
 			inventory = variant.getItemInventories().get(0);
 			variant.setItemInventories(null);
 			variant.setItem(item);
 
 			if (variant.getId() == 0) {
 				itemVariantDao.save(variant);
-				System.out.println(inventory.getId() == 0);
+		//		System.out.println(inventory.getId() == 0);
 				if (inventory.getId() == 0) {
 					for (Outlet out : outlets) {
 						System.out.println(out.getName());
-						ItemInventory invent = new ItemInventory();
-						invent.setItemVariant(variant);
-						invent.setAlertAtQty(inventory.getAlertAtQty());
-						invent.setEndingQty(inventory.getEndingQty());
-						invent.setBeginning(inventory.getBeginning());
-						invent.setOutlet(out);
-						itemInventoryDao.save(invent);
+						inventory.setItemVariant(variant);
+						inventory.setOutlet(out);
+						itemInventoryDao.save(inventory);
 					}
 				}
-				
+
 			} else {
 				itemVariantDao.update(variant);
-				System.out.println("update variant done");
+		//		System.out.println("update variant done");
 				
-				for(Outlet out : outlets) {
-					System.out.println(out.getName());
-					ItemInventory invent = new ItemInventory();
-					invent.setAlertAtQty(inventory.getAlertAtQty());
-					invent.setItemVariant(variant);
-					
-					invent.setBeginning(inventory.getBeginning());
-					invent.setOutlet(out);
-					if(invent.getId() == 0) {
+				if (inventory.getId() == 0) {
+					for (Outlet out : outlets) {
+						invent = new ItemInventory();
+					//	System.out.println(out.getName());
+						invent.setAlertAtQty(inventory.getAlertAtQty());
+						invent.setBeginning(inventory.getBeginning());
 						invent.setEndingQty(inventory.getBeginning());
+						invent.setCreatedBy(outlet.getId());
+						invent.setItemVariant(variant);
+						invent.setOutlet(out);
 						itemInventoryDao.save(invent);
-					} else {
-						itemInventoryDao.save(invent);
+						
+						/*System.out.println(out.getName());
+						inventory.setAlertAtQty(inventory.getAlertAtQty());
+						inventory.setBeginning(inventory.getBeginning());
+						inventory.setEndingQty(inventory.getBeginning());
+						inventory.setCreatedBy(outlet.getId());
+						inventory.setItemVariant(variant);
+						inventory.setOutlet(out);
+						itemInventoryDao.save(inventory);*/
+					}
+					
+				} else {
+					for (Outlet out : outlets) {
+					//	ItemInventory invent = new ItemInventory();
+					//	System.out.println("up");
+						inventory.setItemVariant(variant);
+						inventory.setEndingQty(inventory.getBeginning());
+						inventory.setCreatedBy(outlet.getId());
+						inventory.setOutlet(out);
+						itemInventoryDao.update(inventory);
 					}
 				}
 			}
@@ -170,9 +188,14 @@ public class ItemService {
 		// TODO Auto-generated method stub
 		itemDao.updateStatus(idItem);
 	}
-	
-	/*public List<Item> searchByName(String search) {
+
+	public void updateStatusVar(long idVar) {
 		// TODO Auto-generated method stub
-		return itemDao.searchByName(search);
-	}*/
+		itemDao.updateStatuVar(idVar);
+	}
+
+	/*
+	 * public List<Item> searchByName(String search) { // TODO Auto-generated method
+	 * stub return itemDao.searchByName(search); }
+	 */
 }

@@ -134,7 +134,7 @@ public class ItemController {
 		long outId = outlet.getId();
 		if(itemInventories != null) {
 			for (ItemInventory ivt : itemInventories) {
-				if(ivt.getOutlet().getId() == outId) {
+				if(ivt.getOutlet().getId() == outId && ivt.getItemVariant().isActive()==false) {
 					invent.add(ivt);
 				}
 			}
@@ -164,13 +164,20 @@ public class ItemController {
 			return name;
 	}
 	
-	//update status
+	//update status item
 	@RequestMapping(value="/update-status/{idItem}", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	public void updateStatus(@PathVariable long idItem) {
 		itemService.updateStatus(idItem); 
 	}
 	
+	//update status variant
+	@RequestMapping(value="/update-status-variant/{idVar}", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.OK)
+	public void updateStatusVar(@PathVariable long idVar) {
+		itemService.updateStatusVar(idVar); 
+	}
+
 	@RequestMapping(value="/getOne/{id}", method=RequestMethod.PUT)
 	@ResponseBody
 	public List<ItemInventory> getOneItem(@PathVariable long id,Model model, Item item) {
