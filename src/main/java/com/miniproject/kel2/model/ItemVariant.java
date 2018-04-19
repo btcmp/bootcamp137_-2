@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import util.Currency;
+
 
 @Entity
 @Table (name="ITEM_VARIANT_MP")
@@ -125,6 +127,11 @@ public class ItemVariant {
 	public float getPrice() {
 		return price;
 	}
+	
+	public String getPriceFormatted() {
+		return Currency.currency((double) price);
+	}
+	
 	public void setPrice(float price) {
 		this.price = price;
 	}

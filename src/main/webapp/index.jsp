@@ -33,9 +33,9 @@
             <div class="row">
                 <div class="col-md-6 get-it">
                     <h1>KELOMPOK 2</h1>
-                    <p>Fikky Wiryta </br>
-                    	Popi Kridiani </br>
-                    	Resa cahya Saputra </br>
+                    <p>Fikky Wirita </br>
+                    	Popi Krisdiani </br>
+                    	Resa Cahya Saputra </br>
                     </p>
                     <p><a class="btn btn-success btn-lg" role="button" href="${pageContext.request.contextPath}/login">LOGIN </a></p>
                 </div>
