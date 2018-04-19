@@ -42,13 +42,13 @@
 							
 							<form class="form-validate form-horizontal " id="form-employee" action="${pageContext.request.contextPath }/employee/save-emp"  method="post" action="">
 								<div class="bs-callout bs-callout-warning hidden">
-								  <h4>Oh snap!</h4>
-								  <p>This form seems to be invalid :(</p>
+								  <h4>Isian form masih salah,</h4>
+								  <p>Mohon perbaiki isian form sesuai arahan ... </p>
 								</div>
 								
 								<div class="bs-callout bs-callout-info hidden">
-								  <h4>Yay!</h4>
-								  <p>Everything seems to be ok :)</p>
+								  <h4>Form Sudah benar,</h4>
+								  <p>Lanjut ke langkah selanjutnya ..</p>
 								</div>
 								
 								<div><input class=" form-control" id="id-emp" type="hidden" /></div>
@@ -469,8 +469,13 @@ $(document).ready(function(){
 		
 		$('#form-employee').parsley().on('field:validated', function() {
 		    var ok = $('.parsley-error').length === 0;
-		    $('.bs-callout-info').toggleClass('hidden', !ok);
+		   /*  $('.bs-callout-info').toggleClass('hidden', !ok);
 		    $('.bs-callout-warning').toggleClass('hidden', ok);
+		     */
+		    setTimeout(function(){
+				$('.bs-callout-warning').toggleClass('hidden', ok);
+				$('.bs-callout-info').toggleClass('hidden', !ok);
+			}, 1000);
 		  })
 		  .on('form:submit', function() {
 			  $('#btn-save').click();

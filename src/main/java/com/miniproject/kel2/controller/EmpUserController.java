@@ -18,6 +18,7 @@ import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.Role;
 import com.miniproject.kel2.model.User;
 import com.miniproject.kel2.service.EmpUserService;
+import com.miniproject.kel2.service.UserService;
 
 @Controller
 @RequestMapping("/employee")
@@ -26,6 +27,9 @@ public class EmpUserController {
 	
 	@Autowired
 	EmpUserService empUserService;
+	
+	@Autowired
+	UserService uService;
 	
 	@RequestMapping
 	public String index(Model model, Employee empl) {
@@ -86,6 +90,15 @@ public class EmpUserController {
 	@ResponseStatus(HttpStatus.OK)
 	public void update(@RequestBody Employee emp) {
 		empUserService.empUpdate(emp);
+	}
+	
+	/*=================================================== VALIDATION ===================================================*/
+	@RequestMapping(value="/search-same-username/{inputNewUser}", method=RequestMethod.GET)
+	@ResponseBody
+	public List<User> searchUsernameForValidation(@PathVariable String inputNewUser){
+		List<User> users = uService.searchUsernameForValidation(inputNewUser);
+		System.out.println("found same user : "+users.size());
+		return users;
 	}
 	
 }

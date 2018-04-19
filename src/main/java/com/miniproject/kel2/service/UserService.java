@@ -1,5 +1,7 @@
 package com.miniproject.kel2.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,5 +20,10 @@ public class UserService {
 		User user = new User();
 		user.setId(id);
 		return userDao.getOne(user);
+	}
+
+	public List<User> searchUsernameForValidation(String inputNewUser) {
+		// TODO Auto-generated method stub
+		return userDao.searchUsernameForValidation(inputNewUser);
 	}
 }

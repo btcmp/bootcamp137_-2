@@ -369,7 +369,7 @@ textarea.parsley-error {
 				tabindex="5000">
 				<!-- sidebar menu start-->
 				<ul class="sidebar-menu">
-					<li class="active"><a class="" href="index.html"> <i
+					<li class="active"><a class="" href="${pageContext.request.contextPath}/authentication/starting-page?id"+id> <i
 							class="icon_house_alt"></i> <span>Dashboard</span>
 					</a></li>
 					<li class="sub-menu"><a href="javascript:;" class=""> <i

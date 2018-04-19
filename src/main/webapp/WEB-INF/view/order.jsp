@@ -229,33 +229,33 @@
 <!-- JavaScript for Product Request -->
 
 <script type="text/javascript">
-	$(document).ready(function() {
+$(document).ready(function() {
 		 $('#ready-date').datepicker({
 			 dateformat : 'yy-mm-dd',
 			autoclose : true
 		});
 	
+		 
+	/* ------------------------------------- INPUT CASH ---------------------------------------------------------------- */
+	//search item in add item
+		$(document).on('keypress', '.edit-unitcost', function (e) {
+		    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+		      return false;
+		    }
+		  });
 	/* =================================== Editabel input ========================================================================*/
-	var total;
-	
 	$('#isi-tabel-po').delegate('.edit-unitcost', 'input', function(){
 		var qty =  $(this).closest('tr').find('td').eq(2).text();
 		var unitCost = $(this).val();
 		var subTotal = parseInt(qty * unitCost);
 		
 		$(this).closest('tr').find('.edit-subtotal').val(subTotal);
-		
 		var Grandtotal = 0;
 		$("#isi-tabel-po").find('.edit-subtotal').each(function(){
 			Grandtotal += parseInt($(this).val());
 		});
 		
 		$('#po-total').val(parseInt(Grandtotal));
-		
-		total = $('#po-total').val();
-		
-		
-		
 	});
 	/*------------------------------------------ modal set up -------------------------------------------------------------*/
 	$('#order-table').on('click', '.btn-update', function(){
@@ -296,7 +296,6 @@
 		evt.preventDefault();
 		//alert('testing');
 		var listDetail = [];
-		console.log(total);
 	
 		var idUser = "${employee.user.id}";
 		console.log(idUser);
@@ -319,7 +318,7 @@
 				poNo : $('#po-no').val(),
 				createdBy : createdBy,
 				outlet : outlet,
-				grandTotal : total
+				grandTotal : $('#po-total').val()
 				
 		};
 		console.log(po);
@@ -334,7 +333,7 @@
 			success : function(){
 				//console.log(po);
 				alert('save sucsess');
-				//window.location = '${pageContext.request.contextPath}/order';
+				window.location = '${pageContext.request.contextPath}/order';
 			}, error : function(){
 				alert('gagal bos');
 			}

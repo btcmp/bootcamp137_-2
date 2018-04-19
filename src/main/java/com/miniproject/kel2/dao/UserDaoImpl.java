@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.miniproject.kel2.model.Employee;
 import com.miniproject.kel2.model.Outlet;
 import com.miniproject.kel2.model.Role;
+import com.miniproject.kel2.model.Supplier;
 import com.miniproject.kel2.model.User;
 
 @Repository
@@ -99,5 +100,19 @@ public class UserDaoImpl implements UserDao{
 			return userLagi;
 		}
 	}
+
+	public List<User> searchUsernameForValidation(String inputNewUser) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from User s where lower(s.username) like lower(:newUser)";
+		List<User> users = session.createQuery(hql).setParameter("newUser", inputNewUser).list();
+		if(users == null) {
+			User u = new User();
+			users.set(0, u);
+			return users;
+		}else {
+			return users;
+		}
+	}  
 
 }

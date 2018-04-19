@@ -31,25 +31,19 @@
     <div class="jumbotron hero">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 col-md-push-7">
-                	<div class="iphone-mockup">
-                		<img class="device" src="${resources }/img/iconPOS.png">
-                		
-                	</div>
-                </div>
-                <div class="col-md-6 col-md-pull-3 get-it">
+                <div class="col-md-6 get-it">
                     <h1>KELOMPOK 2</h1>
                     <p>Fikky Wiryta </br>
                     	Popi Kridiani </br>
                     	Resa cahya Saputra </br>
                     </p>
-                    
                     <p><a class="btn btn-success btn-lg" role="button" href="${pageContext.request.contextPath}/login">LOGIN </a></p>
                 </div>
+                <div class="col-md-5"><img src="${resources}/img/iconPOS.png" class="img-responsive" /></div>
             </div>
         </div>
     </div>
-    <footer class="site-footer">
+    <!-- <footer class="site-footer">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -57,7 +51,7 @@
                 <div class="col-sm-6 social-icons"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
             </div>
         </div>
-    </footer>
+    </footer> -->
     <script src="${resources}/assets-index/js/jquery.min.js"></script>
     <script src="${resources}/assets-index/bootstrap/js/bootstrap.min.js"></script>
 </body>

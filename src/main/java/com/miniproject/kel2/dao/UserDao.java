@@ -28,4 +28,5 @@ public interface UserDao {
 	/*public User getUserByEmployee(User user);
 	*/
 	public User getUserByEmployee(Employee emp);
+	public List<User> searchUsernameForValidation(String inputNewUser);
 }

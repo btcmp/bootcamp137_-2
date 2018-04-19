@@ -150,7 +150,11 @@
 			<div class="modal-body">
 				<!-- modal body -->
 				<div class="form">
-					<div class="form-validate form-horizontal" id="PR-form">
+					<form class="form-validate form-horizontal" id="PR-form">
+					<div class="bs-callout bs-callout-warning hidden">
+					  <h4>Tabel Request Masih Kosong,</h4>
+					  <p> Harap mengisi request tabel </p>
+					</div>
 						<div class="form-group">
 							<label for="outlet-name" class="control-label"><span
 								class="required">*</span> CREATE NEW PR : ${outlet.name }, ${employee.user.username }</label><span>
@@ -165,7 +169,7 @@
 							<div class="col-lg-12">
 							<input class="form-control reset" type="hidden" name="" id="id-request"/>
 							
-								<input class="form-control reset" type="date" name="" id="ready-date"/>
+								<input class="form-control reset" type="date" name="" id="ready-date" required=""/>
 							</div>
 						</div>
 
@@ -175,7 +179,7 @@
 
 							<div class="col-lg-12">
 								<textarea class="form-control reset" id="prNo" style="display:none;"></textarea>
-								<textarea class="form-control reset" id="request-notes"></textarea>
+								<textarea class="form-control reset" id="request-notes" required=""></textarea>
 							</div>
 						</div>
 
@@ -204,7 +208,7 @@
 						<div class="col-lg-12">
 							<button class="form-control btn btn-primary" id="item-add-modal">Add Item</button>
 						</div>
-					</div>
+					</form>
 
 
 				</div>
@@ -294,6 +298,8 @@
 			autoclose : true
 		}); 
 		 
+		 
+		
 		 /*====================================== make Aplhanumeric currency ===========================================*/
 		 /* const currencyRupiah = {
 				 digitGroupSeparator	: '.',
@@ -480,6 +486,7 @@
 		}
 	});
 	/*=================================================== Save Request Modal =================================================  */
+	  
 	$('#btn-save').on('click', function(evt){
 		evt.preventDefault();
 		
@@ -491,6 +498,12 @@
 				id : idUser
 		}
 		
+		var isiTable = $('#table-result-add-item > tbody > tr').length;
+		console.log('isi tabel : '+isiTable);
+		$('#request-notes').parsley().validate();
+		$('#ready-date').parsley().validate();
+		
+		if(isiTable != 0){
 		$('#table-result-add-item > tbody > tr ').each(function(index, data){
 			var detailRequest = {
 				itemvar : {
@@ -544,8 +557,31 @@
 				alert('save request failed');
 			}
 		});
+		/* end if */
+		} else {
+			var validate = 0;
+			$('.bs-callout-warning').toggleClass('hidden', validate);
+			setTimeout(function(){
+				$('.bs-callout-warning').toggleClass('hidden', validate);
+			}, 5000);
+		}
+		
 	})
 	
+	
+	/* 	 
+	$('#PR-form').parsley().on('field:validated', function() {
+		    var ok = $('.parsley-error').length === 0;
+		    $('.bs-callout-info').toggleClass('hidden', !ok);
+		    $('.bs-callout-warning').toggleClass('hidden', ok);
+		  })
+		  .on('form:input ', function() {
+			  $('#btn-save').click();
+			  
+		    return false; // Don't submit form for this demo
+		  });
+	 */	 
+		
 	
 	/*=================================================== Update Request Modal =================================================  */
 	$('#request-table').on('click', '.btn-update', function(){
