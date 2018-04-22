@@ -20,6 +20,7 @@
 
 	/* -------------------------------------------------------------- ADD VARIANT (CREATE) -------------------------------------------------------------------- */
 		// ADD NEW VARIANT DARI ADD VARIANT 
+		
 		$('#add-var').click(function(){
 			 $('#input-varname').val('');
 			 $('#input-uprice').val('');
@@ -28,17 +29,32 @@
 			 $('#input-alertat').val('');
 		});
 		$('#btn-add').click(function(){
+			var form = $('#form-addvar');
+			var valid = form.parsley().validate();
+			
 			var varname  = $('#input-varname').val();
 			var uprice  = $('#input-uprice').val();
 			var sku  = $('#input-sku').val();
 			var beginning = $('#input-beginning').val();
 			var alert = $('#input-alertat').val();
 			
-			var add = "<tr id=tr-var"+ index + " ><td>" + varname + "</td><td><p> Rp "+ uprice +"</p></td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert + 
-					  "</td><td><a class='btn-edit' data-id="+index+"  href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
-			$("#tbody-addvar").append(add);
-			index++;
-			console.log(index);
+			if (valid == true){
+				if(beginning < alert){
+				//	alert("Stock Kurang");
+				} else {
+				
+				var add = "<tr id=tr-var"+ index + " ><td>" + varname + "</td><td><p> Rp "+ uprice +"</p></td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert + 
+						  "</td><td><a class='btn-edit' data-id="+index+"  href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
+				$("#tbody-addvar").append(add);
+				index++;
+				console.log(index);
+				}
+			} else {
+			//	alert("Complete your form");
+			}
+			
+				
+			
 		});	
 
 	
@@ -48,10 +64,14 @@
 			
 			// UPLOAD IMAGE
 			var formData = new FormData();
-			formData.append('image',$('#input-image')[0].files[0]); //untum membaca filenya
+			formData.append('image',$('#input-image')[0].files[0]); //untuk membaca filenya
 			//console.log(image);
 			
 			evt.preventDefault();
+			
+			var form = $('#form-create');
+			var valid = form.parsley().validate();
+			
 			var itemVariants =[];
 			var itemInventories = [];
 			$('#tbl-addvar > #tbody-addvar > tr').each(function(index, data){
@@ -59,16 +79,19 @@
 							beginning : $(data).find('td').eq(3).text(),
 							alertAtQty : $(data).find('td').eq(4).text()
 					}
+					var iprice = $(data).find('td').eq(1).text();
+					var price = iprice.replace('Rp', '').trim();
+					console.log('price : ' + price);
 					var variant = {
 							name : $(data).find('td').eq(0).text(),
-							price : $(data).find('td').eq(1).text(),
+							price : price,
 							sku : $(data).find('td').eq(2).text(),
 							itemInventories : [inventory]
 					}
 					itemVariants.push(variant);
 			});
 			
-			
+			if(valid==true){
 			   $.ajax({
 					url : '${pageContext.request.contextPath}/item/upload',
 					type :'POST',
@@ -95,7 +118,7 @@
 						data : JSON.stringify(item),
 						success: function(data){
 							alert('save')
-							window.location='${pageContext.request.contextPath}/item';
+						window.location='${pageContext.request.contextPath}/item';
 						}, error : function(){
 							alert('saving failed')	
 						} 
@@ -104,7 +127,8 @@
 				error : function(){
 					alert('error')
 				}
-			});  
+			});
+			}
 		});  
 		 
 	
@@ -141,18 +165,31 @@
 		// ADD dari modal edit pada CREATE
 		 $('#btn-add-from-edit').click(function(evt){
 			evt.preventDefault;
+			
+	 		var form = $('#form-edit-addvar');
+			var valid = form.parsley().validate();
+			
+			var beginning = $('#edit-beginning').val();
+			var alert= $('#edit-alert').val();
+			
 			$('#modal-edit').modal();
 			var index =$('#id-hidden-variant').val();
 			console.log(index)
-			
-		 	$('#tr-var' + index).remove();
-			$('#tbody-addvar').append("<tr id='tr-var" + index + "'><td>" + $('#edit-varname').val() + "</td><td>" + $('#edit-uprice').val() + "</td><td>" 
-					+ $('#edit-sku').val() + "</td><td>" + $('#edit-beginning').val() + "</td><td style='display:none;'>" + $('#edit-alert').val() +
-					"</td><td><a class='btn-edit' href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>");
-		 //	index++;
-		 	alert('save ok');
+			if (valid==true){
+				if(beginning < alert){
+					alert("Stock Kurang");
+				} else {
+					 	$('#tr-var' + index).remove();
+						$('#tbody-addvar').append("<tr id='tr-var" + index + "'><td>" + $('#edit-varname').val() + "</td><td>" + $('#edit-uprice').val() + "</td><td>" 
+								+ $('#edit-sku').val() + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
+								"</td><td><a class='btn-edit' href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>");
+					 //	index++;
+				}
+			//	alert('save ok');
+			}
+		 	
  			}); 
-	
+		 
 	 /* -------------------------------------------------------------- CANCEL (CREATE) -------------------------------------------------------------------- */
 		 $("#btn-cancel").on('click',function(){
 			 clearForm();
@@ -174,6 +211,8 @@
 		// $('.btn-edit-utama').on('click', function(evt) {  
 		  $('#data-utama').on('click', '.btn-edit-utama', function(evt){
 			evt.preventDefault();
+			
+			
 			$('#tbody-edit-utama').empty();
 	    	var id=$(this).attr('id');	
 
@@ -197,7 +236,7 @@
 						$('#edit-category-utama').val(invent.itemVariant.item.category.id);
 						$('.btn-del').val(id);
 					//	$('#tbody-edit-utama').empty();
-					//	$.each(dt2, function(){
+				
 						if(invent.outlet.id=="${outlet.id}"){
 							 $('#tbody-edit-utama').append('<tr id=tr-var'+ invent.itemVariant.id +'><td id='+index+'>' + invent.itemVariant.name +'</td><td><p> Rp '+
 									invent.itemVariant.price +'</p></td><td>'+invent.itemVariant.sku
@@ -210,7 +249,7 @@
 							index++; 
 						}
 						//	console.log("coba");
-					//	})
+					
 							
 					})
 					//console.log("coba");
@@ -243,26 +282,44 @@
 		// ADD dari modal edit pada CREATE
 		  $('#btn-add-from-edit-utama').click(function(evt){
 			evt.preventDefault;
-			 $('#modalEdit3').modal();
+			
+			var form = $('#form-edit-addvar-utama');
+			var valid = form.parsley().validate();
+			
+			var beginning = $('#edit-beginning-utama').val();
+			var alert = $('#edit-alert-utama').val();
+			
+			$('#modalEdit3').modal();
 			var index =$('#id-item-hidden-utama').val();
 			console.log(index)
 			
-			$('#tr-var' + index).remove();
-		//	$('#tbody-edit-utama').empty();
-			$('#tbody-edit-utama').append("<tr id='tr-var" + index + "'><td>" + $('#edit-varname-utama').val() + "</td><td>" + $('#edit-uprice-utama').val() + "</td><td>" 
-					+ $('#edit-sku-utama').val() + "</td><td>" + $('#edit-beginning-utama').val() + "</td><td style='display:none;'>" + $('#edit-alert-utama').val() +
-					 "</td><td style='display:none;'>" + $('#id-variant-utama').val() +
-					 "</td><td style='display:none;'>" + $('#id-inventory-utama').val() +
-					"</td><td><a 'btn-edit-variant-utama' href='#' data-toggle='modal' data-target='#modalEdit3'> Edit</a><button type='button' id='btn-X-utama' class='btn btn-danger'> X </button></td></tr>");
-		 	index++;
-		 
-		 	alert('save ok');
+			if(valid==true){
+				//if(beginning < alert){
+					//alert("Stock Kurang");
+				//} else {
+						$('#tr-var' + index).remove();
+					//	$('#tbody-edit-utama').empty();
+						$('#tbody-edit-utama').append("<tr id='tr-var" + index + "'><td>" + $('#edit-varname-utama').val() + "</td><td>" + $('#edit-uprice-utama').val() + "</td><td>" 
+								+ $('#edit-sku-utama').val() + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
+								 "</td><td style='display:none;'>" + $('#id-variant-utama').val() +
+								 "</td><td style='display:none;'>" + $('#id-inventory-utama').val() +
+								"</td><td><a 'btn-edit-variant-utama' href='#' data-toggle='modal' data-target='#modalEdit3'> Edit</a><button type='button' id='btn-X-utama' class='btn btn-danger'> X </button></td></tr>");
+					 	index++;
+					 	alert('save ok');
+				//}
+				
+			}
+			
  			});  
 	
 	
   /* -------------------------------------------------------------- ADD PADA ADD VARIANT (UTAMA) -------------------------------------------------------------------- */
 		  $('#btn-add-utama').click(function(evt){
-			 evt.preventDefault;
+			evt.preventDefault;
+			 
+			var form = $('#form-addvar-utama');
+			var valid = form.parsley().validate();
+			 
 			var varname  = $('#input-varname-utama').val();
 			var uprice  = $('#input-uprice-utama').val();
 			var sku  = $('#input-sku-utama').val();
@@ -271,29 +328,37 @@
 			var idVar = $('#id-variant-utama').val();
 			var idInvent = $('#id-inventory-utama').val();
 
-			
-			var add = "<tr id=tr-var "+ index + " ><td>" + varname + "</td><td><p> Rp "+ uprice + "</p></td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
-			 "</td><td style='display:none;'>" + $('#id-variant-utama').val() +
-			 "</td><td style='display:none;'>" + $('#id-inventory-utama').val() +		  
-			"</td><td><a class='btn-edit-variant-utama' href='#' data-toggle='modal' data-target='#modalEdit3'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
-			$("#tbody-edit-utama").append(add);
-			index++;
-		//	console.log(index);
-			
-				});	 
+			if(valid==true){
+				if(beginning < alert){
+					//alert("Stock Kurang")
+				} else {
+					var add = "<tr id=tr-var "+ index + " ><td>" + varname + "</td><td><p> Rp "+ uprice + "</p></td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
+							  "</td><td style='display:none;'>" + $('#id-variant-utama').val() +
+							  "</td><td style='display:none;'>" + $('#id-inventory-utama').val() +		  
+							  "</td><td><a class='btn-edit-variant-utama' href='#' data-toggle='modal' data-target='#modalEdit3'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
+					$("#tbody-edit-utama").append(add);
+					index++;
+				//	console.log(index);
+				}
+			}
+			});	 
 
 	
 	/* ------------------------------------------------------------------ SAVE (UTAMA) -------------------------------------------------------------------- */
 		// SAVE ITEM + VARIANT UTAMA
 		  $('#btn-save-utama').on('click',function(evt){
 			evt.preventDefault();
+		 	var form = $('#form-edit');
+			var valid = form.parsley().validate();
+			
 			var itemVariants =[];
 			var itemInventories = [];
 			
 			var formData = new FormData();
 			formData.append('image',$('#input-image-edit')[0].files[0]); //untuk membaca filenya
 			//console.log(image);
-			
+
+	 		if(valid==true){
 			 $.ajax({
 					url : '${pageContext.request.contextPath}/item/upload',
 					type :'POST',
@@ -314,11 +379,13 @@
 								    }
 							 }
 					  //  	console.log(inventory);
-					    	
+					    	var iprice = $(data).find('td').eq(1).text();
+							var price = iprice.replace('Rp', '').trim();
+							console.log('price : ' + price);
 					    	var variant = {
 					    			id : $(data).find('td').eq(5).text(),
 									name : $(data).find('td').eq(0).text(),
-									price : $(data).find('td').eq(1).text(),
+									price : price,
 									sku : $(data).find('td').eq(2).text(),
 									active : 0,
 									itemInventories : [inventory],
@@ -343,7 +410,8 @@
 							    	image : data
 							    }
 							  console.log(item);
-					 
+							  
+					 			
 					    	 $.ajax({
 							    	url:'${pageContext.request.contextPath}/item/update',
 							    	type : 'PUT',
@@ -351,7 +419,7 @@
 							    	contentType : 'application/JSON',
 							    	success : function(){
 							    		alert('save success')
-							    	//	window.location = '${pageContext.request.contextPath}/item';
+							    	window.location = '${pageContext.request.contextPath}/item';
 							    	},
 							    	error : function(){
 							    		alert('save failed')
@@ -364,7 +432,9 @@
 				alert('error')
 			}
 		 });
-	   
+	 	//	} else {
+		//		alert('Complete your form');
+			}
 	});
 	
 	/* -------------------------------------------------------------- DELETE VARIANT (UTAMA) ------------------------------------------------------------------- */
@@ -521,11 +591,12 @@
         }
     }
 
-    $("#input-image-edit").change(function () {
+	$(document).on('change', '#input-image-edit', function(){
+//	$("#input-image-edit").change(function () {
         readURL(this);
     });	
 
-
+	
  	
 	
 </script>
@@ -582,15 +653,17 @@
 													<h5 class="modal-title" id="exampleModalLabel">Items</h5>
 												</div>
 															
-											<form id="target" action="${pageContext.request.contextPath }/item/save" method="POST">									
+											<form id="form-create" data-parsley-validate>									
 												<div class="modal-body">
 													<div id="input">
 														<div class="row">
 															<input class="col-lg-12" type="file" id="input-image" style="margin-bottom:10px;"/>
 														</div>
 														<img id="preview-image" class="col-lg-4" style="width: 100px; height: 60px;"/>
-														<input class="col-lg-8" type="text" style="margin-bottom: 10px;" id="input-item-name" placeholder="Item Name">
-														<select class="col-lg-8" type="text" path="category.id" class="form-control" id="input-category" >
+														<input class="col-lg-8" type="text" style="margin-bottom: 10px;" id="input-item-name" placeholder="Item Name"
+															data-parsley-required="true" pattern="([A-z0-9\s]){1,20}$">
+														<select class="col-lg-8" type="text" path="category.id" class="form-control" id="input-category" 
+														data-parsley-required="true">
 															<c:forEach var="cat" items="${cats}">
 																<option value="${cat.id}">${cat.name}</option>
 															</c:forEach>
@@ -658,16 +731,19 @@
 													</h5>
 
 												</div>
-												<form>
+												<form id="form-addvar" data-parsley-validate>
 												<div class="modal-body" style="height: 110px">
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-														<input type="text" id="input-varname" placeholder="Variant Name">
+														<input type="text" id="input-varname" placeholder="Variant Name"
+														data-parsley-required="true" pattern="([A-z0-9\s]){1,20}$">
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-														<input type="text" id="input-uprice" placeholder="Unit Price">
+														<input type="text" id="input-uprice" placeholder="Unit Price"
+														data-parsley-required="true" pattern="[0-9]{1,}">
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-														<input type="text" id="input-sku" placeholder="SKU">
+														<input type="text" id="input-sku" placeholder="SKU"
+														data-parsley-required="true" pattern="([A-z0-9\s]){1,20}$">
 													</div>
 													<div class="hr" style="margin-left: 20px;">
 														<hr>
@@ -676,10 +752,12 @@
 													</div>
 
 													<div class="col-lg-6" style="margin-bottom: 10px;">
-														<input type="text" id="input-beginning" placeholder="Beginning Stock">
+														<input type="text" id="input-beginning" placeholder="Beginning Stock"
+														data-parsley-required="true" pattern="[0-9]{1,}">
 													</div>
 													<div class="col-lg-6" style="margin-bottom: 10px;">
-														<input type="text" id="input-alertat" placeholder="Alert At">
+														<input type="text" id="input-alertat" placeholder="Alert At"
+														data-parsley-required="true" pattern="[0-9]{1,}">
 													</div>
 												</div>
 												<div class="modal-footer">
@@ -740,18 +818,21 @@
 																	<center>Edit Variant</center>
 																</h5>
 															</div>
-															<form>
+															<form id="form-edit-addvar" data-parsley-validate>
 															<div class="modal-body" style="height: 110px">
 																<input type="hidden" name="id-hidden-variant" id="id-hidden-variant">
 																<input type="hidden" name="id-item-hidden" id="id-item-hidden">
 																<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" id="edit-varname" placeholder="Variant Name">
+																	<input type="text" id="edit-varname" placeholder="Variant Name"
+																	data-parsley-required="true" pattern="([A-z0-9\s]){1,20}$">
 																</div>
 																<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" id="edit-uprice" placeholder="Unit Price">
+																	<input type="text" id="edit-uprice" placeholder="Unit Price"
+																	data-parsley-required="true" pattern="[A-z0-9\s]{1,}">
 																</div>
 																<div class="col-lg-4" style="margin-bottom: 10px;">
-																	<input type="text" id="edit-sku"  placeholder="SKU">
+																	<input type="text" id="edit-sku"  placeholder="SKU"
+																	data-parsley-required="true" pattern="([A-z0-9\s]){1,20}$">
 																</div>
 																<div class="hr" style="margin-left: 20px;">
 																	<hr>
@@ -760,10 +841,12 @@
 																</div>
 
 																<div class="col-lg-6" style="margin-bottom: 10px;">
-																	<input type="text" id="edit-beginning" placeholder="Beginning Stock">
+																	<input type="text" id="edit-beginning" placeholder="Beginning Stock"
+																	data-parsley-required="true" pattern="[0-9]{1,}">
 																</div>
 																<div class="col-lg-6" style="margin-bottom: 10px;">
-																	<input type="text" id="edit-alert" placeholder="Alert At">
+																	<input type="text" id="edit-alert" placeholder="Alert At"
+																	data-parsley-required="true" pattern="[0-9]{1,}">
 																	<input type="hidden" id="id-variant">
 																</div>
 
@@ -804,6 +887,7 @@
 												<h5 class="modal-title" id="exampleModalLabel">Items</h5>
 
 											</div>
+											<form id="form-edit" data-parsley-validate>
 											<div class="modal-body">
 												<div id="input">
 														<input type="hidden" name="edit-id-utama2" id="edit-id-utama2">
@@ -812,8 +896,10 @@
 														</div>
 														<img id="edit-image" class="col-lg-4" style="width: 100px; height: 60px;" src=" "/>
 													<input class="col-lg-8" type="text"
-														style="margin-bottom: 10px;" id="edit-name-utama" placeholder="Item Name">
-													<select class="col-lg-8" type="text" path="category.id" class="form-control" id="edit-category-utama" >
+														style="margin-bottom: 10px;" id="edit-name-utama" placeholder="Item Name"
+														data-parsley-required="true" pattern="([A-z0-9\s]){1,20}$">
+													<select class="col-lg-8" type="text" path="category.id" class="form-control" id="edit-category-utama" 
+													data-parsley-required="true">
 															<c:forEach var="cat" items="${cats}">
 																<option value="${cat.id}">${cat.name}</option>
 															</c:forEach>
@@ -866,7 +952,7 @@
 													<button type="button" id="btn-save-utama" class="btn btn-primary">Save</button>
 												</div>
 											</div>
-
+										</form>
 										</div>
 									</div>
 
@@ -892,7 +978,7 @@
 												</h5>
 
 											</div>
-											<form>
+											<form id="form-edit-addvar-utama" data-parsley-validate>
 											<div class="modal-body" style="height: 110px">
 												
 												<input type="hidden" name="id-variant-utama" id="id-variant-utama">
@@ -904,7 +990,8 @@
 													disabled="disabled">
 												</div>
 												<div class="col-lg-4" style="margin-bottom: 10px;">
-													<input type="text" id="edit-uprice-utama"placeholder="Unit Price">
+													<input type="text" id="edit-uprice-utama"placeholder="Unit Price"
+													data-parsley-required="true" pattern="[A-z0-9\s]{1,}">
 												</div>
 												<div class="col-lg-4" style="margin-bottom: 10px;">
 													<input type="text" id="edit-sku-utama" placeholder="SKU"
@@ -921,7 +1008,8 @@
 													disabled="disabled">
 												</div>
 												<div class="col-lg-6" style="margin-bottom: 10px;">
-													<input type="text" id="edit-alert-utama" placeholder="Alert At">
+													<input type="text" id="edit-alert-utama" placeholder="Alert At"
+													data-parsley-required="true" pattern="[0-9]{1,}">
 									
 												</div>
 
@@ -957,16 +1045,19 @@
 													</h5>
 
 												</div>
-												<form>
+												<form id="form-addvar-utama" data-parsley-validate>
 												<div class="modal-body" style="height: 110px">
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-														<input type="text" id="input-varname-utama" placeholder="Variant Name">
+														<input type="text" id="input-varname-utama" placeholder="Variant Name"
+														data-parsley-required="true" pattern="([A-z0-9\s]){1,20}$">
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-														<input type="text" id="input-uprice-utama" placeholder="Unit Price">
+														<input type="text" id="input-uprice-utama" placeholder="Unit Price"
+														data-parsley-required="true" pattern="[0-9]{1,}">
 													</div>
 													<div class="col-lg-4" style="margin-bottom: 10px;">
-														<input type="text" id="input-sku-utama" placeholder="SKU">
+														<input type="text" id="input-sku-utama" placeholder="SKU"
+														data-parsley-required="true" pattern="([A-z0-9\s]){1,20}$">
 													</div>
 													<div class="hr" style="margin-left: 20px;">
 														<hr>
@@ -975,10 +1066,12 @@
 													</div>
 
 													<div class="col-lg-6" style="margin-bottom: 10px;">
-														<input type="text" id="input-beginning-utama" placeholder="Beginning Stock">
+														<input type="text" id="input-beginning-utama" placeholder="Beginning Stock"
+														data-parsley-required="true" pattern="[0-9]{1,}">
 													</div>
 													<div class="col-lg-6" style="margin-bottom: 10px;">
-														<input type="text" id="input-alertat-utama" placeholder="Alert At">
+														<input type="text" id="input-alertat-utama" placeholder="Alert At"
+														data-parsley-required="true" pattern="[0-9]{1,}">
 													</div>
 												</div>
 												<div class="modal-footer">

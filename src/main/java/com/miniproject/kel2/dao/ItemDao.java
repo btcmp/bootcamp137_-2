@@ -28,5 +28,4 @@ public interface ItemDao {
 	public void updateStatuVar(long idVar);
 
 	//public List<Item> searchByName(String search);
-	
 }
