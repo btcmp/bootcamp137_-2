@@ -42,7 +42,7 @@ public class ItemService {
 		List<ItemVariant> itemVariants = item.getItemVariants();
 		List<Outlet> outlets = outletDao.selectAll();
 		item.setItemVariants(null);
-		item.setCreatedBy(outlet.getId());
+		//item.setCreatedBy(outlet.getId());
 		itemDao.save(item);
 
 		// object itemVariant
@@ -51,7 +51,7 @@ public class ItemService {
 			inventory = variant.getItemInventories().get(0);
 			variant.setItemInventories(null);
 			variant.setItem(item);
-			variant.setCreatedBy(outlet.getId());
+		//	variant.setCreatedBy(outlet.getId());
 			itemVariantDao.save(variant);
 
 			for (Outlet out : outlets) {
@@ -61,7 +61,7 @@ public class ItemService {
 				invent.setBeginning(inventory.getBeginning());
 				invent.setEndingQty(inventory.getBeginning());
 				invent.setAlertAtQty(inventory.getAlertAtQty());
-				invent.setCreatedBy(outlet.getId());
+				//invent.setCreatedBy(outlet.getId());
 				itemInventoryDao.save(invent);
 			}
 		}
@@ -114,28 +114,32 @@ public class ItemService {
 
 			if (variant.getId() == 0) {
 				itemVariantDao.save(variant);
-		//		System.out.println(inventory.getId() == 0);
+				System.out.println("Ok Ok");
 				if (inventory.getId() == 0) {
 					for (Outlet out : outlets) {
-						System.out.println(out.getName());
-						inventory.setItemVariant(variant);
-						inventory.setOutlet(out);
-						itemInventoryDao.save(inventory);
+						System.out.println(out.getName()+"save");
+						ItemInventory invt = new ItemInventory();
+						invt.setItemVariant(variant);
+						invt.setBeginning(inventory.getBeginning());
+						invt.setEndingQty(inventory.getBeginning());
+						invt.setAlertAtQty(inventory.getAlertAtQty());
+						invt.setOutlet(out);
+						itemInventoryDao.save(invt);
 					}
 				}
 
 			} else {
 				itemVariantDao.update(variant);
-		//		System.out.println("update variant done");
+				System.out.println("update variant done");
 				
 				if (inventory.getId() == 0) {
 					for (Outlet out : outlets) {
 						invent = new ItemInventory();
-					//	System.out.println(out.getName());
+					//	System.out.println(out.getName()+"update");
 						invent.setAlertAtQty(inventory.getAlertAtQty());
 						invent.setBeginning(inventory.getBeginning());
 						invent.setEndingQty(inventory.getBeginning());
-						invent.setCreatedBy(outlet.getId());
+					//	invent.setCreatedBy(outlet.getId());
 						invent.setItemVariant(variant);
 						invent.setOutlet(out);
 						itemInventoryDao.save(invent);
@@ -155,8 +159,9 @@ public class ItemService {
 					//	ItemInventory invent = new ItemInventory();
 					//	System.out.println("up");
 						inventory.setItemVariant(variant);
+						inventory.setBeginning(inventory.getBeginning());
 						inventory.setEndingQty(inventory.getBeginning());
-						inventory.setCreatedBy(outlet.getId());
+					//	inventory.setCreatedBy(outlet.getId());
 						inventory.setOutlet(out);
 						itemInventoryDao.update(inventory);
 					}

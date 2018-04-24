@@ -12,7 +12,7 @@
 		}); */
 		
 		var index = 0;
-		
+		var image = "";
 		// menampilkan pop up create
 		$('#btn-create').click(function() {
 			$('#modal-create').modal();
@@ -36,21 +36,26 @@
 			var uprice  = $('#input-uprice').val();
 			var sku  = $('#input-sku').val();
 			var beginning = $('#input-beginning').val();
-			var alert = $('#input-alertat').val();
+			var alertAt = $('#input-alertat').val();
+			
+			console.log(beginning);
+			console.log(alertAt);
 			
 			if (valid == true){
-				if(beginning < alert){
-				//	alert("Stock Kurang");
+				if(parseInt(beginning) < parseInt(alertAt)){
+					alert("Stock Kurang");
 				} else {
 				
-				var add = "<tr id=tr-var"+ index + " ><td>" + varname + "</td><td><p> Rp "+ uprice +"</p></td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert + 
+				var add = "<tr id=tr-var"+ index + " ><td>" + varname + "</td><td><p> Rp "+ uprice +"</p></td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alertAt + 
 						  "</td><td><a class='btn-edit' data-id="+index+"  href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
 				$("#tbody-addvar").append(add);
 				index++;
-				console.log(index);
+				//console.log(index);
+				alert("Save OK");
 				}
+				
 			} else {
-			//	alert("Complete your form");
+				alert("Complete your form");
 			}
 			
 				
@@ -170,22 +175,25 @@
 			var valid = form.parsley().validate();
 			
 			var beginning = $('#edit-beginning').val();
-			var alert= $('#edit-alert').val();
+			var alertAt= $('#edit-alert').val();
 			
 			$('#modal-edit').modal();
 			var index =$('#id-hidden-variant').val();
 			console.log(index)
 			if (valid==true){
-				if(beginning < alert){
+				if(parseInt(beginning) < parseInt(alertAt)){
 					alert("Stock Kurang");
 				} else {
 					 	$('#tr-var' + index).remove();
 						$('#tbody-addvar').append("<tr id='tr-var" + index + "'><td>" + $('#edit-varname').val() + "</td><td>" + $('#edit-uprice').val() + "</td><td>" 
-								+ $('#edit-sku').val() + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
+								+ $('#edit-sku').val() + "</td><td>" + beginning + "</td><td style='display:none;'>" + alertAt +
 								"</td><td><a class='btn-edit' href='#' data-toggle='modal' data-target='#modal-edit'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>");
 					 //	index++;
+						alert('Save OK');
 				}
-			//	alert('save ok');
+				
+			} else {
+				alert("Complete your form")
 			}
 		 	
  			}); 
@@ -230,7 +238,7 @@
 				 	var index =$('#id-variant-utama').val();
 					$.each(dt, function(key,invent){
 						console.log("bisa");
-						var image = invent.itemVariant.item.image;
+						image = invent.itemVariant.item.image;
 						$('#edit-image').attr('src','${pageContext.request.contextPath}/resources/img/'+image);
 						$('#edit-name-utama').val(invent.itemVariant.item.name);
 						$('#edit-category-utama').val(invent.itemVariant.item.category.id);
@@ -287,27 +295,28 @@
 			var valid = form.parsley().validate();
 			
 			var beginning = $('#edit-beginning-utama').val();
-			var alert = $('#edit-alert-utama').val();
+			var alertAt = $('#edit-alert-utama').val();
 			
 			$('#modalEdit3').modal();
 			var index =$('#id-item-hidden-utama').val();
 			console.log(index)
 			
 			if(valid==true){
-				//if(beginning < alert){
-					//alert("Stock Kurang");
-				//} else {
+				if(parseInt(beginning) < parseInt(alertAt)){
+					alert("Stock Kurang");
+				} else {
 						$('#tr-var' + index).remove();
 					//	$('#tbody-edit-utama').empty();
 						$('#tbody-edit-utama').append("<tr id='tr-var" + index + "'><td>" + $('#edit-varname-utama').val() + "</td><td>" + $('#edit-uprice-utama').val() + "</td><td>" 
-								+ $('#edit-sku-utama').val() + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
+								+ $('#edit-sku-utama').val() + "</td><td>" + beginning + "</td><td style='display:none;'>" + alertAt +
 								 "</td><td style='display:none;'>" + $('#id-variant-utama').val() +
 								 "</td><td style='display:none;'>" + $('#id-inventory-utama').val() +
 								"</td><td><a 'btn-edit-variant-utama' href='#' data-toggle='modal' data-target='#modalEdit3'> Edit</a><button type='button' id='btn-X-utama' class='btn btn-danger'> X </button></td></tr>");
 					 	index++;
-					 	alert('save ok');
-				//}
-				
+					 	alert('Save OK');
+				}
+			} else {
+				alert("Complete your form");
 			}
 			
  			});  
@@ -324,22 +333,25 @@
 			var uprice  = $('#input-uprice-utama').val();
 			var sku  = $('#input-sku-utama').val();
 			var beginning = $('#input-beginning-utama').val();
-			var alert = $('#input-alertat-utama').val();
+			var alertAt = $('#input-alertat-utama').val();
 			var idVar = $('#id-variant-utama').val();
 			var idInvent = $('#id-inventory-utama').val();
 
 			if(valid==true){
-				if(beginning < alert){
-					//alert("Stock Kurang")
+				if(parseInt(beginning) < parseInt(alertAt)){
+					alert("Stock Kurang");
 				} else {
-					var add = "<tr id=tr-var "+ index + " ><td>" + varname + "</td><td><p> Rp "+ uprice + "</p></td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alert +
+					var add = "<tr id=tr-var "+ index + " ><td>" + varname + "</td><td><p> Rp "+ uprice + "</p></td><td>" + sku + "</td><td>" + beginning + "</td><td style='display:none;'>" + alertAt +
 							  "</td><td style='display:none;'>" + $('#id-variant-utama').val() +
 							  "</td><td style='display:none;'>" + $('#id-inventory-utama').val() +		  
 							  "</td><td><a class='btn-edit-variant-utama' href='#' data-toggle='modal' data-target='#modalEdit3'> Edit</a><button type='button' id='btn-X' class='btn btn-danger'> X </button></td></tr>";
 					$("#tbody-edit-utama").append(add);
 					index++;
 				//	console.log(index);
+					alert("Save OK");
 				}
+			} else {
+				alert("Complete your form");
 			}
 			});	 
 
@@ -355,10 +367,13 @@
 			var itemInventories = [];
 			
 			var formData = new FormData();
-			formData.append('image',$('#input-image-edit')[0].files[0]); //untuk membaca filenya
+			var images = $('#input-image-edit')[0].files[0];
+			formData.append('image', images); //untuk membaca filenya
 			//console.log(image);
-
+			
 	 		if(valid==true){
+	 			
+	 		if (images !=null){
 			 $.ajax({
 					url : '${pageContext.request.contextPath}/item/upload',
 					type :'POST',
@@ -432,6 +447,64 @@
 				alert('error')
 			}
 		 });
+	 	} else {
+	 		 $('#tbl-edit-utama > #tbody-edit-utama > tr').each(function(index,data){
+			    	var inventory = {
+			    			id : $(data).find('td').eq(6).text(),
+							beginning :$(data).find('td').eq(3).text(),
+						    alertAtQty :$(data).find('td').eq(4).text(),
+						    itemVariant : {
+						    	 id : $(data).find('td').eq(5).text()
+						    }
+					 }
+			  //  	console.log(inventory);
+			    	var iprice = $(data).find('td').eq(1).text();
+					var price = iprice.replace('Rp', '').trim();
+					console.log('price : ' + price);
+			    	var variant = {
+			    			id : $(data).find('td').eq(5).text(),
+							name : $(data).find('td').eq(0).text(),
+							price : price,
+							sku : $(data).find('td').eq(2).text(),
+							active : 0,
+							itemInventories : [inventory],
+							item : {
+						    	id : $('#edit-id-utama2').val()
+						     }
+			    	}
+			    	
+			    	itemVariants.push(variant)
+			  });
+			 // console.log(itemVariants)
+			
+					
+					var item = {
+					    	id : $('#edit-id-utama2').val(),
+					    	name : $('#edit-name-utama').val(),
+					    	active : 0,
+					    	category:{
+					    		id :  $('#edit-category-utama').val()
+					    	},
+					    	itemVariants : itemVariants,
+					    	image : image
+					    }
+					  console.log(item);
+					  
+			 			
+			    	 $.ajax({
+					    	url:'${pageContext.request.contextPath}/item/update',
+					    	type : 'PUT',
+					    	data: JSON.stringify(item),
+					    	contentType : 'application/JSON',
+					    	success : function(){
+					    		alert('save success')
+					    	window.location = '${pageContext.request.contextPath}/item';
+					    	},
+					    	error : function(){
+					    		alert('save failed')
+					    	}
+					  });
+	 	}
 	 	//	} else {
 		//		alert('Complete your form');
 			}
@@ -445,7 +518,7 @@
 				var idVar = element.find('td').eq(5).text();
 			console.log(idVar); 
 				
-				
+		//	if(idVar != ""){
 				if(confirm("Are you sure to update status variant?")){
 					$(this).parent().parent().remove();
 				  $.ajax({
@@ -459,8 +532,11 @@
 				    	}
 				    }); 
 				} else {
-					
 				}
+		//	} else {
+		//		alert("ok");
+		//		$(this).parent().parent().remove();
+		//	}
 				
 			});
 
@@ -799,7 +875,7 @@
 											<td>${inv.itemVariant.item.name}-${inv.itemVariant.name}</td>
 											<td>${inv.itemVariant.item.category.name}</td>
 											<td>${inv.itemVariant.priceFormatted}</td>
-											<td>${inv.beginning}</td>
+											<td>${inv.endingQty}</td>
 											<td>${inv.alertAtQty}</td>
 											<td>
 												<a id="${inv.itemVariant.item.id}" href="#" class="btn-edit-utama" data-toggle="modal"data-target="#modal-edit-utama"> Edit </a> 
@@ -849,7 +925,6 @@
 																	data-parsley-required="true" pattern="[0-9]{1,}">
 																	<input type="hidden" id="id-variant">
 																</div>
-
 															</div>
 															<div class="modal-footer">
 																<div class="col-lg-10">
